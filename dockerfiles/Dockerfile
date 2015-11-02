@@ -167,6 +167,59 @@ RUN ln -sf ./libmysqlclient.so libmysqlclient_r.so; \
         ln -sf ./libmysqlclient.so.18 libmysqlclient_r.so.18
 
 
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 10; \
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 10; \
+	update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30; \
+	update-alternatives --set cc /usr/bin/gcc; \
+	update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30; \
+	update-alternatives --set c++ /usr/bin/g++; \
+	update-alternatives --config gcc; \
+	update-alternatives --config g++; \
+	mkdir -p /root/Downloads/pgxl; \
+	mkdir -p /root/Downloads/pgxl95; \
+	mkdir -p /root/Downloads/vdb
+
+WORKDIR /root/Downloads/pgxl
+RUN wget "http://sourceforge.net/projects/postgres-xl/files/Releases/Version_9.2rc/postgres-xl-v9.2-src.tar.gz"
+
+ADD ./stormstats.c /root/Downloads/pgxl95/stormstats.c
+
+WORKDIR /root/Downloads/pgxl95
+RUN git clone git://git.postgresql.org/git/postgres-xl.git; \
+	cp /root/Downloads/pgxl95/stormstats.c /root/Downloads/pgxl95/postgres-xl/contrib/stormstats/
+
+WORKDIR /root/Downloads/pgxl95/postgres-xl/
+RUN ln -s /usr/bin/make /usr/bin/gmake; \
+	 export OSX=/usr/bin/osx; \
+	./configure --with-python; \
+	gmake world -j8
+
+RUN apt-get -y install monodevelop; \
+	mkdir -p /root/Downloads/fs; \
+	mozroots --import --sync
+
+WORKDIR /root/Downloads/fs
+RUN pwd; \
+	rm fsharp -f; \
+	git clone https://github.com/fsharp/fsharp.git; \
+	cd fsharp; \
+	mkdir -p .paket
+	
+ADD ./paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.bootstrapper.exe
+ADD ./paket.dependencies /root/Downloads/fs/fsharp/paket.dependencies
+
+WORKDIR /root/Downloads/fs/fsharp/.paket/
+RUN mono paket.bootstrapper.exe; \
+	mono paket.exe update
+
+WORKDIR /root/Downloads/fs/fsharp/	
+RUN ./autogen.sh --prefix=/usr; \
+	make
+
+RUN echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
+	chmod +x /root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release/fsi.exe
+
 #RUN mkdir /etc/service/dbus
 #ADD 120_dbus.sh /etc/service/dbus/run
 #RUN chmod +x /etc/service/dbus/run; \
