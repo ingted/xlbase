@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# == 0 ]; then
+
+	echo Please use '-a' to kill all containers.
+
+elif [ $# == 1 ]; then
+
+	if [ "$1" == "-a" ]; then
+		if [[  $(dls -ll) ]]; then
+			docker kill $(dls -ll)
+		fi
+	else
+		docker kill $*
+	fi
+
+elif [ $# -gt 1 ]; then
+
+        docker kill $*
+fi
+	

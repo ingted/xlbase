@@ -1,0 +1,61 @@
+#!/bin/bash
+
+all_container=$(dls -a)
+all_live=$(dls -ll)
+all_live_images=$(dls -i)
+all_images_id=$(dil | awk 'NR > 1 {print $1":"$2" "$3}')
+
+#all_live_images_id=$(
+#	for item in ${all_live_images[*]}
+#	do
+#		all_images_id | awk '!($)'
+#	done
+#)
+
+if [ $# == 0 ]; then
+
+	echo Please use '-a', '-f <id>'  or '-af' to remove \(all\) images.
+
+elif [ $# == 1 ]; then
+	if [ "$1" == "-a" ]; then
+		for item in ${all_live_images[*]}
+		do
+			to_rmi=$(dil | awk 'NR > 1 && $1":"$2 != "'"$item"'" {print $3}')
+			docker rmi $to_rmi
+		done
+	elif [ "$1" == "-af" -o "$1" == "-fa" ]; then
+		dkill -a
+		docker rmi $(dilq)
+	else
+		#for item in ${all_live_images[*]}
+                #do
+                #        if [ "$1" != "$item" ]; then
+				docker rmi $1
+		#	fi
+                #done 
+	fi
+
+elif [ $# -gt 1 ]; then
+	if [ "$1" == "-f" ]; then
+	        #dkill $(dil ${@:2})
+		drm -f $(dil ${@:2})
+		#items=${@:2}
+		#for item in ${items[*]} do
+		#	dil | awk 'NR > 1 && ($1":"$2 == "'"$item"'" || $3 == "'"$item"'") {print $3}'
+		#done
+		docker rmi -f ${@:2}
+	else
+		for item in $@
+                do
+			#rmv="1"
+                        #for live in ${all_live[*]}
+                        #do
+                        #        test "$item" != "$live" && { rmv="0"; }
+			#done
+			#if [ "$rmv" == "1" ]; then
+                        	docker rmi $item
+                	#fi
+                done
+	fi
+fi
+	

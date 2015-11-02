@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$#" == "1" ]; then
+	docker start $1
+elif [ $# -gt 1 ]; then
+	for item in $@
+        do
+		docker start $item
+	done
+fi
