@@ -263,12 +263,13 @@ RUN apt-get -y install software-properties-common; \
 	add-apt-repository -y ppa:webupd8team/java; \
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886; \
 	apt-get update; \
-	apt-get -y install oracle-java8-installer oracle-java7-installer
+	apt-get -y install oracle-java8-installer oracle-java7-installer vim
 	#useradd --disabled-password --gecos '' -ms /bin/bash postgres
 
 ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl
 RUN cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc
 	
+
 
 ###### Upgrading the operating system inside the container
 #
@@ -500,7 +501,11 @@ RUN rm -f /etc/service/sshd/down
 #and unlike chpst this tool sets $HOME correctly.
 #Available as /sbin/setuser.
 
-
+RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
+	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
+	apt-get clean; \
+	rm -rf /tmp/* /var/tmp/*; \
+	rm -rf /var/lib/apt/lists/*
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]

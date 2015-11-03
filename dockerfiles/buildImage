@@ -4,6 +4,6 @@ drm -f ttc
 docker run -dit --name ttc --privileged --cap-add=NET_ADMIN --net=host $1 /sbin/my_init -- bash -l
 docker exec -d ttc mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
 docker exec -d ttc echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register
-docker exec -d ttc ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com"
+docker exec -d ttc ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
 
 dbind ttc
