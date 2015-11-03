@@ -255,13 +255,19 @@ RUN wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
 	./configure; \
 	make
 
-RUN apt-get -y software-properties-common; \
+RUN apt-get -y install software-properties-common; \
+	cat > /etc/apt/sources.list.d/webupd8team-java.list << EOF \
+		deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
+		deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
+	EOF; \
 	add-apt-repository -y ppa:webupd8team/java; \
-	apt-get -y install oracle-java8-installer oracle-java7-installer; \
-	adduser postgres
+	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886; \
+	apt-get update; \
+	apt-get -y install oracle-java8-installer oracle-java7-installer
+	#useradd --disabled-password --gecos '' -ms /bin/bash postgres
 
-ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl; \
-	cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc
+ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl
+RUN cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc
 	
 
 ###### Upgrading the operating system inside the container
@@ -423,7 +429,6 @@ RUN rm -f /etc/service/sshd/down
 #  RUN /usr/sbin/enable_insecure_key
 #
 #Instructions for logging in the container is the same as in section Using the insecure key for one container only.
-
 
 
 ######Using your own key
