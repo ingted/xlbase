@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker run -dit --name $2 --privileged --cap-add=NET_ADMIN --net=host $1 /sbin/my_init -- bash -l
+docker exec -d $2 mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
+docker exec -d $2 echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register
+dbind $2 
+
