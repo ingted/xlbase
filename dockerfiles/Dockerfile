@@ -255,6 +255,11 @@ RUN wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
 	./configure; \
 	make
 
+RUN apt-get -y software-properties-common; \
+	add-apt-repository -y ppa:webupd8team/java; \
+	apt-get -y install oracle-java8-installer oracle-java7-installer; \
+	adduser postgres
+
 ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl; \
 	cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc
 	
