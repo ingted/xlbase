@@ -621,6 +621,16 @@ RUN make install
 
 
 
+WORKDIR /root/Downloads/clusterLab/pcs/pcs-0.9.141
+RUN apt-get -y install ruby-dev; \
+	make; \
+	cd pcsd; \
+	gem install eventmachine -v '1.0.7'; \
+	gem install bundler; \
+	make get_gems; \
+	cd ..; \
+	make install; \
+	make install_pcsd install_settings=true
 
 RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
@@ -628,7 +638,8 @@ RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	rm -rf /tmp/* /var/tmp/*; \
 	rm -rf /var/lib/apt/lists/*; \
 	echo xlbase > /whoami; \
-	history -c
+	history -c; \
+	bash -c 'echo  "export HOME=/root/" >> /root/.bashrc'
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
