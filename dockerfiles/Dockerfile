@@ -272,8 +272,22 @@ RUN useradd --system -U -ms /bin/bash postgres; \
 	sed -i.bak -e s/voltdb\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; 
 
 ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl
-RUN cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc
-	
+RUN cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc; \
+	mkdir -p /root/Downloads/clusterLab/corosync
+
+WORKDIR /root/Downloads/clusterLab/corosync
+RUN wget "https://github.com/corosync/corosync/archive/v2.3.5.tar.gz"; \
+	apt-get -y update; \
+	apt-get -y install libnss3-dev groff; \
+	tar zxvf ./v2.3.5.tar.gz; \
+	cd corosync-2.3.5; \
+	./autogen.sh; \
+	./configure; \
+	make -j8 
+
+
+
+
 
 
 ###### Upgrading the operating system inside the container
@@ -511,7 +525,8 @@ RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	apt-get clean; \
 	rm -rf /tmp/* /var/tmp/*; \
 	rm -rf /var/lib/apt/lists/*; \
-	echo xlbase > /whoami
+	echo xlbase > /whoami; \
+	history -c
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
