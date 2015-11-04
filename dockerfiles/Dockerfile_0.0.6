@@ -505,8 +505,7 @@ RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
 	apt-get clean; \
 	rm -rf /tmp/* /var/tmp/*; \
-	rm -rf /var/lib/apt/lists/*; \
-	echo xlbase > /whoami
+	rm -rf /var/lib/apt/lists/*
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
