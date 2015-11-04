@@ -286,7 +286,18 @@ RUN wget "https://github.com/corosync/corosync/archive/v2.3.5.tar.gz"; \
 	make -j8 
 
 
+#RUN mkdir -p /root/Downloads/clusterLab/cluster-glue
+WORKDIR /root/Downloads/clusterLab/cluster-glue
 
+RUN apt-get -y install mercurial uuid-dev
+
+RUN	hg clone http://hg.linux-ha.org/glue cluster-glue; \
+	#ls -l /root/Downloads/clusterLab/cluster-glue; \
+	#ls -l /root/Downloads/clusterLab; \
+	cd cluster-glue; \
+	./autogen.sh; \
+	./configure --enable-fatal-warmings=yes; \
+	make -j8
 
 
 
