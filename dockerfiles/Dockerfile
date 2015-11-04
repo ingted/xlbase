@@ -358,6 +358,16 @@ RUN wget "https://github.com/ClusterLabs/hawk/archive/1.0.0-alpha1.tar.gz"; \
 	apt-get -y install pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu
 
 
+WORKDIR /root/Downloads/clusterLab/pacemaker
+RUN wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
+	apt-get -y install rpm
+ 
+RUN	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
+	cd pacemaker-Pacemaker-1.1.13-rc3; \
+	./autogen.sh; \
+	./configure; \
+	make
+
 ###### Upgrading the operating system inside the container
 #
 #Baseimage-docker images contain an Ubuntu 14.04 operating system.
@@ -587,6 +597,30 @@ RUN rm -f /etc/service/sshd/down
 #has a smaller attack vector than sudo,
 #and unlike chpst this tool sets $HOME correctly.
 #Available as /sbin/setuser.
+
+WORKDIR /root/Downloads/clusterLab/libqb/libqb-0.17.2
+RUN make install
+
+WORKDIR /root/Downloads/clusterLab/corosync/corosync-2.3.5
+RUN make install
+
+
+WORKDIR /root/Downloads/clusterLab/cluster-glue/cluster-glue
+RUN make install
+
+
+WORKDIR /root/Downloads/clusterLab/resource-agents/resource-agents
+RUN rm /usr/lib/ocf/resource.d/heartbeat/.ocf-binaries -f; \
+	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-returncodes -f; \
+	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-directories -f; \
+	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-shellfuncs -f; \
+	make install
+
+WORKDIR /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3
+RUN make install
+
+
+
 
 RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
