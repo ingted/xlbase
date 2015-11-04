@@ -300,6 +300,63 @@ RUN	hg clone http://hg.linux-ha.org/glue cluster-glue; \
 	make -j8
 
 
+RUN mkdir -p /root/Downloads/clusterLab/resource-agents; \
+	mkdir -p /root/Downloads/clusterLab/crmsh; \
+	mkdir -p /root/Downloads/clusterLab/pcs; \
+	apt-get -y install snmpd pacemaker-mgmt cluster-glue-dev
+	 
+	
+WORKDIR /root/Downloads/clusterLab/resource-agents
+#RUN wget "https://github.com/ClusterLabs/resource-agents/archive/v3.9.6.tar.gz"; \
+RUN git clone https://github.com/ClusterLabs/resource-agents.git; \
+	#tar xzvf v3.9.6.tar.gz; \
+	#cd resource-agents-3.9.6; \
+	cd resource-agents; \
+	./autogen.sh; \
+	./configure; \
+	make
+
+
+WORKDIR /root/Downloads/clusterLab/crmsh
+RUN wget "https://github.com/ClusterLabs/crmsh/archive/2.1.0.tar.gz"; \
+	tar zxvf 2.1.0.tar.gz; \
+	cd crmsh-2.1.0; \ 
+	./autogen.sh; \
+	./configure; \
+	make
+
+
+
+WORKDIR /root/Downloads/clusterLab/pcs
+RUN wget "https://github.com/ClusterLabs/pcs/archive/0.9.141.tar.gz"; \
+	tar zxvf 0.9.141.tar.gz; \
+	ls -l; \
+	ls -l pcs-0.9.141; \
+	cd pcs-0.9.141/pcsd; \
+	make get_gems; \
+	cd ..
+	#make install (normal install)
+	#make install_pcsd
+
+
+RUN mkdir -p /root/Downloads/clusterLab/fence-agents; \
+	mkdir -p /root/Downloads/clusterLab/hawk
+
+WORKDIR /root/Downloads/clusterLab/fence-agents
+RUN wget "https://github.com/ClusterLabs/fence-agents/archive/v4.0.21.tar.gz"; \
+	apt-get -y install python-suds
+RUN	tar xzvf v4.0.21.tar.gz; \
+	cd fence-agents-4.0.21; \
+	./autogen.sh; \
+	./configure; \
+	make
+	
+WORKDIR /root/Downloads/clusterLab/hawk
+RUN wget "https://github.com/ClusterLabs/hawk/archive/1.0.0-alpha1.tar.gz"; \
+	tar zxvf 1.0.0-alpha1.tar.gz; \
+	cd hawk-1.0.0-alpha1; \
+	apt-get -y install pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu
+
 
 ###### Upgrading the operating system inside the container
 #
