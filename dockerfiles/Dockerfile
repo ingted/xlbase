@@ -634,6 +634,9 @@ RUN apt-get -y install ruby-dev; \
 
 RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
+	bash -c 'echo "postgres ALL=(ALL)    ALL" >> /etc/sudoers'; \	
+	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
+	bash -c 'echo "voltdb ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	apt-get clean; \
 	rm -rf /tmp/* /var/tmp/*; \
 	rm -rf /var/lib/apt/lists/*; \
