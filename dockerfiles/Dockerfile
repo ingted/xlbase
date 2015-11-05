@@ -97,7 +97,7 @@ RUN ln -snf /root/Downloads/https /usr/lib/apt/methods/https; \
 	sed -i.bak -e s/USA/USA\\\nexit\ 0\\\n/g   /usr/sbin/invoke-rc.d; \
 	dpkg --configure -a; \
 #	apt-get -y update; \
-	apt-get -y install udev; \
+	apt-get -y install udev
 #	mv /etc/init.d/udev.bak /etc/init.d/udev; \
 #	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d
 RUN apt-get -y update; \
