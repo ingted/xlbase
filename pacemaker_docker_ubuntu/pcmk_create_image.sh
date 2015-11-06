@@ -30,11 +30,11 @@ make_image()
 	rm -rf debs 
 	mkdir debs
 	if [ -n "$debdir" ]; then
-		cp $debdir/* debs/
-		echo "ADD /debs /root/" >> Dockerfile
-		echo "RUN dpkg -i /root/*.deb" >> Dockerfile
-
+		cp $debdir/* ./debs/
 	fi
+	echo "ADD ./debs /root/debs" >> Dockerfile
+	#echo "RUN dpkg -i /root/debs/*.deb" >> Dockerfile
+	#echo "RUN /root/debs/deb.sh" >> Dockerfile
 
 	echo "ADD /helper_scripts /usr/sbin" >> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile

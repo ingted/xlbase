@@ -214,10 +214,9 @@ WORKDIR /root/Downloads/fs/fsharp/.paket/
 RUN mono paket.bootstrapper.exe; \
 	mono paket.exe update
 
-WORKDIR /root/Downloads/fs/fsharp/
-RUN ./autogen.sh --prefix=/usr; \
-        make
-
+WORKDIR /root/Downloads/fs/fsharp/	
+RUN ./autogen.sh --prefix=/usr
+#RUN	make; \
 
 #	echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
 #	chmod +x /root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release/fsi.exe
@@ -615,7 +614,6 @@ RUN rm /usr/lib/ocf/resource.d/heartbeat/.ocf-binaries -f; \
 
 WORKDIR /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3
 RUN make install
-
 
 
 
