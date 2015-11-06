@@ -19,22 +19,26 @@ ENV DEBIAN_FRONTEND noninteractive
 ADD ./docker.list /etc/apt/sources.list.d/
 ADD ./sources.list /etc/apt/
 
-RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
-	ln -s /bin/true /etc/init.d/systemd-logind; \
-	mkdir -p /root/Downloads; mkdir -p /root/Sources; \
+RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d
+RUN ln -s /bin/true /etc/init.d/systemd-logind
+
+RUN mkdir -p /root/Downloads; mkdir -p /root/Sources; \
         apt-get purge openjdk-7-*; \
         apt-get purge openjdk-8-*; \
 	echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections; \
         echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections; \
-        apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D; \
-	rm /var/lib/apt/lists/* -vrf; \
+        apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+
+RUN rm /var/lib/apt/lists/* -vrf
 
 #RUN mkdir -p /proc/sys/fs/binfmt_misc; \
 #	chmod +w /proc/sys/fs/binfmt_misc; \
 #	ls -l /proc/sys/fs/|grep binfmt_misc ; \
-	apt-get -y update; \
-	apt-get -y install apt-transport-https dbus binfmt-support llvm || true; \
-	ls -l /usr/lib/apt/methods/https; \
+RUN apt-get -y update; \
+	apt-get -y install apt-transport-https dbus binfmt-support llvm || true
+
+RUN ls -l /usr/lib/apt/methods/https; \
 	cp /usr/lib/apt/methods/https /root/Downloads/https; \
 	ln -snf /root/Downloads/https /usr/lib/apt/methods/https
 
@@ -51,8 +55,8 @@ ADD ./dbus-run-session      	/usr/bin/dbus-run-session
 ADD ./dbus-send             	/usr/bin/dbus-send
 ADD ./dbus-uuidgen          	/usr/bin/dbus-uuidgen
 
-RUN mkdir -p /etc/my_init.d; \
-	 mkdir -p /docker_scripts
+RUN mkdir -p /etc/my_init.d
+RUN mkdir -p /docker_scripts
 ADD ./110_logtime.sh /etc/my_init.d/110_logtime.sh
 
 RUN rm /etc/rc.local
@@ -85,35 +89,35 @@ ADD ./libhogweed.so.2 /usr/lib/x86_64-linux-gnu/libhogweed.so.2
 
 #RUN apt-get -y install udev
 
-RUN cat /dev/null > /var/run/utmp; \
-	ln -snf /root/Downloads/https /usr/lib/apt/methods/https; \
+RUN cat /dev/null > /var/run/utmp
+RUN ln -snf /root/Downloads/https /usr/lib/apt/methods/https; \
 #	dpkg -i --force-confmiss /root/Downloads/plymouth_0.9.0-9_amd64.deb; \
 #       dpkg -i --force-confmiss /root/Downloads/udev_215-17+deb8u1_amd64.deb; \
 	sed -i.bak -e s/BEGIN\ INIT\ INFO/BEGIN\ INIT\ INFO\\\nexit\ 0\\\n/g  /etc/init.d/udev; \
 	sed -i.bak -e s/USA/USA\\\nexit\ 0\\\n/g   /usr/sbin/invoke-rc.d; \
 	dpkg --configure -a; \
 #	apt-get -y update; \
-	apt-get -y install udev; \
+	apt-get -y install udev
 #	mv /etc/init.d/udev.bak /etc/init.d/udev; \
 #	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d
-	apt-get -y update; \
-	apt-get -y upgrade; \
+RUN apt-get -y update; \
+	apt-get -y upgrade
 
-	apt-get -y install \
+RUN apt-get -y install \
         ant ant-optional asciidoc autoconf automake autopoint autotools-dev \
         bison build-essential bzip2 \
         ccache cluster-glue cmake corosync-dev cvs
 
 ADD ./cgroup-lite_1.9_all.deb /root/Downloads/cgroup-lite_1.9_all.deb
-RUN dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb; \
+RUN dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb
 
-	apt-get -y install \
+RUN apt-get -y install \
         dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl docker.io dsniff \
         flex \
         g++ gcc gdb gettext git git-arch git-completion git-core git-doc git-email git-svn \
         intltool \
-        jade; \
-	apt-get -y install \
+        jade 
+RUN apt-get -y install \
         kernel-package \
         libaio1 libaio-dev libboost-all-dev libbz2-dev libc++1 libc++abi1 libc++abi-dev libc++abi-test \
                 libc++-dev libc++-helpers libc++-test libc6 libc6-dbg libcluster-glue-dev libcurl4-gnutls-dev \
@@ -121,50 +125,50 @@ RUN dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb; \
 		libdbus-1-dev libdbus-glib-1-dev libesmtp-dev libgdbm-dev \
                 libglib2.0-dev libncurses5-dev libpam0g-dev libpe-status4 libpod-2-docbook-perl libqb-dev \
                 libreadline-dev libselinux-dev libsgml-dtdparse-perl libsnmp-base libsnmp-dev libsqlite3-dev \
-                libssl-dev libtool libxml2-dev libxml2-utils libxslt1-dev llvm; \
-	apt-get -y install \
+                libssl-dev libtool libxml2-dev libxml2-utils libxslt1-dev llvm 
+RUN apt-get -y install \
         lm-sensors \
         multiarch-support \
         ncurses-dev ntp \
 	openjade1.3 opensp \
 	#oracle-java7-installer oracle-java8-installer \
-        p7zip p7zip-full pbzip2 pkg-config publican python-lxml; \
+        p7zip p7zip-full pbzip2 pkg-config publican python-lxml
 
-	apt-get -y install \
+RUN apt-get -y install \
 	#libsystemd-dev 
-	libtool; \
+	libtool
 
-	apt-get -y install \
+RUN apt-get -y install \
         python-software-properties python-pip python-dev python-pip python-dev \
         python3 python3-software-properties python-httplib2 python-setuptools \
-        python3-dev python-lxml; \
+        python3-dev python-lxml 
 	#python3-systemd
 
-	apt-get -y install libmysqlclient-dev libmysql++6 libmysql++-dev libdbd-mysql-perl mysql-client; \
+RUN apt-get -y install libmysqlclient-dev libmysql++6 libmysql++-dev libdbd-mysql-perl mysql-client
 
-	apt-get -y install wget; \
+RUN apt-get -y install wget; \
 	pip install requests[security]; \
 	pip install pyopenssl ndg-httpsclient pyasn1; \
-	wget "https://raw.github.com/pypa/pip/master/contrib/get-pip.py"; \
-	wget https://bootstrap.pypa.io/ez_setup.py -O - | python; \
+	wget "https://raw.github.com/pypa/pip/master/contrib/get-pip.py"
+RUN wget https://bootstrap.pypa.io/ez_setup.py -O - | python; \
 	python get-pip.py; \
         pip uninstall -y distribute || true; \
         pip uninstall -y setuptools || true; \
         pip install ipython; \
-        pip install --upgrade ipython; \
+        pip install --upgrade ipython
 
 
-	wget "http://launchpadlibrarian.net/173841617/init-system-helpers_1.18_all.deb"; \
+RUN wget "http://launchpadlibrarian.net/173841617/init-system-helpers_1.18_all.deb"; \
         dpkg -i init-system-helpers_1.18_all.deb
 
 WORKDIR /usr/lib/x86_64-linux-gnu/
 
 RUN ln -sf ./libmysqlclient.so libmysqlclient_r.so; \
-        ln -sf ./libmysqlclient.so.18 libmysqlclient_r.so.18; \
+        ln -sf ./libmysqlclient.so.18 libmysqlclient_r.so.18
 
 
 
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 10; \
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 10; \
 	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 10; \
 	update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30; \
 	update-alternatives --set cc /usr/bin/gcc; \
@@ -189,9 +193,9 @@ WORKDIR /root/Downloads/pgxl95/postgres-xl/
 RUN ln -s /usr/bin/make /usr/bin/gmake; \
 	 export OSX=/usr/bin/osx; \
 	./configure --with-python; \
-	gmake world -j8; \
+	gmake world -j8
 
-	apt-get -y install monodevelop; \
+RUN apt-get -y install monodevelop; \
 	mkdir -p /root/Downloads/fs; \
 	mkdir -p /root/Downloads/clusterLab/libqb; \
 	mkdir -p /root/Downloads/clusterLab/corosync; \
@@ -214,13 +218,12 @@ WORKDIR /root/Downloads/fs/fsharp/.paket/
 RUN mono paket.bootstrapper.exe; \
 	mono paket.exe update
 
-WORKDIR /root/Downloads/fs/fsharp/
+WORKDIR /root/Downloads/fs/fsharp/	
 RUN ./autogen.sh --prefix=/usr; \
-        make
+	make
 
-
-#	echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
-#	chmod +x /root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release/fsi.exe
+RUN echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
+	chmod +x /root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release/fsi.exe
 
 #RUN mkdir /etc/service/dbus
 #ADD 120_dbus.sh /etc/service/dbus/run
@@ -250,9 +253,9 @@ RUN wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
 	cd libqb-0.17.2; \
 	./autogen.sh; \
 	./configure; \
-	make; \
+	make
 
-	apt-get -y install software-properties-common; \
+RUN apt-get -y install software-properties-common; \
 	cat > /etc/apt/sources.list.d/webupd8team-java.list << EOF \
 		deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
 		deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
@@ -260,8 +263,8 @@ RUN wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
 	add-apt-repository -y ppa:webupd8team/java; \
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886; \
 	apt-get update; \
-	apt-get -y install oracle-java8-installer oracle-java7-installer vim; \
-	useradd --system -U -ms /bin/bash postgres; \
+	apt-get -y install oracle-java8-installer oracle-java7-installer vim
+RUN useradd --system -U -ms /bin/bash postgres; \
 	useradd --system -U -ms /bin/bash osdba; \
 	useradd --system -U -ms /bin/bash voltdb; \
 	sed -i.bak -e s/postgres\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
@@ -286,18 +289,18 @@ RUN wget "https://github.com/corosync/corosync/archive/v2.3.5.tar.gz"; \
 #RUN mkdir -p /root/Downloads/clusterLab/cluster-glue
 WORKDIR /root/Downloads/clusterLab/cluster-glue
 
-RUN apt-get -y install mercurial uuid-dev; \
+RUN apt-get -y install mercurial uuid-dev
 
-	hg clone http://hg.linux-ha.org/glue cluster-glue; \
+RUN	hg clone http://hg.linux-ha.org/glue cluster-glue; \
 	#ls -l /root/Downloads/clusterLab/cluster-glue; \
 	#ls -l /root/Downloads/clusterLab; \
 	cd cluster-glue; \
 	./autogen.sh; \
 	./configure --enable-fatal-warmings=yes; \
-	make -j8; \
+	make -j8
 
 
-	mkdir -p /root/Downloads/clusterLab/resource-agents; \
+RUN mkdir -p /root/Downloads/clusterLab/resource-agents; \
 	mkdir -p /root/Downloads/clusterLab/crmsh; \
 	mkdir -p /root/Downloads/clusterLab/pcs; \
 	apt-get -y install snmpd pacemaker-mgmt cluster-glue-dev
@@ -357,9 +360,9 @@ RUN wget "https://github.com/ClusterLabs/hawk/archive/1.0.0-alpha1.tar.gz"; \
 
 WORKDIR /root/Downloads/clusterLab/pacemaker
 RUN wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
-	apt-get -y install rpm; \
+	apt-get -y install rpm
  
-	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
+RUN	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
 	cd pacemaker-Pacemaker-1.1.13-rc3; \
 	./autogen.sh; \
 	./configure; \
@@ -618,7 +621,6 @@ RUN make install
 
 
 
-
 WORKDIR /root/Downloads/clusterLab/pcs/pcs-0.9.141
 RUN apt-get -y install ruby-dev; \
 	make; \
@@ -628,9 +630,9 @@ RUN apt-get -y install ruby-dev; \
 	make get_gems; \
 	cd ..; \
 	make install; \
-	make install_pcsd install_settings=true; \
+	make install_pcsd install_settings=true
 
-	mv /etc/init.d/udev.bak /etc/init.d/udev; \
+RUN mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
 	bash -c 'echo "postgres ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
