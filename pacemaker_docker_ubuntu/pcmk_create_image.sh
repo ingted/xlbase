@@ -1,10 +1,11 @@
 #!/bin/bash
 
-from="robotica/xlbase:0.1.1"
+from="robotica/xlbase:0.5.2"
 dtag="robotica/pcmk_ubuntu"
 debs=""
 corosync_config=""
 export_file=""
+parent="/home/osdba/git/xlbase/pacemaker_docker_ubuntu"
 
 make_image()
 {
@@ -12,7 +13,7 @@ make_image()
 	rm -f Dockerfile
 
 	if [ -z "$corosync_config" ]; then
-		corosync_config="defaults/corosync.conf"
+		corosync_config="$parent/defaults/corosync.conf"
 	fi
 
 	echo "FROM $from" > Dockerfile
@@ -20,23 +21,23 @@ make_image()
 	## this gets around a bug in rhel 7.0
 	#touch /etc/yum.repos.d/redhat.repo
 
-	rm -rf repos
-	mkdir repos
+	#rm -rf repos
+	mkdir -p $parent/repos
 	if [ -n "$repodir" ]; then
-		cp $repodir/* repos/
-		echo "ADD /repos /etc/apt.repos.d/" >> Dockerfile
+		cp $repodir/* $parent/repos/
+		echo "ADD $parent/repos /etc/apt.repos.d/" >> Dockerfile
 	fi
 
-	rm -rf debs 
-	mkdir debs
+	#rm -rf debs 
+	mkdir -p $parent/debs
 	if [ -n "$debdir" ]; then
 		cp $debdir/* ./debs/
 	fi
-	echo "ADD ./debs /root/debs" >> Dockerfile
+	echo "ADD $parent/debs /root/debs" >> Dockerfile
 	#echo "RUN dpkg -i /root/debs/*.deb" >> Dockerfile
 	#echo "RUN /root/debs/deb.sh" >> Dockerfile
 
-	echo "ADD /helper_scripts /usr/sbin" >> Dockerfile
+	echo "ADD $parent/helper_scripts /usr/sbin" >> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
 
 	#echo "ENTRYPOINT /usr/sbin/pcmk_launch.sh" >> Dockerfile

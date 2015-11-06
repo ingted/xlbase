@@ -453,6 +453,9 @@ RUN wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.
 #  RUN chmod 755 /etc/container_environment
 #  RUN chmod 644 /etc/container_environment.sh /etc/container_environment.json
 
+
+RUN chmod 755 /etc/container_environment; \
+	echo "\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$" > /etc/container_environment/PS1; \
 ###### Fixes APT incompatibilities with Docker
 
 ###### syslog-ng
@@ -467,7 +470,7 @@ RUN wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.
 #
 #Baseimage-docker disables the SSH server by default. Add the following to your Dockerfile to enable it:
 
-RUN rm -f /etc/service/sshd/down
+	rm -f /etc/service/sshd/down
 
 # Regenerate SSH host keys. baseimage-docker does not contain any, so you
 # have to do that yourself. You may also comment out this instruction; the
@@ -616,7 +619,7 @@ RUN rm /usr/lib/ocf/resource.d/heartbeat/.ocf-binaries -f; \
 WORKDIR /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3
 RUN make install
 
-
+ADD ./bashrc_4_ps1 /root/Downloads/pgxl95/bashrc_4_ps1
 
 
 WORKDIR /root/Downloads/clusterLab/pcs/pcs-0.9.141
@@ -632,6 +635,8 @@ RUN apt-get -y install ruby-dev; \
 
 	mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
+	mv /usr/local/lib/libgpg-error.so.0 /usr/local/lib/libgpg-error.so.0.bak; \
+	ln -s /lib/x86_64-linux-gnu/libgpg-error.so.0 /usr/local/lib/; \
 	bash -c 'echo "postgres ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "voltdb ALL=(ALL)    ALL" >> /etc/sudoers'; \	
@@ -639,6 +644,7 @@ RUN apt-get -y install ruby-dev; \
 	rm -rf /tmp/* /var/tmp/*; \
 	rm -rf /var/lib/apt/lists/*; \
 	echo xlbase > /whoami; \
+	cat /root/Downloads/pgxl95/bashrc_4_ps1 >> ~/.bashrc; \
 	history -c; \
 	bash -c 'echo  "export HOME=/root/" >> /root/.bashrc'
 
