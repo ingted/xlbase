@@ -1,6 +1,6 @@
 #!/bin/bash
 
-from="robotica/xlbase:0.5.2"
+from="robotica/xlbase:0.5.3"
 dtag="robotica/pcmk_ubuntu"
 debs=""
 corosync_config=""

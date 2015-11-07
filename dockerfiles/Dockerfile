@@ -455,7 +455,7 @@ RUN wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.
 
 
 RUN chmod 755 /etc/container_environment; \
-	echo "\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$" > /etc/container_environment/PS1; \
+	echo "\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ " > /etc/container_environment/PS1; \
 ###### Fixes APT incompatibilities with Docker
 
 ###### syslog-ng
