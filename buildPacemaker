@@ -1,6 +1,5 @@
 #!/bin/bash
 
-/home/osdba/git/xlbase/pacemaker_docker_ubuntu/pcmk_create_image.sh
 
 if [ "$1" == "" ]; then
 	nm=ttc
