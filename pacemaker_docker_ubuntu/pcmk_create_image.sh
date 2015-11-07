@@ -42,7 +42,7 @@ make_image()
 		echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
 
 	done
-
+	echo "RUN apt-get -y update; apt-get -y upgrade" >> Dockerfile
 	echo "RUN dpkg -i /root/debs/*.deb" >> Dockerfile
 	echo "RUN /root/debs/do.sh" >> Dockerfile
 
