@@ -5,15 +5,16 @@ dtag="robotica/pcmk_ubuntu"
 debs=""
 corosync_config=""
 export_file=""
-parent="/home/osdba/git/xlbase/pacemaker_docker_ubuntu"
+parent="/root/alias/pacemaker_docker_ubuntu"
 
 make_image()
 {
+	cd $parent
 	echo "Making Dockerfile"
 	rm -f Dockerfile
 
 	if [ -z "$corosync_config" ]; then
-		corosync_config="$parent/defaults/corosync.conf"
+		corosync_config="./defaults/corosync.conf"
 	fi
 
 	echo "FROM $from" > Dockerfile
@@ -25,7 +26,7 @@ make_image()
 	mkdir -p $parent/repos
 	if [ -n "$repodir" ]; then
 		cp $repodir/* $parent/repos/
-		echo "ADD $parent/repos /etc/apt.repos.d/" >> Dockerfile
+		echo "ADD ./repos /etc/apt.repos.d/" >> Dockerfile
 	fi
 
 	#rm -rf debs 
@@ -33,11 +34,19 @@ make_image()
 	if [ -n "$debdir" ]; then
 		cp $debdir/* ./debs/
 	fi
-	echo "ADD $parent/debs /root/debs" >> Dockerfile
-	#echo "RUN dpkg -i /root/debs/*.deb" >> Dockerfile
-	#echo "RUN /root/debs/deb.sh" >> Dockerfile
+	#echo "ADD ./debs /root/debs" >> Dockerfile
+	"RUN mkdir -p /root/debs" >> Dockerfile
+	
+	for f in $(ls $parent/debs/); do
+		echo "ADD $parent/debs/$f /root/debs/$f"
+		echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
 
-	echo "ADD $parent/helper_scripts /usr/sbin" >> Dockerfile
+	done
+
+	echo "RUN dpkg -i /root/debs/*.deb" >> Dockerfile
+	echo "RUN /root/debs/do.sh" >> Dockerfile
+
+	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
 
 	#echo "ENTRYPOINT /usr/sbin/pcmk_launch.sh" >> Dockerfile
@@ -60,7 +69,7 @@ make_image()
 	#echo "Docker container $image is exported to tar file ${export_file}"
 
 	# cleanup
-	rm -rf debs repos
+	#rm -rf debs repos
 }
 
 function helptext() {
