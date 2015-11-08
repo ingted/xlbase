@@ -11,8 +11,8 @@ fi
 
 drm -f "$nm"
 docker run -dit --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host robotica/pcmk_ubuntu /sbin/my_init -- bash -l
-docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
-docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi"
+docker exec -d "$nm" mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
+docker exec -d "$nm" echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register
 docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
 docker exec -d "$nm" sed -i.bak -e s/#Port\ 22/Port\ 122/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep \#Port
 docker exec -d "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ 192\.168\.123\.95/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep ListenAddress
@@ -24,11 +24,8 @@ docker exec "$nm" hostnamectl set-hostname xlbase-"$nm"
 
 echo \[\!ID_DONE\]
 
-docker exec -d "$nm" service corosync start
+docker exec -d "$nm" /usr/sbin/pcmk_launch.sh 
 sleep 6
-docker exec -d "$nm" service pacemaker start
-sleep 6
-docker exec -d "$nm" pcs property set stonith-enabled=false
 
 echo \[\!EX_DONE\]
 
