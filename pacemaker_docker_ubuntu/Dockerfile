@@ -21,4 +21,9 @@ RUN apt-get -y update; apt-get -y upgrade
 RUN dpkg -i /root/debs/*.deb
 RUN /root/debs/do.sh
 ADD ./helper_scripts /usr/sbin
+ADD ./pcsd.sh /root/pcsd.sh
 ADD ./defaults/corosync.conf /etc/corosync/
+RUN mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/
+RUN mkdir -p /etc/rc.d/init.d/
+ADD ./pcsd /root/pcsds
+RUN cp /root/pcsds/* /usr/share/pcsd -f
