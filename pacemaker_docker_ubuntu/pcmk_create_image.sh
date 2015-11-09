@@ -5,7 +5,7 @@ dtag="robotica/pcmk_ubuntu"
 debs=""
 corosync_config=""
 export_file=""
-parent="/root/alias/pacemaker_docker_ubuntu"
+parent="/home/osdba/git/xlbase/pacemaker_docker_ubuntu"
 
 make_image()
 {
@@ -43,7 +43,7 @@ make_image()
 
 	done
 	echo "RUN apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
-	echo "	dpkg -i /root/debs/*.deb; \\" >> Dockerfile
+	#echo "	dpkg -i /root/debs/*.deb; \\" >> Dockerfile
 	echo "	/root/debs/do.sh" >> Dockerfile
 
 	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile

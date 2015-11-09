@@ -36,6 +36,12 @@ dpkg -i grub-pc_2.02~beta2-9ubuntu1.3_amd64.deb \
 	selinux-utils_2.3-2build1_amd64.deb \
 	python-audit_2.4.4-4ubuntu1_amd64.deb \
 	python-selinux_2.3-2_amd64.deb \
-	python-semanage_2.3-1build1_amd64.deb
+	python-semanage_2.3-1build1_amd64.deb \
+	python-sepolgen_1.2.1-1_all.deb \
+	python-setools_3.3.8-3.2_amd64.deb \
+	python-sepolicy_2.3-1_amd64.deb		
 
-apt-get -y install libapol4 libqpol1 policycoreutils
+
+apt-get -y update; apt-get -y upgrade;
+
+#apt-get -y install libapol4 libqpol1 policycoreutils
