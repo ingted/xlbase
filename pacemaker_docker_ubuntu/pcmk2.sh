@@ -15,7 +15,8 @@ make_image()
 	fi
 
 	echo "FROM $from" > Dockerfile
-	echo "RUN ln -snf /bin/bash /bin/sh"
+	echo "RUN ln -snf /bin/bash /bin/sh" >> Dockerfile
+
 
 	# this gets around a bug in rhel 7.0
 	touch /etc/yum.repos.d/redhat.repo
@@ -34,6 +35,9 @@ make_image()
 		echo "RUN yum install -y /root/*.rpm" >> Dockerfile
 		cp $rpmdir/* rpms/
 	fi
+
+
+	echo "RUN yum -y install initscripts dbus" >> Dockerfile
 
 	echo "RUN yum install -y net-tools pacemaker resource-agents pcs corosync which fence-agents-common sysvinit-tools docker" >> Dockerfile
 

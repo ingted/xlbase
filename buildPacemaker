@@ -26,6 +26,8 @@ docker exec -d "$nm" bash -c "echo \"$nm\" >> /whoami"
 docker exec "$nm" cat /whoami
 docker exec "$nm" hostnamectl set-hostname xlbase-"$nm"
 
+docker exec "$nm" /root/pcsd.sh
+
 
 echo \[\!ID_DONE\]
 

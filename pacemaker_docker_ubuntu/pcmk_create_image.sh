@@ -47,7 +47,14 @@ make_image()
 	echo "RUN /root/debs/do.sh" >> Dockerfile
 
 	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile
+	echo "ADD ./pcsd.sh /root/pcsd.sh" >> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
+
+	echo "RUN mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/" >> Dockerfile
+	echo "ADD ./functions /lib/lsb/init-functions" >> Dockerfile
+	echo "RUN mkdir -p /etc/rc.d/init.d/; ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions" >> Dockerfile
+	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
+	echo "RUN cp /root/pcsds/* /usr/share/pcsd -f" >> Dockerfile
 
 	#echo "ENTRYPOINT /usr/sbin/pcmk_launch.sh" >> Dockerfile
 
