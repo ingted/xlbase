@@ -648,5 +648,10 @@ RUN apt-get -y install ruby-dev; \
 	history -c; \
 	bash -c 'echo  "export HOME=/root/" >> /root/.bashrc'
 
+#$ make install install_settings=true
+#$ cd pcsd/ && make get_gems
+#$ cd ../ && make install_pcsd install_settings=true
+
+
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]

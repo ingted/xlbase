@@ -1,0 +1,117 @@
+#!/bin/sh
+##
+# pcsd Pacemaker & Corosync configuration daemon
+#
+# chkconfig:   - 21 81 
+# description: Pacemaker & Corosync configuration daemon
+
+### BEGIN INIT INFO
+# Provides: pcsd
+# Required-Start: $network $syslog
+# Required-Stop: $network $syslog
+# Should-Start: 
+# Should-Stop: 
+# Default-Start:
+# Default-Stop:
+# Short-Description: Starts and stops Pacemaker & Corosync Configuration daemon
+# Description: Starts and stops Pacemaker & Corosync Configuration daemon
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+exec="/usr/bin/ruby"
+prog="pcsd"
+config="/var/lib/pcsd"
+
+[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+
+#echo 000
+
+lockfile=/var/lock/subsys/$prog
+
+start() {
+    #echo 005
+    [ -x $exec ] || exit 5
+    #echo 010
+    echo -n $"Starting $prog: "
+    export GEM_HOME=/usr/share/pcsd/vendor/bundle/ruby
+    export PCSD_VAR_LOCATION=/var/lib/pcsd
+    cd /var/lib/pcsd
+    daemon $exec -I/usr/share/pcsd /usr/share/pcsd/ssl.rb
+    # if not running, start it up here, usually something like "daemon $exec"
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && touch $lockfile
+    return $retval
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    # stop it here, often "killproc $prog"
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    restart
+}
+
+force_reload() {
+    restart
+}
+
+rh_status() {
+    # run checks to determine if the service is running or use generic status
+    echo 020
+    status $prog
+    echo 025
+}
+
+rh_status_q() {
+    #echo 030
+    rh_status >/dev/null 2>&1
+    #echo 035
+}
+
+
+case "$1" in
+    start)
+        #rh_status && exit 0
+        $1
+	#echo 999
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    reload)
+        rh_status_q || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        exit 2
+esac
+exit $?
+
