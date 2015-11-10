@@ -1,7 +1,7 @@
 #!/bin/bash
 
 from="robotica/xlbase:0.5.3"
-dtag="robotica/pcmk_ubuntu"
+dtag="robotica/pcmk_ubuntu:test1"
 debs=""
 corosync_config=""
 export_file=""
@@ -34,8 +34,17 @@ make_image()
 	if [ -n "$debdir" ]; then
 		cp $debdir/* ./debs/
 	fi
+
+
+	echo "ADD ./debs /root/debs" >> Dockerfile
+	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
+	echo "ADD ./pcs /root/pcss" >> Dockerfile
+	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile
+	echo "ADD ./pcsd.sh ./chkconfig /root/" >> Dockerfile
+	echo "ADD ./functions /lib/lsb/init-functions" >> Dockerfile
+
 	#echo "ADD ./debs /root/debs" >> Dockerfile
-	"RUN mkdir -p /root/debs; \\" >> Dockerfile
+	echo "RUN mkdir -p /root/debs; \\" >> Dockerfile
 	echo "	apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
 	#echo "	dpkg -i /root/debs/*.deb; \\" >> Dockerfile
 	echo "	/root/debs/do.sh; \\" >> Dockerfile
@@ -46,14 +55,9 @@ make_image()
 	#	echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
 	#done
 
-	echo "ADD ./debs /root/debs" >> Dockerfile
-	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
-	echo "ADD ./pcs /root/pcss" >> Dockerfile
 
-	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile
-	echo "ADD ./pcsd.sh /root/pcsd.sh" >> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
-	echo "ADD ./functions /lib/lsb/init-functions" >> Dockerfile
+
 
 	echo "RUN cp /root/pcsds/* /usr/share/pcsd -f; \\" >> Dockerfile
 	echo "	cp /root/pcss/* /usr/lib/python2.7/dist-packages/pcs -f; \\" >> Dockerfile

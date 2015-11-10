@@ -42,7 +42,9 @@ dpkg -i grub-pc_2.02~beta2-9ubuntu1.3_amd64.deb \
 	python-sepolicy_2.3-1_amd64.deb	\
 	libapol4_3.3.8-3.1ubuntu1_amd64.deb \
 	libqpol1_3.3.8-3.2_amd64.deb \
-	policycoreutils_2.3-1_amd64.deb	
+	policycoreutils_2.3-1_amd64.deb	\
+	libqb0_0.17.0-2ubuntu1_amd64.deb \
+	libqb-dev_0.17.0-2ubuntu1_amd64.deb
 
 
 apt-get -y update; apt-get -y upgrade;
