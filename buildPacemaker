@@ -20,7 +20,8 @@ docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; th
 #docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi"
 docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
 docker exec -d "$nm" sed -i.bak -e s/#Port\ 22/Port\ 122/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep \#Port
-docker exec -d "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ 192\.168\.123\.95/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep ListenAddress
+#docker exec -d "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ 192\.168\.123\.95/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep ListenAddress
+docker exec -d "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ 10\.128\.112\.$2/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep ListenAddress
 #docker exec -d "$nm" echo "$nm" >> /whaoami
 docker exec -d "$nm" bash -c "echo \"$nm\" >> /whoami"
 docker exec "$nm" cat /whoami
@@ -31,15 +32,18 @@ docker exec "$nm" /root/pcsd.sh
 
 echo \[\!ID_DONE\]
 
-docker exec -d "$nm" service corosync start
-sleep 6
-docker exec -d "$nm" service pacemaker start
-sleep 6
-docker exec -d "$nm" pcs property set stonith-enabled=false
+if [ "$3" == "-s" ]; then 
 
-echo \[\!EX_DONE\]
+  docker exec -d "$nm" service corosync start
+  sleep 6
+  docker exec -d "$nm" service pacemaker start
+  sleep 6
+  docker exec -d "$nm" pcs property set stonith-enabled=false
+  echo \[\!EX_DONE\]
 
-if [ "$2" == "--nobind" ]; then
+fi
+
+if [ "$4" == "--nobind" ]; then
 	echo No attach
 else
 	echo $nm

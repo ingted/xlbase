@@ -355,7 +355,6 @@ module Cfgsync
     end
   end
 
-
   class ConfigPublisher
     def initialize(configs, nodes, cluster_name, username, tokens={})
       @configs = configs
@@ -381,6 +380,7 @@ module Cfgsync
       node_response = {}
       threads = []
       @nodes.each { |node|
+        uuuxxx = File.open('/test0', 'a') { |file| file.write(node) }
         threads << Thread.new {
           code, out = send_request_with_token(
             node, 'set_configs', true, data, true, nil, 30, @additional_tokens,
@@ -628,15 +628,19 @@ module Cfgsync
       # we run on a standalone host, no config syncing
       config.version += 1
       config.save()
+      xxxppp = File.open('/test126', 'w') { |file| file.write(nodes.join("#")) }
       return true, {}
     else
       # we run in a cluster so we need to sync the config
+      xxx = File.open('/test127', 'w') { |file| file.write(nodes.join("#")) }
+ 
       publisher = ConfigPublisher.new(
         [config], nodes, cluster_name, SUPERUSER, tokens
       )
       old_configs, node_responses = publisher.publish()
       if old_configs.include?(config.class.name)
         if fetch_on_conflict
+          yyyxxx = File.open('/test1271', 'w') { |file| file.write(nodes.join("#")) }
           fetcher = ConfigFetcher.new(
             [config.class], nodes, cluster_name, SUPERUSER
           )

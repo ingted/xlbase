@@ -35,26 +35,29 @@ make_image()
 		cp $debdir/* ./debs/
 	fi
 	#echo "ADD ./debs /root/debs" >> Dockerfile
-	"RUN mkdir -p /root/debs" >> Dockerfile
-	
-	for f in $(ls $parent/debs/); do
-		echo "ADD $parent/debs/$f /root/debs/$f"
-		echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
-
-	done
-	echo "RUN apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
+	"RUN mkdir -p /root/debs; \\" >> Dockerfile
+	echo "	apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
 	#echo "	dpkg -i /root/debs/*.deb; \\" >> Dockerfile
-	echo "	/root/debs/do.sh" >> Dockerfile
+	echo "	/root/debs/do.sh; \\" >> Dockerfile
+	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/" >> Dockerfile
+
+	#for f in $(ls $parent/debs/); do
+	#	echo "ADD $parent/debs/$f /root/debs/$f"
+	#	echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
+	#done
+
+	echo "ADD ./debs /root/debs" >> Dockerfile
+	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
+	echo "ADD ./pcs /root/pcss" >> Dockerfile
 
 	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile
 	echo "ADD ./pcsd.sh /root/pcsd.sh" >> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
-
-	echo "RUN mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/" >> Dockerfile
 	echo "ADD ./functions /lib/lsb/init-functions" >> Dockerfile
-	echo "RUN mkdir -p /etc/rc.d/init.d/; ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions" >> Dockerfile
-	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
-	echo "RUN cp /root/pcsds/* /usr/share/pcsd -f" >> Dockerfile
+
+	echo "RUN cp /root/pcsds/* /usr/share/pcsd -f; \\" >> Dockerfile
+	echo "	cp /root/pcss/* /usr/lib/python2.7/dist-packages/pcs -f; \\" >> Dockerfile
+	echo "	mkdir -p /etc/rc.d/init.d/; ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions" >> Dockerfile
 
 	#echo "ENTRYPOINT /usr/sbin/pcmk_launch.sh" >> Dockerfile
 
