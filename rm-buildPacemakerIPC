@@ -11,11 +11,19 @@ fi
 if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
 if [ ! -z /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
 
-
+if [ "$1" == "pm1" ]; then
+	ver=pm1old_1
+elif [ "$1" == "pm2" ]; then
+	ver=pm2gen2_1
+else
+	ver=latest
+fi
+	
 
 drm -f "$nm"
 #docker run -dit --name "$nm" --cap-add=NET_ADMIN --net=host robotica/pcmk_ubuntu /sbin/my_init -- bash -l
-docker run -dit --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host robotica/pcmk_ubuntu:0.5.0 /sbin/my_init -- bash -l
+docker run --name "$nm" --ipc=container:65feb80d5bb1 --privileged=true --cap-add=NET_ADMIN --net=host -dit -v /dev:/dev robotica/pcmk_ubuntu:$ver /sbin/my_init -- bash -l
+
 docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
 #docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi"
 docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
