@@ -45,7 +45,9 @@ dpkg -i grub-pc_2.02~beta2-9ubuntu1.3_amd64.deb \
 	policycoreutils_2.3-1_amd64.deb	\
 	libqb0_0.17.0-2ubuntu1_amd64.deb \
 	libqb-dev_0.17.0-2ubuntu1_amd64.deb
-
+	vim_7.4.826-1ubuntu1_amd64.deb \
+	vim-common_7.4.826-1ubuntu1_amd64.deb \
+	vim-runtime_7.4.826-1ubuntu1_all.deb
 
 apt-get -y update; apt-get -y upgrade;
 
