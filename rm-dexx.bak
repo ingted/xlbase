@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#echo "\$* : $*"
+#cmd="$*"
+#echo $cmd
+#cmdreplaced=$(echo $cmd)
+#echo $cmdreplaced
+
+
+#$(echo $cmd)
+#$(echo "ls /")
+
+tmp2=$1
+dhosts=$(awk '$3 == "h" {print $1}' ./hosts)
+echo $dhosts
+
+for dh in $dhosts; do
+#	ssh-copy-id root@$dh
+	ssh root@$dh bash <<SSH_L1
+		if [ "$1" == "-a" ]; then 
+#			whoami
+			source /root/.bashrc
+
+			ids="$(dls -ll)"
+			ids=(\${ids//\\n/ })
+
+			for id in "\${ids[@]}"; do
+				whoami 
+				echo \$id
+				docker exec \$id 'pwd'
+				docker exec \$id ${*:2}
+			done 
+			IFS=ifsold
+		else
+			echo 123 
+			docker exec $1 ${*:2} 
+		fi 
+
+SSH_L1
+
+done
+
+
+
+#sed -r 's/:Host +=> +\"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\"/:Host               => \"\"/g' /usr/share/pcsd/ssl.rb
