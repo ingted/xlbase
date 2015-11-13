@@ -9,5 +9,5 @@ if [ "$1" == "-a" ]; then
 		docker exec $id ${*:2}
 	done
 else
-	docker exec $1 ${@:2}
+	docker exec $1 ${*:2}
 fi
