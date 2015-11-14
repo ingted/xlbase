@@ -364,6 +364,10 @@ RUN wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.
 	./autogen.sh; \
 	./configure; \
 	make
+	mkdir -p /root/Downloads/pash
+	cd /root/Downloads/pash
+	git clone https://github.com/ingted/Pash.git
+	cd Pash
 
 ###### Upgrading the operating system inside the container
 #

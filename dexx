@@ -10,7 +10,8 @@
 ###$(echo $cmd)
 ###$(echo "ls /")
 
-tmp2=$1
+dcmd=${*:2}
+echo $dcmd
 dhosts=$(awk '$3 == "h" {print $1}' ./hosts)
 ###echo $dhosts
 
@@ -34,7 +35,9 @@ for dh in $dhosts; do
 				
 				expath=\$(docker exec \$id 'pwd')
 				echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
-				docker exec \$id ${*:2}
+				#docker exec \$id ${*:2}
+				echo '/bin/bash -c "$dcmd"'
+				docker exec \$id /bin/bash -c "$dcmd"
 			done 
 			IFS=ifsold
 		else

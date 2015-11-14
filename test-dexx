@@ -1,0 +1,3 @@
+dexx -a 'bash -c "t=1; echo \$t"'
+echo dexx -a \'bash -c \"t=1\; echo \\\$t\"\' > test-dexx
+echo echo dexx -a \\\'bash -c \\\"t=1\\\; echo \\\\\\\$t\\\"\\\' \> test-dexx`
