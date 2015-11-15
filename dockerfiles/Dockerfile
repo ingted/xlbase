@@ -216,8 +216,9 @@ RUN mono paket.bootstrapper.exe; \
 
 WORKDIR /root/Downloads/fs/fsharp/
 RUN ./autogen.sh --prefix=/usr; \
-        make
-
+        make; \
+	cd ../; \
+	wget "https://raw.github.com/fsharp/FAKE/master/src/app/FakeLib/ProcessHelper.fs"
 
 #	echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
 #	chmod +x /root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release/fsi.exe
