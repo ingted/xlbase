@@ -698,6 +698,9 @@ def run(args, ignore_stderr=False, string_for_stdin=None, env_extend=None):
         print e.strerror
         err("unable to locate command: " + args[0])
 
+    #print("rrr 02200: utils.py run() return")
+    #print(type(output))
+    output = re.sub(r'xxx[^\n]+\n', '', output)
     return output, returnVal
 
 def run_pcsdcli(command, data=None):
@@ -1315,15 +1318,21 @@ def get_cib_xpath(xpath_query):
     return output
 
 def get_cib(scope=None):
+    print("rrr 02100: utils.py get_cib()")
     command = ["cibadmin", "-l", "-Q"]
     if scope:
         command.append("--scope=%s" % scope)
     output, retval = run(command)
+    print("rrr 02101: utils.py run(command) where command = [\"cibadmin\", \"-l\", \"-Q\"]")
+    print(output)
+    print(retval != 0)
     if retval != 0:
         if retval == 6 and scope:
             err("unable to get cib, scope '%s' not present in cib" % scope)
         else:
             err("unable to get cib")
+    print("rrr 02102: utils.py return output")
+
     return output
 
 def get_cib_dom():
@@ -1585,6 +1594,7 @@ def getNodeAttributes():
 # Returns true if stonith-enabled is not false/off & no stonith devices exist
 # So if the cluster can't start due to missing stonith devices return true
 def stonithCheck():
+    print("rrr 02030: utils.py stonithCheck()")
     et = get_cib_etree()
     cps = et.find("configuration/crm_config/cluster_property_set")
     if cps != None:
