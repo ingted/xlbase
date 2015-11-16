@@ -303,6 +303,7 @@ def check_nodes(nodes, prefix = ""):
     bad_nodes = False
     pm_nodes = utils.getPacemakerNodesID(True)
     cs_nodes = utils.getCorosyncNodesID(True)
+    print("rrr 02300: cluster.py check_nodes")
     for node in nodes:
         status = utils.checkAuthorization(node)
 

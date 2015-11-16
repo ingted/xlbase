@@ -12,12 +12,18 @@ import utils
 
 
 def status_cmd(argv):
-    print("rrr 02000 status_cmd(argv): ", argv)
+    #print("rrr 02000 status_cmd(argv): ", argv)
+    
+    #with open("/python.out", "a") as myfile:
+    #    myfile.write("rrr 02000 status_cmd(argv): " + '#'.join([argv]))
+    
     if len(argv) == 0:
         full_status()
         sys.exit(0)
 
-    print("rrr 02001 after status_cmd")
+    #print("rrr 02001 after status_cmd")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02001 after status_cmd")
     sub_cmd = argv.pop(0)
     if (sub_cmd == "help"):
         usage.status(argv)
@@ -40,7 +46,11 @@ def status_cmd(argv):
         sys.exit(1)
 
 def full_status():
-    print("rrr 02010 full_status")
+    #print("rrr 02010 full_status")
+
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02010 full_status")
+
     if "--full" in utils.pcs_options:
         (output, retval) = utils.run(["crm_mon", "-1", "-r", "-R", "-A", "-f"])
     else:
@@ -53,18 +63,28 @@ def full_status():
         cluster_name = utils.getClusterName()
         print "Cluster name: %s" % cluster_name
 
-    print("rrr 02015 utils.stonithCheck()")
+    #print("rrr 02015 utils.stonithCheck()")
+    
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02015 utils.stonithCheck()")
+    
     if utils.stonithCheck():
         print("WARNING: no stonith devices and stonith-enabled is not false")
     
-    print("rrr 02016 utils.corosyncPacemakerNodeCheck()")
+    #print("rrr 02016 utils.corosyncPacemakerNodeCheck()")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02016 utils.corosyncPacemakerNodeCheck()")
 
     if utils.corosyncPacemakerNodeCheck():
         print("WARNING: corosync and pacemaker node names do not match (IPs used in setup?)")
-    print("rrr 02017 print output")
-    print output
+    #print("rrr 02017 print output")
+    #print output
 
-    print("rrr 02020 utils.usefile")
+    #print("rrr 02020: status.py not utils.usefile print_pcsd_daemon_status()")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02017 print output")
+        myfile.write(output)
+        myfile.write("rrr 02020: status.py not utils.usefile print_pcsd_daemon_status()")
     if not utils.usefile:
         print_pcsd_daemon_status()
         print
@@ -72,7 +92,9 @@ def full_status():
 
 # Parse crm_mon for status
 def nodes_status(argv):
-    print("rrr 02011 nodes_status")
+    #print("rrr 02011 nodes_status")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02011 nodes_status")
     if len(argv) == 1 and argv[0] == "pacemaker-id":
         for node_id, node_name in utils.getPacemakerNodesID().items():
             print "{0} {1}".format(node_id, node_name)
@@ -237,8 +259,14 @@ def is_pacemaker_running():
 def print_pcsd_daemon_status():
     print "PCSD Status:"
     if os.getuid() == 0:
+        #print("rrr 02250: status.py print_pcsd_daemon_status() os.getuid() == 0 cluster.cluster_gui_status()")
+        with open("/python.out", "a") as myfile:
+            myfile.write("rrr 02250: status.py print_pcsd_daemon_status() os.getuid() == 0 cluster.cluster_gui_status()")
         cluster.cluster_gui_status([], True)
     else:
+        #print("rrr 02260: status.py print_pcsd_daemon_status() else utils.call_local_pcsd()")
+        with open("/python.out", "a") as myfile:
+            myfile.write("rrr 02260: status.py print_pcsd_daemon_status() else utils.call_local_pcsd()")
         err_msgs, exitcode, std_out, std_err = utils.call_local_pcsd(
             ['status', 'pcsd'], True
         )

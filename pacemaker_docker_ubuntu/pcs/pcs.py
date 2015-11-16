@@ -19,7 +19,9 @@ usefile = False
 filename = ""
 def main(argv):
     utils.subprocess_setup()
-    print "rrr 01000 : test\n"
+    #print "rrr 01000 : test\n"
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 01000 : test\n")
     global filename, usefile
     orig_argv = argv[:]
     utils.pcs_options = {}
@@ -101,7 +103,9 @@ def main(argv):
         usage.main()
         sys.exit(1)
     argv = real_argv
-    print "rrr 01001 : argv = real_argv" 
+    #print "rrr 01001 : argv = real_argv" 
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 01001 : argv = real_argv")
     for o, a in pcs_options:
         if not o in utils.pcs_options:
             utils.pcs_options[o] = a
@@ -157,9 +161,14 @@ def main(argv):
     # root can run everything directly, also help can be displayed,
     # working on a local file also do not need to run under root
     if (os.getuid() == 0) or (argv and argv[0] == "help") or usefile:
-        print ("rrr 01010 :  cmd_map[command](argv) ###" + command + "###") #+  argv.join("#"))
-	cmd_map[command](argv)
-        print "rrr 01011 :  cmd_map[command](argv)"
+        #print ("rrr 01010 :  cmd_map[command](argv) ###" + command + "###") #+  argv.join("#"))
+        with open("/python.out", "a") as myfile:
+            myfile.write("rrr 01010 :  cmd_map[command](argv) ###" + command + "###")
+        
+        cmd_map[command](argv)
+        #print "rrr 01011 :  cmd_map[command](argv)"
+        with open("/python.out", "a") as myfile:
+            myfile.write("rrr 01011 :  cmd_map[command](argv)")
         return
     # specific commands need to be run under root account, pass them to pcsd
     root_command_list = [

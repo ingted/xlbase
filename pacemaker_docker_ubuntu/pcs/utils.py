@@ -718,12 +718,19 @@ def run_pcsdcli(command, data=None):
     gem_home = os.path.join(pcsd_dir_path, 'vendor/bundle/ruby')
     env_var["GEM_HOME"] = gem_home
     
-    print(["/usr/bin/ruby", "-I" + pcsd_dir_path, pcsdcli_path, command])
+    #print(["rrr 03000: /usr/bin/ruby", "-I" + pcsd_dir_path, pcsdcli_path, command])
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 03000: /usr/bin/ruby" + "-I" + pcsd_dir_path + pcsdcli_path + command)
     output, retval = run(
         ["/usr/bin/ruby", "-I" + pcsd_dir_path, pcsdcli_path, command],
         string_for_stdin=json.dumps(data),
         env_extend=env_var
     )
+    #print("rrr 03010: utils.py print(output)")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 03010: utils.py print(output)")
+    print(output)
+    #print(data)
     try:
         output_json = json.loads(output)
         for key in ['status', 'text', 'data']:
@@ -1324,8 +1331,8 @@ def get_cib(scope=None):
         command.append("--scope=%s" % scope)
     output, retval = run(command)
     print("rrr 02101: utils.py run(command) where command = [\"cibadmin\", \"-l\", \"-Q\"]")
-    print(output)
-    print(retval != 0)
+    #rrr print(output)
+    #rrr print(retval != 0)
     if retval != 0:
         if retval == 6 and scope:
             err("unable to get cib, scope '%s' not present in cib" % scope)

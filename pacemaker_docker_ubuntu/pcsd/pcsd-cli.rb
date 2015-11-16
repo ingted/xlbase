@@ -56,7 +56,7 @@ allowed_commands = {
   },
   'auth' => {
     'call' => lambda { |params|
-      xxx = File.open('/test1', 'w') { |file| file.write("xx000: " + params['nodes'].join("#")) }
+      xxx = File.open('/test1', 'w') { |file| file.write("xxx 000: " + params['nodes'].join("#")) }
       auth_responses, sync_successful, sync_nodes_err, sync_responses = pcs_auth(
         params['nodes'] || [], params['username'] || '', params['password'] || '',
         params['force'], params['local']
@@ -71,8 +71,8 @@ allowed_commands = {
   },
   'send_local_configs' => {
     'call' => lambda { |params|
-      xxx = File.open('/test1', 'w') { |file| file.write("xx001: " + params['nodes'].join("#")) }
-      eeexxx = File.open('/test1e', 'w') { |file| file.write("xx001: " + (params['nodes']||[]).join("#")) }
+      xxx = File.open('/test1', 'w') { |file| file.write("xxx 001: " + params['nodes'].join("#")) }
+      xxxe = File.open('/test1e', 'w') { |file| file.write("xxx 001: " + (params['nodes']||[]).join("#")) }
       send_local_configs_to_nodes(
         #params['nodes'] || [], params['force'] || false
         params['nodes'], params['force'] || false
@@ -81,13 +81,13 @@ allowed_commands = {
   },
   'send_local_certs' => {
     'call' => lambda { |params|
-      xxx = File.open('/test1', 'w') { |file| file.write("xx002: " + params['nodes'].join("#")) }
+      xxx = File.open('/test1', 'w') { |file| file.write("xxx 002: " + params['nodes'].join("#")) }
       send_local_certs_to_nodes(params['nodes'] || [])
     }
   },
   'pcsd_restart_nodes' => {
     'call' => lambda { |params|
-      xxx = File.open('/test1', 'w') { |file| file.write("xx003: " + params['nodes'].join("#")) }
+      xxx = File.open('/test1', 'w') { |file| file.write("xxx 003: " + params['nodes'].join("#")) }
       pcsd_restart_nodes(params['nodes'] || [])
     }
   },
