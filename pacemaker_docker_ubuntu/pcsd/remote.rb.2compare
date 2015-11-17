@@ -382,7 +382,8 @@ def get_configs(params)
     return JSON.generate({'status' => 'not_in_cluster'})
   end
   if params[:cluster_name] != $cluster_name
-    return JSON.generate({'status' => 'wrong_cluster_name1'})
+    #printf("rrr 06000%s", cluster_name)
+    return JSON.generate({'status' => 'wrong_cluster_name 1' + $cluster_name + ' ' +  params[:cluster_name]})
   end
   out = {
     'status' => 'ok',
@@ -407,7 +408,7 @@ def set_configs(params)
   end
   has_cluster = !($cluster_name == nil or $cluster_name.empty?)
   if has_cluster and $cluster_name != configs_json['cluster_name']
-    return JSON.generate({'status' => 'wrong_cluster_name4' + ' $cluster_name = ' + $cluster_name + ' configs_json[\'cluster_name\'] = ' + configs_json['cluster_name']})
+    return JSON.generate({'status' => 'wrong_cluster_name 2' + configs_json['cluster_name'] + ' ' + $cluster_name})
   end
 
   $semaphore_cfgsync.synchronize {
