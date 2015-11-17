@@ -807,9 +807,12 @@ def run_cmd(*args)
 end
 
 def run_cmd_options(options, *args)
-  $logger.info("Running: " + args.join(" "))
+  $logger.info("03200: Running: " + args.join(" "))
   start = Time.now
+  oout = ""
   out = ""
+  oo = ""
+  o = ""
   errout = ""
 
   if options and options.key?('username')
@@ -828,7 +831,22 @@ def run_cmd_options(options, *args)
       stdin.puts(options['stdin'])
       stdin.close()
     end
-    out = stdout.readlines()
+    #xxx
+    oout = stdout.readlines()
+
+    out = oout.each{ |o| 
+	#printf("xxx (%s)", o)
+    	#open('/ruby.out', 'a') { |f| f << "xxx 04000: out (" + o + ")\n" }
+        oo = o.gsub(/xxx[^\n]+\n/, '') 
+	oo
+    	#open('/ruby.out', 'a') { |f| f << "xxx 04001: out (" + oo + ")\n" }
+	#$logger.info(oo)
+	#
+    }
+    #out.each{ |o| 
+	#$logger.info(out)
+	#printf("xxx (%s)", o)
+    #}
     errout = stderr.readlines()
     duration = Time.now - start
     $logger.debug(out)
@@ -901,6 +919,7 @@ def check_gui_status_of_nodes(nodes, check_mutuality=false, timeout=10)
   nodes.each { |node|
     threads << Thread.new {
       code, response = send_request_with_token(node, 'check_auth', false, options, true, nil, timeout)
+      open('/ruby.out', 'a') { |f| f << "xxx 05000: response :" + response } 
       if code == 200
         if check_mutuality
           begin

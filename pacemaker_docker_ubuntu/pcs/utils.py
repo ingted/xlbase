@@ -275,8 +275,10 @@ def sendHTTPRequest(host, request, data = None, printResult = True, printSuccess
         opener.addheaders.append(('Cookie', 'token='+tokens[host]))
     urllib2.install_opener(opener)
     try:
+        #print("rrr 05000: ", url, data)
         result = opener.open(url,data)
         html = result.read()
+        #print("rrr 05001: ", html)
         if printResult or printSuccess:
             print host + ": " + html.strip()
         if "--debug" in pcs_options:
@@ -383,6 +385,8 @@ def getCorosyncActiveNodes():
 
     args = ["corosync-cmapctl"]
     nodes = []
+    ##print("rrr 04000: utils.py")
+    ##print("rrr 04001", output)
     output,retval = run(args)
     if retval != 0:
         return []
@@ -729,7 +733,7 @@ def run_pcsdcli(command, data=None):
     #print("rrr 03010: utils.py print(output)")
     with open("/python.out", "a") as myfile:
         myfile.write("rrr 03010: utils.py print(output)")
-    print(output)
+    #print(output)
     #print(data)
     try:
         output_json = json.loads(output)
@@ -1325,12 +1329,16 @@ def get_cib_xpath(xpath_query):
     return output
 
 def get_cib(scope=None):
-    print("rrr 02100: utils.py get_cib()")
+    #print("rrr 02100: utils.py get_cib()")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02100: utils.py get_cib()")
     command = ["cibadmin", "-l", "-Q"]
     if scope:
         command.append("--scope=%s" % scope)
     output, retval = run(command)
-    print("rrr 02101: utils.py run(command) where command = [\"cibadmin\", \"-l\", \"-Q\"]")
+    #print("rrr 02101: utils.py run(command) where command = [\"cibadmin\", \"-l\", \"-Q\"]")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02101: utils.py run(command) where command = [\"cibadmin\", \"-l\", \"-Q\"]")
     #rrr print(output)
     #rrr print(retval != 0)
     if retval != 0:
@@ -1338,7 +1346,9 @@ def get_cib(scope=None):
             err("unable to get cib, scope '%s' not present in cib" % scope)
         else:
             err("unable to get cib")
-    print("rrr 02102: utils.py return output")
+    #print("rrr 02102: utils.py return output")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02102: utils.py return output")
 
     return output
 
@@ -1639,6 +1649,7 @@ def getCorosyncNodesID(allow_failure=False):
             ])
 
         (output, retval) = run(['corosync-cmapctl', '-b', 'nodelist.node'])
+        output = re.sub(r'xxx[^\n]+\n', '', output)
     else:
         err_msgs, retval, output, std_err = call_local_pcsd(
             ['status', 'nodes', 'corosync-id'], True
@@ -1671,6 +1682,7 @@ def getCorosyncNodesID(allow_failure=False):
 def getPacemakerNodesID(allow_failure=False):
     if os.getuid() == 0:
         (output, retval) = run(['crm_node', '-l'])
+        output = re.sub(r'xxx[^\n]+\n', '', output)
     else:
         err_msgs, retval, output, std_err = call_local_pcsd(
             ['status', 'nodes', 'pacemaker-id'], True

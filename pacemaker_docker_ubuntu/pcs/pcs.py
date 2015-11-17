@@ -188,7 +188,9 @@ def main(argv):
         ['status', 'nodes', 'pacemaker-id'],
         ['status', 'pcsd', '...'],
     ]
-    print "rrr 01002 : root_command_list"
+    #print "rrr 01002 : root_command_list"
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 01002 : root_command_list")
     argv_cmd = argv[:]
     argv_cmd.insert(0, command)
     for root_cmd in root_command_list:

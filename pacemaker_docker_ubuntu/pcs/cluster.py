@@ -223,7 +223,7 @@ def auth_nodes(nodes):
     )
 
 def auth_nodes_do(nodes, username, password, force, local):
-    print(nodes)
+    #rrr print(nodes)
     pcsd_data = {
         'nodes': list(set(nodes)),
         'username': username,
@@ -232,8 +232,15 @@ def auth_nodes_do(nodes, username, password, force, local):
         'local': local,
     }
     output, retval = utils.run_pcsdcli('auth', pcsd_data)
-    print(retval)
+    #rrr print(retval)
+    #rrr
+    #print(nodes)
+    #print(username)
+    #print(password)
+    #print(force)
+    #print(local)
     print(output)
+    
     if retval == 0 and output['status'] == 'ok' and output['data']:
         failed = False
         try:
@@ -303,10 +310,15 @@ def check_nodes(nodes, prefix = ""):
     bad_nodes = False
     pm_nodes = utils.getPacemakerNodesID(True)
     cs_nodes = utils.getCorosyncNodesID(True)
-    print("rrr 02300: cluster.py check_nodes")
+    #print("rrr 02300: cluster.py check_nodes")
+    with open("/python.out", "a") as myfile:
+        myfile.write("rrr 02300: cluster.py check_nodes")
+    #print(pm_nodes)
+    #print(cs_nodes)
+    #print(nodes)
     for node in nodes:
         status = utils.checkAuthorization(node)
-
+        #print(status)
         if node not in pm_nodes.values():
             for n_id, n in cs_nodes.items():
                 if node == n and n_id in pm_nodes:

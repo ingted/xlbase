@@ -59,7 +59,7 @@ module Cfgsync
         return self.from_text(file.read())
       rescue => e
         $logger.warn(
-          "Cannot read config '#{@name}' from '#{@file_path}': #{e.message}"
+          "03012: Cannot read config '#{@name}' from '#{@file_path}': #{e.message}"
         )
         return self.from_text(default) if default
         raise
@@ -328,7 +328,7 @@ module Cfgsync
         file.flock(File::LOCK_SH)
         return JSON.parse(file.read())
       rescue => e
-        $logger.debug("Cannot read config '#{CFG_SYNC_CONTROL}': #{e.message}")
+        $logger.debug("03013: Cannot read config '#{CFG_SYNC_CONTROL}': #{e.message}")
         return {}
       ensure
         unless file.nil?
@@ -379,6 +379,8 @@ module Cfgsync
       }
 
       data = self.prepare_request_data(@configs, @cluster_name, force)
+      
+      
       node_response = {}
       threads = []
       @nodes.each { |node|
@@ -388,6 +390,13 @@ module Cfgsync
             node, 'set_configs', true, data, true, nil, 30, @additional_tokens,
             @username
           )
+	  #xxxu = File.open('/ruby.out', 'a') { |file| file.write('rrr 08900: ' + data + '\n') }
+	  #xxxu = File.open('/ruby.out', 'a') { |file| file.write('rrr 08950: ' + @additional_tokens + '\n') }
+	  #xxxu = File.open('/ruby.out', 'a') { |file| file.write('rrr 08980: ' + @username + '\n') }
+	  xxxu = File.open('/ruby.out', 'a') { |file| file.write('rrr 09000: ' + out + '\n') }
+	  out = out.gsub(/xxx[^\n]+\n/, '')
+	  xxxu = File.open('/ruby.out', 'a') { |file| file.write('rrr 09001: ' + out + '\n') }
+	  #printf("rrr 07005 (%s)", out)
           if 200 == code
             begin
               node_response[node] = JSON.parse(out)
@@ -527,6 +536,7 @@ module Cfgsync
           code, out = send_request_with_token(
             node, 'get_configs', false, data, true, nil, 30, {}, @username
           )
+	  printf("rrr 07000 (%s)", out)
           if 200 == code
             begin
               parsed = JSON::parse(out)
