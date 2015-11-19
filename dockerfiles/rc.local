@@ -16,5 +16,6 @@
 
 #service dbus start
 bash /docker_scripts/120_dbus.sh
+bash /docker_scripts/130_ha.sh
 
 exit 0

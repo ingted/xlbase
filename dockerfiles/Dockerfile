@@ -60,6 +60,7 @@ ADD ./rc.local /etc/rc.local
 
 #ADD ./120_dbus.sh /etc/my_init.d/120_dbus.sh
 ADD ./120_dbus.sh.old /docker_scripts/120_dbus.sh
+ADD ./130_ha.sh /docker_scripts/130_ha.sh
 
 RUN /docker_scripts/120_dbus.sh; \
 	service dbus status; \
