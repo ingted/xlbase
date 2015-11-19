@@ -142,7 +142,7 @@ RUN dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb; \
 	#python3-systemd
 
 	apt-get -y install libmysqlclient-dev libmysql++6 libmysql++-dev libdbd-mysql-perl mysql-client; \
-
+	apt-get -y install vsftpd; \
 	apt-get -y install wget; \
 	pip install requests[security]; \
 	pip install pyopenssl ndg-httpsclient pyasn1; \
@@ -154,10 +154,10 @@ RUN dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb; \
         pip install ipython; \
         pip install --upgrade ipython; \
 
-
+	mkdir -p /var/run/vsftpd/empty; \
 	wget "http://launchpadlibrarian.net/173841617/init-system-helpers_1.18_all.deb"; \
         dpkg -i init-system-helpers_1.18_all.deb
-
+# NEED TO ADD VSFTPD root permission and ENABLE WRITE
 WORKDIR /usr/lib/x86_64-linux-gnu/
 
 RUN ln -sf ./libmysqlclient.so libmysqlclient_r.so; \
