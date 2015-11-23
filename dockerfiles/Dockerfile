@@ -11,17 +11,46 @@ FROM phusion/baseimage:0.9.17
 
 # ...put your own build instructions here...
 
-RUN ln -snf /bin/bash /bin/sh
+RUN ln -snf /bin/bash /bin/sh; \
+	mkdir -p /addfiles; \
+	mkdir -p /root/Downloads; \
+	mkdir -p /root/Sources; \
+	mkdir -p /etc/my_init.d; \
+        mkdir -p /docker_scripts
 
 ENV DEBIAN_FRONTEND noninteractive 
 ###apt-get autoremove
 
-ADD ./docker.list /etc/apt/sources.list.d/
-ADD ./sources.list /etc/apt/
 
-RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
+ADD ./addfiles /addfiles
+#ADD ./docker.list /etc/apt/sources.list.d/
+#ADD ./sources.list /etc/apt/
+
+
+RUN cp /addfiles/docker.list 			/etc/apt/sources.list.d/; \
+	cp /addfiles/sources.list 		/etc/apt/; \
+	cp /addfiles/libsystemd.so.0 		/lib/x86_64-linux-gnu/libsystemd.so.0; \
+	cp /addfiles/libcap-ng.so.0 		/usr/lib/x86_64-linux-gnu/libcap-ng.so.0; \
+	cp /addfiles/libgcrypt.so.20 		/lib/x86_64-linux-gnu/libgcrypt.so.20; \
+	cp /addfiles/timedatectl              	/usr/bin/; \
+	cp /addfiles/dbus*			/usr/bin/; \
+	cp /addfiles/110_logtime.sh 		/etc/my_init.d/110_logtime.sh; \
+	cp /addfiles/
+	cp /addfiles/
+	cp /addfiles/
+	cp /addfiles/
+	cp /addfiles/
+	cp /addfiles/
+	cp /addfiles/
+	cp /addfiles/
+
+
+
+	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	ln -s /bin/true /etc/init.d/systemd-logind; \
-	mkdir -p /root/Downloads; mkdir -p /root/Sources; \
+
+	#mkdir -p /root/Downloads; mkdir -p /root/Sources; \
+
         apt-get purge openjdk-7-*; \
         apt-get purge openjdk-8-*; \
 	echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections; \
@@ -29,31 +58,29 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
         apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D; \
 	rm /var/lib/apt/lists/* -vrf; \
 
-#RUN mkdir -p /proc/sys/fs/binfmt_misc; \
-#	chmod +w /proc/sys/fs/binfmt_misc; \
-#	ls -l /proc/sys/fs/|grep binfmt_misc ; \
 	apt-get -y update; \
 	apt-get -y install apt-transport-https dbus binfmt-support llvm || true; \
-	ls -l /usr/lib/apt/methods/https; \
+
+	#ls -l /usr/lib/apt/methods/https; \
 	cp /usr/lib/apt/methods/https /root/Downloads/https; \
 	ln -snf /root/Downloads/https /usr/lib/apt/methods/https
 
-ADD ./libsystemd.so.0 /lib/x86_64-linux-gnu/libsystemd.so.0
-ADD ./libcap-ng.so.0 /usr/lib/x86_64-linux-gnu/libcap-ng.so.0
-ADD ./libgcrypt.so.20 /lib/x86_64-linux-gnu/libgcrypt.so.20
+#ADD ./libsystemd.so.0 /lib/x86_64-linux-gnu/libsystemd.so.0
+#ADD ./libcap-ng.so.0 /usr/lib/x86_64-linux-gnu/libcap-ng.so.0
+#ADD ./libgcrypt.so.20 /lib/x86_64-linux-gnu/libgcrypt.so.20
 
-ADD ./timedatectl 		/usr/bin/
-ADD ./dbus-cleanup-sockets  	/usr/bin/dbus-cleanup-sockets
-ADD ./dbus-daemon           	/usr/bin/dbus-daemon
-ADD ./dbus-launch           	/usr/bin/dbus-launch
-ADD ./dbus-monitor          	/usr/bin/dbus-monitor
-ADD ./dbus-run-session      	/usr/bin/dbus-run-session
-ADD ./dbus-send             	/usr/bin/dbus-send
-ADD ./dbus-uuidgen          	/usr/bin/dbus-uuidgen
+#ADD ./timedatectl 		/usr/bin/
+#ADD ./dbus-cleanup-sockets  	/usr/bin/dbus-cleanup-sockets
+#ADD ./dbus-daemon           	/usr/bin/dbus-daemon
+#ADD ./dbus-launch           	/usr/bin/dbus-launch
+#ADD ./dbus-monitor          	/usr/bin/dbus-monitor
+#ADD ./dbus-run-session      	/usr/bin/dbus-run-session
+#ADD ./dbus-send             	/usr/bin/dbus-send
+#ADD ./dbus-uuidgen          	/usr/bin/dbus-uuidgen
 
-RUN mkdir -p /etc/my_init.d; \
-	 mkdir -p /docker_scripts
-ADD ./110_logtime.sh /etc/my_init.d/110_logtime.sh
+#RUN mkdir -p /etc/my_init.d; \
+#	 mkdir -p /docker_scripts
+#ADD ./110_logtime.sh /etc/my_init.d/110_logtime.sh
 
 RUN rm /etc/rc.local
 ADD ./rc.local /etc/rc.local
