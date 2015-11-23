@@ -81,11 +81,11 @@ RUN	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/sy
 
         apt-get -y update; \
         apt-get -y --force-yes upgrade; \
-
-        apt-get -y install \
-                ant ant-optional asciidoc autoconf automake autopoint autotools-dev \
-                bison build-essential bzip2 \
-                ccache cluster-glue cmake corosync-dev cvs; \
-
-	cd /root/Downloads; \
-	dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb
+#
+#        apt-get -y install \
+#                ant ant-optional asciidoc autoconf automake autopoint autotools-dev \
+#                bison build-essential bzip2 \
+#                ccache cluster-glue cmake corosync-dev cvs; \
+#
+#	cd /root/Downloads; \
+#	dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb
