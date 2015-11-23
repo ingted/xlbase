@@ -1,0 +1,283 @@
+#!/bin/bash
+
+# Authors:
+#  Andrew Beekhof <abeekhof@redhat.com>
+#  Fabio M. Di Nitto <fdinitto@redhat.com>
+#
+# License: Revised BSD
+
+# chkconfig: - 99 01
+# description: Pacemaker Cluster Manager
+# processname: pacemakerd
+#
+### BEGIN INIT INFO
+# Provides:		pacemaker
+# Required-Start:	$network corosync
+# Should-Start:		$syslog
+# Required-Stop:	$network corosync
+# Default-Start:
+# Default-Stop:
+# Short-Description:	Starts and stops Pacemaker Cluster Manager.
+# Description:		Starts and stops Pacemaker Cluster Manager.
+### END INIT INFO
+
+desc="Pacemaker Cluster Manager"
+prog="pacemakerd"
+
+# set secure PATH
+PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/sbin"
+
+checkrc() {
+    if [ $? = 0 ]; then
+	success
+    else
+	failure
+    fi
+}
+
+success()
+{
+	echo -ne "[  OK  ]\r"
+}
+
+failure()
+{
+	echo -ne "[FAILED]\r"
+}
+
+log() 
+{
+    logger -t pacemaker -p daemon.notice "$*"
+}
+
+notify()
+{
+    log "$*"
+    echo -n "$*"
+}
+
+status()
+{
+	pid=$(pidof $1 2>/dev/null)
+	rtrn=$?
+	if [ $rtrn -ne 0 ]; then
+		echo "$1 is stopped"
+	else
+		echo "$1 (pid $pid) is running..."
+	fi
+	return $rtrn
+}
+
+# rpm based distros
+if [ -d /etc/sysconfig ]; then
+	[ -f /etc/init.d/functions ] && . /etc/init.d/functions
+set -a
+	[ -f /etc/sysconfig/pacemaker ] && . /etc/sysconfig/pacemaker
+set +a
+	[ -z "$LOCK_FILE" ] && LOCK_FILE="/var/lock/subsys/pacemaker"
+fi
+
+# deb based distros
+if [ -d /etc/default ]; then
+set -a
+	[ -f /etc/default/pacemaker ] && . /etc/default/pacemaker
+set +a
+	[ -z "$LOCK_FILE" ] && LOCK_FILE="/var/lock/pacemaker"
+fi
+
+# Unless specified otherwise, assume cman is in use if cluster.conf exists
+if [ x = "x$PCMK_STACK" -a -f /etc/cluster/cluster.conf ]; then
+    #PCMK_STACK=cman #xxx anibal: no cman used
+    PCMK_STACK=
+fi
+
+start()
+{
+	notify "Starting $desc"
+
+	# most recent distributions use tmpfs for $/var/run
+	# to avoid to clean it up on every boot.
+	# they also assume that init scripts will create
+	# required subdirectories for proper operations
+	mkdir -p /var/run
+
+	if status $prog > /dev/null 2>&1; then
+		success
+	else
+		$prog > /dev/null 2>&1 &
+
+		# Time to connect to corosync and fail
+		sleep 5
+
+		if status $prog > /dev/null 2>&1; then
+			touch $LOCK_FILE
+			pidof $prog > /var/run/$prog.pid
+			success
+		else
+			failure
+			rtrn=1
+		fi
+	fi
+	echo
+}
+
+cman_pre_start()
+{
+    # start cman if it's not running
+    service cman status >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+	service cman start
+	if [ $? -ne 0 ]; then
+	    notify "Aborting startup of $desc"
+	    echo
+	    exit 1
+	fi
+    fi
+
+    # start cman's friends if they're not running but were configured to start automatically
+    for cservice in cmirrord clvmd gfs2; do
+	chkconfig --list $cservice 2>/dev/null | grep -q ":on"
+	if [ $? -eq 0 ]; then
+	    service $cservice status >/dev/null 2>&1
+	    if [ $? -ne 0 ]; then
+		log "Attempting to start $cservice"
+		service $cservice start
+	    fi
+	fi
+    done
+}
+
+cman_pre_stop()
+{
+    # if cman is not running there is nothing we need to do here
+    service cman status >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+	return
+    fi
+
+    has_lvm=`crm_resource -c | grep Resource: | grep LVM`
+
+    # migrate resources to another node or shut them down
+    cname=`crm_node --name`
+    crm_attribute -N $cname -n standby -v true -l reboot
+    notify "Waiting for shutdown of managed resources"
+
+
+    while [ 1 = 1 ]; do
+	# 0x0000000000000002 means managed
+	active=`crm_resource -c | grep Resource: | grep 0x...............[2367] | awk '{print $9}' | grep "^${cname}$" | wc -l`
+	if [ $active = 0 ]; then
+	    break;
+	fi
+	sleep 2
+	echo -n "."
+    done
+    success
+    echo
+
+    if [ -d /sys/kernel/dlm/ ]; then
+	lockspace="$(ls -1 /sys/kernel/dlm/)"
+	if [ -n "$lockspace" ]; then
+	    notify "DLM lockspace still in use"
+	    echo ""
+
+	    for cservice in gfs2 clvmd cmirrord; do
+		service $cservice status >/dev/null 2>&1
+		if [ $? -eq 0 ]; then
+		    if [ -n "$has_lvm" ] && [ "$cservice" = "clvmd" ]; then
+			# allow HA-LVM to take a lock on vg/lv before clvmd can exit
+			notify "Waiting for LVM services to start somewhere else"
+			sleep 15
+			success
+		    fi
+		    log "Attempting to shutdown $cservice"
+		    service $cservice stop
+		fi
+	    done
+	fi
+    fi
+
+    notify "Leaving fence domain"
+    fence_tool leave -w 10
+    checkrc
+
+    fenced=$(pidof fenced)
+    notify "Stopping fenced $fenced"
+    kill -KILL $fenced > /dev/null 2>&1
+    checkrc
+}
+
+stop()
+{
+	shutdown_prog=$prog
+	if ! status $prog > /dev/null 2>&1; then
+	    shutdown_prog="crmd"
+	fi
+
+	if status $shutdown_prog > /dev/null 2>&1; then
+	    notify "Signaling $desc to terminate"
+	    kill -TERM $(pidof $prog) > /dev/null 2>&1
+	    checkrc
+	    echo
+
+	    notify "Waiting for cluster services to unload"
+	    while status $prog > /dev/null 2>&1; do
+		sleep 1
+		echo -n "."
+	    done
+	else
+	    echo -n "$desc is already stopped"
+	fi
+
+	rm -f $LOCK_FILE
+	rm -f /var/run/$prog.pid
+	killall -q -9 'crmd stonithd attrd cib lrmd pacemakerd'
+	success
+	echo
+}
+
+rtrn=0
+
+case "$1" in
+start)
+	# For consistency with stop
+	[ "$PCMK_STACK" = cman ] && cman_pre_start
+	start
+;;
+restart|reload|force-reload)
+	stop
+	start
+;;
+condrestart|try-restart)
+	if status $prog > /dev/null 2>&1; then
+	    stop
+	    start
+	fi
+;;
+status)
+	status $prog
+	rtrn=$?
+;;
+stop)
+	#
+	# stonithd needs to be around until fenced is stopped
+	# fenced can't be stopped until any resource using dlm is active
+	#
+	# So:
+	# 1. put the node into standby
+	# 2. wait for all resources to be stopped
+	# 3. stop fenced and anything that needs it (borrowed from the cman script)
+	# 4. stop pacemaker
+	# 5. stop the rest of cman (so it doesn't end up half up/down)
+	#
+	[ "$PCMK_STACK" = cman ] && cman_pre_stop
+	stop
+	[ "$PCMK_STACK" = cman ] && service cman stop
+;;
+*)
+	echo "usage: $0 {start|stop|restart|reload|force-reload|condrestart|try-restart|status}"
+	rtrn=2
+;;
+esac
+
+exit $rtrn
