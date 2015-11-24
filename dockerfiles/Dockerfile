@@ -13,6 +13,17 @@ FROM phusion/baseimage:0.9.17
 
 ###apt-get autoremove
 
+################################################
+###                                          ###
+### If you want to upgrade to 16.04          ###
+### Please execute:                          ###
+###                                          ###
+###   apt-get dist-upgrade                   ###
+###   apt-get install update-manager-core    ###
+###   do-release-upgrade -d                  ###
+###                                          ###
+################################################
+
 
 ENV DEBIAN_FRONTEND noninteractive 
 
