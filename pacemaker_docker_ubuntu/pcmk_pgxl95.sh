@@ -1,11 +1,11 @@
 #!/bin/bash
 
-from="robotica/xlbase:0.5.3"
-dtag="robotica/pcmk_ubuntu"
+from="robotica/xlbase:0.6.3"
+dtag="robotica/pcmk_ubuntu:t63"
 debs=""
 corosync_config=""
 export_file=""
-parent="/home/osdba/git/xlbase/pacemaker_docker_ubuntu"
+parent="/root/alias/pacemaker_docker_ubuntu"
 
 make_image()
 {
@@ -18,9 +18,6 @@ make_image()
 	fi
 
 	echo "FROM $from" > Dockerfile
-
-	## this gets around a bug in rhel 7.0
-	#touch /etc/yum.repos.d/redhat.repo
 
 	#rm -rf repos
 	mkdir -p $parent/repos
@@ -35,32 +32,34 @@ make_image()
 		cp $debdir/* ./debs/
 	fi
 	#echo "ADD ./debs /root/debs" >> Dockerfile
-	"RUN mkdir -p /root/debs" >> Dockerfile
+	"RUN mkdir -p /addfiles/packages_pcmk; \\" >> Dockerfile
 	
-	for f in $(ls $parent/debs/); do
-		echo "ADD $parent/debs/$f /root/debs/$f"
-		echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
-
-	done
-	echo "RUN apt-get -y update; apt-get -y upgrade" >> Dockerfile
-	echo "RUN dpkg -i /root/debs/*.deb" >> Dockerfile
-	echo "RUN /root/debs/do.sh" >> Dockerfile
-
+	#for f in $(ls $parent/debs/); do
+	#	echo "ADD $parent/debs/$f /root/debs/$f"
+	#	echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
+	#done
+	
+	echo "ADD ./debs/ /addfiles/packages_pcmk" >> Dockerfile
 	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile
 	echo "ADD ./pcsd.sh /root/pcsd.sh" >> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
-
-	echo "RUN mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/" >> Dockerfile
 	echo "ADD ./functions /lib/lsb/init-functions" >> Dockerfile
-	echo "RUN mkdir -p /etc/rc.d/init.d/; ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions" >> Dockerfile
-	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
-	echo "RUN cp /root/pcsds/* /usr/share/pcsd -f" >> Dockerfile
+	
+	echo "RUN apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
+	echo "	dpkg -i /addfiles/packages_pcmk/*.deb; \\" >> Dockerfile
+	echo "	bash /addfiles/packages_pcmk/do.sh; \\" >> Dockerfile
+	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \\" >> Dockerfile
+	echo "	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions" >> Dockerfile
 
-	#echo "ENTRYPOINT /usr/sbin/pcmk_launch.sh" >> Dockerfile
+	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
+
+	###@ not mod system now @###
+	#echo "RUN cp /root/pcsds/* /usr/share/pcsd -f" >> Dockerfile
+
 
 	# generate image
 	echo "Making image"
-	docker $doc_opts build -t $dtag .
+	dbuild $dtag .
 	if [ $? -ne 0 ]; then
 		echo "ERROR: failed to generate docker image"
 		exit 1
