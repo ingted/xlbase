@@ -490,7 +490,7 @@ RUN chmod 755 /etc/container_environment; \
 #
 #Baseimage-docker disables the SSH server by default. Add the following to your Dockerfile to enable it:
 
-	rm -f /etc/service/sshd/down
+	rm -f /etc/service/sshd/down; \
 
 # Regenerate SSH host keys. baseimage-docker does not contain any, so you
 # have to do that yourself. You may also comment out this instruction; the
