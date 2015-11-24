@@ -18,7 +18,14 @@
 #wget "http://mirrors.kernel.org/ubuntu/pool/universe/libs/libselinux/python-selinux_2.3-2_amd64.deb"
 #wget "http://mirrors.kernel.org/ubuntu/pool/universe/libs/libsemanage/python-semanage_2.3-1build1_amd64.deb"
 
-cd /root/debs
+cd /addfiles/packages_pcmk
+
+dpkg -i vim-common_7.4.826-1ubuntu1_amd64.deb
+dpkg -i vim-tiny_7.4.826-1ubuntu1_amd64.deb 
+dpkg -i vim-runtime_7.4.826-1ubuntu1_all.deb 
+dpkg -i vim_7.4.826-1ubuntu1_amd64.deb 
+
+
 
 dpkg -i grub-pc_2.02~beta2-9ubuntu1.3_amd64.deb \
 	grub-common_2.02~beta2-9ubuntu1.3_amd64.deb \
@@ -45,9 +52,8 @@ dpkg -i grub-pc_2.02~beta2-9ubuntu1.3_amd64.deb \
 	policycoreutils_2.3-1_amd64.deb	\
 	libqb0_0.17.0-2ubuntu1_amd64.deb \
 	libqb-dev_0.17.0-2ubuntu1_amd64.deb
-	vim_7.4.826-1ubuntu1_amd64.deb \
-	vim-common_7.4.826-1ubuntu1_amd64.deb \
-	vim-runtime_7.4.826-1ubuntu1_all.deb
+
+
 
 apt-get -y update; apt-get -y upgrade;
 

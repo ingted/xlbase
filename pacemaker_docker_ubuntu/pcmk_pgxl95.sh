@@ -45,9 +45,9 @@ make_image()
 	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
 	echo "ADD ./functions /lib/lsb/init-functions" >> Dockerfile
 	
-	echo "RUN apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
-	echo "	dpkg -i /addfiles/packages_pcmk/*.deb; \\" >> Dockerfile
-	echo "	bash /addfiles/packages_pcmk/do.sh; \\" >> Dockerfile
+
+	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" >> Dockerfile
+	echo "	apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
 	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \\" >> Dockerfile
 	echo "	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions" >> Dockerfile
 
