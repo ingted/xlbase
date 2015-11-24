@@ -32,7 +32,7 @@ make_image()
 		cp $debdir/* ./debs/
 	fi
 	#echo "ADD ./debs /root/debs" >> Dockerfile
-	echo "RUN mkdir -p /addfiles/packages_pcmk; \\" >> Dockerfile
+	echo "RUN mkdir -p /addfiles/packages_pcmk" >> Dockerfile
 	
 	#for f in $(ls $parent/debs/); do
 	#	echo "ADD $parent/debs/$f /root/debs/$f"
