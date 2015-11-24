@@ -1,4 +1,4 @@
-FROM robotica/xlbase:0.6.3
+FROM robotica/xlbase:0.6.4-no-pcmk
 ADD ./debs/ /addfiles/packages_pcmk
 ADD ./helper_scripts /usr/sbin
 ADD ./pcsd.sh /root/pcsd.sh

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-from="robotica/xlbase:0.6.3"
-dtag="robotica/pcmk_ubuntu:t63"
+from="robotica/xlbase:0.6.4-no-pcmk"
+dtag="robotica/pcmk_ubuntu:0.6.1"
 debs=""
 corosync_config=""
 export_file=""
@@ -32,7 +32,7 @@ make_image()
 		cp $debdir/* ./debs/
 	fi
 	#echo "ADD ./debs /root/debs" >> Dockerfile
-	"RUN mkdir -p /addfiles/packages_pcmk; \\" >> Dockerfile
+	echo "RUN mkdir -p /addfiles/packages_pcmk; \\" >> Dockerfile
 	
 	#for f in $(ls $parent/debs/); do
 	#	echo "ADD $parent/debs/$f /root/debs/$f"
