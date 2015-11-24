@@ -207,18 +207,22 @@ RUN	apt-get -y install \
 	cd fsharp; \
 	mkdir -p .paket
 	
-ADD ./paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.bootstrapper.exe
-ADD ./paket.dependencies /root/Downloads/fs/fsharp/paket.dependencies
+#ADD ./paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.bootstrapper.exe
+#ADD ./paket.dependencies /root/Downloads/fs/fsharp/paket.dependencies
+RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.bootstrapper.exe; \
+	cp /addfiles/paket.dependencies /root/Downloads/fs/fsharp/paket.dependencies; \
 
-WORKDIR /root/Downloads/fs/fsharp/.paket/
-RUN mono paket.bootstrapper.exe; \
-	mono paket.exe update
+	#WORKDIR /root/Downloads/fs/fsharp/.paket/
+	cd /root/Downloads/fs/fsharp/.paket/; \
+	mono paket.bootstrapper.exe; \
+	mono paket.exe update; \
 
-WORKDIR /root/Downloads/fs/fsharp/
-RUN ./autogen.sh --prefix=/usr; \
+	#WORKDIR /root/Downloads/fs/fsharp/
+	cd /root/Downloads/fs/fsharp/; \
+	./autogen.sh --prefix=/usr; \
         make; \
 	cd ../; \
-	wget "https://raw.github.com/fsharp/FAKE/master/src/app/FakeLib/ProcessHelper.fs"
+	wget "https://raw.github.com/fsharp/FAKE/master/src/app/FakeLib/ProcessHelper.fs"; \
 
 #	echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
 #	chmod +x /root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release/fsi.exe
@@ -245,15 +249,17 @@ RUN ./autogen.sh --prefix=/usr; \
 #RUN apt-get -y install g++-5
 
 
-WORKDIR /root/Downloads/clusterLab/libqb
-RUN wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
+	#WORKDIR /root/Downloads/clusterLab/libqb
+	cd /root/Downloads/clusterLab/libqb; \
+	wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
 	tar xpvf ./v0.17.2.tar.gz; \
 	cd libqb-0.17.2; \
 	./autogen.sh; \
 	./configure; \
-	make; \
+	make -j8; \
 
-	apt-get -y install software-properties-common; \
+	apt-get -y install software-properties-common libnss3-dev groff mercurial uuid-dev snmpd pacemaker-mgmt cluster-glue-dev rpm python-suds pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu; \
+	apt full-upgrade mono-complete; \
 	cat > /etc/apt/sources.list.d/webupd8team-java.list << EOF \
 		deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
 		deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
@@ -267,27 +273,28 @@ RUN wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
 	useradd --system -U -ms /bin/bash voltdb; \
 	sed -i.bak -e s/postgres\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	sed -i.bak -e s/osdba\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \ 
-	sed -i.bak -e s/voltdb\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; 
+	sed -i.bak -e s/voltdb\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 
-ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl
-RUN cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc; \
-	mkdir -p /root/Downloads/clusterLab/corosync
+	#ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl
+	cp /addfiles/bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl; \
+	cat /root/Downloads/pgxl95/bashrc_4_xl >> ~/.bashrc; \
+	mkdir -p /root/Downloads/clusterLab/corosync; \
 
-WORKDIR /root/Downloads/clusterLab/corosync
-RUN wget "https://github.com/corosync/corosync/archive/v2.3.5.tar.gz"; \
-	apt-get -y update; \
-	apt-get -y install libnss3-dev groff; \
+	#WORKDIR /root/Downloads/clusterLab/corosync
+	cd /root/Downloads/clusterLab/corosync; \
+	wget "https://github.com/corosync/corosync/archive/v2.3.5.tar.gz"; \
+
 	tar zxvf ./v2.3.5.tar.gz; \
 	cd corosync-2.3.5; \
 	./autogen.sh; \
 	./configure; \
-	make -j8 
+	make -j8 ; \
 
 
-#RUN mkdir -p /root/Downloads/clusterLab/cluster-glue
-WORKDIR /root/Downloads/clusterLab/cluster-glue
+	#WORKDIR /root/Downloads/clusterLab/cluster-glue
+	cd /root/Downloads/clusterLab/cluster-glue; \
 
-RUN apt-get -y install mercurial uuid-dev; \
+	#apt-get -y install mercurial uuid-dev; \
 
 	hg clone http://hg.linux-ha.org/glue cluster-glue; \
 	#ls -l /root/Downloads/clusterLab/cluster-glue; \
@@ -301,74 +308,82 @@ RUN apt-get -y install mercurial uuid-dev; \
 	mkdir -p /root/Downloads/clusterLab/resource-agents; \
 	mkdir -p /root/Downloads/clusterLab/crmsh; \
 	mkdir -p /root/Downloads/clusterLab/pcs; \
-	apt-get -y install snmpd pacemaker-mgmt cluster-glue-dev
+	#apt-get -y install snmpd pacemaker-mgmt cluster-glue-dev
 	 
 	
-WORKDIR /root/Downloads/clusterLab/resource-agents
-#RUN wget "https://github.com/ClusterLabs/resource-agents/archive/v3.9.6.tar.gz"; \
-RUN git clone https://github.com/ClusterLabs/resource-agents.git; \
+	#WORKDIR /root/Downloads/clusterLab/resource-agents
+	cd /root/Downloads/clusterLab/resource-agents; \
+	#RUN wget "https://github.com/ClusterLabs/resource-agents/archive/v3.9.6.tar.gz"; \
+	RUN git clone https://github.com/ClusterLabs/resource-agents.git; \
 	#tar xzvf v3.9.6.tar.gz; \
 	#cd resource-agents-3.9.6; \
 	cd resource-agents; \
 	./autogen.sh; \
 	./configure; \
-	make
+	make; \
 
 
-WORKDIR /root/Downloads/clusterLab/crmsh
-RUN wget "https://github.com/ClusterLabs/crmsh/archive/2.1.0.tar.gz"; \
+	#WORKDIR /root/Downloads/clusterLab/crmsh
+	cd /root/Downloads/clusterLab/crmsh; \
+	wget "https://github.com/ClusterLabs/crmsh/archive/2.1.0.tar.gz"; \
 	tar zxvf 2.1.0.tar.gz; \
 	cd crmsh-2.1.0; \ 
 	./autogen.sh; \
 	./configure; \
-	make
+	make; \
 
 
 
-WORKDIR /root/Downloads/clusterLab/pcs
-RUN wget "https://github.com/ClusterLabs/pcs/archive/0.9.141.tar.gz"; \
+	#WORKDIR /root/Downloads/clusterLab/pcs
+	cd /root/Downloads/clusterLab/pcs; \
+	wget "https://github.com/ClusterLabs/pcs/archive/0.9.141.tar.gz"; \
 	tar zxvf 0.9.141.tar.gz; \
 	ls -l; \
 	ls -l pcs-0.9.141; \
 	cd pcs-0.9.141/pcsd; \
 	make get_gems; \
-	cd ..
+	cd ..; \
 	#make install (normal install)
 	#make install_pcsd
 
 
-RUN mkdir -p /root/Downloads/clusterLab/fence-agents; \
-	mkdir -p /root/Downloads/clusterLab/hawk
+	mkdir -p /root/Downloads/clusterLab/fence-agents; \
+	mkdir -p /root/Downloads/clusterLab/hawk; \
 
-WORKDIR /root/Downloads/clusterLab/fence-agents
-RUN wget "https://github.com/ClusterLabs/fence-agents/archive/v4.0.21.tar.gz"; \
-	apt-get -y install python-suds
-RUN	tar xzvf v4.0.21.tar.gz; \
+	#WORKDIR /root/Downloads/clusterLab/fence-agents
+	cd /root/Downloads/clusterLab/fence-agents; \
+	wget "https://github.com/ClusterLabs/fence-agents/archive/v4.0.21.tar.gz"; \
+	#apt-get -y install python-suds
+	tar xzvf v4.0.21.tar.gz; \
 	cd fence-agents-4.0.21; \
 	./autogen.sh; \
 	./configure; \
-	make
+	make; \
 	
-WORKDIR /root/Downloads/clusterLab/hawk
-RUN wget "https://github.com/ClusterLabs/hawk/archive/1.0.0-alpha1.tar.gz"; \
+	#WORKDIR /root/Downloads/clusterLab/hawk
+	cd /root/Downloads/clusterLab/hawk; \
+	wget "https://github.com/ClusterLabs/hawk/archive/1.0.0-alpha1.tar.gz"; \
 	tar zxvf 1.0.0-alpha1.tar.gz; \
 	cd hawk-1.0.0-alpha1; \
-	apt-get -y install pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu
+	#apt-get -y install pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu
 
 
-WORKDIR /root/Downloads/clusterLab/pacemaker
-RUN wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
-	apt-get -y install rpm; \
+	#WORKDIR /root/Downloads/clusterLab/pacemaker
+	cd /root/Downloads/clusterLab/pacemaker; \
+	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
+	#apt-get -y install rpm; \
  
 	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
 	cd pacemaker-Pacemaker-1.1.13-rc3; \
 	./autogen.sh; \
 	./configure; \
-	make
-	mkdir -p /root/Downloads/pash
-	cd /root/Downloads/pash
-	git clone https://github.com/ingted/Pash.git
-	cd Pash
+	make -j8; \
+	
+	mkdir -p /root/Downloads/pash; \
+	cd /root/Downloads/pash; \
+	git clone https://github.com/ingted/Pash.git; \
+	cd Pash; \
+	xbuild; \
 
 ###### Upgrading the operating system inside the container
 #

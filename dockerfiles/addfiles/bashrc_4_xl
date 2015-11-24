@@ -1,0 +1,9 @@
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/pgsql/lib
+export PATH=$PATH:/usr/local/pgsql/bin
+export PGHOME=/usr/local/pgsql 
+export PGUSER=postgres
+#export PGDATA=/home/osdba/pgdata/
+export LANG=en_US.utf8
+export MANPATH=$PGHOME/share/man:$MANPATH
+export DATE=`date +"%Y%m%d%H%M"`
+
