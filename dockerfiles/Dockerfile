@@ -56,7 +56,7 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/110_logtime.sh 		/etc/my_init.d/110_logtime.sh; \
 	cp /addfiles/120_dbus.sh.old 		/docker_scripts/120_dbus.sh; \
 	cp /addfiles/130_ha.sh 			/docker_scripts/130_ha.sh; \
-	cp /addfiles/cgroup-lite_1.9_all.deb 	/root/Downloads/cgroup-lite_1.9_all.deb; \
+	cp /addfiles/packages 			/root/Downloads/ -rf; \
 	cp /addfiles/gnu/libgmp.so.10 		/usr/lib/x86_64-linux-gnu/; \
 	cp /addfiles/gnu/libcurl-gnutls.so.4    /usr/lib/x86_64-linux-gnu/; \  
 	cp /addfiles/gnu/librtmp.so.1    	/usr/lib/x86_64-linux-gnu/; \ 
@@ -99,7 +99,7 @@ RUN	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/sy
                 ccache cluster-glue cmake corosync-dev cvs; \
 
 	cd /root/Downloads; \
-	dpkg -i /root/Downloads/cgroup-lite_1.9_all.deb
+	dpkg -i /root/Downloads/packages/cgroup-lite_1.9_all.deb
 
 RUN	apt-get -y install \
         	dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl docker.io dsniff \
@@ -258,7 +258,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	./configure; \
 	make -j8; \
 
-	apt-get -y install software-properties-common libnss3-dev groff mercurial uuid-dev snmpd pacemaker-mgmt cluster-glue-dev rpm python-suds pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu; \
+	apt-get -y install software-properties-common libnss3-dev groff mercurial uuid-dev snmpd pacemaker-mgmt cluster-glue-dev rpm python-suds pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu ruby-dev; \
 	apt full-upgrade mono-complete; \
 	cat > /etc/apt/sources.list.d/webupd8team-java.list << EOF \
 		deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
@@ -383,7 +383,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	cd /root/Downloads/pash; \
 	git clone https://github.com/ingted/Pash.git; \
 	cd Pash; \
-	xbuild; \
+	xbuild
 
 ###### Upgrading the operating system inside the container
 #
@@ -618,32 +618,38 @@ RUN chmod 755 /etc/container_environment; \
 #and unlike chpst this tool sets $HOME correctly.
 #Available as /sbin/setuser.
 
-WORKDIR /root/Downloads/clusterLab/libqb/libqb-0.17.2
-RUN make install
+	#WORKDIR /root/Downloads/clusterLab/libqb/libqb-0.17.2
+	cd /root/Downloads/clusterLab/libqb/libqb-0.17.2; \
+	make install; \
 
-WORKDIR /root/Downloads/clusterLab/corosync/corosync-2.3.5
-RUN make install
-
-
-WORKDIR /root/Downloads/clusterLab/cluster-glue/cluster-glue
-RUN make install
+	#WORKDIR /root/Downloads/clusterLab/corosync/corosync-2.3.5
+	cd /root/Downloads/clusterLab/corosync/corosync-2.3.5; \
+	make install; \
 
 
-WORKDIR /root/Downloads/clusterLab/resource-agents/resource-agents
-RUN rm /usr/lib/ocf/resource.d/heartbeat/.ocf-binaries -f; \
+	#WORKDIR /root/Downloads/clusterLab/cluster-glue/cluster-glue
+	cd /root/Downloads/clusterLab/cluster-glue/cluster-glue; \
+	make install; \
+
+
+	#WORKDIR /root/Downloads/clusterLab/resource-agents/resource-agents
+	cd /root/Downloads/clusterLab/resource-agents/resource-agents; \
+	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-binaries -f; \
 	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-returncodes -f; \
 	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-directories -f; \
 	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-shellfuncs -f; \
-	make install
+	make install; \
 
-WORKDIR /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3
-RUN make install
+	#WORKDIR /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3
+	cd /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3; \
+	make install; \
 
-ADD ./bashrc_4_ps1 /root/Downloads/pgxl95/bashrc_4_ps1
+	cp /addfiles/bashrc_4_ps1 /root/Downloads/pgxl95/bashrc_4_ps1; \
 
 
-WORKDIR /root/Downloads/clusterLab/pcs/pcs-0.9.141
-RUN apt-get -y install ruby-dev; \
+	#WORKDIR /root/Downloads/clusterLab/pcs/pcs-0.9.141
+	cd /root/Downloads/clusterLab/pcs/pcs-0.9.141; \
+	#RUN apt-get -y install ruby-dev; \
 	make; \
 	cd pcsd; \
 	gem install eventmachine -v '1.0.7'; \
@@ -667,10 +673,6 @@ RUN apt-get -y install ruby-dev; \
 	cat /root/Downloads/pgxl95/bashrc_4_ps1 >> ~/.bashrc; \
 	history -c; \
 	bash -c 'echo  "export HOME=/root/" >> /root/.bashrc'
-
-#$ make install install_settings=true
-#$ cd pcsd/ && make get_gems
-#$ cd ../ && make install_pcsd install_settings=true
 
 
 # Use baseimage-docker's init system.
