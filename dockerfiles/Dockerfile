@@ -661,7 +661,7 @@ RUN chmod 755 /etc/container_environment; \
 
 	mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
-	mv /usr/local/lib/libgpg-error.so.0 /usr/local/lib/libgpg-error.so.0.bak; \
+	bash -c "if [ -e /usr/local/lib/libgpg-error.so.0 ]; then mv /usr/local/lib/libgpg-error.so.0 /usr/local/lib/libgpg-error.so.0.bak; fi" \
 	ln -s /lib/x86_64-linux-gnu/libgpg-error.so.0 /usr/local/lib/; \
 	bash -c 'echo "postgres ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
