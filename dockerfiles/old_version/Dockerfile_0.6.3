@@ -107,11 +107,7 @@ RUN	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/sy
         apt-get -y install \
                 ant ant-optional asciidoc autoconf automake autopoint autotools-dev \
                 bison build-essential bzip2 \
-                ccache \
-		#cluster-glue 
-		cmake \
-		#corosync-dev 
-		cvs; \
+                ccache cluster-glue cmake corosync-dev cvs; \
 
 	cd /root/Downloads; \
 	dpkg -i /root/Downloads/packages/cgroup-lite_1.9_all.deb
@@ -125,15 +121,12 @@ RUN	apt-get -y install \
 	apt-get -y install \
         	kernel-package \
         	libaio1 libaio-dev libboost-all-dev libbz2-dev libc++1 libc++abi1 libc++abi-dev libc++abi-test \
-                	libc++-dev libc++-helpers libc++-test libc6 libc6-dbg \
-			#libcluster-glue-dev 
-			libcurl4-gnutls-dev \
+                	libc++-dev libc++-helpers libc++-test libc6 libc6-dbg libcluster-glue-dev libcurl4-gnutls-dev \
                 	#libcurl4-openssl-dev 
 			libdbus-1-dev libdbus-glib-1-dev libesmtp-dev libgdbm-dev \
-                	libglib2.0-dev libncurses5-dev libpam0g-dev libpe-status4 libpod-2-docbook-perl\ 
-			#libqb-dev \
+                	libglib2.0-dev libncurses5-dev libpam0g-dev libpe-status4 libpod-2-docbook-perl libqb-dev \
                 	libreadline-dev libselinux-dev libsgml-dtdparse-perl libsnmp-base libsnmp-dev libsqlite3-dev \
-                	libssl-dev libtool libxml2-dev libxml2-utils libxslt1-dev lm-sensors; \
+                	libssl-dev libtool libxml2-dev libxml2-utils libxslt1-dev llvm lm-sensors; \
 	apt-get -y install \
         	monodevelop multiarch-support \
         	ncurses-dev ntp \
@@ -276,11 +269,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	./configure; \
 	make -j8; \
 
-	apt-get -y install software-properties-common libnss3-dev groff mercurial uuid-dev snmpd \
-		#pacemaker-mgmt cluster-glue-dev 
-		rpm python-suds \
-		#pacemaker-dev 
-		libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu ruby-dev; \
+	apt-get -y install software-properties-common libnss3-dev groff mercurial uuid-dev snmpd pacemaker-mgmt cluster-glue-dev rpm python-suds pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu ruby-dev; \
 	apt full-upgrade mono-complete; \
 	cat > /etc/apt/sources.list.d/webupd8team-java.list << EOF \
 		deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main \
@@ -642,16 +631,16 @@ RUN chmod 755 /etc/container_environment; \
 
 	#WORKDIR /root/Downloads/clusterLab/libqb/libqb-0.17.2
 	cd /root/Downloads/clusterLab/libqb/libqb-0.17.2; \
-	#make install; \
+	make install; \
 
 	#WORKDIR /root/Downloads/clusterLab/corosync/corosync-2.3.5
 	cd /root/Downloads/clusterLab/corosync/corosync-2.3.5; \
-	#make install; \
+	make install; \
 
 
 	#WORKDIR /root/Downloads/clusterLab/cluster-glue/cluster-glue
 	cd /root/Downloads/clusterLab/cluster-glue/cluster-glue; \
-	#make install; \
+	make install; \
 
 
 	#WORKDIR /root/Downloads/clusterLab/resource-agents/resource-agents
@@ -660,11 +649,11 @@ RUN chmod 755 /etc/container_environment; \
 	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-returncodes -f; \
 	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-directories -f; \
 	rm /usr/lib/ocf/resource.d/heartbeat/.ocf-shellfuncs -f; \
-	#make install; \
+	make install; \
 
 	#WORKDIR /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3
 	cd /root/Downloads/clusterLab/pacemaker/pacemaker-Pacemaker-1.1.13-rc3; \
-	#make install; \
+	make install; \
 
 	cp /addfiles/bashrc_4_ps1 /root/Downloads/pgxl95/bashrc_4_ps1; \
 
@@ -678,8 +667,8 @@ RUN chmod 755 /etc/container_environment; \
 	gem install bundler; \
 	make get_gems; \
 	cd ..; \
-	#make install; \
-	#make install_pcsd install_settings=true; \
+	make install; \
+	make install_pcsd install_settings=true; \
 
 	mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
