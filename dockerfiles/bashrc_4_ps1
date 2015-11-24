@@ -1,6 +1,0 @@
-if [ "$color_prompt" == yes ] || [[ "$TERM" =~ xterm* ]]; then
-	export PS1=$(cat /etc/container_environment/PS1)
-else
-    export PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-
