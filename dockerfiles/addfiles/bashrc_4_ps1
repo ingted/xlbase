@@ -4,4 +4,4 @@ else
     export PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 
-export PAH=$PATH:\addfiles\alias
+export PATH=$PATH:/addfiles/alias
