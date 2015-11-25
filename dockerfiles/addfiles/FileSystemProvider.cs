@@ -374,7 +374,7 @@ namespace Microsoft.PowerShell.Commands
 	    //    Console.WriteLine("xxx ps00-2400-8: NewDrive catch " + e.Message);
             //}
 
-            return null;
+            //return null;
         }
 
         protected override ProviderInfo Start(ProviderInfo providerInfo)
