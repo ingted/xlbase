@@ -1,7 +1,7 @@
 #!/bin/bash
 
 from="robotica/xlbase:0.6.4-no-pcmk"
-dtag="robotica/pcmk_ubuntu:0.6.1t"
+dtag="robotica/pcmk_ubuntu:0.6.1"
 debs=""
 corosync_config=""
 export_file=""
