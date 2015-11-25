@@ -1,11 +1,11 @@
 #!/bin/bash
 
 from="robotica/xlbase:0.6.4-no-pcmk"
-dtag="robotica/pcmk_ubuntu:0.6.1"
+dtag="robotica/pcmk_ubuntu:0.6.1t"
 debs=""
 corosync_config=""
 export_file=""
-parent="/root/alias/pacemaker_docker_ubuntu"
+parent=$(pwd)
 
 make_image()
 {
