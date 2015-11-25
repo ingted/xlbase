@@ -405,6 +405,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	cd /root/Downloads/pash; \
 	git clone https://github.com/ingted/Pash.git; \
 	cd Pash; \
+	cp /addfiles/FileSystemProvider.cs ./Source/System.Management/Microsoft.PowerShell/Commands/
 	xbuild
 
 ###### Upgrading the operating system inside the container
