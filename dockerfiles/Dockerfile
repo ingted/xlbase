@@ -67,7 +67,7 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/110_logtime.sh 		/etc/my_init.d/110_logtime.sh; \
 	cp /addfiles/120_dbus.sh.old 		/docker_scripts/120_dbus.sh; \
 	cp /addfiles/130_ha.sh 			/docker_scripts/130_ha.sh; \
-	cp /addfiles/packages 			/root/Downloads/ -rf; \
+	#cp /addfiles/packages 			/root/Downloads/ -rf; \
 	cp /addfiles/gnu/libgmp.so.10 		/usr/lib/x86_64-linux-gnu/; \
 	cp /addfiles/gnu/libcurl-gnutls.so.4    /usr/lib/x86_64-linux-gnu/; \  
 	cp /addfiles/gnu/librtmp.so.1    	/usr/lib/x86_64-linux-gnu/; \ 
@@ -114,7 +114,7 @@ RUN	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/sy
 		cvs; \
 
 	cd /root/Downloads; \
-	dpkg -i /root/Downloads/packages/cgroup-lite_1.9_all.deb
+	dpkg -i /addfiles/packages/cgroup-lite_1.9_all.deb
 
 RUN	apt-get -y install \
         	dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl docker.io dsniff \
