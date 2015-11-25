@@ -4,4 +4,4 @@ else
     export PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 
-export PATH=$PATH:/addfiles/alias
+export PATH=$PATH:/addfiles/alias:/root/Downloads/pash/Pash/Source/PashConsole/bin/Debug:/root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release

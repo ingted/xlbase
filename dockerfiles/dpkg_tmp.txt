@@ -1,0 +1,225 @@
+dpkg -i libselinux1_2.3-2build1_amd64.deb
+
+dpkg -i ccache_3.2.4-1_amd64.deb
+
+dpkg -i libapparmor1_2.10-0ubuntu8_amd64.deb
+
+dpkg -i libapparmor-dev_2.10-0ubuntu8_amd64.deb  
+
+dpkg -i libgpg-error0_1.20-1_amd64.deb
+
+dpkg -i libgcrypt20_1.6.4-3_amd64.deb
+
+dpkg -i libsystemd0_228-2ubuntu1_amd64.deb 
+
+dpkg -i libdbus-1-3_1.10.4-1ubuntu2_amd64.deb
+
+dpkg -i libcap-ng0_0.7.7-1_amd64.deb             
+
+dpkg -i --auto-deconfigure lsb-base_9.20150917ubuntu1_all.deb
+
+if [ -e dbus_1.10.4-1ubuntu2_amd64.deb ]; then dpkg -i dbus_1.10.4-1ubuntu2_amd64.deb; fi
+
+
+
+
+dpkg -i fontconfig_2.11.1-0ubuntu6_amd64.deb
+
+dpkg -i ureadahead_0.100.0-19_amd64.deb
+
+dpkg -i dpkg_1.18.3ubuntu1_amd64.deb
+
+
+
+dpkg -i perl-modules_5.20.2-6_all.deb perl-base_5.20.2-6_amd64.deb cli-common_0.9+nmu1_all.deb perl_5.20.2-6_amd64.deb
+
+
+
+dpkg -i libgstreamer0.10-0_0.10.36-1.5ubuntu1_amd64.deb
+
+
+dpkg -i libdrm-amdgpu1_2.4.65-3_amd64.deb libllvm3.6v5_3.6.2-3build1_amd64.deb libstdc++6_5.2.1-23ubuntu1_amd64.deb gcc-5-base_5.2.1-23ubuntu1_amd64.deb
+
+
+dpkg -i libgbm1_11.0.5-1ubuntu2_amd64.deb   \
+libwayland-server0_1.9.0-1_amd64.deb        \
+libxcb-xfixes0_1.11.1-1ubuntu1_amd64.deb    \
+libgl1-mesa-dri_11.0.5-1ubuntu2_amd64.deb
+
+
+dpkg -i libgeoclue0_0.12.99-4ubuntu1_amd64.deb \
+liborc-0.4-0_0.4.24-1_amd64.deb        \
+libicu55_55.1-6ubuntu1_amd64.deb
+
+
+
+
+
+
+
+
+dpkg -i libjavascriptcoregtk-1.0-0_2.4.9-2ubuntu2_amd64.deb libcairo2_1.14.4-1_amd64.deb libegl1-mesa_11.0.5-1ubuntu2_amd64.deb libgeoclue0_0.12.99-4ubuntu1_amd64.deb  libgstreamer-plugins-base0.10-0_0.10.36-2_amd64.deb libgstreamer1.0-0_1.6.1-1_amd64.deb libharfbuzz-icu0_1.0.1-1build2_amd64.deb
+
+dpkg -i libgstreamer-plugins-base1.0-0_1.6.1-1ubuntu1_amd64.deb libwebp5_0.4.4-1_amd64.deb
+dpkg -i libsoup2.4-1_2.52.2-1_amd64.deb libwebkitgtk-1.0-common_2.4.9-2ubuntu2_all.deb
+dpkg -i glib-networking_2.46.1-1_amd64.deb glib-networking-common_2.46.1-1_all.deb glib-networking-services_2.46.1-1_amd64.deb
+
+networkig=====<<<<
+
+
+
+>>>>
+
+dpkg -i libwebkitgtk-1.0-0_2.4.9-2ubuntu2_amd64.deb
+
+
+
+
+
+
+
+dpkg: error processing package libgstreamer-plugins-base0.10-0:amd64 (--install):
+ dependency problems - leaving unconfigured
+Setting up libgstreamer1.0-0:amd64 (1.6.1-1) ...
+Failed to set capabilities on file `/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper' (Invalid argument)
+The value of the capability argument is not permitted for a file. Or the file is not a regular (non-symlink) file
+Setcap failed on gst-ptp-helper, falling back to setuid
+dpkg: dependency problems prevent configuration of libharfbuzz-icu0:amd64:
+ libharfbuzz-icu0:amd64 depends on libicu55 (>= 55.1-1~); however:
+  Package libicu55 is not installed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+dpkg: dependency problems prevent configuration of libwebkitgtk-1.0-0:amd64:
+ libwebkitgtk-1.0-0:amd64 depends on libjavascriptcoregtk-1.0-0 (= 2.4.9-2ubuntu2); however:
+  Package libjavascriptcoregtk-1.0-0 is not installed.
+ libwebkitgtk-1.0-0:amd64 depends on libcairo2 (>= 1.14.0); however:
+  Version of libcairo2:amd64 on system is 1.13.0~20140204-0ubuntu1.1.
+ libwebkitgtk-1.0-0:amd64 depends on libegl1-mesa (>= 7.8.1) | libegl1-x11; however:
+  Package libegl1-mesa is not installed.
+  Package libegl1-x11 is not installed.
+ libwebkitgtk-1.0-0:amd64 depends on libgeoclue0 (>= 0.11.1+git20091217); however:
+  Package libgeoclue0 is not installed.
+ libwebkitgtk-1.0-0:amd64 depends on libgstreamer-plugins-base1.0-0 (>= 1.2.0); however:
+  Package libgstreamer-plugins-base1.0-0 is not installed.
+ libwebkitgtk-1.0-0:amd64 depends on libgstreamer1.0-0 (>= 1.4.0); however:
+  Package libgstreamer1.0-0 is not installed.
+ libwebkitgtk-1.0-0:amd64 depends on libharfbuzz-icu0 (>= 0.9.18); however:
+  Package libharfbuzz-icu0 is
+dpkg: error processing package libwebkitgtk-1.0-0:amd64 (--install):
+ dependency problems - leaving unconfigured
+Errors were encountered while processing:
+ libwebkitgtk-1.0-0:amd64
+
+
+
+ dpkg -i libjavascriptcoregtk-1.0-0_2.4.9-2ubuntu2_amd64.deb libcairo2_1.14.4-1_amd64.deb libegl1-mesa_11.0.5-1ubuntu2_amd64.deb libgeoclue0_0.12.99-4ubuntu1_amd64.deb  libgstreamer-plugins-base0.10-0_0.10.36-2_amd64.deb libgstreamer1.0-0_1.6.1-1_amd64.deb libharfbuzz-icu0_1.0.1-1build2_amd64.deb
+得到
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Reinstallation of fontconfig-config is not possible, it cannot be downloaded.
+You might want to run 'apt-get -f install' to correct these:
+The following packages have unmet dependencies:
+ libdbus-1-dev : Depends: libdbus-1-3 (= 1.6.18-0ubuntu4.3) but 1.10.4-1ubuntu2 is to be installed
+ libglib-object-introspection-perl : Depends: perl (>= 5.20.2-4) but 5.18.2-2ubuntu1 is to be installed
+                                     Depends: perlapi-5.20.2 but it is not installable
+                                     Depends: libextutils-depends-perl but it is not installable
+                                     Depends: libextutils-pkgconfig-perl but it is not installable
+                                     Depends: libglib-perl (>= 3:1.280) but it is not installable
+ libglib2.0-bin : Depends: libglib2.0-0 (= 2.40.2-0ubuntu1) but 2.47.1-1 is to be installed
+ libglib2.0-dev : Depends: libglib2.0-0 (= 2.40.2-0ubuntu1) but 2.47.1-1 is to be installed
+ libgpg-error-dev : Depends: libgpg-error0 (= 1.12-0.2ubuntu1) but 1.20-1 is to be installed
+ libpango1.0-0 : Depends: libpango-1.0-0 (= 1.36.3-1ubuntu1.1) but 1.38.1-1 is to be installed
+                 Depends: libpangocairo-1.0-0 (= 1.36.3-1ubuntu1.1) but 1.38.1-1 is to be installed
+ libselinux1-dev : Depends: libselinux1 (= 2.2.2-1ubuntu0.1) but 2.3-2build1 is to be installed
+ libwebkitgtk-1.0-0 : Depends: libjavascriptcoregtk-1.0-0 (= 2.4.9-2ubuntu2) but it is not installable
+                      Depends: libcairo2 (>= 1.14.0) but 1.13.0~20140204-0ubuntu1.1 is to be installed
+                      Depends: libegl1-mesa (>= 7.8.1) but it is not installable or
+                               libegl1-x11 but it is not installable
+                      Depends: libgeoclue0 (>= 0.11.1+git20091217) but it is not installable
+                      Depends: libgstreamer-plugins-base1.0-0 (>= 1.2.0) but it is not installable
+                      Depends: libgstreamer1.0-0 (>= 1.4.0) but it is not installable
+                      Depends: libharfbuzz-icu0 (>= 0.9.18) but it is not installable
+                      Depends: libicu55 (>= 55.1-1~) but it is not installable
+                      Depends: libsoup2.4-1 (>= 2.44.0) but it is not installable
+                      Depends: libstdc++6 (>= 5.2) but 4.8.4-2ubuntu1~14.04 is to be installed
+                      Depends: libwebp5 (>= 0.4.3) but it is not installable
+                      Depends: libwebkitgtk-1.0-common (>= 2.4.9) but it is not installable
+                      Recommends: gstreamer1.0-plugins-base (>= 1.0.3) but it is not installable
+                      Recommends: gstreamer1.0-plugins-good but it is not installable
+ lsb-base : Breaks: upstart (< 1.12.1-0ubuntu8) but 1.12.1-0ubuntu4.2 is to be installed
+E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
+
+
+
+dpkg: dependency problems prevent configuration of libjavascriptcoregtk-1.0-0:amd64:
+ libjavascriptcoregtk-1.0-0:amd64 depends on libicu55 (>= 55.1-1~); however:
+  Package libicu55 is not installed.
+
+dpkg: error processing package libjavascriptcoregtk-1.0-0:amd64 (--install):
+ dependency problems - leaving unconfigured
+Setting up libcairo2:amd64 (1.14.4-1) ...
+dpkg: dependency problems prevent configuration of libegl1-mesa:amd64:
+ libegl1-mesa:amd64 depends on libgbm1 (>= 8.1~0); however:
+  Package libgbm1 is not installed.
+ libegl1-mesa:amd64 depends on libwayland-server0 (>= 1.2.0); however:
+  Package libwayland-server0 is not installed.
+ libegl1-mesa:amd64 depends on libxcb-xfixes0; however:
+  Package libxcb-xfixes0 is not installed.
+ libegl1-mesa:amd64 depends on libgl1-mesa-dri (= 11.0.5-1ubuntu2); however:
+  Version of libgl1-mesa-dri:amd64 on system is 10.1.3-0ubuntu0.5.
+
+dpkg: error processing package libegl1-mesa:amd64 (--install):
+ dependency problems - leaving unconfigured
+Setting up libgeoclue0:amd64 (0.12.99-4ubuntu1) ...
+dpkg: dependency problems prevent configuration of libgstreamer-plugins-base0.10-0:amd64:
+ libgstreamer-plugins-base0.10-0:amd64 depends on libgstreamer0.10-0 (>= 0.10.36); however:
+  Package libgstreamer0.10-0 is not installed.
+ libgstreamer-plugins-base0.10-0:amd64 depends on liborc-0.4-0 (>= 1:0.4.20); however:
+  Package liborc-0.4-0 is not installed.
+
+dpkg: error processing package libgstreamer-plugins-base0.10-0:amd64 (--install):
+ dependency problems - leaving unconfigured
+Setting up libgstreamer1.0-0:amd64 (1.6.1-1) ...
+Failed to set capabilities on file `/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper' (Invalid argument)
+The value of the capability argument is not permitted for a file. Or the file is not a regular (non-symlink) file
+Setcap failed on gst-ptp-helper, falling back to setuid
+dpkg: dependency problems prevent configuration of libharfbuzz-icu0:amd64:
+ libharfbuzz-icu0:amd64 depends on libicu55 (>= 55.1-1~); however:
+  Package libicu55 is not installed.
+
+dpkg: error processing package libharfbuzz-icu0:amd64 (--install):
+ dependency problems - leaving unconfigured
+Processing triggers for libc-bin (2.19-0ubuntu6.6) ...
+Errors were encountered while processing:
+ libjavascriptcoregtk-1.0-0:amd64
+ libegl1-mesa:amd64
+ libgstreamer-plugins-base0.10-0:amd64
+ libharfbuzz-icu0:amd64
+

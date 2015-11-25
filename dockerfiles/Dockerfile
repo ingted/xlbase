@@ -167,7 +167,7 @@ RUN	apt-get -y install \
 	# NEED TO ADD VSFTPD root permission and ENABLE WRITE
 	sed -i.bak -e s/root/#root/g /etc/ftpusers; \
 	sed -i.bak -e s/#write_enable/write_enable/g /etc/vsftpd.conf; \
-	cd /root/Downloads; \
+	cd /addfiles/packages; \
 	wget "http://launchpadlibrarian.net/173841617/init-system-helpers_1.18_all.deb"; \
         dpkg -i init-system-helpers_1.18_all.deb; \
 
@@ -392,20 +392,21 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 	#WORKDIR /root/Downloads/clusterLab/pacemaker
 	cd /root/Downloads/clusterLab/pacemaker; \
+	git clone https://github.com/ClusterLabs/pacemaker.git; \
 	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
 	#apt-get -y install rpm; \
  
 	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
-	cd pacemaker-Pacemaker-1.1.13-rc3; \
-	./autogen.sh; \
-	./configure; \
-	make -j8; \
+	#cd pacemaker-Pacemaker-1.1.13-rc3; \
+	#./autogen.sh; \
+	#./configure; \
+	#make -j8; \
 	
 	mkdir -p /root/Downloads/pash; \
 	cd /root/Downloads/pash; \
 	git clone https://github.com/ingted/Pash.git; \
 	cd Pash; \
-	cp /addfiles/FileSystemProvider.cs ./Source/System.Management/Microsoft.PowerShell/Commands/
+	cp /addfiles/FileSystemProvider.cs ./Source/System.Management/Microsoft.PowerShell/Commands/; \
 	xbuild
 
 ###### Upgrading the operating system inside the container
@@ -653,6 +654,10 @@ RUN chmod 755 /etc/container_environment; \
 	#WORKDIR /root/Downloads/clusterLab/cluster-glue/cluster-glue
 	cd /root/Downloads/clusterLab/cluster-glue/cluster-glue; \
 	#make install; \
+
+
+	cd /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug; \
+	
 
 
 	#WORKDIR /root/Downloads/clusterLab/resource-agents/resource-agents

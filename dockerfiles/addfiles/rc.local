@@ -15,7 +15,8 @@
 #service networking restart
 
 #service dbus start
-export PATH=$PATH:/addfiles/alias
+export PATH=$PATH:/addfiles/alias:/root/Downloads/pash/Pash/Source/PashConsole/bin/Debug:/root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release
+
 bash /docker_scripts/120_dbus.sh
 bash /docker_scripts/130_ha.sh
 
