@@ -222,8 +222,8 @@ RUN  cd /addfiles/mono_new; \
             liborc-0.4-0_0.4.24-1_amd64.deb; \
 
 	dpkg -i libpixman-1-0_0.33.4-1_amd64.deb; \
-	dpkg -i libgraphite2-3_1.2.4-3ubuntu1_amd64.deb; \
 	dpkg -i libharfbuzz0b_1.0.1-1build2_amd64.deb; \
+	dpkg -i libgraphite2-3_1.2.4-3ubuntu1_amd64.deb; \
 
 	dpkg -i libx11-6_1.6.3-1ubuntu2_amd64.deb \
 		libxcb-render0_1.11.1-1ubuntu1_amd64.deb \
@@ -264,26 +264,35 @@ RUN  cd /addfiles/mono_new; \
 
 	dpkg -i liblzo2-2_2.08-1.2_amd64.deb; \
 
+	dpkg -i libnettle6_3.1.1-4_amd64.deb; \
+	dpkg -i librtmp1_2.4+20150115.gita107cef-1build1_amd64.deb \
+		libssl1.0.0_1.0.2d-0ubuntu2_amd64.deb; \
+
+	dpkg -i libgnutls-deb0-28_3.3.18-1ubuntu1_amd64.deb; \
+
 	dpkg -i --force-all libcurl3_7.45.0-1ubuntu1_amd64.deb \
 		libcurl3-gnutls_7.45.0-1ubuntu1_amd64.deb \
 		libcurl4-gnutls-dev_7.45.0-1ubuntu1_amd64.deb \
 		libnss3_3.19.2.1-0ubuntu1_amd64.deb \
-		libcurl3-nss_7.45.0-1ubuntu1_amd64.deb \
-		libcurl4-nss-dev_7.45.0-1ubuntu1_amd64.deb; \
+		libcurl3-nss_7.45.0-1ubuntu1_amd64.deb; \
+		#libcurl4-nss-dev_7.45.0-1ubuntu1_amd64.deb; \
 
 	dpkg -i libcurl3_7.45.0-1ubuntu1_amd64.deb \
 		libcurl3-gnutls_7.45.0-1ubuntu1_amd64.deb \
 		libcurl4-gnutls-dev_7.45.0-1ubuntu1_amd64.deb \
 		libnss3_3.19.2.1-0ubuntu1_amd64.deb \
-		libcurl3-nss_7.45.0-1ubuntu1_amd64.deb \
-		libcurl4-nss-dev_7.45.0-1ubuntu1_amd64.deb; \
+		libcurl3-nss_7.45.0-1ubuntu1_amd64.deb; \
+		#libcurl4-nss-dev_7.45.0-1ubuntu1_amd64.deb; \
 
 
 
         dpkg -i libarchive13_3.1.2-11build1_amd64.deb; \
-        dpkg -i libnettle6_3.1.1-4_amd64.deb \
-            cmake-data_3.3.2is3.2.2-0ubuntu2_all.deb \
+        #dpkg -i libnettle6_3.1.1-4_amd64.deb \
+        dpkg -i cmake-data_3.3.2is3.2.2-0ubuntu2_all.deb \
             libjsoncpp0v5_0.10.5-1_amd64.deb; \
+
+
+
         dpkg -i cmake_3.3.2is3.2.2-0ubuntu2_amd64.deb; \
         dpkg -i libgmp10_6.1.0+dfsg-2_amd64.deb \
             libhogweed4_3.1.1-4_amd64.deb \
@@ -294,8 +303,8 @@ RUN  cd /addfiles/mono_new; \
         dpkg -i libdconf1_0.24.0-2_amd64.deb; \
         dpkg -i dconf-gsettings-backend_0.24.0-2_amd64.deb; \
 
-        dpkg -i libgnutls-deb0-28_3.3.18-1ubuntu1_amd64.deb \
-            libproxy1v5_0.4.11-4ubuntu3~gcc5.3_amd64.deb \
+        #dpkg -i libgnutls-deb0-28_3.3.18-1ubuntu1_amd64.deb \
+        dpkg -i libproxy1v5_0.4.11-4ubuntu3~gcc5.3_amd64.deb \
             gsettings-desktop-schemas_3.18.1-1ubuntu1_all.deb; \
 
 
