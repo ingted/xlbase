@@ -55,10 +55,10 @@ make_image()
  	echo "  mkdir -p /root/pcmk; \\" 						>> Dockerfile
         echo "  cd /root/pcmk; \\" 							>> Dockerfile
         echo "  git init; \\" 								>> Dockerfile
-        echo "  git remote add -f orgin https://github.com/ingted/xlbase.git; \\" 	>> Dockerfile
+        echo "  git remote add -f origin https://github.com/ingted/xlbase.git; \\" 	>> Dockerfile
         echo "  git config core.sparseCheckout true; \\"				>> Dockerfile
-        echo "  echo "cluster/" >> .git/info/sparse-checkout; \\"			>> Dockerfile
-        echo "  git pull origin backToOrigin; \\"					>> Dockerfile
+        echo "  echo \"cluster/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
+        echo "  git pull origin backToOrigin"						>> Dockerfile
 
 	echo "ADD ./pcsd /root/pcsds" 							>> Dockerfile
 
