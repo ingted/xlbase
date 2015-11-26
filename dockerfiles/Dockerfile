@@ -47,7 +47,7 @@ RUN mkdir -p /addfiles; \
 	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	apt-get -y update; \
 	#apt-get -y install apt-transport-https dbus binfmt-support llvm udev binutils libgmp-dev || true; \
-	apt-get -y install apt-transport-https       binfmt-support llvm udev binutils libgmp-dev || true; \
+	apt-get -y install apt-transport-https       binfmt-support llvm udev binutils libgmp-dev wget || true; \
         sed -i.bak -e s/BEGIN\ INIT\ INFO/BEGIN\ INIT\ INFO\\\nexit\ 0\\\n/g  /etc/init.d/udev; \
 	ls -l /usr/lib/apt/methods/https; \
 	cp /usr/lib/apt/methods/https /root/Downloads/https; \
@@ -103,10 +103,71 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 	dpkg -i libsystemd0_228-2ubuntu1_amd64.deb; \ 
 	dpkg -i libdbus-1-3_1.10.4-1ubuntu2_amd64.deb; \
         dpkg -i libcap-ng0_0.7.7-1_amd64.deb; \
-	dpkg -i init-system-helpers_1.24ubuntu2_all.deb; \
-	dpkg -i upstart_1.13.2-0ubuntu17_amd64.deb; \
+	dpkg -i libfreetype6_2.5.2-4ubuntu2_amd64.deb; \
+        dpkg -i ttf-bitstream-vera_1.10-8_all.deb;\
+        dpkg -i gsfonts_8.11+urwcyr1.0.7~pre44-4.2ubuntu1_all.deb; \
+        dpkg -i libfontenc1_1.1.3-1_amd64.deb \
+                libxfont1_1.5.1-1_amd64.deb \
+                x11-common_7.7+12ubuntu1_all.deb \
+                xfonts-encodings_1.0.4-2_all.deb; \
+        dpkg -i xfonts-utils_7.7+3_amd64.deb; \
+        dpkg -i gsfonts-x11_0.23_all.deb; \
+        dpkg -i fonts-dejavu-core_2.35-1_all.deb; \
+        #apt-get -y install ttf-dejavu fonts-dejavu; \
+
+        dpkg -i fontconfig-config_2.11.1-0ubuntu6_all.deb; \
+        dpkg -i libfontconfig1_2.11.1-0ubuntu6_amd64.deb; \
+
+
+        dpkg -i fontconfig_2.11.1-0ubuntu6_amd64.deb; \
+        dpkg -i init-system-helpers_1.18_all.deb; \
+        dpkg -i ureadahead_0.100.0-19_amd64.deb; \
+        dpkg -i --force-confnew dpkg_1.18.3ubuntu1_amd64.deb; \
+
+
+        dpkg -i --force-all perl-modules_5.20.2-6_all.deb \
+            perl-base_5.20.2-6_amd64.deb \
+            cli-common_0.9+nmu1_all.deb \
+            perl_5.20.2-6_amd64.deb; \
+
+	
+        dpkg -i perl-modules_5.20.2-6_all.deb \
+            perl-base_5.20.2-6_amd64.deb \
+            cli-common_0.9+nmu1_all.deb \
+            perl_5.20.2-6_amd64.deb; \
+	
+	dpkg -i xkb-data_2.10.1-1ubuntu1_all.deb \
+		kbd_1.15.5-1ubuntu4_amd64.deb \
+		liblocale-gettext-perl_1.07-1_amd64.deb; \
+
+	dpkg -i --force-all keyboard-configuration_1.108ubuntu9_all.deb \
+		console-setup_1.108ubuntu9_all.deb \
+		console-setup-linux_1.108ubuntu9_all.deb; \
+
+	dpkg -i initramfs-tools-bin_0.120ubuntu6_amd64.deb; \
+
+	dpkg -i libcgmanager0_0.39-2ubuntu2_amd64.deb \
+		initramfs-tools_0.120ubuntu6_all.deb; \
+	
+	dpkg -i --force-all upstart_1.13.2-0ubuntu17_amd64.deb \
+		init-system-helpers_1.24ubuntu2_all.deb; \
+
+	dpkg -i upstart_1.13.2-0ubuntu17_amd64.deb \
+		init-system-helpers_1.24ubuntu2_all.deb; \
+
         dpkg -i --auto-deconfigure lsb-base_9.20150917ubuntu1_all.deb || true; \
 
+	dpkg -i keyboard-configuration_1.108ubuntu9_all.deb \
+		console-setup_1.108ubuntu9_all.deb \
+		console-setup-linux_1.108ubuntu9_all.deb; \
+
+	### Your console font configuration will be updated the next time your system
+	### boots. If you want to update it now, run 'setupcon' from a virtual console.
+	### update-initramfs: deferring update (trigger activated)
+	
+	#setupcon; \
+
+	### We are not on the console, the console is left unconfigured.
 	dpkg -i dbus_1.10.4-1ubuntu2_amd64.deb; \
 	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"; \
         bash /docker_scripts/120_dbus.sh; \
