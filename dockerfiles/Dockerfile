@@ -222,13 +222,19 @@ RUN  cd /addfiles/mono_new; \
             liborc-0.4-0_0.4.24-1_amd64.deb; \
 
 	dpkg -i libpixman-1-0_0.33.4-1_amd64.deb; \
-	dpkg -i libharfbuzz0b_1.0.1-1build2_amd64.deb; \
-	dpkg -i libgraphite2-3_1.2.4-3ubuntu1_amd64.deb; \
+	dpkg -i --force-all libharfbuzz0b_1.0.1-1build2_amd64.deb \
+		 libgraphite2-3_1.2.4-3ubuntu1_amd64.deb; \
+
+	dpkg -i libharfbuzz0b_1.0.1-1build2_amd64.deb \
+		 libgraphite2-3_1.2.4-3ubuntu1_amd64.deb; \
+
+	dpkg -i libx11-data_1.6.3-1ubuntu2_all.deb; \
 
 	dpkg -i libx11-6_1.6.3-1ubuntu2_amd64.deb \
 		libxcb-render0_1.11.1-1ubuntu1_amd64.deb \
-		libxcb-shm0_1.11.1-1ubuntu1_amd64.deb.1 \
-		libxext6_1.3.3-1_amd64.deb \
+		libxcb-shm0_1.11.1-1ubuntu1_amd64.deb; \
+
+	dpkg -i libxext6_1.3.3-1_amd64.deb \
 		libxrender1_0.9.9-0ubuntu1_amd64.deb; \
 
 	dpkg -i libx11-xcb1_1.6.3-1ubuntu2_amd64.deb \
@@ -269,6 +275,9 @@ RUN  cd /addfiles/mono_new; \
 		libssl1.0.0_1.0.2d-0ubuntu2_amd64.deb; \
 
 	dpkg -i libgnutls-deb0-28_3.3.18-1ubuntu1_amd64.deb; \
+
+	dpkg -i libnspr4_4.10.10-1ubuntu1_amd64.deb \
+		libnspr4-0d_4.10.10-1ubuntu1_amd64.deb; \
 
 	dpkg -i --force-all libcurl3_7.45.0-1ubuntu1_amd64.deb \
 		libcurl3-gnutls_7.45.0-1ubuntu1_amd64.deb \
