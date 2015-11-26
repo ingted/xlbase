@@ -694,6 +694,14 @@ RUN chmod 755 /etc/container_environment; \
 	bash -c 'echo "postgres ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "voltdb ALL=(ALL)    ALL" >> /etc/sudoers'; \	
+	cp /addfiles/pash /usr/sbin; \
+	mkdir -p /root/alias; \
+	cd /root/alias; \
+	git init; \
+	git remote add -f orgin https://github.com/ingted/xlbase.git; \
+	git config core.sparseCheckout true; \
+	echo "dynamic/" >> .git/info/sparse-checkout; \
+	git pull origin backToOrigin; \
 	apt-get clean; \
 	rm -rf /tmp/* /var/tmp/*; \
 	rm -rf /var/lib/apt/lists/*; \

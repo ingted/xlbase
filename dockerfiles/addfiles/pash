@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pash=$(which Pash.exe)
+mono $pash

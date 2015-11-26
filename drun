@@ -1,5 +1,8 @@
 #!/bin/bash
 
+if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
+if [ ! -e /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
+
 if [ "$#" == "3" ]; then
 	if [ "$1" == "-d" ]; then
 		docker run -d $2 $3
