@@ -698,9 +698,9 @@ RUN chmod 755 /etc/container_environment; \
 	mkdir -p /root/alias; \
 	cd /root/alias; \
 	git init; \
-	git remote add -f orgin https://github.com/ingted/xlbase.git; \
+	git remote add -f origin https://github.com/ingted/xlbase.git; \
 	git config core.sparseCheckout true; \
-	echo "dynamic/" >> .git/info/sparse-checkout; \
+	echo "dynamic/*" >> .git/info/sparse-checkout; \
 	git pull origin backToOrigin; \
 	apt-get clean; \
 	rm -rf /tmp/* /var/tmp/*; \
