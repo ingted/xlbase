@@ -341,10 +341,7 @@ RUN  cd /addfiles/mono_new; \
 		libgdk-pixbuf2.0-0_2.32.2-1ubuntu1_amd64.deb \
 		libgl1-mesa-glx_11.0.5-1ubuntu2_amd64.deb \
 		libgtk2.0-0_2.24.28-1ubuntu1_amd64.deb \
-		libgtk-3-0_3.18.5-1ubuntu1_amd64.deb \
-		libjpeg8_8c-2ubuntu8_amd64.deb \
-		libpango-1.0-0_1.38.1-1_amd64.deb \
-		libsecret-1-0_0.18.3-1_amd64.deb; \	
+		libgtk-3-0_3.18.5-1ubuntu1_amd64.deb; \
 
         dpkg -i libwebkitgtk-1.0-0_2.4.9-2ubuntu2_amd64.deb; \
         dpkg -i monodevelop_5.5.0.227-1_all.deb
