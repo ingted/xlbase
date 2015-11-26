@@ -318,8 +318,7 @@ RUN  cd /addfiles/mono_new; \
             #libhogweed4_3.1.1-4_amd64.deb \
 
 
-	#apt-get clean; \
-	#apt-get update; \
+
 
         dpkg -i libdconf1_0.24.0-2_amd64.deb; \
 	dpkg -i dconf-service_0.24.0-2_amd64.deb; \
@@ -360,6 +359,8 @@ RUN  cd /addfiles/mono_new; \
 		libtext-iconv-perl_1.7-5build3_amd64.deb \
 		libtext-soundex-perl_3.4-1build2_amd64.deb; \
 	
+	apt-get clean; \
+	apt-get update; \
 	apt-get -f --force-yes --yes install; \
 
 	dpkg -i libatk1.0-data_2.18.0-1_all.deb \
