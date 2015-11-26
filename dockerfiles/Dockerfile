@@ -77,7 +77,7 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/gnu/libgnutls-deb0.so.28   /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libhogweed.so.2        /usr/lib/x86_64-linux-gnu/; \   
 	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; \
-	cp /addfiles/dbus-1/			/usr/share/ -rf
+	cp -rf /addfiles/dbus-1			/usr/share/
 
 
 
@@ -182,8 +182,9 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 	bash -c "if [ -e /usr/lib/x86_64-linux-gnu/libgmp.so.10.1.3 ]; then ln -snf /usr/lib/x86_64-linux-gnu/libgmp.so.10.1.3 /usr/lib/x86_64-linux-gnu/libgmp.so.10; fi"
 
 RUN  cd /addfiles/mono_new; \
-        dpkg -i libxml2_2.9.2+zdfsg1-4ubuntu1_amd64.deb; \
-        dpkg -i libicu55_55.1-6ubuntu1_amd64.deb; \
+        dpkg -i --force-all libxml2_2.9.2+zdfsg1-4ubuntu1_amd64.deb \
+		libicu55_55.1-6ubuntu1_amd64.deb; \
+
         dpkg -i libglib2.0-0_2.47.1-1_amd64.deb; \
 
 	dpkg -i libgstreamer0.10-0_0.10.36-1.5ubuntu1_amd64.deb; \
@@ -191,6 +192,10 @@ RUN  cd /addfiles/mono_new; \
             libllvm3.6v5_3.6.2-3build1_amd64.deb \
             libstdc++6_5.2.1-23ubuntu1_amd64.deb \
             gcc-5-base_5.2.1-23ubuntu1_amd64.deb; \
+
+        dpkg -i libxml2_2.9.2+zdfsg1-4ubuntu1_amd64.deb \
+		libicu55_55.1-6ubuntu1_amd64.deb; \
+
         dpkg -i libffi6_3.2.1-3_amd64.deb; \
         dpkg -i libwayland-client0_1.9.0-1_amd64.deb; \
         dpkg -i libdrm2_2.4.65-3_amd64.deb; \
@@ -217,7 +222,18 @@ RUN  cd /addfiles/mono_new; \
             liborc-0.4-0_0.4.24-1_amd64.deb; \
 
 	dpkg -i libpixman-1-0_0.33.4-1_amd64.deb; \
+	dpkg -i libgraphite2-3_1.2.4-3ubuntu1_amd64.deb; \
 	dpkg -i libharfbuzz0b_1.0.1-1build2_amd64.deb; \
+
+	dpkg -i libx11-6_1.6.3-1ubuntu2_amd64.deb \
+		libxcb-render0_1.11.1-1ubuntu1_amd64.deb \
+		libxcb-shm0_1.11.1-1ubuntu1_amd64.deb.1 \
+		libxext6_1.3.3-1_amd64.deb \
+		libxrender1_0.9.9-0ubuntu1_amd64.deb; \
+
+	dpkg -i libx11-xcb1_1.6.3-1ubuntu2_amd64.deb \
+		libxcb-dri2-0_1.11.1-1ubuntu1_amd64.deb; \
+
         dpkg -i --force-all libjavascriptcoregtk-1.0-0_2.4.9-2ubuntu2_amd64.deb \
             libcairo2_1.14.4-1_amd64.deb \
             libegl1-mesa_11.0.5-1ubuntu2_amd64.deb \
@@ -248,7 +264,7 @@ RUN  cd /addfiles/mono_new; \
 
 	dpkg -i liblzo2-2_2.08-1.2_amd64.deb; \
 
-	dpkg -i --force libcurl3_7.45.0-1ubuntu1_amd64.deb \
+	dpkg -i --force-all libcurl3_7.45.0-1ubuntu1_amd64.deb \
 		libcurl3-gnutls_7.45.0-1ubuntu1_amd64.deb \
 		libcurl4-gnutls-dev_7.45.0-1ubuntu1_amd64.deb \
 		libnss3_3.19.2.1-0ubuntu1_amd64.deb \
@@ -283,10 +299,15 @@ RUN  cd /addfiles/mono_new; \
             gsettings-desktop-schemas_3.18.1-1ubuntu1_all.deb; \
 
 
+        dpkg -i libsoup2.4-1_2.52.2-1_amd64.deb; \
 
         dpkg -i glib-networking_2.46.1-1_amd64.deb \
             glib-networking-common_2.46.1-1_all.deb \
             glib-networking-services_2.46.1-1_amd64.deb; \
-        dpkg -i libsoup2.4-1_2.52.2-1_amd64.deb; \
+
         dpkg -i libwebkitgtk-1.0-0_2.4.9-2ubuntu2_amd64.deb; \
         dpkg -i monodevelop_5.5.0.227-1_all.deb
+
+	dpkg -i libtext-charwidth-perl_0.04-7build4_amd64.deb \
+		libtext-iconv-perl_1.7-5build3_amd64.deb \
+		libtext-soundex-perl_3.4-1build2_amd64.deb; \
