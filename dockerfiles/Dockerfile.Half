@@ -154,6 +154,12 @@ RUN     apt-get -y update; \
 	    libllvm3.6v5_3.6.2-3build1_amd64.deb \
 	    libstdc++6_5.2.1-23ubuntu1_amd64.deb \
 	    gcc-5-base_5.2.1-23ubuntu1_amd64.deb; \
+	dpkg -i libffi6_3.2.1-3_amd64.deb; \
+	dpkg -i libwayland-client0_1.9.0-1_aimd64.deb; \
+	dpkg -i libdrm2_2.4.65-3_amd64.deb; \
+	dpkg -i libdrm-nouveau2_2.4.65-3_amd64.deb; \
+	dpkg -i libelf1_0.163-5.1_amd64.deb; \
+	dpkg -i libdrm-intel1_2.4.65-3_amd64.deb; \
 	dpkg -i libgbm1_11.0.5-1ubuntu2_amd64.deb \
 	    libwayland-server0_1.9.0-1_amd64.deb \
 	    libxcb-xfixes0_1.11.1-1ubuntu1_amd64.deb \
@@ -176,7 +182,11 @@ RUN     apt-get -y update; \
 	dpkg -r cmake; \
 	dpkg -r libarchive13; \
 	dpkg -r libnettle4; \
+
+	dpkg -i libxml2_2.9.2+zdfsg1-4ubuntu1_amd64.deb \
+		liblzo2-2_2.08-1.2_amd64.deb; \
 	
+	dpkg -i libarchive13_3.1.2-11build1_amd64.deb; \
 	dpkg -i libnettle6_3.1.1-4_amd64.deb \
 	    cmake-data_3.3.2is3.2.2-0ubuntu2_all.deb \
 	    libjsoncpp0v5_0.10.5-1_amd64.deb; \
@@ -185,10 +195,17 @@ RUN     apt-get -y update; \
 	    libhogweed4_3.1.1-4_amd64.deb \
 	    libp11-kit0_0.23.1-3_amd64.deb \
 	    libtasn1-6_4.7-2_amd64.deb; \
-	dpkg -i libarchive13_3.1.2-11build1_amd64.deb; \
+
+
+	dpkg -i libdconf1_0.24.0-2_amd64.deb; \
+	dpkg -i dconf-gsettings-backend_0.24.0-2_amd64.deb; \
+	
 	dpkg -i libgnutls-deb0-28_3.3.18-1ubuntu1_amd64.deb \
 	    libproxy1v5_0.4.11-4ubuntu3~gcc5.3_amd64.deb \
 	    gsettings-desktop-schemas_3.18.1-1ubuntu1_all.deb; \
+
+	dpkg -i libglib2.0-0_2.47.1-1_amd64.deb; \ 
+
 	dpkg -i glib-networking_2.46.1-1_amd64.deb \
 	    glib-networking-common_2.46.1-1_all.deb \
 	    glib-networking-services_2.46.1-1_amd64.deb; \

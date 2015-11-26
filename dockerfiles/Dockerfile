@@ -76,7 +76,8 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/gnu/libnettle.so.4         /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libgnutls-deb0.so.28   /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libhogweed.so.2        /usr/lib/x86_64-linux-gnu/; \   
-	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/
+	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; \
+	cp /addfiles/dbus-1			/usr/share/ -rf
 
 
 
