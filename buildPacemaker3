@@ -1,0 +1,99 @@
+#!/bin/bash
+
+function main () {
+	if [ "$nm" == "" ]; then
+		nm=ttc
+	fi 
+	
+	if [ "$image" == "" ]; then
+		image=robotica/pcmk_ubuntu:0.5.0
+	fi
+
+	if [ "$ip" == "" ]; then
+		ip=192.168.123.99
+	fi
+
+	if [ "$svcstart" != "1" ]; then
+		svcstart=0
+	fi
+
+	if [ "$ifbind" != "1" ]; then
+		ifbind=0
+	fi
+
+	if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
+	if [ ! -e /proc/sys/fs/binfmt_misc/CLR ] && [ -e /usr/bin/mono ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
+	
+	
+	drm -f "$nm"
+	docker run -dit --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- bash -l
+	docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
+	docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
+	docker exec -d "$nm" sed -i.bak -e s/#Port\ 22/Port\ 22/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep \#Port
+	docker exec -d "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep ListenAddress
+	docker exec -d "$nm" rm /var/run/dbus/system_bus_socket
+	docker exec -d "$nm" service dbus start
+	docker exec -d "$nm" bash -c "echo \"$nm\" > /whoami"
+	docker exec "$nm" cat /whoami
+	docker exec "$nm" hostnamectl set-hostname "$nm"
+	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
+	localhostnm=$(hostname)
+	docker exec "$nm" /root/pcsd.sh "$localhostnm"
+	
+	
+	echo \[\!ID_DONE\]
+	
+	if [ "$svcstart" == "1" ]; then 
+	
+	  docker exec -d "$nm" service corosync start
+	  sleep 6
+	  docker exec -d "$nm" service pacemaker start
+	  sleep 6
+	  docker exec -d "$nm" pcs property set stonith-enabled=false
+	  echo \[\!EX_DONE\]
+	
+	fi
+	
+	if [ "$ifbind" == "0" ]; then
+		echo No attach
+	else
+		echo "dbind $nm"
+		dbind "$nm"
+	fi
+}
+
+
+function helptext() {
+	echo ""
+        echo "buildPacemaker3 - A tool for start a pacemaker xlbase image."
+        echo ""
+        echo "Usage: buildPacemaker3 [options]"
+        echo ""
+        echo "Options:"
+        echo "-n, --nm, --name         \"Container name\""
+        echo "-i, --img, --image       Docker image name or ID"
+        echo "-a, --ssh-addr           ssh ip"
+        echo "-b, --bind               If bind this container immediately"
+
+        echo ""
+        exit $1
+}
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+        -n|--nm|--name) nm="$2"; shift; shift;;
+        -i|--img|--image) image=$2; shift; shift;;
+        -a|--ssh-addr) ip=$2; shift; shift;;
+        -p|--pcmk|--pcmk-start) svcstart=1; shift;;
+        -b|--bind) ifbind=1; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+if [ "$#" != "0" ]; then 
+	main
+fi

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-from="robotica/xlbase:0.6.4-no-pcmk"
-dtag="robotica/pcmk_ubuntu:0.6.1"
+from="robotica/xlbase:0.7.0a"
+dtag="robotica/pcmk_ubuntu:0.7.0a"
 debs=""
 corosync_config=""
 export_file=""
@@ -17,13 +17,13 @@ make_image()
 		corosync_config="./defaults/corosync.conf"
 	fi
 
-	echo "FROM $from" > Dockerfile
+	echo "FROM $from" 								> Dockerfile
 
 	#rm -rf repos
 	mkdir -p $parent/repos
 	if [ -n "$repodir" ]; then
 		cp $repodir/* $parent/repos/
-		echo "ADD ./repos /etc/apt.repos.d/" >> Dockerfile
+		echo "ADD ./repos /etc/apt.repos.d/" 					>> Dockerfile
 	fi
 
 	#rm -rf debs 
@@ -32,26 +32,35 @@ make_image()
 		cp $debdir/* ./debs/
 	fi
 	#echo "ADD ./debs /root/debs" >> Dockerfile
-	echo "RUN mkdir -p /addfiles/packages_pcmk" >> Dockerfile
+	echo "RUN mkdir -p /addfiles/packages_pcmk" 					>> Dockerfile
 	
 	#for f in $(ls $parent/debs/); do
 	#	echo "ADD $parent/debs/$f /root/debs/$f"
 	#	echo "ADD ./debs/$f /root/debs/$f" >> Dockerfile
 	#done
 	
-	echo "ADD ./debs/ /addfiles/packages_pcmk" >> Dockerfile
-	echo "ADD ./helper_scripts /usr/sbin" >> Dockerfile
-	echo "ADD ./pcsd.sh /root/pcsd.sh" >> Dockerfile
-	echo "ADD $corosync_config /etc/corosync/" >> Dockerfile
-	echo "ADD ./functions /lib/lsb/init-functions" >> Dockerfile
+	echo "ADD ./debs/ /addfiles/packages_pcmk" 					>> Dockerfile
+	echo "ADD ./helper_scripts /usr/sbin" 						>> Dockerfile
+	echo "ADD ./pcsd.sh /root/pcsd.sh" 						>> Dockerfile
+	echo "ADD $corosync_config /etc/corosync/" 					>> Dockerfile
+	echo "ADD ./functions /lib/lsb/init-functions" 					>> Dockerfile
 	
 
-	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" >> Dockerfile
-	echo "	apt-get -y update; apt-get -y upgrade; \\" >> Dockerfile
-	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \\" >> Dockerfile
-	echo "	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions" >> Dockerfile
+	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" 				>> Dockerfile
+	echo "	apt-get -y update; apt-get -y upgrade; \\" 				>> Dockerfile
+	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \\" 			>> Dockerfile
+	echo "	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions; \\" 		>> Dockerfile
 
-	echo "ADD ./pcsd /root/pcsds" >> Dockerfile
+
+ 	echo "  mkdir -p /root/pcmk; \\" 						>> Dockerfile
+        echo "  cd /root/pcmk; \\" 							>> Dockerfile
+        echo "  git init; \\" 								>> Dockerfile
+        echo "  git remote add -f orgin https://github.com/ingted/xlbase.git; \\" 	>> Dockerfile
+        echo "  git config core.sparseCheckout true; \\"				>> Dockerfile
+        echo "  echo "cluster/" >> .git/info/sparse-checkout; \\"			>> Dockerfile
+        echo "  git pull origin backToOrigin; \\"					>> Dockerfile
+
+	echo "ADD ./pcsd /root/pcsds" 							>> Dockerfile
 
 	###@ not mod system now @###
 	#echo "RUN cp /root/pcsds/* /usr/share/pcsd -f" >> Dockerfile

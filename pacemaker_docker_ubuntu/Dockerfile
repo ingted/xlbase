@@ -1,4 +1,4 @@
-FROM robotica/xlbase:0.6.4-no-pcmk
+FROM robotica/xlbase:0.7.0a
 RUN mkdir -p /addfiles/packages_pcmk
 ADD ./debs/ /addfiles/packages_pcmk
 ADD ./helper_scripts /usr/sbin
@@ -9,4 +9,11 @@ RUN bash /addfiles/packages_pcmk/do.sh; \
 	apt-get -y update; apt-get -y upgrade; \
 	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \
 	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions
+  mkdir -p /root/pcmk; \
+  cd /root/pcmk; \
+  git init; \
+  git remote add -f orgin https://github.com/ingted/xlbase.git; \
+  git config core.sparseCheckout true; \
+  echo cluster/ >> .git/info/sparse-checkout; \
+  git pull origin backToOrigin; \
 ADD ./pcsd /root/pcsds

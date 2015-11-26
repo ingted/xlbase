@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -e s/AL2015/$(hostname)/g /etc/hosts > /etc/ttc
+sed -e s/$1/$(hostname)/g /etc/hosts > /etc/ttc
 
 sed -i.bak '/xl95gtmsby/d' /etc/ttc
 sed -i.bak '/xl95cd1/d' /etc/ttc
