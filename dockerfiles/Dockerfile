@@ -102,6 +102,11 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 	dpkg -i libgcrypt20_1.6.4-3_amd64.deb; \
 	dpkg -i libsystemd0_228-2ubuntu1_amd64.deb; \ 
 	dpkg -i libdbus-1-3_1.10.4-1ubuntu2_amd64.deb; \
+        dpkg -i libcap-ng0_0.7.7-1_amd64.deb; \
+	dpkg -i init-system-helpers_1.24ubuntu2_all.deb; \
+	dpkg -i upstart_1.13.2-0ubuntu17_amd64.deb; \
+        dpkg -i --auto-deconfigure lsb-base_9.20150917ubuntu1_all.deb || true; \
+
 	dpkg -i dbus_1.10.4-1ubuntu2_amd64.deb; \
 	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"; \
         bash /docker_scripts/120_dbus.sh; \
