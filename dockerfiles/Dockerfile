@@ -335,8 +335,8 @@ RUN  cd /addfiles/mono_new; \
 
         dpkg -i libsoup2.4-1_2.52.2-1_amd64.deb; \
 
-	dpkg -i libatk1.0-data_2.18.0-1_all.deb; \
-	dpkg -i libatk1.0-0_2.18.0-1_amd64.deb \
+	dpkg -i --force-all libatk1.0-data_2.18.0-1_all.deb \
+		libatk1.0-0_2.18.0-1_amd64.deb \
 		libenchant1c2a_1.6.0-10.1build1_amd64.deb \
 		libgdk-pixbuf2.0-0_2.32.2-1ubuntu1_amd64.deb \
 		libgl1-mesa-glx_11.0.5-1ubuntu2_amd64.deb \
@@ -346,9 +346,33 @@ RUN  cd /addfiles/mono_new; \
 		libpango-1.0-0_1.38.1-1_amd64.deb \
 		libsecret-1-0_0.18.3-1_amd64.deb; \	
 
-        dpkg -i libwebkitgtk-1.0-0_2.4.9-2ubuntu2_amd64.deb; \
-        dpkg -i monodevelop_5.5.0.227-1_all.deb
+        dpkg -i --force-all libwebkitgtk-1.0-0_2.4.9-2ubuntu2_amd64.deb || true; \
+        dpkg -i --force-all monodevelop_5.5.0.227-1_all.deb || true
+
+	dpkg -i --force-all libtext-charwidth-perl_0.04-7build4_amd64.deb \
+		libtext-iconv-perl_1.7-5build3_amd64.deb \
+		libtext-soundex-perl_3.4-1build2_amd64.deb || true; \
+	
+	apt-get -f --force-yes --yes install
+
+	dpkg -i libatk1.0-data_2.18.0-1_all.deb \
+		libatk1.0-0_2.18.0-1_amd64.deb \
+		libenchant1c2a_1.6.0-10.1build1_amd64.deb \
+		libgdk-pixbuf2.0-0_2.32.2-1ubuntu1_amd64.deb \
+		libgl1-mesa-glx_11.0.5-1ubuntu2_amd64.deb \
+		libgtk2.0-0_2.24.28-1ubuntu1_amd64.deb \
+		libgtk-3-0_3.18.5-1ubuntu1_amd64.deb \
+		libjpeg8_8c-2ubuntu8_amd64.deb \
+		libpango-1.0-0_1.38.1-1_amd64.deb \
+		libsecret-1-0_0.18.3-1_amd64.deb; \	
+
+        dpkg -i libwebkitgtk-1.0-0_2.4.9-2ubuntu2_amd64.deb || true; \
+        dpkg -i monodevelop_5.5.0.227-1_all.deb || true
 
 	dpkg -i libtext-charwidth-perl_0.04-7build4_amd64.deb \
 		libtext-iconv-perl_1.7-5build3_amd64.deb \
-		libtext-soundex-perl_3.4-1build2_amd64.deb; \
+		libtext-soundex-perl_3.4-1build2_amd64.deb || true; \
+	
+	apt-get -f --force-yes --yes install
+
+	
