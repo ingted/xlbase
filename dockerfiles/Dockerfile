@@ -215,11 +215,14 @@ RUN	apt-get -y install \
 
 	#apt-get -y install monodevelop; \
 	mkdir -p /root/Downloads/fs; \
+	mkdir -p /root/Downloads/corosync; \
 	mkdir -p /root/Downloads/clusterLab/libqb; \
 	mkdir -p /root/Downloads/clusterLab/corosync; \
 	mkdir -p /root/Downloads/clusterLab/cluster-glue; \
 	mkdir -p /root/Downloads/clusterLab/resource-agents; \
 	mkdir -p /root/Downloads/clusterLab/pacemaker; \
+	mkdir -p /root/Downloads/clusterLab/crmsh; \
+	mkdir -p /root/Downloads/clusterLab/pcs; \
 	mozroots --import --sync; \
 
 	#WORKDIR /root/Downloads/fs
@@ -271,15 +274,26 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 #RUN apt-get -y install g++-5
 
+	cd /root/Downloads/clusterLab/; \
+	git clone https://github.com/ingted/clusterLab.git; \
+	
+	
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
 	cd /root/Downloads/clusterLab/libqb; \
+	git clone https://github.com/ClusterLabs/libqb.git; \
 	wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
 	tar xpvf ./v0.17.2.tar.gz; \
 	cd libqb-0.17.2; \
 	./autogen.sh; \
 	./configure; \
 	make -j8; \
+
+	cd /root/Downloads/clusterLab/libqb/libqb; \
+        ./autogen.sh; \
+        ./configure; \
+        make -j8; \
+
 
 	apt-get -y install software-properties-common libnss3-dev groff mercurial uuid-dev snmpd \
 		#pacemaker-mgmt cluster-glue-dev 
@@ -309,6 +323,10 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 	#WORKDIR /root/Downloads/clusterLab/corosync
 	cd /root/Downloads/clusterLab/corosync; \
+	git clone https://github.com/ClusterLabs/corosync.git; \
+
+	cd /root/Downloads/corosync; \
+	git clone https://github.com/corosync/corosync.git; \
 	wget "https://github.com/corosync/corosync/archive/v2.3.5.tar.gz"; \
 
 	tar zxvf ./v2.3.5.tar.gz; \
@@ -332,9 +350,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	make -j8; \
 
 
-	mkdir -p /root/Downloads/clusterLab/resource-agents; \
-	mkdir -p /root/Downloads/clusterLab/crmsh; \
-	mkdir -p /root/Downloads/clusterLab/pcs; \
+
 	#apt-get -y install snmpd pacemaker-mgmt cluster-glue-dev
 	 
 	
@@ -352,9 +368,15 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 	#WORKDIR /root/Downloads/clusterLab/crmsh
 	cd /root/Downloads/clusterLab/crmsh; \
+	git clone https://github.com/ClusterLabs/crmsh.git; \
 	wget "https://github.com/ClusterLabs/crmsh/archive/2.1.0.tar.gz"; \
 	tar zxvf 2.1.0.tar.gz; \
 	cd crmsh-2.1.0; \ 
+	./autogen.sh; \
+	./configure; \
+	make; \
+
+	cd /root/Downloads/clusterLab/crmsh/crmsh; \
 	./autogen.sh; \
 	./configure; \
 	make; \
@@ -694,15 +716,12 @@ RUN chmod 755 /etc/container_environment; \
 
 	cd /root/Downloads/fs/fsharp/; \
 	make install; \
-	cd src/fsharp/fsi/obj/release; \
-	chmod +x *; \
-	cp * /usr/bin/; \
-	cd src/fsharp/FSharp.Compiler.Interactive.Settings/obj/release; \
-	chmod +x *; \
-        cp * /usr/bin/; \
-	cd src/fsharp/Fsc/obj/release; \	
-	chmod +x *; \
-        cp * /usr/bin/; \
+	chmod +x src/fsharp/fsi/obj/release/*; \
+	cp src/fsharp/fsi/obj/release/* /usr/bin/; \
+	chmod +x src/fsharp/FSharp.Compiler.Interactive.Settings/obj/release/*; \
+        cp src/fsharp/FSharp.Compiler.Interactive.Settings/obj/release/* /usr/bin/; \
+	chmod +x src/fsharp/Fsc/obj/release/*; \
+        cp src/fsharp/Fsc/obj/release/* /usr/bin/; \
 
 
 
