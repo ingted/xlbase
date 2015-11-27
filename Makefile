@@ -3,7 +3,7 @@ include Makefile.inc
 all: base pace uti1
 
 base:
-	@echo -e ">>> base <<<"
+	@echo -e ">>> base <<< $$DISABLEBASE"
 	@./bashrc
 	@export PATH=$$PATH:$$(pwd)
 	@echo -e "\tPATH => $$PATH"
