@@ -87,6 +87,8 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections; \
         echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections; \
         apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D; \
+	echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list; \
+	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A6A19B38D3D831EF; \
 	rm /var/lib/apt/lists/* -vrf
 	#apt-get -y update
 
@@ -135,11 +137,13 @@ RUN	apt-get -y install \
                 	libreadline-dev libselinux-dev libsgml-dtdparse-perl libsnmp-base libsnmp-dev libsqlite3-dev \
                 	libssl-dev libtool libxml2-dev libxml2-utils libxslt1-dev lm-sensors; \
 	apt-get -y install \
-        	monodevelop multiarch-support \
+        	#monodevelop 
+		mono-devel mono-complete multiarch-support \
         	ncurses-dev ntp \
 		openjade1.3 opensp \
 		#oracle-java7-installer oracle-java8-installer \
-        	p7zip p7zip-full pbzip2 pkg-config publican python-lxml; \
+        	p7zip p7zip-full pbzip2 pkg-config publican python-lxml \
+		referenceassemblies-pcl; \
 	#apt-get -y install \
 	#libsystemd-dev 
 	#libtool; \
