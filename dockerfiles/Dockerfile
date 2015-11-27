@@ -196,12 +196,17 @@ RUN	apt-get -y install \
 	#WORKDIR /root/Downloads/pgxl
 	cd /root/Downloads/pgxl; \
 	wget "http://sourceforge.net/projects/postgres-xl/files/Releases/Version_9.2rc/postgres-xl-v9.2-src.tar.gz"; \
+	tar zxvf postgres-xl-v9.2-src.tar.gz; \
+	cd postgres-xl/; \
+	export OSX=/usr/bin/osx; \
+        ./configure --with-python; \
+	make -j8; \
 
 	#ADD ./stormstats.c /root/Downloads/pgxl95/stormstats.c
 	cp /addfiles/stormstats.c /root/Downloads/pgxl95/stormstats.c; \
 
 	#WORKDIR /root/Downloads/pgxl95
-	cd /root/Downloads/pgxl95;\
+	cd /root/Downloads/pgxl95; \
 	git clone git://git.postgresql.org/git/postgres-xl.git; \
 	cp /root/Downloads/pgxl95/stormstats.c /root/Downloads/pgxl95/postgres-xl/contrib/stormstats/; \
 
