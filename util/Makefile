@@ -1,29 +1,30 @@
-NAME = robotica/util
-VERSION = 0.9.17
+include ../Makefile.inc
 
 .PHONY: all build test tag_latest release ssh
 
 all: build
 
 build:
-	docker build -t $(NAME):$(VERSION) --rm image
+	@echo -e ">>> util image <<<"
+	@echo -e "\t---@ $$(pwd)"
+	@if $[ "$(UEN)" == 1 $]; then docker build -t $(UTILNAME):$(UTILVERSION) --rm image; fi
 
 test:
-	env NAME=$(NAME) VERSION=$(VERSION) ./test/runner.sh
+	env NAME=$(UTILNAME) VERSION=$(UTILVERSION) ./test/runner.sh
 
 tag_latest:
-	docker tag -f $(NAME):$(VERSION) $(NAME):latest
+	docker tag -f $(UTILNAME):$(UTILVERSION) $(UTILNAME):latest
 
 release: test tag_latest
-	@if ! docker images $(NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION); then echo "$(NAME) version $(VERSION) is not yet built. Please run 'make build'"; false; fi
+	@if ! docker images $(UTILNAME) | awk '{ print $$2 }' | grep -q -F $(UTILVERSION); then echo -e "$(UTILNAME) version $(UTILVERSION) is not yet built. Please run 'make build'"; false; fi
 	@if ! head -n 1 Changelog.md | grep -q 'release date'; then echo 'Please note the release date in Changelog.md.' && false; fi
-	docker push $(NAME)
-	@echo "*** Don't forget to create a tag. git tag rel-$(VERSION) && git push origin rel-$(VERSION)"
+	docker push $(UTILNAME)
+	@echo -e "*** Don't forget to create a tag. git tag rel-$(UTILVERSION) && git push origin rel-$(UTILVERSION)"
 
 ssh:
 	chmod 600 image/services/sshd/keys/insecure_key
-	@ID=$$(docker ps | grep -F "$(NAME):$(VERSION)" | awk '{ print $$1 }') && \
-		if test "$$ID" = ""; then echo "Container is not running."; exit 1; fi && \
+	@ID=$$(docker ps | grep -F "$(UTILNAME):$(UTILVERSION)" | awk '{ print $$1 }') && \
+		if test "$$ID" = ""; then echo -e "Container is not running."; exit 1; fi && \
 		IP=$$(docker inspect $$ID | grep IPAddr | sed 's/.*: "//; s/".*//') && \
-		echo "SSHing into $$IP" && \
+		echo -e "SSHing into $$IP" && \
 		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i image/services/sshd/keys/insecure_key root@$$IP

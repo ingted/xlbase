@@ -1,4 +1,4 @@
-FROM robotica/xlbase:0.7.0a
+FROM robotica/pcmk_ubuntu:latest
 RUN mkdir -p /addfiles/packages_pcmk
 ADD ./debs/ /addfiles/packages_pcmk
 ADD ./helper_scripts /usr/sbin
@@ -15,5 +15,4 @@ RUN bash /addfiles/packages_pcmk/do.sh; \
   git remote add -f origin https://github.com/ingted/xlbase.git; \
   git config core.sparseCheckout true; \
   echo "cluster/*" >> .git/info/sparse-checkout; \
-  git pull origin backToOrigin
 ADD ./pcsd /root/pcsds

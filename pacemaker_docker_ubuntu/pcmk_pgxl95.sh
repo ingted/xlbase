@@ -1,14 +1,19 @@
 #!/bin/bash
 
-from="robotica/xlbase:0.7.0a"
-dtag="robotica/pcmk_ubuntu:0.7.0a"
-debs=""
-corosync_config=""
-export_file=""
-parent=$(pwd)
-
 make_image()
 {
+	if [ "$from" == "" ]; then 
+		from="robotica/xlbase:latest"
+	fi
+	
+	if [ "$dtag" == "" ]; then 
+		dtag="robotica/pcmk_ubuntu:latest"
+	fi
+
+	export_file=""
+	parent=$(pwd)
+	
+
 	cd $parent
 	echo "Making Dockerfile"
 	rm -f Dockerfile
@@ -109,6 +114,7 @@ while true ; do
 	-o|--repo-copy) repodir=$2; shift; shift;;
 	-R|--deb-copy) debdir=$2; shift; shift;;
 	-e|--export-file) export_file=$2; shift; shift;;
+	-t|--tag) dtag=$2; shift; shift;;
 	"") break;;
 	*) 
 		echo "unknown option $1"

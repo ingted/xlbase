@@ -1,17 +1,24 @@
-BASENAME = robotica/xlbase
-BASEVERSION = latest
-PACENAME = robotica/pcmk_ubuntu
-PACEVERSION = latest
-UTILNAME = robotica/util
-UTILVERSION = latest
+include Makefile.inc
 
-
-all: base pace util
+all: base pace uti1
 
 base:
-		
+	@echo -e ">>> base <<<"
+	@./bashrc
+	@export PATH=$$PATH:/$$(pwd)
+	@echo -e "\tPATH => $$PATH"
+	@echo -e "\t@ $$(pwd)"
+	@$(MAKE) -C dockerfiles 
 
+pace:
+	@echo -e ">>> pace <<<"
+	@$(MAKE) -C pacemaker_docker_ubuntu
+
+uti1:
+	@echo -e ">>> util <<<"
+	@$(MAKE) -C util
 #test:
+
 
 #tag_latest:
 

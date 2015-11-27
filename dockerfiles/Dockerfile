@@ -143,7 +143,8 @@ RUN	apt-get -y install \
 		openjade1.3 opensp \
 		#oracle-java7-installer oracle-java8-installer \
         	p7zip p7zip-full pbzip2 pkg-config publican python-lxml \
-		referenceassemblies-pcl; \
+		referenceassemblies-pcl \
+		sshpass; \
 	#apt-get -y install \
 	#libsystemd-dev 
 	#libtool; \
@@ -244,7 +245,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	./autogen.sh --prefix=/usr; \
         make; \
 	cd ../; \
-	wget "https://raw.github.com/fsharp/FAKE/master/src/app/FakeLib/ProcessHelper.fs"; \
+	#wget "https://raw.github.com/fsharp/FAKE/master/src/app/FakeLib/ProcessHelper.fs"; \
 
 #	echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
 #	chmod +x /root/Downloads/fs/fsharp/src/fsharp/fsi/obj/release/fsi.exe
@@ -691,6 +692,20 @@ RUN chmod 755 /etc/container_environment; \
 	#make install; \
 	#make install_pcsd install_settings=true; \
 
+	cd /root/Downloads/fs/fsharp/; \
+	make install; \
+	cd src/fsharp/fsi/obj/release; \
+	chmod +x *; \
+	cp * /usr/bin/; \
+	cd src/fsharp/FSharp.Compiler.Interactive.Settings/obj/release; \
+	chmod +x *; \
+        cp * /usr/bin/; \
+	cd src/fsharp/Fsc/obj/release; \	
+	chmod +x *; \
+        cp * /usr/bin/; \
+
+
+
 	mv /etc/init.d/udev.bak /etc/init.d/udev; \
 	mv /usr/sbin/invoke-rc.d.bak /usr/sbin/invoke-rc.d; \
 	bash -c "if [ -e /usr/local/lib/libgpg-error.so.0 ]; then mv /usr/local/lib/libgpg-error.so.0 /usr/local/lib/libgpg-error.so.0.bak; fi" \
@@ -699,6 +714,8 @@ RUN chmod 755 /etc/container_environment; \
 	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "voltdb ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	cp /addfiles/pash /usr/sbin; \
+	cp /addfiles/fsi /usr/sbin; \
+	cp /addfiles/fsc /usr/sbin; \
 	mkdir -p /root/alias; \
 	cd /root/alias; \
 	git init; \
