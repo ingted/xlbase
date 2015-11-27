@@ -79,6 +79,8 @@ function helptext() {
         exit $1
 }
 
+cnt=$#
+
 while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
@@ -94,6 +96,6 @@ while true ; do
         esac
 done
 
-if [ "$#" != "0" ]; then 
+if [ "$cnt" != "0" ]; then 
 	main
 fi
