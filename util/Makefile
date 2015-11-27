@@ -1,4 +1,4 @@
-NAME = phusion/baseimage
+NAME = robotica/util
 VERSION = 0.9.17
 
 .PHONY: all build test tag_latest release ssh
@@ -6,7 +6,7 @@ VERSION = 0.9.17
 all: build
 
 build:
-	docker build --rm image
+	docker build -t $(NAME):$(VERSION) --rm image
 
 test:
 	env NAME=$(NAME) VERSION=$(VERSION) ./test/runner.sh

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /util
+git pull
+cp -rf * /opt
