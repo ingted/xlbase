@@ -357,7 +357,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	#WORKDIR /root/Downloads/clusterLab/resource-agents
 	cd /root/Downloads/clusterLab/resource-agents; \
 	#RUN wget "https://github.com/ClusterLabs/resource-agents/archive/v3.9.6.tar.gz"; \
-	RUN git clone https://github.com/ClusterLabs/resource-agents.git; \
+	git clone https://github.com/ClusterLabs/resource-agents.git; \
 	#tar xzvf v3.9.6.tar.gz; \
 	#cd resource-agents-3.9.6; \
 	cd resource-agents; \
