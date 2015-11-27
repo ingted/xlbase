@@ -702,7 +702,7 @@ RUN chmod 755 /etc/container_environment; \
 	git config core.sparseCheckout true; \
 	echo "dynamic/*" >> .git/info/sparse-checkout; \
 	#git pull origin backToOrigin; \
-	git checkout -b backToOrigin origin/backToOrigin; \
+	git checkout --track -b backToOrigin origin/backToOrigin; \
 	apt-get clean; \
 	rm -rf /tmp/* /var/tmp/*; \
 	rm -rf /var/lib/apt/lists/*; \

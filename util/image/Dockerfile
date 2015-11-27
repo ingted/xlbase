@@ -15,7 +15,7 @@ RUN cp -rf /bd_build/util /; \
   	git remote add -f origin https://github.com/ingted/xlbase.git; \
   	git config core.sparseCheckout true; \
   	echo "mgmt/*" >> .git/info/sparse-checkout; \
-	git checkout -b backToOrigin origin/backToOrigin; \
+	git checkout --track -b backToOrigin origin/backToOrigin; \
 	cp -rf * /opt
 
 CMD ["/sbin/my_init"]
