@@ -1,4 +1,4 @@
-FROM robotica/pcmk_ubuntu:latest
+FROM robotica/xlbase:latest
 RUN mkdir -p /addfiles/packages_pcmk
 ADD ./debs/ /addfiles/packages_pcmk
 ADD ./helper_scripts /usr/sbin
