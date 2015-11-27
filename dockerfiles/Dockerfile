@@ -228,6 +228,8 @@ RUN	apt-get -y install \
 	mkdir -p /root/Downloads/clusterLab/pacemaker; \
 	mkdir -p /root/Downloads/clusterLab/crmsh; \
 	mkdir -p /root/Downloads/clusterLab/pcs; \
+	mkdir -p /root/Downloads/clusterLab/fence-agents; \
+	mkdir -p /root/Downloads/clusterLab/hawk; \
 	mozroots --import --sync; \
 
 	#WORKDIR /root/Downloads/fs
@@ -392,17 +394,16 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	cd /root/Downloads/clusterLab/pcs; \
 	wget "https://github.com/ClusterLabs/pcs/archive/0.9.141.tar.gz"; \
 	tar zxvf 0.9.141.tar.gz; \
-	ls -l; \
-	ls -l pcs-0.9.141; \
-	cd pcs-0.9.141/pcsd; \
-	make get_gems; \
-	cd ..; \
+	#ls -l; \
+	#ls -l pcs-0.9.141; \
+	#cd pcs-0.9.141/pcsd; \
+	#make get_gems; \
+	#cd ..; \
 	#make install (normal install)
 	#make install_pcsd
 
 
-	mkdir -p /root/Downloads/clusterLab/fence-agents; \
-	mkdir -p /root/Downloads/clusterLab/hawk; \
+
 
 	#WORKDIR /root/Downloads/clusterLab/fence-agents
 	cd /root/Downloads/clusterLab/fence-agents; \
