@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+if [ "$2" == "" ]; then
+	nm=ttc
+else 
+	nm="$2"
+fi
+
+buildPacemaker3 -a 10.128.112.$1
+
+docker exec "$nm" /root/pcsd.sh
+
+
+echo \[\!ID_DONE\]
+
+if [ "$3" == "-s" ]; then 
+
+  docker exec -d "$nm" service corosync start
+  sleep 6
+  docker exec -d "$nm" service pacemaker start
+  sleep 6
+  docker exec -d "$nm" pcs property set stonith-enabled=false
+  echo \[\!EX_DONE\]
+
+fi
+
+if [ "$4" == "--nobind" ]; then
+	echo No attach
+else
+	echo $nm
+	dbind "$nm"
+fi
+

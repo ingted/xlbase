@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ $# -gt 0 ]; then
+	items=${@:1}
+	for item in ${items[*]} 
+	do
+		imgid=$(dil | awk 'NR > 1 && ($1":"$2 == "'"$item"'" || $3 == "'"$item"'") {print $1":"$2}')
+#		echo $imgid
+		dls | awk 'NR > 1 && $2 == "'"$imgid"'" {print $1}' 
+
+	done
+else
+	docker images
+fi

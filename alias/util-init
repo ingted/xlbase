@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	img=robotica/util:latest
+else
+	img=$1
+fi
+
+echo "Creating /opt/util directory..."
+
+docker run -it -v /opt/util:/opt $img /util/get-tool
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+dex $1 service pcsd status
+dex $1 service corosync status
+dex $1 service pacemaker status

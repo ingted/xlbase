@@ -1,0 +1,73 @@
+#!/bin/bash
+
+###echo "\$* : $*"
+###cmd="$*"
+###echo $cmd
+###cmdreplaced=$(echo $cmd)
+###echo $cmdreplaced
+
+
+###$(echo $cmd)
+###$(echo "ls /")
+
+dcmd=${*:2}
+echo $dcmd
+dhosts=$(awk '$3 == "h" {print $1}' ./hosts)
+###echo $dhosts
+
+for dh in $dhosts; do
+#	ssh-copy-id root@$dh
+#echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
+	ssh root@$dh bash <<SSH_L1
+		if [ "$1" == "-a" ]; then 
+###			whoami
+			source /root/.bashrc
+			export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/alias:/usr/local/pgsql/bin 			
+
+			ids="\$(/root/alias/dls -ll)"
+			ids=(\${ids//\\n/ })
+
+			for id in "\${ids[@]}"; do
+				echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
+				echo "[< Container >]" : ID\ \ \ \ \ \ \ : \$id
+				echo "[< Container >]" : Username : \$(/usr/bin/whoami)
+				echo "[< Container >]" : Hostname : \$(/bin/hostname)
+				
+				expath=\$(docker exec \$id 'pwd')
+				echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
+				#docker exec \$id ${*:2}
+				echo '/bin/bash -c "$dcmd"'
+				docker exec \$id /bin/bash -c "$dcmd"
+			done 
+			IFS=ifsold
+		else
+			echo Docker Host Mode: \(Please specify docker container ID\)
+			array_contains2 () { 
+			    local array="\$1[@]"
+			    local seeking=\$2
+			    local in=1
+			    for element in "\${!array}"; do
+			        if [[ \$element == \$seeking ]]; then
+			            in=0
+			            break
+			        fi
+			    done
+			    return \$in
+			}
+			if [[ \$(array_contains2 \$(/root/alias/dls -ll) $1 && echo 1) == 1 ]]; then 
+				docker exec $1 ${*:2} 
+			else
+				echo \$(/root/alias/dls -ll)
+				echo $1
+				echo \$(array_contains2 \$(/root/alias/dls -ll) $1)
+				echo Wrong container ID!
+			fi
+		fi 
+
+SSH_L1
+
+done
+
+
+
+#sed -r 's/:Host +=> +\"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\"/:Host               => \"\"/g' /usr/share/pcsd/ssl.rb
