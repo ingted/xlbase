@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#if [ "$#" == "1" ]; then
-#	docker images $*
-#else
-	docker images -q $*
-#fi

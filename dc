@@ -1,6 +1,0 @@
-#!/bin/bash
-
-none_container=( $(dil | awk 'NR > 1 {if($1 == "<none>"){print $3} else {}}') )
-nclist=${none_container[*]}
-drmi -f $nclist
-
