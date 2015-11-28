@@ -1,28 +1,15 @@
 BASENAME = robotica/xlbase
-BASEVERSION = latest
+BASEVERSION = latest1
 PACENAME = robotica/pcmk_ubuntu
-PACEVERSION = latest
+PACEVERSION = latest1
 UTILNAME = robotica/util
-UTILVERSION = latest
+UTILVERSION = latest1
 
-DB=dbuild
+DB = dbuild
 
-ifeq ($$(DISABLEBASE), 1)
-  BEN = 0
-else
-  BEN = 1
-endif
+BEN = if [ "$$DISABLEBASE" != "1" ]; then export BEN=1; else export BEN=0; fi;
+PEN = if [ "$$DISABLEPACE" != "1" ]; then export PEN=1; else export PEN=0; fi;
+UEN = if [ "$$DISABLEUTIL" != "1" ]; then export UEN=1; else export UEN=0; fi;
 
-ifeq ($$(DISABLEPACE), 1)
-  PEN = 0
-else
-  PEN = 1
-endif
-
-ifeq ($$(DISABLEUTIL), 1)
-  UEN = 0
-else
-  UEN = 1
-endif
 
 SHELL = /bin/bash
