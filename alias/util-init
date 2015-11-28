@@ -8,5 +8,5 @@ fi
 
 echo "Creating /opt/util directory..."
 
-docker run -it -v /opt/util:/opt $img /util/get-tool
+docker run -it -v /opt/util:/opt $img /sbin/my_init -- bash -l /util/get-tool
 
