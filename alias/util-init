@@ -1,12 +1,75 @@
 #!/bin/bash
 
-if [ "$1" == "" ]; then
-	img=robotica/util:latest
-else
-	img=$1
+
+function main(){
+	if [ "$image" == "" ]; then
+		image=robotica/util:latest
+	fi
+	
+	if [ "$nm" == "" ]; then
+		nm=util
+	fi
+
+	if [ "$ip" == "" ]; then
+		echo "SSH IP address is required!!"
+		exit 999
+	fi	
+
+	echo "Creating /opt/util directory..."
+	(docker kill "$nm")||(docker rm "$nm")
+	docker run -idt -v /opt/util:/opt --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- bash -l 
+
+	docker -d exec "$nm" /util/get-tool
+	docker exec  "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep ListenAddress
+
+	docker -d exec "$nm" bash -c "echo \"$nm\" > /whoami"
+	docker exec  "$nm" cat /whoami
+	docker exec  "$nm" hostnamectl set-hostname "$nm"
+	docker exec  "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
+
+	if [ "$notbind" == "1" ]; then
+		echo No attach
+	else
+		echo "Attach $nm"
+		dbind "$nm"
+	fi
+}
+
+
+function helptext() {
+	echo ""
+        echo "util-init - A tool for building up xlbase management utilities."
+        echo ""
+        echo "Usage: util-init [options]"
+        echo ""
+        echo "Options:"
+        echo "-n, --nm, --name         \"Container name\""
+        echo "-i, --img, --image       Docker image name or ID"
+        echo "-a, --ssh-addr           ssh ip"
+        echo "--nb, --notbind          If bind this container immediately"
+
+        echo ""
+        exit $1
+}
+
+cnt=$#
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+        -n|--nm|--name) nm="$2"; shift; shift;;
+        -i|--img|--image) image=$2; shift; shift;;
+        -a|--ssh-addr) ip=$2; shift; shift;;
+        --nb|--notbind) notbind=1; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+if [ "$cnt" != "0" ]; then 
+	main
+else 
+	helptext 1
 fi
-
-echo "Creating /opt/util directory..."
-
-docker run -it -v /opt/util:/opt $img /sbin/my_init -- bash -l /util/get-tool
-

@@ -57,7 +57,7 @@ function main () {
 	if [ "$ifbind" == "0" ]; then
 		echo No attach
 	else
-		echo "dbind $nm"
+		echo "Attach $nm"
 		dbind "$nm"
 	fi
 }

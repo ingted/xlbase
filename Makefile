@@ -7,8 +7,7 @@ all: base pace uti1
 base:
 	@echo -e ">>> base <<<"
 	@./bashrc
-	@export PATH=$$PATH:$$(pwd)
-	@echo -e "\tPATH => $$PATH"
+
 	@echo -e "\t@ $$(pwd)"
 	@$(MAKE) -C dockerfiles 
 

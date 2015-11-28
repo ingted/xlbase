@@ -1,0 +1,4 @@
+#!/bin/bash
+
+fsc=/usr/bin/fsc.exe
+mono $fsc
