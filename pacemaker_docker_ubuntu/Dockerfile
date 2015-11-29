@@ -2,7 +2,6 @@ FROM robotica/xlbase:latest
 RUN mkdir -p /addfiles/packages_pcmk
 ADD ./debs/ /addfiles/packages_pcmk
 ADD ./helper_scripts /usr/sbin
-ADD ./pcsd.sh /root/pcsd.sh
 ADD ./defaults/corosync.conf /etc/corosync/
 ADD ./functions /lib/lsb/init-functions
 RUN bash /addfiles/packages_pcmk/do.sh; \

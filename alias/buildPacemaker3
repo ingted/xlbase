@@ -44,6 +44,11 @@ function main () {
 	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
 	docker exec "$nm" hostnamectl set-hostname "$nm"
 	localhostnm=$(hostname)
+	hostfil=$(which dexxhosts)
+	hostdata=$(cat $hostfil|awk '{print $1"\011"$2}')
+	
+	docker exec "$nm" bash -c "cd /root/pcmk; git pull"
+
 	#docker exec "$nm" /root/pcsd.sh "$localhostnm"
 	
 	
