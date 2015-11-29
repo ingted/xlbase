@@ -73,7 +73,19 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
         cp /addfiles/fsc /usr/sbin; \
 	cp /pash/Pash/Source/PashConsole/bin/Debug/Pash.exe /pash/Pash/Source/PashConsole/bin/Debug/pash; \
 	cp /pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin; \
-	sudo cp /addfiles/rc.local /etc
+	sudo cp /addfiles/rc.local /etc; \
+        cp /addfiles/libsystemd.so.0            /lib/x86_64-linux-gnu/libsystemd.so.0; \
+        cp /addfiles/libgcrypt.so.20            /lib/x86_64-linux-gnu/libgcrypt.so.20; \
+        cp /addfiles/timedatectl                /usr/bin/; \
+        cp /addfiles/gnu/libgmp.so.10           /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/libcurl-gnutls.so.4    /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/librtmp.so.1           /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/libssh2.so.1           /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/libnettle.so.4         /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/libgnutls-deb0.so.28   /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/libhogweed.so.2        /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/libcap-ng.so.0         /usr/lib/x86_64-linux-gnu/
+
 
 #ENTRYPOINT ["/bin/bash"]
 CMD ["/sbin/my_init"]
