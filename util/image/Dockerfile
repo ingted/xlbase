@@ -65,7 +65,7 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
         cp /addfiles/fsi /usr/sbin; \
         cp /addfiles/fsc /usr/sbin; \
 	cp /pash/Pash/Source/PashConsole/bin/Debug/Pash.exe /pash/Pash/Source/PashConsole/bin/Debug/pash; \
-	cp /pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin
+	cp /pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin; \
 	sudo cp /addfiles/rc.local /etc
 
 CMD ["/sbin/my_init"]
