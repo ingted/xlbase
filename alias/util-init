@@ -22,7 +22,9 @@ function main(){
 	docker exec -d "$nm" /util/get-tool
 	docker exec "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config
 	docker exec "$nm" cat /etc/ssh/sshd_config|grep ListenAddress
-	docker exec -d "$nm" service ssh start
+        docker exec "$nm" bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"
+        docker exec "$nm" service dbus restart
+	docker exec -d "$nm" service ssh restart
 	docker exec -d "$nm" bash -c "echo \"$nm\" > /whoami"
 	docker exec "$nm" cat /whoami
 	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 

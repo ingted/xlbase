@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "\$* : $*"
+#echo "\$* : $*"
 
 if [ "$1" == "-a" ]; then
 
