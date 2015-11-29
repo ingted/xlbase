@@ -1,4 +1,4 @@
 #!/bin/bash
 
 fsi=/usr/bin/fsi.exe
-mono $fsi
+mono $fsi $*
