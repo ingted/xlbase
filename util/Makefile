@@ -8,7 +8,7 @@ build:
 	@echo -e ">>> util image <<<"
 	@echo -e "\t---@ $$(pwd)"
 	@#$(UEN) if [ "$$UEN" == "1" ]; then docker build -t $(UTILNAME):$(UTILVERSION) --rm image; fi
-	$(UEN) if [ "$$UEN" == "1" ]; then $(DB) $(UTILNAME):$(UTILVERSION) --rm; fi
+	@$(EXP) $(UEN) if [ "$$UEN" == "1" ]; then $(DB) $(UTILNAME):$(UTILVERSION) --rm; fi
 
 test:
 	env NAME=$(UTILNAME) VERSION=$(UTILVERSION) ./test/runner.sh
