@@ -75,5 +75,5 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
 	cp /pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin; \
 	sudo cp /addfiles/rc.local /etc
 
-ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["/bin/bash"]
 CMD ["/sbin/my_init"]

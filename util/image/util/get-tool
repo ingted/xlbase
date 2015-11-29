@@ -7,4 +7,4 @@ cp -rf * /opt
 shopt -u dotglob
 mv /opt/get-tool-outside-container /opt/get-tool
 echo utility veraion:
-cat /util/UTILVER
+cat /opt/UTILVER
