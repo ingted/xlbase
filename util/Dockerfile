@@ -21,7 +21,7 @@ RUN ln -snf /bin/bash /bin/sh; \
 
 
 	apt-get -y update; \
-	apt-get -y install dbus git mono-devel mono-complete referenceassemblies-pcl sshpass autoconf automake pkg-config
+	apt-get -y install make dbus git mono-devel mono-complete referenceassemblies-pcl sshpass autoconf automake pkg-config
 RUN mkdir -p /fs; \
         cd /fs; \
         rm fsharp -f; \
