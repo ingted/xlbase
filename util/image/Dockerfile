@@ -17,7 +17,7 @@ RUN cp -rf /bd_build/util /; \
 
 
 	apt-get -y update; \
-	apt-get -y install git mono-devel mono-complete referenceassemblies-pcl sshpass autoconf automake pkg-config; \
+	apt-get -y install dbus git mono-devel mono-complete referenceassemblies-pcl sshpass autoconf automake pkg-config; \
 	mkdir -p /fs; \
         cd /fs; \
         rm fsharp -f; \
@@ -52,7 +52,8 @@ RUN cp -rf /bd_build/util /; \
 
 
 
-RUN	cd /util; \
+RUN cp /addfiles/dbus*  /usr/bin/; \
+	cd /util; \
 	git init; \
   	git remote add -f origin https://github.com/ingted/xlbase.git; \
   	git config core.sparseCheckout true; \
@@ -60,8 +61,11 @@ RUN	cd /util; \
   	echo "alias/*" >> .git/info/sparse-checkout; \
   	echo "UTILVER" >> .git/info/sparse-checkout; \
 	git checkout --track -b backToOrigin origin/backToOrigin; \
-        cp /addfiles/pash /usr/sbin; \
+        #cp /addfiles/pash /usr/sbin; \
         cp /addfiles/fsi /usr/sbin; \
-        cp /addfiles/fsc /usr/sbin
+        cp /addfiles/fsc /usr/sbin; \
+	cp /pash/Pash/Source/PashConsole/bin/Debug/Pash.exe /pash/Pash/Source/PashConsole/bin/Debug/pash; \
+	cp /pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin
+	sudo cp /addfiles/rc.local /etc
 
 CMD ["/sbin/my_init"]

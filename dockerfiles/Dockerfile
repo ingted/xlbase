@@ -738,7 +738,9 @@ RUN chmod 755 /etc/container_environment; \
 	bash -c 'echo "postgres ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "voltdb ALL=(ALL)    ALL" >> /etc/sudoers'; \	
-	cp /addfiles/pash /usr/sbin; \
+	#cp /addfiles/pash /usr/sbin; \
+	cp /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug/Pash.exe /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug/pash
+	cp /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin
 	cp /addfiles/fsi /usr/sbin; \
 	cp /addfiles/fsc /usr/sbin; \
 	mkdir -p /root/alias; \

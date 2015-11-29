@@ -37,8 +37,8 @@ function main () {
 	docker exec "$nm" cat /etc/ssh/sshd_config|grep \#Port
 	docker exec "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config
 	docker exec "$nm" cat /etc/ssh/sshd_config|grep ListenAddress
-	docker exec "$nm" bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"
-	docker exec "$nm" service dbus restart
+	#docker exec "$nm" bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"
+	#docker exec "$nm" service dbus restart
 	docker exec "$nm" bash -c "echo \"$nm\" > /whoami"
 	docker exec "$nm" cat /whoami
 	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
@@ -57,7 +57,7 @@ ff02::2 ip6-allrouters
 $hostdata
 EOF
 )
-	docker exec "$nm" bash -c "cd /root/pcmk; git pull; /root/pcmk/cluster/cluster-hosts $hd"
+	#docker exec "$nm" bash -c "cd /root/pcmk; git pull; /root/pcmk/cluster/cluster-hosts $hd"
 	
 
 	#docker exec "$nm" /root/pcsd.sh "$localhostnm"
