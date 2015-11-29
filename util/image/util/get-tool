@@ -5,3 +5,4 @@ git pull
 shopt -s dotglob
 cp -rf * /opt
 shopt -u dotglob
+mv /opt/get-tool-outside-container /opt/get-tool
