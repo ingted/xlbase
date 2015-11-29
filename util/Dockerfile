@@ -39,6 +39,7 @@ RUN mkdir -p /fs; \
         ./autogen.sh --prefix=/usr; \
         make; \
         make install; \
+        cd /fs/fsharp/; \
         chmod +x src/fsharp/fsi/obj/release/*; \
         cp src/fsharp/fsi/obj/release/* /usr/bin/; \
 	cp /usr/bin/fsi.exe /usr/bin/fsi; \

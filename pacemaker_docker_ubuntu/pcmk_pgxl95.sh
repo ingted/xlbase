@@ -73,8 +73,8 @@ make_image()
 
 
 	# generate image
-	echo "Making image"
-	dbuild $dtag .
+	echo "Making image: $dtag"
+	dbuild $dtag
 	if [ $? -ne 0 ]; then
 		echo "ERROR: failed to generate docker image"
 		exit 1
