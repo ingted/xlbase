@@ -58,6 +58,7 @@ RUN cp -rf /bd_build/util /; \
   	git config core.sparseCheckout true; \
   	echo "mgmt/*" >> .git/info/sparse-checkout; \
   	echo "alias/*" >> .git/info/sparse-checkout; \
+  	echo "UTILVER" >> .git/info/sparse-checkout; \
 	git checkout --track -b backToOrigin origin/backToOrigin
 	#cp -rf * /opt
 
