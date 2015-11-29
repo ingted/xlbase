@@ -7,16 +7,16 @@ else
 fi
 
 
-if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
-if [ ! -z /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
+if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
+if [ ! -e /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
 
 docker start $nm
 
-docker exec "$nm" rm /var/run/dbus/system_bus_socket
+docker exec "$nm" bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"
 docker exec "$nm" service dbus restart
 
 docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
 #docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi"
 
-docker exec "$nm" hostnamectl set-hostname xlbase-"$nm"
-docker exec "$nm" bash -c "echo xlbase-\"$nm\" > /etc/hostname"
+docker exec "$nm" hostnamectl set-hostname "$nm"
+docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname"
