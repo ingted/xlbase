@@ -7,7 +7,8 @@ all: base pace uti1
 base:
 	@echo -e ">>> base <<<"
 	@./bashrc
-
+	@if [ ! -e ./exped ]; then echo "export PATH=\$$PATH:$$(pwd)/alias" >> ~/.bashrc; fi
+	@touch exped
 	@echo -e "\t@ $$(pwd)"
 	@$(MAKE) -C dockerfiles 
 
