@@ -89,5 +89,5 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
 	cat /addfiles/bashrc_4_ps1 >> /root/.bashrc
 
 
-#ENTRYPOINT ["/bin/bash"]
-CMD ["/sbin/my_init"]
+ENTRYPOINT ["/usr/bin/pash"]
+CMD ["python3", "/sbin/my_init"]
