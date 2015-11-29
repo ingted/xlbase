@@ -11,7 +11,7 @@ ADD ./addfiles/ /addfiles/
 RUN ln -snf /bin/bash /bin/sh; \
 	#ls -l /bin/sh; \
 	#ls -l /bd_build; \
-	#ls -l /addfiles; \
+	ls -l /addfiles; \
 	cp -rf /bd_build/util /; \
 	/bd_build/prepare.sh && \
 	/bd_build/system_services.sh && \
@@ -33,7 +33,7 @@ RUN ln -snf /bin/bash /bin/sh; \
 	cp /addfiles/paket.bootstrapper.exe /fs/fsharp/.paket/paket.bootstrapper.exe; \
         cp /addfiles/paket.dependencies /fs/fsharp/paket.dependencies; \
 
-        cd /root/Downloads/fs/fsharp/.paket/; \
+        cd /fs/fsharp/.paket/; \
         mono paket.bootstrapper.exe; \
         mono paket.exe update; \
 
