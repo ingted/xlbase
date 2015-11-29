@@ -46,8 +46,19 @@ function main () {
 	localhostnm=$(hostname)
 	hostfil=$(which dexxhosts)
 	hostdata=$(cat $hostfil|awk '{print $1"\011"$2}')
+	hd=$(cat << EOF
+127.0.0.1       localhost
+127.0.1.1       localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+$hostdata
+EOF
+)
+	docker exec "$nm" bash -c "cd /root/pcmk; git pull; /root/pcmk/cluster/cluster-hosts $hd"
 	
-	docker exec "$nm" bash -c "cd /root/pcmk; git pull"
 
 	#docker exec "$nm" /root/pcsd.sh "$localhostnm"
 	

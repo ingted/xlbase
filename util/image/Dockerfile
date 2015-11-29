@@ -59,7 +59,9 @@ RUN	cd /util; \
   	echo "mgmt/*" >> .git/info/sparse-checkout; \
   	echo "alias/*" >> .git/info/sparse-checkout; \
   	echo "UTILVER" >> .git/info/sparse-checkout; \
-	git checkout --track -b backToOrigin origin/backToOrigin
-	#cp -rf * /opt
+	git checkout --track -b backToOrigin origin/backToOrigin; \
+        cp /addfiles/pash /usr/sbin; \
+        cp /addfiles/fsi /usr/sbin; \
+        cp /addfiles/fsc /usr/sbin
 
 CMD ["/sbin/my_init"]
