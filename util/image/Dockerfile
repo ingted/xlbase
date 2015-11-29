@@ -48,11 +48,11 @@ RUN cp -rf /bd_build/util /; \
         git clone https://github.com/ingted/Pash.git; \
         cd Pash; \
         cp /addfiles/FileSystemProvider.cs ./Source/System.Management/Microsoft.PowerShell/Commands/; \
-        xbuild; \
+        xbuild
 
 
 
-	cd /util; \
+RUN	cd /util; \
 	git init; \
   	git remote add -f origin https://github.com/ingted/xlbase.git; \
   	git config core.sparseCheckout true; \
