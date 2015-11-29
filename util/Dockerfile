@@ -3,8 +3,6 @@ MAINTAINER ingted
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ENTRYPOINT ["/bin/bash"]
-
 ADD ./image/ /bd_build/
 ADD ./addfiles/ /addfiles/
 
@@ -23,8 +21,8 @@ RUN ln -snf /bin/bash /bin/sh; \
 
 
 	apt-get -y update; \
-	apt-get -y install dbus git mono-devel mono-complete referenceassemblies-pcl sshpass autoconf automake pkg-config; \
-	mkdir -p /fs; \
+	apt-get -y install dbus git mono-devel mono-complete referenceassemblies-pcl sshpass autoconf automake pkg-config
+RUN mkdir -p /fs; \
         cd /fs; \
         rm fsharp -f; \
         git clone https://github.com/fsharp/fsharp.git; \
@@ -76,4 +74,5 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
 	cp /pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin; \
 	sudo cp /addfiles/rc.local /etc
 
+ENTRYPOINT ["/bin/bash"]
 CMD ["/sbin/my_init"]

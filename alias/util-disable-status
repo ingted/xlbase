@@ -2,7 +2,7 @@
 
 if [ "$1" != "" ]; then export DISABLEBASE=$1; fi
 if [ "$2" != "" ]; then export DISABLEPACE=$2; fi
-if [ "$3" != "" ]; then export DISABLEUITL=$3; fi
+if [ "$3" != "" ]; then export DISABLEUTIL=$3; fi
 
 echo "DISABLEBASE: $DISABLEBASE"
 echo "DISABLEPACE: $DISABLEPACE"
