@@ -8,4 +8,7 @@ alias VI="vim "
 alias DOCKER="docker"
 alias agi="apt-get install "
 alias agc="apt-get clean "
+alias DLS="dls"
+alias DIL="dil"
+alias ALIAS="alias"
 

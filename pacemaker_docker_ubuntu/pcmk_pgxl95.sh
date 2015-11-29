@@ -46,7 +46,7 @@ make_image()
 	
 	echo "ADD ./debs/ /addfiles/packages_pcmk" 					>> Dockerfile
 	echo "ADD ./helper_scripts /usr/sbin" 						>> Dockerfile
-	echo "ADD ./pcsd.sh /root/pcsd.sh" 						>> Dockerfile
+	#echo "ADD ./pcsd.sh /root/pcsd.sh" 						>> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" 					>> Dockerfile
 	echo "ADD ./functions /lib/lsb/init-functions" 					>> Dockerfile
 	
