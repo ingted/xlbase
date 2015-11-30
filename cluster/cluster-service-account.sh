@@ -2,7 +2,14 @@
 
 
 
+
 function main(){
+
+	if [ "$nm" == "" ] || [ "$pwd" == "" ]; then
+		echo "user / pwd required!"
+		helptext 999
+	fi
+
 	useradd "$nm"
 	if [ "$sudo" == "1" ]; then adduser "$nm" sudo; fi
 	echo -e "$pwd\n$pwd\n" | passwd "$nm"
