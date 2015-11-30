@@ -18,7 +18,7 @@ $dd | %{
 	} | %{
 		$fi = New-Item -ItemType directory -Path $_
 		if($fi.Exists){
-			write-host "$($fi.name): create successfully!"
+			write-host "$($fi.fullname): create successfully!"
 		}
 	}
 }
