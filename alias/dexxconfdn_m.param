@@ -1,0 +1,15 @@
+@@@hostip@@@
+@@@dn_port@@@
+@@@mx_dn_conn@@@
+@@@dn_shbuff@@@
+@@@dn_wkmem@@@
+@@@maintain_mem@@@
+@@@dn_chkseg@@@
+@@@dn_cache_size@@@
+@@@dn_pooler_port@@@
+@@@mx_pool@@@
+@@@mx_coor@@@
+@@@mx_dn@@@
+@@@gtmprx@@@
+@@@gtmprx_port@@@
+@@@dn_pgxcnodename@@@

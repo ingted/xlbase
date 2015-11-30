@@ -1,6 +1,6 @@
-nodename = 'gtmproxy1'
-listen_addresses = '*'
-port = 36666
+nodename = '@@@gtmprxname@@@'
+listen_addresses = '@@@hostip@@@'
+port = @@@gtmprx_port@@@ 
 worker_threads = 100
 gtm_host = 'xlgtm'
 gtm_port = 36666

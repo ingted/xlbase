@@ -1,8 +1,8 @@
 listen_addresses = '@@@hostip@@@'
 port = @@@coor_port@@@
 max_connections = @@@mx_coor_conn@@@
-shared_buffers = 32MB
-checkpoint_segments = 16
+shared_buffers = @@@coor_shbuff@@@
+checkpoint_segments = @@@coor_chkseq@@@
 logging_collector = on
 log_timezone = 'ROC'
 datestyle = 'iso, mdy'
@@ -18,5 +18,5 @@ max_coordinators = @@@mx_coor@@@
 max_datanodes = @@@mx_dn@@@
 gtm_host = '@@@gtmprx@@@'
 gtm_port = @@@gtmprx_port@@@
-pgxc_node_name = '@@@pgxcnodename@@@'
+pgxc_node_name = '@@@coor_pgxcnodename@@@'
 

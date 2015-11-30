@@ -1,0 +1,18 @@
+#!/bin/bash
+
+ex2param dexxconfcoor_m
+ex2param dexxconfdn_m
+ex2param dexxconfgpx_m
+ex2param dexxconfcoor_s
+ex2param dexxconfdn_s
+ex2param dexxconfgpx_s
+ex2param dexxconfgtm
+ex2param dexxconfgtmsby
+
+olddir=$(pwd)
+cd /root/alias/alias
+
+dexxparams-base | sort | uniq | sed '/^$/d'
+
+
+cd "$olddir"

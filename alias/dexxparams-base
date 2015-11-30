@@ -1,0 +1,12 @@
+#!/bin/bash
+
+olddir=$(pwd)
+cd /root/alias/alias
+
+for f in $(ls *.param)
+do
+ #echo "Processing $f"
+ cat $f
+done
+
+cd "$olddir"
