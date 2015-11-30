@@ -9,5 +9,5 @@ param(
 
 #cp /etc/hosts.tmp /etc/hosts -f
 
-$hd = ./decode-mgmt-msg.ps1 $hb64
+$hd = . decode-mgmt-msg.ps1 $hb64
 $hd | out-file /etc/hosts.tmp -Encoding ascii
