@@ -11,7 +11,7 @@ $dd = . decode-mgmt-msg.ps1 $db64
 #	$out = $dd[0]
 #}
 
-$out | %{
+$dd | %{
 	$d = $_.split("`n")
 	$d | %{
 		$fi = New-Item -ItemType directory -Path $_
