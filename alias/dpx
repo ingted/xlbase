@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#echo "\$* : $*"
+
+if [ "$1" == "-a" ]; then
+
+	for id in $(dls -ll); do
+		echo "$id: "
+		docker exec $id ${*:2}
+	done
+else
+	rtn=$(docker exec $1 pash -c ${*:2})
+	#echo $rtn
+	#echo -e "---\n"
+	echo "$rtn"|sed '1d'
+fi

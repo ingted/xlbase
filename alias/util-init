@@ -17,7 +17,7 @@ function main(){
 
 	echo "Creating /opt/util directory..."
 	(docker kill "$nm")&&(docker rm "$nm")
-	docker run -idt -v /opt/util:/opt --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- pash 
+	docker run -idt -v /opt/util:/opt --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image 
 #-l 
 
 	docker exec -d "$nm" /util/get-tool
