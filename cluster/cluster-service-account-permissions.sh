@@ -5,7 +5,7 @@
 
 function main(){
 
-	if [ "$nm" == "" ] || [ "$pwd" == "" ]; then
+	if [ "$nm" == "" ]; then
 		echo "user required!"
 		helptext 999
 	fi
