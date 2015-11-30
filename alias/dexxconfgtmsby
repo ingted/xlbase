@@ -1,0 +1,13 @@
+nodename = 'gtmsby'
+listen_addresses = '*'
+port = 36666
+startup = STANDBY
+active_host = 'xlgtm'
+active_port = 36666
+#keepalives_idle = 0
+#keepalives_interval = 0
+#keepalives_count = 0
+#log_file = 'gtm.log'
+#log_min_messages = WARNING
+synchronous_backup = on
+

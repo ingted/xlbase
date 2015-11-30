@@ -29,14 +29,11 @@ function main () {
 	fi
 	
 	if [ ! -e "$extvolume" ]; then 
-		echo "specified directory not existed!"
 		mkdir -p "$extvolume"
 		if [ ! -e "$extvolume" ]; then
 			echo "external volumn is required!"
 			echo "Leaving..."
 			exit 999
-		else
-			echo "external volumn created!"
 		fi
 	fi
 	
@@ -55,7 +52,24 @@ function main () {
 	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
 	docker exec "$nm" hostnamectl set-hostname "$nm"
 	localhostnm=$(hostname)
+	hostfile=$(which dexxhosts)
+	hostdata=$(cat $hostfile|awk '{print $1"\011"$2}')
+	hd=$(cat << EOF
+127.0.0.1       localhost
+127.0.1.1       localhost
 
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+$hostdata
+EOF
+)
+	#docker exec "$nm" bash -c "cd /root/pcmk; git pull; /root/pcmk/cluster/cluster-hosts $hd"
+	
+
+	#docker exec "$nm" /root/pcsd.sh "$localhostnm"
+	
 	
 	echo \[\!ID_DONE\]
 	

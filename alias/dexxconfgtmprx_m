@@ -1,0 +1,13 @@
+nodename = 'gtmproxy1'
+listen_addresses = '*'
+port = 36666
+worker_threads = 100
+gtm_host = 'xlgtm'
+gtm_port = 36666
+#gtm_connect_retry_interval = 0
+#keepalives_idle = 0
+#keepalives_interval = 0
+#keepalives_count = 0
+#log_file = 'gtm_proxy.log'
+#log_min_messages = WARNING
+

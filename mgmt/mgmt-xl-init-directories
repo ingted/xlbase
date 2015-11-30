@@ -24,3 +24,6 @@ if [ "$tool"  == "False" ]; then
 else
 	util-px "$nm" cd /root/pcmk/\; . get-tool\; cd cluster\; cluster-dirs.ps1 $db64
 fi
+
+dex "$nm" /root/pcmk/cluster/cluster-service-account.sh -n postgres -p "/'],lp123"
+dex "$nm" /root/pcmk/cluster/cluster-service-account-permissions.sh -n postgres

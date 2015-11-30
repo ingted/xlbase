@@ -37,7 +37,8 @@ make_image()
 		cp $debdir/* ./debs/
 	fi
 	#echo "ADD ./debs /root/debs" >> Dockerfile
-	echo "RUN mkdir -p /addfiles/packages_pcmk" 					>> Dockerfile
+	echo "RUN mkdir -p /addfiles/packages_pcmk; \\"					>> Dockerfile
+ 	echo "	mkdir -p /root/pcmk"	 						>> Dockerfile
 	
 	#for f in $(ls $parent/debs/); do
 	#	echo "ADD $parent/debs/$f /root/debs/$f"
@@ -49,6 +50,7 @@ make_image()
 	#echo "ADD ./pcsd.sh /root/pcsd.sh" 						>> Dockerfile
 	echo "ADD $corosync_config /etc/corosync/" 					>> Dockerfile
 	echo "ADD ./functions /lib/lsb/init-functions" 					>> Dockerfile
+	echo "ADD ./util/* /root/pcmk/" 						>> Dockerfile
 	
 
 	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" 				>> Dockerfile
@@ -57,7 +59,7 @@ make_image()
 	echo "	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions; \\" 		>> Dockerfile
 
 
- 	echo "  mkdir -p /root/pcmk; \\" 						>> Dockerfile
+
         echo "  cd /root/pcmk; \\" 							>> Dockerfile
         echo "  git init; \\" 								>> Dockerfile
         echo "  git remote add -f origin https://github.com/ingted/xlbase.git; \\" 	>> Dockerfile

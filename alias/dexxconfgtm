@@ -1,0 +1,13 @@
+nodename = 'gtm'
+listen_addresses = '*'
+port = 36666
+startup = ACT
+#active_host = ''
+#active_port =
+#keepalives_idle = 0
+#keepalives_interval = 0
+#keepalives_count = 0
+#log_file = 'gtm.log'
+#log_min_messages = WARNING
+synchronous_backup = on
+

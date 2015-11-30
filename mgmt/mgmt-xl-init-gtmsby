@@ -8,8 +8,8 @@ else
 fi
 
 if [ "$2" == "" ]; then
-	echo "PGVER is required! Use 9.2."
-	HOSTF=9.2
+	echo "HOSTFILE is required! Use dexxhosts."
+	HOSTF=dexxhosts
 else
 	HOSTF=$2
 fi

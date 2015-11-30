@@ -1,14 +1,15 @@
 FROM robotica/xlbase:latest
-RUN mkdir -p /addfiles/packages_pcmk
+RUN mkdir -p /addfiles/packages_pcmk; \
+	mkdir -p /root/pcmk
 ADD ./debs/ /addfiles/packages_pcmk
 ADD ./helper_scripts /usr/sbin
 ADD ./defaults/corosync.conf /etc/corosync/
 ADD ./functions /lib/lsb/init-functions
+ADD ./util/* /root/pcmk/
 RUN bash /addfiles/packages_pcmk/do.sh; \
 	apt-get -y update; apt-get -y upgrade; \
 	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \
 	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions; \
-  mkdir -p /root/pcmk; \
   cd /root/pcmk; \
   git init; \
   git remote add -f origin https://github.com/ingted/xlbase.git; \
