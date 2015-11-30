@@ -2,6 +2,7 @@
 param(
 	$hb64
 )
+$hb64 = "$args".replace(" ", "")
 
 $hd = . decode-mgmt-msg.ps1 $hb64
 if($hd.gettype().name -eq "string"){
