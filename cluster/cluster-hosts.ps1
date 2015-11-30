@@ -1,6 +1,6 @@
 #!/usr/bin/pash
 param(
-	$hb64
+	
 )
 $hb64 = "$args".replace(" ", "")
 
