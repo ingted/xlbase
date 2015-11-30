@@ -11,6 +11,6 @@ if($hd.gettype().name -eq "string"){
 	$out = $hd[0]
 }
 
-$out | out-file /etc/hosts.tmp -Encoding ascii
+$out | out-file /etc/hosts -Encoding ascii
 #write-host $out
-cp /etc/hosts.tmp /etc/hosts
+#cp /etc/hosts.tmp /etc/hosts
