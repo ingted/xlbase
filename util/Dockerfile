@@ -85,9 +85,11 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
         cp /addfiles/gnu/libgnutls-deb0.so.28   /usr/lib/x86_64-linux-gnu/; \
         cp /addfiles/gnu/libhogweed.so.2        /usr/lib/x86_64-linux-gnu/; \
         cp /addfiles/gnu/libcap-ng.so.0         /usr/lib/x86_64-linux-gnu/; \
+	chmod 755 /etc/container_environment; \
+        echo "\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ " > /etc/container_environment/PS1; \
 	echo "export HOME=/root/" >> /root/.bashrc; \
 	cat /addfiles/bashrc_4_ps1 >> /root/.bashrc
 
 
-#ENTRYPOINT ["/usr/bin/pash", "-c"]
+#ENTRYPOINT ["/bin/bash"]
 CMD ["/sbin/my_init"]
