@@ -1,0 +1,22 @@
+listen_addresses = '@@@hostip@@@'
+port = @@@coor_port@@@
+max_connections = @@@mx_coor_conn@@@
+shared_buffers = 32MB
+checkpoint_segments = 16
+logging_collector = on
+log_timezone = 'ROC'
+datestyle = 'iso, mdy'
+timezone = 'ROC'
+lc_messages = 'en_US.utf8'
+lc_monetary = 'en_US.utf8'
+lc_numeric = 'en_US.utf8'
+lc_time = 'en_US.utf8'
+default_text_search_config = 'pg_catalog.english'
+pooler_port = @@@coor_pooler_port@@@
+max_pool_size = @@@mx_pool@
+max_coordinators = @@@mx_coor@@@
+max_datanodes = @@@mx_dn@@@
+gtm_host = '@@@gtmprx@@@'
+gtm_port = @@@gtmprx_port@@@
+pgxc_node_name = '@@@pgxcnodename@@@'
+
