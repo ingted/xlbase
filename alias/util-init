@@ -17,8 +17,7 @@ function main(){
 
 	echo "Creating /opt/util directory..."
 	(docker kill "$nm")&&(docker rm "$nm")
-	docker run -idt -v /opt/util:/opt --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image 
-#-l 
+	docker run -idt -v /opt/util:/opt --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- bash -l
 
 	docker exec -d "$nm" /util/get-tool
 	docker exec "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config

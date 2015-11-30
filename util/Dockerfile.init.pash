@@ -77,8 +77,8 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
         cp /addfiles/libsystemd.so.0            /lib/x86_64-linux-gnu/libsystemd.so.0; \
         cp /addfiles/libgcrypt.so.20            /lib/x86_64-linux-gnu/libgcrypt.so.20; \
         cp /addfiles/timedatectl                /usr/bin/; \
-        cp /addfiles/gnu/libcurl-gnutls.so.4    /usr/lib/x86_64-linux-gnu/; \
         cp /addfiles/gnu/libgmp.so.10           /usr/lib/x86_64-linux-gnu/; \
+        cp /addfiles/gnu/libcurl-gnutls.so.4    /usr/lib/x86_64-linux-gnu/; \
         cp /addfiles/gnu/librtmp.so.1           /usr/lib/x86_64-linux-gnu/; \
         cp /addfiles/gnu/libssh2.so.1           /usr/lib/x86_64-linux-gnu/; \
         cp /addfiles/gnu/libnettle.so.4         /usr/lib/x86_64-linux-gnu/; \
@@ -89,5 +89,5 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
 	cat /addfiles/bashrc_4_ps1 >> /root/.bashrc
 
 
-#ENTRYPOINT ["/usr/bin/pash", "-c"]
-CMD ["/sbin/my_init"]
+ENTRYPOINT ["/usr/bin/pash", "-c"]
+CMD ["python3", "/sbin/my_init", "pash"]
