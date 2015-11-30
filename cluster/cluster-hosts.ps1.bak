@@ -11,4 +11,5 @@ if($hd.gettype().name -eq "string"){
 }
 
 $out | out-file /etc/hosts.tmp -Encoding ascii
-#write-host $out
+$out | out-file ($(pwd).path + "ttc") -Encoding ascii
+write-host $out
