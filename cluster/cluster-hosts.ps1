@@ -13,3 +13,4 @@ if($hd.gettype().name -eq "string"){
 
 $out | out-file /etc/hosts.tmp -Encoding ascii
 #write-host $out
+cp /etc/hosts.tmp /etc/hosts
