@@ -13,10 +13,14 @@ $dd = . decode-mgmt-msg.ps1 $db64
 
 $dd | %{
 	$d = $_.split("`n")
-	$d | %{
+	$d | ?{
+		$_ -ne ""	
+	} | %{
 		$fi = New-Item -ItemType directory -Path $_
 		if($fi.Exists){
-			write-host "$_`: create successfully!"
+			write-host "$($i.name): create successfully!"
 		}
 	}
 }
+
+
