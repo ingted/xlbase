@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	echo "Container name is required!"
+	exit 999
+else
+	nm=$1
+fi
+
+if [ "$2" == "" ]; then
+	echo "DIRFILE is required! Use dexxpgdir."
+	DIRF=dexxpgdir
+else
+	DIRF=$2
+fi
+
+dirfile=$(which "$DIRF")
+dirdata=$(cat $dirfile)
+db64=$(echo "$dirdata"|base64)
+echo $db64
+tool=$(util-px "$nm" cd /root/pcmk/\; \(dir get-tool\).exists)
+if [ "$tool"  == "False" ]; then 
+	util-px "$nm" cd /root/pcmk/\; git pull\; cd cluster\; cluster-dirs.ps1 $db64
+else
+	util-px "$nm" cd /root/pcmk/\; . get-tool\; cd cluster\; cluster-dirs.ps1 $db64
+fi

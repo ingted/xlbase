@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	echo "Container name is required!"
+	exit 999
+else
+	nm=$1
+fi
+
+util-px "$nm" gc /etc/hosts
