@@ -1,28 +1,16 @@
 #!/bin/bash
 
-###echo "\$* : $*"
-###cmd="$*"
-###echo $cmd
-###cmdreplaced=$(echo $cmd)
-###echo $cmdreplaced
-
-
-###$(echo $cmd)
-###$(echo "ls /")
 
 dcmd=${*:2}
 echo $dcmd
-dhosts=$(awk '$3 == "h" {print $1}' ./hosts)
-###echo $dhosts
+hostfil=$(which dexxhosts)
+dhosts=$(awk '$3 == "h" {print $1}' $hostfil)
 
 for dh in $dhosts; do
-#	ssh-copy-id root@$dh
-#echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
 	ssh root@$dh bash <<SSH_L1
 		if [ "$1" == "-a" ]; then 
-###			whoami
 			source /root/.bashrc
-			export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/alias:/usr/local/pgsql/bin 			
+			export PATH=$PATH:$(dirname $hostfil) 			
 
 			ids="\$(/root/alias/dls -ll)"
 			ids=(\${ids//\\n/ })

@@ -1,0 +1,20 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+
+export PATH=$PATH:/addfiles/alias:/pash/Pash/Source/PashConsole/bin/Debug:/fs/fsharp/src/fsharp/fsi/obj/release
+if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi
+service dbus restart
+
+
+exit 0

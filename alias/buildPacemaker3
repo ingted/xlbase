@@ -6,7 +6,7 @@ function main () {
 	fi 
 	
 	if [ "$image" == "" ]; then
-		image=robotica/pcmk_ubuntu:0.5.0
+		image=robotica/pcmk_ubuntu:latest
 	fi
 
 	if [ "$ip" == "" ]; then
@@ -21,24 +21,46 @@ function main () {
 		ifbind=0
 	fi
 
-	if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
-	if [ ! -e /proc/sys/fs/binfmt_misc/CLR ] && [ -e /usr/bin/mono ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
+	if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then 
+		mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; 
+	fi
+	if [ ! -e /proc/sys/fs/binfmt_misc/CLR ] && [ -e /usr/bin/mono ]; then 
+		echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; 
+	fi
 	
 	
 	drm -f "$nm"
 	docker run -dit --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- bash -l
 	docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
 	docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
-	docker exec -d "$nm" sed -i.bak -e s/#Port\ 22/Port\ 22/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep \#Port
-	docker exec -d "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config; cat /etc/ssh/sshd_config|grep ListenAddress
-	docker exec -d "$nm" rm /var/run/dbus/system_bus_socket
-	docker exec -d "$nm" service dbus start
-	docker exec -d "$nm" bash -c "echo \"$nm\" > /whoami"
+	docker exec "$nm" sed -i.bak -e s/#Port\ 22/Port\ 22/g /etc/ssh/sshd_config
+	docker exec "$nm" cat /etc/ssh/sshd_config|grep \#Port
+	docker exec "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config
+	docker exec "$nm" cat /etc/ssh/sshd_config|grep ListenAddress
+	#docker exec "$nm" bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"
+	#docker exec "$nm" service dbus restart
+	docker exec "$nm" bash -c "echo \"$nm\" > /whoami"
 	docker exec "$nm" cat /whoami
-	docker exec "$nm" hostnamectl set-hostname "$nm"
 	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
+	docker exec "$nm" hostnamectl set-hostname "$nm"
 	localhostnm=$(hostname)
-	docker exec "$nm" /root/pcsd.sh "$localhostnm"
+	hostfile=$(which dexxhosts)
+	hostdata=$(cat $hostfile|awk '{print $1"\011"$2}')
+	hd=$(cat << EOF
+127.0.0.1       localhost
+127.0.1.1       localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+$hostdata
+EOF
+)
+	#docker exec "$nm" bash -c "cd /root/pcmk; git pull; /root/pcmk/cluster/cluster-hosts $hd"
+	
+
+	#docker exec "$nm" /root/pcsd.sh "$localhostnm"
 	
 	
 	echo \[\!ID_DONE\]
@@ -57,7 +79,7 @@ function main () {
 	if [ "$ifbind" == "0" ]; then
 		echo No attach
 	else
-		echo "dbind $nm"
+		echo "Attach $nm"
 		dbind "$nm"
 	fi
 }
@@ -98,4 +120,6 @@ done
 
 if [ "$cnt" != "0" ]; then 
 	main
+else
+	helptext 1
 fi
