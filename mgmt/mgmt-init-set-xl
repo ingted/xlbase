@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	echo "Container name is required!"
+	exit 999
+else
+	nm=$1
+fi
+
+if [ "$2" == "" ]; then
+	echo "PGVER is required! Use 9.2."
+	PGVER="9.2"
+else
+	PGVER="$2"
+fi
+
+util-px "$nm" cluster-xl-install.ps1 "$PGVER"

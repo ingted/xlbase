@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	echo "Container name is required!"
+	exit 999
+else
+	nm=$1
+fi
+
+tool=$(util-px "$nm" cd /root/pcmk/\; \(dir get-tool\).exists)
+if [ "$tool"  == "False" ]; then 
+	util-px "$nm" cd /root/pcmk/\; git pull
+else
+	util-px "$nm" cd /root/pcmk/\; . get-tool
+fi

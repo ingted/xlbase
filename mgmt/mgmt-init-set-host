@@ -29,9 +29,6 @@ EOF
 )
 hb64=$(echo "$hd"|base64)
 echo $hb64
-tool=$(util-px "$nm" cd /root/pcmk/\; \(dir get-tool\).exists)
-if [ "$tool"  == "False" ]; then 
-	util-px "$nm" cd /root/pcmk/\; git pull\; cd cluster\; cluster-hosts.ps1 $hb64
-else
-	util-px "$nm" cd /root/pcmk/\; . get-tool\; cd cluster\; cluster-hosts.ps1 $hb64
-fi
+
+./mgmt-update-cluster-tool
+util-px "$nm" cluster-hosts.ps1 $hb64
