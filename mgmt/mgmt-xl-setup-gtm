@@ -1,15 +1,60 @@
 #!/bin/bash
 
-cnm=$(./mgmt-xl-get-host-by-role gtm)
-cip=$(./mgmt-xl-get-ip $cnm)
 
-ifexist=$(ifconfig | grep $cip)
-if [ "$ifexist" == "" ]; then
-	echo "wrong docker host!"
-	exit 999
-fi
+function main () {
+	cnm=$(./mgmt-xl-get-host-by-role gtm)
+	echo $(date) \[\| Setup GTM \|\] Container name: $cnm
+	
+	cip=$(./mgmt-xl-get-ip $cnm)
+	echo $(date) \[\| Setup GTM \|\] Container IP  : $cip
+	
+	ifexist=$(ifconfig | grep $cip)
+	if [ "$ifexist" == "" ]; then
+		echo "wrong docker host! (IP address specified not existed!)"
+		exit 999
+	fi
+	
+	vol=$(./mgmt-xl-get-vol $cnm)
+	echo $(date) \[\| Setup GTM \|\] Persistent Vol: $vol
+	
+	((
+		if [ "$force" == "1" ]; then 
+			buildPacemaker3 -a $cip -n $cnm -v $vol -f
+		else
+			buildPacemaker3 -a $cip -n $cnm -v $vol
+		fi
+	) || (
+		echo $(date) Setup GTM \|\] Build \"$cnm\" failed!
+		exit 999
+	)) && (
+		./mgmt-xl-setup "$cnm" gtm
+	)
+}
 
-vol=$(./mgmt-xl-get-vol $cnm)
-buildPacemaker3 -a $cip -n $cnm -v $vol
-./mgmt-xl-setup "$cnm" gtm
 
+function helptext () {
+        cho ""
+        echo "mgmt-xl-setup-gtm - A tool for setup a gtm node ."
+        echo ""
+        echo "Usage: ./mgmt-xl-setup-gtm [options]"
+        echo ""
+        echo "Options:"
+        echo "-f, --force              If container with same name of specified one, recreate it and go ahead!!"
+
+        echo ""
+        exit $1
+
+}
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+        -f|--force) force=1; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+main

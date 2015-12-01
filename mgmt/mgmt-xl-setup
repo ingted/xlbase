@@ -1,9 +1,15 @@
 #!/bin/bash
 
-
+echo $(date) \[\| init-set-host \|\]
 ./mgmt-init-set-host "$1"
-./mgmt-xl-init-directories "$1"
+
+echo $(date) \[\| init-set-xl \|\]
 ./mgmt-init-set-xl "$1" 9.2
+
+echo $(date) \[\| xl-init-directories \|\]
+./mgmt-xl-init-directories "$1"
+
+
 
 case $2 in
 	gtm)

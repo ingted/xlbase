@@ -62,9 +62,11 @@ function main () {
 	docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
 	docker exec "$nm" sed -i.bak -e s/#Port\ 22/Port\ 22/g /etc/ssh/sshd_config
 	docker exec "$nm" cat /etc/ssh/sshd_config|grep \#Port
+	docker exec "$nm" bash -c "echo -e \"$password\\n$password\\n\" | passwd root"
 	docker exec "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config
-	#docker exec "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config
+	docker exec "$nm" sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
 	docker exec "$nm" cat /etc/ssh/sshd_config|grep ListenAddress
+
 	docker exec "$nm" bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"
 	docker exec "$nm" service dbus restart
 	docker exec "$nm" bash -c "echo \"$nm\" > /whoami"
@@ -72,7 +74,8 @@ function main () {
 	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
 	docker exec "$nm" hostnamectl set-hostname "$nm"
 	localhostnm=$(hostname)
-
+	docker exec "$nm" service ssh restart
+	docker exec "$nm" echo $(eval 'PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"')
 	
 	echo \[\!ID_DONE\]
 	
@@ -108,6 +111,8 @@ function helptext() {
         echo "-a, --ssh-addr           ssh ip"
         echo "-b, --bind               If bind this container immediately"
         echo "-f, --force              If container with same name of specified one, remove it and go ahead!!"
+        echo "-p, --pwd, --password    Password of root"
+	echo "--pcmk, --pcmk-start     Start pacemaker"
 
         echo ""
         exit $1
@@ -122,10 +127,25 @@ while true ; do
         -n|--nm|--name) nm="$2"; shift; shift;;
         -i|--img|--image) image=$2; shift; shift;;
         -a|--ssh-addr) ip=$2; shift; shift;;
-        -p|--pcmk|--pcmk-start) svcstart=1; shift;;
+        --pcmk|--pcmk-start) svcstart=1; shift;;
         -b|--bind) ifbind=1; shift;;
         -v|--vol|--volume) ifv=1; extvolume=$2; shift; shift;;
 	-f|--force) force=1; shift;;
+	-p|--pwd|--password) 
+		nx=$(echo "$2"|grep -P "^-")
+		if [ "$nx" != "" ]; then
+			echo -n Set Password: 
+			read -s password
+			
+			if [ "$password" == "" ]; then
+				password="/'],lp123"
+			fi
+			shift
+			echo -e "\n"
+		else
+			password=$2
+			shift; shift
+		fi;;
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""

@@ -9,7 +9,7 @@ if [ "$1" == "-a" ]; then
 		docker exec $id ${*:2}
 	done
 else
-	rtn=$(docker exec $1 pash -c cd  /root/pcmk/cluster/\; ${*:2})
+	rtn=$(docker exec $1 pash -c cd /root/pcmk/cluster/\; ${*:2})
 	#testrtn=$(echo $rtn|grep "Error response from daemon")
 	#if [ "$testrtn" == "" ]; then 
 	#	echo "Try util..."
