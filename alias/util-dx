@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#echo "\$* : $*"
+
+if [ "$1" == "-a" ]; then
+
+	for id in $(dls -ll); do
+		echo "$id: "
+		docker exec $id ${*:2}
+	done
+else
+	docker exec $1 bash -c "cd /root/pcmk/cluster/; ${*:2}"
+fi

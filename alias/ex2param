@@ -1,6 +1,8 @@
 #!/bin/bash
 
 cd /root/alias/alias
-cat "$1.example"|grep @@@|awk '{split($0, a, "@@@");print "@@@"a[2]"@@@"}' > "$1.param"
-chmod +x "$1.param"
+if [ -e "$1.example" ]; then
+	cat "$1.example"|grep @@@|awk '{split($0, a, "@@@");print "@@@"a[2]"@@@"}' > "$1.param"
+	chmod +x "$1.param"
 
+fi
