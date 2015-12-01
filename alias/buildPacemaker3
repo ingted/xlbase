@@ -76,6 +76,7 @@ function main () {
 	localhostnm=$(hostname)
 	docker exec "$nm" service ssh restart
 	docker exec "$nm" echo $(eval 'PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"')
+	docker exec "$nm" sed -i.bak -e "s/mesg\ n/if [ tty -s ]\; then mesg n; fi/g" /root/.profile
 	
 	echo \[\!ID_DONE\]
 	

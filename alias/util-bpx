@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pcmd="${*:2}"
+#echo "$pcmd"
+bcmd="cd /root/pcmk/cluster/; pash -c ${*:2}"
+#echo "$bcmd"
+rtn=$(cat << EOF
+$(docker exec $1 /bin/bash -lc "$bcmd")
+EOF
+)
+echo "$rtn"|& sed '4d'
