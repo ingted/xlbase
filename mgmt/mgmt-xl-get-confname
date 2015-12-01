@@ -22,4 +22,4 @@ nid=$(./mgmt-xl-get-node-id "$1")
 
 configrepo=$(which dexxconfigrepo)
 
-awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\" ) {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$4,\$5\"/\"\$7,\$6}" "$configrepo"
+awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\" ) {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$5,\$5\"/\"\$7,\$6}" "$configrepo"
