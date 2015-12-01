@@ -2,7 +2,7 @@
 
 pcmd="${*:2}"
 #echo "$pcmd"
-bcmd="cd /root/pcmk/cluster/; pash -c ${*:2}"
+bcmd="cd /root/pcmk/cluster/; setuser $2; pash -c ${*:2}"
 #echo "$bcmd"
 #rtn=$(cat << EOF
 #$(docker exec $1 /bin/bash -lc "$bcmd")

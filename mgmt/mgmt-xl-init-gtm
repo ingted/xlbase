@@ -9,4 +9,4 @@
 
 #role=$(./mgmt-xl-get-host-by-role "$1")
 
-./mgmt-xl-init gtm
+./mgmt-xl-init gtm postgres

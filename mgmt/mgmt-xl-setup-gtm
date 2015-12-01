@@ -3,10 +3,10 @@
 
 function main () {
 	cnm=$(./mgmt-xl-get-host-by-role gtm)
-	echo $(date) \[\| Setup GTM \|\] Container name: $cnm
+	echo $(date +"%T") \[\| Setup GTM \|\] Container name: $cnm
 	
 	cip=$(./mgmt-xl-get-ip $cnm)
-	echo $(date) \[\| Setup GTM \|\] Container IP  : $cip
+	echo $(date +"%T") \[\| Setup GTM \|\] Container IP  : $cip
 	
 	ifexist=$(ifconfig | grep $cip)
 	if [ "$ifexist" == "" ]; then
@@ -15,7 +15,7 @@ function main () {
 	fi
 	
 	vol=$(./mgmt-xl-get-vol $cnm)
-	echo $(date) \[\| Setup GTM \|\] Persistent Vol: $vol
+	echo $(date +"%T") \[\| Setup GTM \|\] Persistent Vol: $vol
 	
 	((
 		if [ "$force" == "1" ]; then 
@@ -24,7 +24,7 @@ function main () {
 			buildPacemaker3 -a $cip -n $cnm -v $vol
 		fi
 	) || (
-		echo $(date) Setup GTM \|\] Build \"$cnm\" failed!
+		echo $(date +"%T") Setup GTM \|\] Build \"$cnm\" failed!
 		exit 999
 	)) && (
 		./mgmt-xl-setup "$cnm" gtm

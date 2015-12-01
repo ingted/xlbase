@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo $(date) \[\| init-set-host \|\]
+echo $(date +"%T") \[\| init-set-host \|\]
 ./mgmt-init-set-host "$1"
 
-echo $(date) \[\| init-set-xl \|\]
+echo $(date +"%T") \[\| init-set-xl \|\]
 ./mgmt-init-set-xl "$1" 9.2
 
-echo $(date) \[\| xl-init-directories \|\]
+echo $(date +"%T") \[\| xl-init-directories \|\]
 ./mgmt-xl-init-directories "$1"
 
 

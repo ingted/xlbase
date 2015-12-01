@@ -28,8 +28,12 @@ $hostdata
 EOF
 )
 hb64=$(echo "$hd"|base64)
-echo $hb64
+#echo $hb64
 
+
+echo $(date +"%T") \[\| update-cluster-tool \|\] 
 ./mgmt-update-cluster-tool "$nm"
+
+echo $(date +"%T") \[\| cluster-hosts  \|\]
 util-px "$nm" cluster-hosts.ps1 $hb64
 #util-px "$nm" if\(\(dir /postgres\) -eq \$null\){\"set host failed!\"}
