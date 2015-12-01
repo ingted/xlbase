@@ -18,12 +18,12 @@ dirfile=$(which "$DIRF")
 dirdata=$(cat $dirfile)
 db64=$(echo "$dirdata"|base64)
 echo $db64
-tool=$(util-px "$nm" cd /root/pcmk/\; \(dir get-tool\).exists)
-if [ "$tool"  == "False" ]; then 
-	util-px "$nm" cd /root/pcmk/\; git pull\; cd cluster\; cluster-dirs.ps1 $db64
-else
-	util-px "$nm" cd /root/pcmk/\; . get-tool\; cd cluster\; cluster-dirs.ps1 $db64
-fi
+./mgmt-update-cluster-tool "$nm"
+util-px "$nm" cluster-dirs.ps1 $db64
 
-dex "$nm" /root/pcmk/cluster/cluster-service-account.sh -n postgres -p "/'],lp123"
-dex "$nm" /root/pcmk/cluster/cluster-service-account-permissions.sh -n postgres
+util-px "$nm" if\(\(dir /postgres\) -eq \$null\){\"init xl dirs failed!\"}
+
+util-dx "$nm" ./cluster-service-account.sh -n postgres -p "/\'],lp123"
+util-dx "$nm" ./cluster-service-account-permissions.sh -n postgres
+
+

@@ -1,5 +1,3 @@
 #!/bin/bash
 
-
-./mgmt-init-set-host "$1"
-./mgmt-xl-init-directories "$1"
+./mgmt-xl-setup "$1" gtm

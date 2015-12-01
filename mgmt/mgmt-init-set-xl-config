@@ -1,0 +1,13 @@
+#!/bin/bash
+
+curdir=$(pwd)
+dhosts=$(cat /root/alias/alias/dexxhosts|awk '{print $4}'|sort|uniq|sed '/^$/d')
+for fnm in $dhosts; do
+	cd $curdir
+	mkdir -p $fnm
+	cd $fnm
+	chosts=$(cat /root/alias/alias/dexxhosts|awk "\$4 == \"$fnm\" {print \$2}"|sort|uniq|sed '/^$/d')
+	for cnm in $chosts; do
+		mkdir -p $cnm
+	done
+done

@@ -7,31 +7,3 @@ else
 	nm=$1
 fi
 
-if [ "$2" == "" ]; then
-	echo "PGVER is required! Use 9.2."
-	HOSTF=9.2
-else
-	HOSTF=$2
-fi
-
-hostfile=$(which "$HOSTF")
-hostdata=$(cat $hostfile|awk '{print $1"\011"$2}')
-hd=$(cat << EOF
-127.0.0.1       localhost
-127.0.1.1       localhost
-
-#The following lines are desirable for IPv6 capable hosts
-::1     localhost ip6-localhost ip6-loopback
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-$hostdata
-EOF
-)
-hb64=$(echo "$hd"|base64)
-echo $hb64
-tool=$(util-px "$nm" cd /root/pcmk/\; \(dir get-tool\).exists)
-if [ "$tool"  == "False" ]; then 
-	util-px "$nm" cd /root/pcmk/\; git pull\; cd cluster\; cluster-hosts.ps1 $hb64
-else
-	util-px "$nm" cd /root/pcmk/\; . get-tool\; cd cluster\; cluster-hosts.ps1 $hb64
-fi
