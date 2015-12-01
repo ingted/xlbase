@@ -11,4 +11,7 @@ if ($ver -eq "9.2"){
 	cd /root/Downloads/pgxl95/postgres-xl
 	$result = make install-world
 	$result[-1]
+} else {
+
+	"wrong version specified!"
 }
