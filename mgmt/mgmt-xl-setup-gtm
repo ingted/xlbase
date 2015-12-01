@@ -1,3 +1,15 @@
 #!/bin/bash
 
-./mgmt-xl-setup "$1" gtm
+cnm=$(./mgmt-xl-get-host-by-role gtm)
+cip=$(./mgmt-xl-get-ip $cnm)
+
+ifexist=$(ifconfig | grep $cip)
+if [ "$ifexist" == "" ]; then
+	echo "wrong docker host!"
+	exit 999
+fi
+
+vol=$(./mgmt-xl-get-vol $cnm)
+buildPacemaker3 -a $cip -n $cnm -v $vol
+./mgmt-xl-setup "$cnm" gtm
+

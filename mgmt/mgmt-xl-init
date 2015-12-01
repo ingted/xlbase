@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	echo "XL role is required!"
+	exit 999
+else
+	nm=$1
+fi
+
+
+host=$(./mgmt-xl-get-host-by-role "$1")
+

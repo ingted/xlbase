@@ -4,3 +4,22 @@
 ./mgmt-init-set-host "$1"
 ./mgmt-xl-init-directories "$1"
 ./mgmt-init-set-xl "$1" 9.2
+
+case $2 in
+	gtm)
+		./mgmt-xl-init-gtm   
+		;;
+	gtmsby)
+		./mgmt-xl-init-gtmsby
+		;;            
+	gtmprx)
+		./mgmt-xl-init-gtmprx $3       
+		;;
+	coor)
+		./mgmt-xl-init-coor $3
+		;;
+	dn)
+		./mgmt-xl-init-dn $3
+		;;
+	*)              
+esac 

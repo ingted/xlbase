@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$1" == "dn" ] || [ "$1" == "coor" ] || [ "$1" == "gtm" ] || [ "$1" == "gtmprx" ] || [ "$1" == "gtmsby" ]; then
+	if [ "$2" == "" ]; then
+		cat ../alias/dexxhostroles|grep -E "$1\b"|awk '{print $1}'
+	else
+		cat ../alias/dexxhostroles|grep -E "$1\b"|awk "\$5 == \"$2\" {print \$1}"
+	fi
+else
+	echo "wrong speficied role!"
+
+fi

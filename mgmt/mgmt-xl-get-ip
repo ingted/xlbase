@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+rst=$(./mgmt-xl-check-host "$1")
+if [ "$rst" == 0 ]; then
+	echo "invalid specified host!"
+	exit 999
+fi
+
+hostfile=$(which dexxhosts)
+
+awk "\$2 == \"$1\" {print \$1}" "$hostfile"

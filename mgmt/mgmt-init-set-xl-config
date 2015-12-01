@@ -1,6 +1,7 @@
 #!/bin/bash
 
 curdir=$(pwd)
+mkdir -p "$curdir/status"
 dhosts=$(cat /root/alias/alias/dexxhosts|awk '{print $4}'|sort|uniq|sed '/^$/d')
 for fnm in $dhosts; do
 	cd $curdir
@@ -9,5 +10,9 @@ for fnm in $dhosts; do
 	chosts=$(cat /root/alias/alias/dexxhosts|awk "\$4 == \"$fnm\" {print \$2}"|sort|uniq|sed '/^$/d')
 	for cnm in $chosts; do
 		mkdir -p $cnm
+		if [ ! -e "$curdir/status/$cnm.status" ]; then
+			echo "Initialized" > "$curdir/status/$cnm.status"
+		fi
+		if [ ! -e "$curdir/$fnm/$cnm/
 	done
 done

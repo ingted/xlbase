@@ -1,0 +1,4 @@
+#!/bin/bash
+
+hostrole=$(which dexxhostroles)
+cat $hostrole|grep $1|awk '{print $3}'

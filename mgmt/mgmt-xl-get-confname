@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ "$2" == "" ]; then
+        echo "PGVER is required! Use 9.2."
+        PGVER="9.2"
+else
+	echo "PGVER sets to $2."
+        PGVER="$2"
+fi
+
+
+
+rst=$(./mgmt-xl-check-host "$1")
+if [ "$rst" == 0 ]; then
+	echo "invalid specified host!"
+	exit 999
+fi
+
+role=$(./mgmt-xl-get-role "$1")
+m_or_s=$(./mgmt-xl-get-m-or-s "$1")
+nid=$(./mgmt-xl-get-node-id "$1")
+
+configrepo=$(which dexxconfigrepo)
+
+awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\" ) {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$4,\$5\"/\"\$7,\$6}" "$configrepo"
