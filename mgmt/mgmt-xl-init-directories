@@ -41,4 +41,4 @@ util-dx "$nm" ./cluster-service-account.sh -n $pgu -p "/\'],lp123"
 echo $(date +"%T") \[\| service-account-permissions \|\]
 util-dx "$nm" ./cluster-service-account-permissions.sh -n $pgu
 
-
+echo $(date +"%T") \[\| nit-directories done \|\]

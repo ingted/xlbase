@@ -39,9 +39,9 @@ function main () {
 						
 						(
 							if [ "$force" == "1" ]; then 
-								buildPacemaker3 -a $cip -n $cnm -v $vol -f
+								buildPacemaker3 -a $cip -n $cnm -v $vol -f -p -
 							else
-								buildPacemaker3 -a $cip -n $cnm -v $vol
+								buildPacemaker3 -a $cip -n $cnm -v $vol -p -
 							fi
 						) || (
 							echo $(date +"%T") Setup $role \|\] Build \"$cnm\" failed!
