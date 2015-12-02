@@ -10,6 +10,7 @@ function main(){
 		helptext 999
 	fi
 	chown "$nm":"$nm" /postgres -R
+	chown "$nm":"$nm" /root/pcmk -R
 }
 function helptext() {
         echo ""

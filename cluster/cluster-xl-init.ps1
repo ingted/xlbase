@@ -20,7 +20,7 @@ $droles = @{coor="coordinator"; dn="coordinator"}
 $r_in  = in $role $groles.keys
 $r_in2 = in $role $droles.keys
 if ($r_in){
-	write-host "initgtm -Z " + $groles[$role] + "-D $initpath"
+	write-host "initgtm -Z " + $groles[$role] + " -D $initpath"
 	initgtm -Z $groles[$role] -D $initpath
 } elseif ($r_in2){
 	write-host "initdb --nodename $nodename -D $initpath"
