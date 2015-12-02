@@ -1,13 +1,14 @@
 #!/bin/bash
 
 update=
-nid=0
-slave_or_master=m
+nid=-
+slave_or_master=-
+cnm=-
 
 function main () {
 
 
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtm
+	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmsby
 
 
 }
@@ -15,13 +16,16 @@ function main () {
 
 function helptext () {
         cho ""
-        echo "mgmt-xl-setup-gtm - A tool for setup a gtm node ."
+        echo "mgmt-xl-setup-gtmprx - A tool for setup a xlbase gtm proxy node ."
         echo ""
-        echo "Usage: ./mgmt-xl-setup-gtm [options]"
+        echo "Usage: ./mgmt-xl-setup-gtmprx [options]"
         echo ""
         echo "Options:"
         echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
 	echo "-u, --update		Update utility tools."
+	echo "-h, --host, --hostname	Container node name."
+	echo "-n, --nid, --nodeid	Container node group ID."
+	echo "--sm, --slave-master	Container node group role."
         echo ""
         exit $1
 
@@ -31,6 +35,9 @@ while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
         -f|--force) force="-f"; shift;;
+	-h|--host|--hostname) cnm=$2; shift; shift;;
+	-n|--nid|--nodeid) nid=$2; shift; shift;;
+	--sm|--slave-master) slave_or_master=$2; shift; shift;;
  	-u|--update) update="-u"; shift;; 
         "") break;;
         *)

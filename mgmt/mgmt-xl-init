@@ -7,17 +7,37 @@ else
 	nm=$1
 fi
 
+specified_cnm=$3
+specified_nid=$4
+specified_sm=$5
 
-host=$(./mgmt-xl-get-host-by-role "$1")
-conf=$(./mgmt-xl-get-confname "$1"|awk 'NR>1 {print $1","$2","$3}'|sort|uniq)
-dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
+hosts=$(./mgmt-xl-get-host-by-role "$1")
 
-util-bpx "$host" $2 cluster-xl-init.ps1 $host $1 $dir
+for host in "$hosts"; do
+	nid=$(./mgmt-xl-get-node-id "$host")
+	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
+		sm=$(./mgmt-xl-get-m-or-s "$host")
+		if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
+			if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
+				#nid=$(./mgmt-xl-get-node-ids "$")
 
-for i in $conf; do
-	confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
-	
-	#config=
-	
-	#util-px "$1" cluster-xl-conf.ps1 $host $1 $dir $confpath $config
+				conf=$(./mgmt-xl-get-confname "$host"|awk 'NR>1 {print $1","$2","$3}'|sort|uniq)
+				dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
+				
+				echo $(date +"%T") \[\| xl-init \|\] @$host $1 $dir
+				util-bpx "$host" $2 cluster-xl-init.ps1 $host $1 $dir
+				
+				#echo $conf
+				for i in $conf; do
+					echo $i
+					confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
+					
+					echo $(date +"%T") \[\| xl-conf \|\] @$host $confpath
+					#config=
+					
+					#util-px "$1" cluster-xl-conf.ps1 $host $1 $dir $confpath $config
+				done
+			fi
+		fi
+	fi
 done

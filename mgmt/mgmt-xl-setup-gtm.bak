@@ -1,0 +1,68 @@
+#!/bin/bash
+
+update=0
+nid=0
+slave_or_master=m
+
+function main () {
+	cnm=$(./mgmt-xl-get-host-by-role gtm)
+	echo $(date +"%T") \[\| Setup GTM \|\] Container name: $cnm
+	
+	cip=$(./mgmt-xl-get-ip $cnm)
+	echo $(date +"%T") \[\| Setup GTM \|\] Container IP  : $cip
+	
+	ifexist=$(ifconfig | grep $cip)
+	if [ "$ifexist" == "" ]; then
+		echo "wrong docker host! (IP address specified not existed!)"
+		exit 999
+	fi
+	
+	vol=$(./mgmt-xl-get-vol $cnm)
+	echo $(date +"%T") \[\| Setup GTM \|\] Persistent Vol: $vol
+	
+	((
+		if [ "$force" == "1" ]; then 
+			buildPacemaker3 -a $cip -n $cnm -v $vol -f
+		else
+			buildPacemaker3 -a $cip -n $cnm -v $vol
+		fi
+	) || (
+		echo $(date +"%T") Setup GTM \|\] Build \"$cnm\" failed!
+		exit 999
+	)) && (
+		./mgmt-xl-setup "$cnm" gtm $nid $update
+	)
+}
+
+
+function helptext () {
+        cho ""
+        echo "mgmt-xl-setup-gtm - A tool for setup a gtm node ."
+        echo ""
+        echo "Usage: ./mgmt-xl-setup-gtm [options]"
+        echo ""
+        echo "Options:"
+        echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
+	echo "-n, --nodeid"
+	echo "-u, --update		Update utility tools."
+	echo "-sm, --slave-or-master	Slave or master, default is master."
+        echo ""
+        exit $1
+
+}
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+        -f|--force) force=1; shift;;
+        -n|--node|--nodeid) nid=$2; shift; shift;;
+ 	-u|--update) update=1; shift;; 
+	--sm|--slave-or-master) slave_or_master=$2; shift; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+main

@@ -9,4 +9,10 @@
 
 #role=$(./mgmt-xl-get-host-by-role "$1")
 
-./mgmt-xl-init gtm postgres
+if [ "$1" == "" ]; then
+	pgu=postgres
+else
+	pgu=$1
+fi
+
+./mgmt-xl-init gtm $pgu - - -

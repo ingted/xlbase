@@ -2,12 +2,12 @@
 
 update=
 nid=0
-slave_or_master=m
+slave_or_master=s
 
 function main () {
 
 
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtm
+	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmsby
 
 
 }
@@ -15,9 +15,9 @@ function main () {
 
 function helptext () {
         cho ""
-        echo "mgmt-xl-setup-gtm - A tool for setup a gtm node ."
+        echo "mgmt-xl-setup-gtmisby - A tool for setup a gtmsby node ."
         echo ""
-        echo "Usage: ./mgmt-xl-setup-gtm [options]"
+        echo "Usage: ./mgmt-xl-setup-gtmsby [options]"
         echo ""
         echo "Options:"
         echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"

@@ -2,8 +2,9 @@
 
 hostfile=
 dirfile=
+pguser=postgres
 
-if [ "$4" == "1" ]; then
+if [ "$5" == "1" ]; then
 	update=1
 else
 	update=0
@@ -21,25 +22,25 @@ echo $(date +"%T") \[\| init-set-xl \|\]
 ./mgmt-init-set-xl "$1" 9.2
 
 echo $(date +"%T") \[\| xl-init-directories \|\]
-./mgmt-xl-init-directories "$1" "$dirfile"
+./mgmt-xl-init-directories "$1" "$dirfile" $pguser
 
 
 
 case $2 in
 	gtm)
-		./mgmt-xl-init-gtm   
+		./mgmt-xl-init-gtm $pguser
 		;;
 	gtmsby)
-		./mgmt-xl-init-gtmsby
+		./mgmt-xl-init-gtmsby $pguser
 		;;            
 	gtmprx)
-		./mgmt-xl-init-gtmprx $3       
+		./mgmt-xl-init-gtmprx $1 $3 $4 $pguser
 		;;
 	coor)
-		./mgmt-xl-init-coor $3
+		./mgmt-xl-init-coor $1 $3 $4 $pguser
 		;;
 	dn)
-		./mgmt-xl-init-dn $3
+		./mgmt-xl-init-dn $1 $3 $4 $pguser
 		;;
 	*)              
 esac 

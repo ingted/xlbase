@@ -16,6 +16,13 @@ else
 fi
 
 
+if [ "$3" == "" ]; then
+	echo "PGUSER is required! Use postgres."
+	pgu=postgres
+else
+	pgu=$3
+fi
+
 
 dirfile=$(which "$DIRF")
 dirdata=$(cat $dirfile)
@@ -29,9 +36,9 @@ util-px "$nm" if\(\(dir /postgres\) -eq \$null\){\"init xl dirs failed!\"}
 
 
 echo $(date +"%T") \[\| service-account \|\]
-util-dx "$nm" ./cluster-service-account.sh -n postgres -p "/\'],lp123"
+util-dx "$nm" ./cluster-service-account.sh -n $pgu -p "/\'],lp123"
 
 echo $(date +"%T") \[\| service-account-permissions \|\]
-util-dx "$nm" ./cluster-service-account-permissions.sh -n postgres
+util-dx "$nm" ./cluster-service-account-permissions.sh -n $pgu
 
 
