@@ -1,44 +1,60 @@
 #!/bin/bash
 
 update=0
-nid=-
-slave_or_master=m
+specified_nid=-
+specified_sm=m
+specified_cnm=-
 role=gtm
 
 
 function main () {
 	case "$role" in
-		gtm) nid=0; slave_or_master=m;;
-		gtmsby) nid=0; slave_or_master=s;;
+		gtm) specified_nid=0; specified_sm=m;;
+		gtmsby) specified_nid=0; specified_sm=s;;
 	*) ;;
 	esac
-	cnm=$(./mgmt-xl-get-host-by-role $role)
-	echo $(date +"%T") \[\| Setup $role \|\] Container name: $cnm
-	
-	cip=$(./mgmt-xl-get-ip $cnm)
-	echo $(date +"%T") \[\| Setup $role \|\] Container IP  : $cip
-	
-	ifexist=$(ifconfig | grep $cip)
-	if [ "$ifexist" == "" ]; then
-		echo "wrong docker host! (IP address specified not existed!)"
-		exit 999
-	fi
-	
-	vol=$(./mgmt-xl-get-vol $cnm)
-	echo $(date +"%T") \[\| Setup $role \|\] Persistent Vol: $vol
-	
-	((
-		if [ "$force" == "1" ]; then 
-			buildPacemaker3 -a $cip -n $cnm -v $vol -f
-		else
-			buildPacemaker3 -a $cip -n $cnm -v $vol
-		fi
-	) || (
-		echo $(date +"%T") Setup $role \|\] Build \"$cnm\" failed!
-		exit 999
-	)) && (
-		./mgmt-xl-setup "$cnm" $role $nid $slave_or_master $update
-	)
+
+	cnms=$(./mgmt-xl-get-host-by-role $role)
+	for cnm in $cnms; do
+		(
+			nid=$(./mgmt-xl-get-node-id "$cnm")
+	        	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
+	        		sm=$(./mgmt-xl-get-m-or-s "$cnm")
+	        	        if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
+	        	        	if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$cnm" ]; then
+
+						echo $(date +"%T") \[\| Setup $role \|\] Container name: $cnm
+						
+						cip=$(./mgmt-xl-get-ip $cnm)
+						echo $(date +"%T") \[\| Setup $role \|\] Container IP  : $cip
+						
+						ifexist=$(ifconfig | grep $cip)
+						if [ "$ifexist" == "" ]; then
+							echo "wrong docker host! (IP address specified not existed!)"
+							exit 999
+						fi
+						
+						vol=$(./mgmt-xl-get-vol $cnm)
+						echo $(date +"%T") \[\| Setup $role \|\] Persistent Vol: $vol
+						
+						(
+							if [ "$force" == "1" ]; then 
+								buildPacemaker3 -a $cip -n $cnm -v $vol -f
+							else
+								buildPacemaker3 -a $cip -n $cnm -v $vol
+							fi
+						) || (
+							echo $(date +"%T") Setup $role \|\] Build \"$cnm\" failed!
+							exit 999
+						)
+					fi
+				fi
+			fi
+		) && (
+			./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update
+		)
+	done
+
 }
 
 
@@ -63,10 +79,11 @@ while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
         -f|--force) force=1; shift;;
-        -n|--node|--nodeid) nid=$2; shift; shift;;
+        -n|--node|--nodeid) specified_nid=$2; shift; shift;;
  	-u|--update) update=1; shift;; 
 	-r|--role) role=$2; shift; shift;;
-	--sm|--slave-or-master) slave_or_master=$2; shift; shift;;
+	--sm|--slave-or-master) specified_sm=$2; shift; shift;;
+	-h|--host|--hostname) specified_cnm=$2; shift; shift;;
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""
