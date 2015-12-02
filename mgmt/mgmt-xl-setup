@@ -3,20 +3,25 @@
 hostfile=
 dirfile=
 
-if [ "$3" == "1" ]; then
+if [ "$4" == "1" ]; then
 	update=1
 else
 	update=0
 fi 
 
+if [ "$update" == "1" ]; then
+        echo $(date +"%T") \[\| update-cluster-tool \|\]
+        ./mgmt-update-cluster-tool "$1"
+fi
+
 echo $(date +"%T") \[\| init-set-host \|\]
-./mgmt-init-set-host "$1" $hostfile $update
+./mgmt-init-set-host "$1" "$hostfile"
 
 echo $(date +"%T") \[\| init-set-xl \|\]
 ./mgmt-init-set-xl "$1" 9.2
 
 echo $(date +"%T") \[\| xl-init-directories \|\]
-./mgmt-xl-init-directories "$1" $dirfile $update
+./mgmt-xl-init-directories "$1" "$dirfile"
 
 
 

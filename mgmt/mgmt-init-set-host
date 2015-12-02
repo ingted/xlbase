@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 if [ "$1" == "" ]; then
 	echo "Container name is required!"
 	exit 999
@@ -14,11 +15,7 @@ else
 	HOSTF=$2
 fi
 
-if [ "$3" == "1" ]; then 
-	update=1
-else
-	update=0
-fi
+
 
 hostfile=$(which "$HOSTF")
 hostdata=$(cat $hostfile|awk '{print $1"\011"$2}')
@@ -37,11 +34,7 @@ hb64=$(echo "$hd"|base64)
 #echo $hb64
 
 
-echo $(date +"%T") \[\| update-cluster-tool \|\] 
 
-if [ "$update" == 1 ]; then
-	./mgmt-update-cluster-tool "$nm"
-fi
 
 echo $(date +"%T") \[\| cluster-hosts  \|\]
 util-px "$nm" cluster-hosts.ps1 $hb64
