@@ -1,0 +1,55 @@
+function @@@b_coor_chkseq@@@      (){
+	
+}   
+function @@@b_coor_gtmprx_port@@@ (){    
+}
+function @@@b_coor_mx_conn@@@     (){    
+}
+function @@@b_coor_mx_coor@@@     (){   
+}
+function @@@b_coor_mx_dn@@@       (){   
+}
+function @@@b_coor_mx_pool@@@@    (){    
+}
+function @@@b_coor_pooler_port@@@ (){    
+}
+function @@@b_coor_port@@@        (){    
+}
+function @@@b_coor_shbuff@@@      (){     
+}
+function @@@b_dn_cache_size@@@    (){   
+}
+function @@@b_dn_chkseg@@@        (){    
+}
+function @@@b_dn_gtmprx_port@@@   (){    
+}
+function @@@b_dn_maintain_mem@@@  (){    
+}
+function @@@b_dn_mx_conn@@@       (){      
+}
+function @@@b_dn_mx_coor@@@       (){     
+}
+function @@@b_dn_mx_dn@@@         (){ 
+}
+function @@@b_dn_mx_pool@@@       (){      
+}
+function @@@b_dn_pooler_port@@@   (){ 
+}
+function @@@b_dn_port@@@          (){   
+}
+function @@@b_dn_shbuff@@@        (){ 
+}
+function @@@b_dn_wkmem@@@         (){  
+}
+function @@@m_coor_gtmprx@@@      (){  
+}
+function @@@m_coor_hostip@@@      (){  
+}
+function @@@m_coor_pgxcnodename@@@(){  
+}
+function @@@m_dn_gtmprx@@@        (){  
+}
+function @@@m_dn_hostip@@@        (){  
+}
+function @@@m_dn_pgxcnodename@@@  (){   
+}

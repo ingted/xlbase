@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+./mgmt-xl-setup-coor    -f -u &
+./mgmt-xl-setup-dn      -f -u &
+./mgmt-xl-setup-gtm     -f -u &
+./mgmt-xl-setup-gtm.bak -f -u &
+./mgmt-xl-setup-gtmprx  -f -u &
+./mgmt-xl-setup-gtmsby  -f -u &

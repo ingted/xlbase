@@ -1,6 +1,6 @@
 #!/bin/bash
 
 cd /root/alias/alias
-cat "$1"|grep -E "^[^#]" > "$1.example.pre"
+cat "$1"|grep -E "^[^#]" | tee "$1.example.pre"
 chmod +x "$1.example.pre"
 
