@@ -20,6 +20,7 @@ function main(){
 		if [ "$sudo" == "1" ]; then adduser "$nm" sudo; fi
 		echo -e "$pwd\n$pwd\n" | passwd "$nm"
 	fi
+	cp /root/.bashrc /home/$nm/.bashrc
 }
 
 function helptext() {

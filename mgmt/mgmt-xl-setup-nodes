@@ -83,7 +83,7 @@ while true ; do
  	-u|--update) update=1; shift;; 
 	-r|--role) role=$2; shift; shift;;
 	--sm|--slave-or-master) specified_sm=$2; shift; shift;;
-	-h|--host|--hostname) specified_cnm=$2; shift; shift;;
+	--host|--hostname) specified_cnm=$2; shift; shift;;
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""

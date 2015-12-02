@@ -8,20 +8,20 @@ cnm=-
 function main () {
 
 
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r coor
+	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r coor --host $cnm
 
 
 }
 
 
 function helptext () {
-        cho ""
+        echo ""
         echo "mgmt-xl-setup-coor - A tool for setup a xlbase coordinator node ."
         echo ""
         echo "Usage: ./mgmt-xl-setup-coor [options]"
         echo ""
         echo "Options:"
-        echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
+        echo "-f, --force		If container with same name of specified one, recreate it and go ahead!!"
 	echo "-u, --update		Update utility tools."
 	echo "-h, --host, --hostname	Container node name."
 	echo "-n, --nid, --nodeid	Container node group ID."
@@ -35,7 +35,7 @@ while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
         -f|--force) force="-f"; shift;;
-	-h|--host|--hostname) cnm=$2; shift; shift;;
+	--host|--hostname) cnm=$2; shift; shift;;
 	-n|--nid|--nodeid) nid=$2; shift; shift;;
 	--sm|--slave-master) slave_or_master=$2; shift; shift;;
  	-u|--update) update="-u"; shift;; 
