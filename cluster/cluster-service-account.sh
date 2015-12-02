@@ -10,10 +10,16 @@ function main(){
 		helptext 999
 	fi
 
-	useradd "$nm"
-	if [ "$sudo" == "1" ]; then adduser "$nm" sudo; fi
-	echo -e "$pwd\n$pwd\n" | passwd "$nm"
+	ret=false
+	getent passwd $nm >/dev/null 2>&1 && ret=true
 
+	if $ret; then
+	    	echo "the user $nm exists!"
+	else
+		useradd "$nm"
+		if [ "$sudo" == "1" ]; then adduser "$nm" sudo; fi
+		echo -e "$pwd\n$pwd\n" | passwd "$nm"
+	fi
 }
 
 function helptext() {
