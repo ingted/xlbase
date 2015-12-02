@@ -11,6 +11,7 @@ function main(){
 	fi
 	chown "$nm":"$nm" /postgres -R
 	chown "$nm":"$nm" /root/pcmk -R
+	chmod +x /root
 }
 function helptext() {
         echo ""
