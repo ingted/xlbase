@@ -8,6 +8,10 @@ role=gtm
 
 
 function main () {
+
+	echo "node specified $specified_nid"	
+	echo "host specified $specified_cnm"
+
 	case "$role" in
 		gtm) specified_nid=0; specified_sm=m;;
 		gtmsby) specified_nid=0; specified_sm=s;;
@@ -17,7 +21,7 @@ function main () {
 	cnms=$(./mgmt-xl-get-host-by-role $role)
 	for cnm in $cnms; do
 		enter=1
-		(
+		{
 			nid=$(./mgmt-xl-get-node-id "$cnm")
 	        	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
 	        		sm=$(./mgmt-xl-get-m-or-s "$cnm")
@@ -49,14 +53,30 @@ function main () {
 							echo $(date +"%T") Setup $role \|\] Build \"$cnm\" failed!
 							exit 999
 						)
+					else
+                                        	enter=0
+                                        	echo "invalid host"
+                                        	continue
+
+
 					fi
+				else
+                        	        enter=0
+                        	        echo "invalid slave/master"
+                        	        continue
+                        	
 				fi
-			fi
-		) && (
+			else
+				enter=0
+				echo "invalid node id"
+				continue
+			fi; 
+		} && {
+			echo \$enter: $enter
 			if [ $enter == 1 ]; then 
 				./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update
-			fi
-		)
+			fi;
+		}
 	done
 
 }
