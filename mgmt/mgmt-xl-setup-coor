@@ -31,6 +31,8 @@ function helptext () {
 
 }
 
+cnt=$#
+
 while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
@@ -46,4 +48,11 @@ while true ; do
         esac
 done
 
-main
+
+
+if [ "$cnt" == 0 ]; then
+        helptext 1
+else
+        main
+fi
+

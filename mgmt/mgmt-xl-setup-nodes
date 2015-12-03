@@ -16,6 +16,7 @@ function main () {
 
 	cnms=$(./mgmt-xl-get-host-by-role $role)
 	for cnm in $cnms; do
+		enter=1
 		(
 			nid=$(./mgmt-xl-get-node-id "$cnm")
 	        	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
@@ -31,7 +32,8 @@ function main () {
 						ifexist=$(ifconfig | grep $cip)
 						if [ "$ifexist" == "" ]; then
 							echo "wrong docker host! (IP address specified not existed!)"
-							exit 999
+							enter=0
+							continue
 						fi
 						
 						vol=$(./mgmt-xl-get-vol $cnm)
@@ -51,7 +53,9 @@ function main () {
 				fi
 			fi
 		) && (
-			./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update
+			if [ $enter == 1 ]; then 
+				./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update
+			fi
 		)
 	done
 
@@ -75,6 +79,8 @@ function helptext () {
 
 }
 
+cnt=$#
+
 while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
@@ -91,4 +97,8 @@ while true ; do
         esac
 done
 
-main
+if [ "$cnt" == "0" ]; then
+	helptext 1;
+else
+	main
+fi
