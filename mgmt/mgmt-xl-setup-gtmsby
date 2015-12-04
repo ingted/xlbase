@@ -42,7 +42,7 @@ while true ; do
 done
 
 
-if [ "$cnt" == 0 ]; then
+if [ $cnt == 0 ]; then
         helptext 1
 else
         main

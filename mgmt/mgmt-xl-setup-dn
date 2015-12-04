@@ -23,7 +23,7 @@ function helptext () {
         echo "Options:"
         echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
 	echo "-u, --update		Update utility tools."
-	echo "-h, --host, --hostname	Container node name."
+	echo "--host, --hostname	Container node name."
 	echo "-n, --nid, --nodeid	Container node group ID."
 	echo "--sm, --slave-master	Container node group role."
         echo ""
@@ -48,7 +48,7 @@ while true ; do
         esac
 done
 
-if [ "$cnt" == 0 ]; then
+if [ $cnt == 0 ]; then
         helptext 1
 else
         main
