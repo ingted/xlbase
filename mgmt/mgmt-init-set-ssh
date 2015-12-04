@@ -1,0 +1,6 @@
+#!/bin/bash
+
+dhosts=$(./mgmt-xl-get-host-by-role docker)
+for host in $hosts; do
+	ssh-copy-id $host
+

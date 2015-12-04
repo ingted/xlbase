@@ -2,7 +2,7 @@
 
 hostroles=$(which dexxhostroles)
 
-if [ "$1" == "dn" ] || [ "$1" == "coor" ] || [ "$1" == "gtm" ] || [ "$1" == "gtmprx" ] || [ "$1" == "gtmsby" ]; then
+if [ "$1" == "dn" ] || [ "$1" == "coor" ] || [ "$1" == "gtm" ] || [ "$1" == "gtmprx" ] || [ "$1" == "gtmsby" ] || [ "$1" == "docker" ]; then
 	if [ "$2" == "" ]; then
 		cat $hostroles|grep -E "$1\b"|awk '{print $1}'
 	else
