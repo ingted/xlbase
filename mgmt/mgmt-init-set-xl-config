@@ -1,18 +1,22 @@
 #!/bin/bash
 
 curdir=$(pwd)
+rm "$curdir/status/*" -rf 
 mkdir -p "$curdir/status"
-dhosts=$(cat /root/alias/alias/dexxhosts|awk '{print $4}'|sort|uniq|sed '/^$/d')
+hostfile=$(which dexxhosts)
+dhosts=$(cat $hostfile|awk '{print $4}'|sort|uniq|sed '/^$/d')
+echo -e "start init hosts$dhost"
 for fnm in $dhosts; do
 	cd $curdir
 	mkdir -p $fnm
 	cd $fnm
-	chosts=$(cat /root/alias/alias/dexxhosts|awk "\$4 == \"$fnm\" {print \$2}"|sort|uniq|sed '/^$/d')
+	chosts=$(cat $hostfile|awk "\$4 == \"$fnm\" {print \$2}"|sort|uniq|sed '/^$/d')
 	for cnm in $chosts; do
+		echo init $cnm...
 		mkdir -p $cnm
 		if [ ! -e "$curdir/status/$cnm.status" ]; then
 			echo "Initialized" > "$curdir/status/$cnm.status"
 		fi
-		if [ ! -e "$curdir/$fnm/$cnm/
+		#if [ ! -e "$curdir/$fnm/$cnm/
 	done
 done
