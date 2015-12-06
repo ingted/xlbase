@@ -18,19 +18,24 @@ function main () {
 	*) ;;
 	esac
 
-	cnms=$(./mgmt-xl-get-host-by-role $role)
+	if [ "$cluster" == "" ]; then
+	        echo "cluster is required! exited..."
+		exit 999
+	fi
+
+	cnms=$(./mgmt-xl-get-host-by-role $role $cluster)
 	for cnm in $cnms; do
 		enter=1
 		{
-			nid=$(./mgmt-xl-get-node-id "$cnm")
+			nid=$(./mgmt-xl-get-node-id "$cnm" $cluster)
 	        	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
-	        		sm=$(./mgmt-xl-get-m-or-s "$cnm")
+	        		sm=$(./mgmt-xl-get-m-or-s "$cnm" $cluster)
 	        	        if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
 	        	        	if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$cnm" ]; then
 
 						echo $(date +"%T") \[\| Setup $role \|\] Container name: $cnm
 						
-						cip=$(./mgmt-xl-get-ip $cnm)
+						cip=$(./mgmt-xl-get-ip $cnm $cluster)
 						echo $(date +"%T") \[\| Setup $role \|\] Container IP  : $cip
 						
 						ifexist=$(ifconfig | grep $cip)
@@ -40,7 +45,7 @@ function main () {
 							continue
 						fi
 						
-						vol=$(./mgmt-xl-get-vol $cnm)
+						vol=$(./mgmt-xl-get-vol $cnm $cluster)
 						echo $(date +"%T") \[\| Setup $role \|\] Persistent Vol: $vol
 						
 						(
@@ -74,7 +79,7 @@ function main () {
 		} && {
 			echo \$enter: $enter
 			if [ $enter == 1 ]; then 
-				./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update
+				./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update $cluster
 			fi;
 		}
 	done
@@ -89,6 +94,7 @@ function helptext () {
         echo "Usage: ./mgmt-xl-setup-nodes [options]"
         echo ""
         echo "Options:"
+	echo "-c, --cluster		cluster name."
         echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
 	echo "-n, --nodeid"
 	echo "-u, --update		Update utility tools."
@@ -104,6 +110,7 @@ cnt=$#
 while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
+	-c|--cluster) cluster=$2; shift; shift;;
         -f|--force) force=1; shift;;
         -n|--node|--nodeid) specified_nid=$2; shift; shift;;
  	-u|--update) update=1; shift;; 

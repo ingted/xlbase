@@ -3,11 +3,11 @@
 update=
 nid=0
 slave_or_master=s
+cluster=
 
 function main () {
 
-
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmsby
+	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmsby -c $cluster
 
 
 }
@@ -32,6 +32,7 @@ cnt=$#
 while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
+	-c|--cluster) cluster=$2; shift; shift;;
         -f|--force) force="-f"; shift;;
  	-u|--update) update="-u"; shift;; 
         "") break;;

@@ -27,4 +27,11 @@ else
 	pgu=$4
 fi
 
-./mgmt-xl-init dn $pgu $cnm $nid $sm
+if [ "$5" == "" ]; then
+        cluster=test
+else
+        cluster=$5
+fi
+
+
+./mgmt-xl-init dn $pgu $cnm $nid $sm $cluster

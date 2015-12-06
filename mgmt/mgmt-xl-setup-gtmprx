@@ -4,11 +4,12 @@ update=
 nid=-
 slave_or_master=-
 cnm=-
+cluster=
 
 function main () {
 
 
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmprx  --host $cnm
+	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmprx  --host $cnm  -c $cluster
 
 
 }
@@ -36,6 +37,7 @@ cnt=$#
 while true ; do
         case "$1" in
         --help|-h|-\?) helptext 0;;
+	-c|--cluster) cluster=$2; shift; shift;;
         -f|--force) force="-f"; shift;;
 	--host|--hostname) cnm=$2; shift; shift;;
 	-n|--nid|--nodeid) nid=$2; shift; shift;;

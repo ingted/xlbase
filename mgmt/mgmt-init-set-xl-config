@@ -11,10 +11,17 @@ curdir=$(pwd)
 rm "$curdir/$cluster/status/*" -rf 
 mkdir -p "$curdir/$cluster/status"
 hostfile=$(which dexxhosts)
-dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") && (\$4 != \"-\") {print \$4}"|sort|uniq|sed '/^$/d')
-echo -e "start init hosts $dhost"
 
-if [ "$dhost" == "" ]; then 
+#dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") && (\$4 != \"-\") {print \$4}"|sort|uniq|sed '/^$/d')
+# (wrong debug way) 2015.12.6 Anibal: get ip needs status of docker host! (remove not equal condition)
+#dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") {print \$4}"|sort|uniq|sed '/^$/d')
+# So i removed both (\$4 != \"-\") below...
+
+
+dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") {print \$4}"|sort|uniq|sed '/^$/d')
+echo -e "start init hosts $dhosts"
+
+if [ "$dhosts" == "" ]; then 
 	echo no docker host records
 else
 
@@ -22,7 +29,8 @@ else
 		cd "$curdir/$cluster/"
 		mkdir -p $fnm
 		cd $fnm
-		chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$4 != \"-\") {print \$2}"|sort|uniq|sed '/^$/d')
+		#chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$4 != \"-\") {print \$2}"|sort|uniq|sed '/^$/d')
+		chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") {print \$2}"|sort|uniq|sed '/^$/d')
 		for cnm in $chosts; do
 			echo init $cnm...
 			mkdir -p $cnm

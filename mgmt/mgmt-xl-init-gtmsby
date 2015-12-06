@@ -1,9 +1,16 @@
 #!/bin/bash
 
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+
 if [ "$1" == "" ]; then
 	pgu=postgres
 else
 	pgu=$1
 fi
 
-./mgmt-xl-init gtmsby $pgu - - -
+./mgmt-xl-init gtmsby $pgu - - - $cluster

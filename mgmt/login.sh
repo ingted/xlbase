@@ -1,6 +1,13 @@
 #!/bin/bash
 
 
+echo -n Enter the cluster name:
+read cluster
+
+if [ "$cluster" == "" ]; then
+        cluster=test
+fi
+
 
 echo -n Set Password:
 read -s password
@@ -10,11 +17,13 @@ if [ "$password" == "" ]; then
         password="/'],lp123"
 fi
 
-hosts=$(./mgmt-xl-get-host-by-role docker)
-allhosts=$(./mgmt-xl-get-host-by-role -a)
-for host in $hosts; do
+echo -e "\npreparing login..."
 
-	cip=$(./mgmt-xl-get-ip $host)
+hosts=$(./mgmt-xl-get-host-by-role docker $cluster);
+allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
+for host in $hosts; do
+	echo ./mgmt-xl-get-ip $host $cluster
+	cip=$(./mgmt-xl-get-ip $host $cluster)
 	echo "processing... $cip"
 	ssh-keygen -R $cip
 	ssh-keyscan -H $cip >> ~/.ssh/known_hosts
@@ -29,9 +38,10 @@ EOF
 	ssh $cip << EOF
 		bash -c 'echo \"$host\" > /etc/hostname'
 		hostnamectl set-hostname \"$host\"
-		for ah in $allhosts; do
-		done
+		
 EOF
+		#for ah in $allhosts; do
+		#done
 
 
 done

@@ -4,7 +4,7 @@ if [ "$1" == "" ]; then
 	echo "XL role is required!"
 	exit 999
 else
-	nm=$1
+	role=$1
 fi
 
 if [ "$6" == "" ]; then
@@ -26,16 +26,20 @@ specified_sm=$5
 
 
 
-hosts=$(./mgmt-xl-get-host-by-role "$1" $cluster)
+hosts=$(./mgmt-xl-get-host-by-role "$role" $cluster)
 
 for host in $hosts; do
-	nid=$(./mgmt-xl-get-node-id "$host" $cluster))
+	nid=$(./mgmt-xl-get-node-id "$host" $cluster)
 	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
 		sm=$(./mgmt-xl-get-m-or-s "$host"  $cluster)
 		if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
 			if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
 
-				conf=$(./mgmt-xl-get-confname "$host"|awk 'NR>1 {print $1","$2","$3}'|sort|uniq)
+				conf=$(./mgmt-xl-get-confname "$host" $cluster|awk 'NR>2 {print $1","$2","$3}'|sort|uniq)
+				if [ "$conf" == "invalid specified host!" ]; then
+					echo "invalid specified host! mgmt-xl-init failed!"
+					continue
+				fi
 				dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 				
 				echo $(date +"%T") \[\| xl-init \|\] @$host $1 $dir

@@ -15,11 +15,18 @@ if [ "$update" == "1" ]; then
         ./mgmt-update-cluster-tool "$1"
 fi
 
+if [ "$6" == "" ]; then
+        cluster=test
+else
+        cluster=$6
+fi
+
+
 echo $(date +"%T") \[\| init-set-host \|\]
-./mgmt-init-set-host "$1" "$hostfile"
+./mgmt-init-set-host "$1" "$hostfile" $cluster
 
 echo $(date +"%T") \[\| init-set-xl \|\]
-./mgmt-init-set-xl "$1" 9.2
+./mgmt-init-set-xl "$1" 9.2 
 
 echo $(date +"%T") \[\| xl-init-directories \|\]
 ./mgmt-xl-init-directories "$1" "$dirfile" $pguser
@@ -28,19 +35,19 @@ echo $(date +"%T") \[\| xl-init-directories \|\]
 
 case $2 in
 	gtm)
-		./mgmt-xl-init-gtm $pguser
+		./mgmt-xl-init-gtm $pguser $cluster
 		;;
 	gtmsby)
-		./mgmt-xl-init-gtmsby $pguser
+		./mgmt-xl-init-gtmsby $pguser $cluster
 		;;            
 	gtmprx)
-		./mgmt-xl-init-gtmprx $1 $3 $4 $pguser
+		./mgmt-xl-init-gtmprx $1 $3 $4 $pguser $cluster
 		;;
 	coor)
-		./mgmt-xl-init-coor $1 $3 $4 $pguser
+		./mgmt-xl-init-coor $1 $3 $4 $pguser $cluster
 		;;
 	dn)
-		./mgmt-xl-init-dn $1 $3 $4 $pguser
+		./mgmt-xl-init-dn $1 $3 $4 $pguser $cluster
 		;;
 	*)              
 esac 
