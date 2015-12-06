@@ -10,6 +10,7 @@ fi
 curdir=$(pwd)
 rm "$curdir/$cluster/status/*" -rf 
 mkdir -p "$curdir/$cluster/status"
+ls "$curdir/$cluster"
 hostfile=$(which dexxhosts)
 
 #dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") && (\$4 != \"-\") {print \$4}"|sort|uniq|sed '/^$/d')
@@ -24,11 +25,15 @@ echo -e "start init hosts $dhosts"
 if [ "$dhosts" == "" ]; then 
 	echo no docker host records
 else
-
+	#echo "1: $(pwd)"
 	for fnm in $dhosts; do
-		cd "$curdir/$cluster/"
+		#echo "2: $curdir/$cluster"
+		cd "$curdir/$cluster"
+		#echo "3: $(pwd)"
+		#echo $fnm
 		mkdir -p $fnm
-		cd $fnm
+		cd "./$fnm"
+		#echo $(pwd)
 		#chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$4 != \"-\") {print \$2}"|sort|uniq|sed '/^$/d')
 		chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") {print \$2}"|sort|uniq|sed '/^$/d')
 		for cnm in $chosts; do

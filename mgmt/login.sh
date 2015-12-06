@@ -33,6 +33,8 @@ for host in $hosts; do
 		if [ "$IFPS1" == "" ]; then 
 			echo 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ "' >> ~/.bashrc
 			echo "#ps1ed" >> ~/.bashrc
+			echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+			echo "nameserver 168.95.192.1" >> /etc/resolv.conf
 		fi
 EOF
 	ssh $cip << EOF
@@ -40,8 +42,13 @@ EOF
 		hostnamectl set-hostname \"$host\"
 		
 EOF
-		#for ah in $allhosts; do
-		#done
+		for ah in $allhosts; do
+			ahip=$(./mgmt-xl-get-ip $ah $cluster)
+			ssh $cip << EOF
+				cp /etc/hosts /etc/hosts.tmp
+				sed '//d' /etc/hosts.tmp
+EOF
+		done
 
 
 done
