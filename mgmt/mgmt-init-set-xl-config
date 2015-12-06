@@ -1,22 +1,35 @@
 #!/bin/bash
 
+if [ "$1" == "" ]; then
+        cluster=test
+else
+        cluster=$1
+fi
+
+
 curdir=$(pwd)
-rm "$curdir/status/*" -rf 
-mkdir -p "$curdir/status"
+rm "$curdir/$cluster/status/*" -rf 
+mkdir -p "$curdir/$cluster/status"
 hostfile=$(which dexxhosts)
-dhosts=$(cat $hostfile|awk '{print $4}'|sort|uniq|sed '/^$/d')
-echo -e "start init hosts$dhost"
-for fnm in $dhosts; do
-	cd $curdir
-	mkdir -p $fnm
-	cd $fnm
-	chosts=$(cat $hostfile|awk "\$4 == \"$fnm\" {print \$2}"|sort|uniq|sed '/^$/d')
-	for cnm in $chosts; do
-		echo init $cnm...
-		mkdir -p $cnm
-		if [ ! -e "$curdir/status/$cnm.status" ]; then
-			echo "Initialized" > "$curdir/status/$cnm.status"
-		fi
-		#if [ ! -e "$curdir/$fnm/$cnm/
+dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") && (\$4 != \"-\") {print \$4}"|sort|uniq|sed '/^$/d')
+echo -e "start init hosts $dhost"
+
+if [ "$dhost" == "" ]; then 
+	echo no docker host records
+else
+
+	for fnm in $dhosts; do
+		cd "$curdir/$cluster/"
+		mkdir -p $fnm
+		cd $fnm
+		chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$4 != \"-\") {print \$2}"|sort|uniq|sed '/^$/d')
+		for cnm in $chosts; do
+			echo init $cnm...
+			mkdir -p $cnm
+			if [ ! -e "$curdir/$cluster/status/$cnm.status" ]; then
+				echo "Initialized" > "$curdir/$cluster/status/$cnm.status"
+			fi
+			#if [ ! -e "$curdir/$cluster/$fnm/$cnm/
+		done
 	done
-done
+fi

@@ -10,7 +10,7 @@ ex2param dexxconfgtm
 ex2param dexxconfgtmsby
 
 olddir=$(pwd)
-cd /root/alias/alias
+cd $(dirname $(which dexxparams))
 
 dexxparams-base | sort | uniq | sed '/^$/d'
 

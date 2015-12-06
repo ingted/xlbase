@@ -1,4 +1,15 @@
 #!/bin/bash
 
+#hostrole=$(which dexxhostroles)
+#cat $hostrole|grep $1|awk '{print $5}'
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+
 hostrole=$(which dexxhostroles)
-cat $hostrole|grep $1|awk '{print $5}'
+awk "(\$1 == \"$1\") && (\$6 == \"$cluster\") {print \$5}" $hostrole
+

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 olddir=$(pwd)
-cd /root/alias/alias
+cd $(dirname $(which dexxparams))
 
 for f in $(ls *.param)
 do
