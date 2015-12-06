@@ -9,17 +9,24 @@ else
 fi
 
 
+if [ "$3" == "" ]; then
+        echo "Cluster is required! Use \"test\"."
+        cluster=test
+else
+	echo "cluster sets to $3."
+        cluster="$3"
+fi
 
-rst=$(./mgmt-xl-check-host "$1")
+rst=$(./mgmt-xl-check-host "$1" "$cluster")
 if [ "$rst" == 0 ]; then
 	echo "invalid specified host!"
 	exit 999
 fi
 
-role=$(./mgmt-xl-get-role "$1")
-m_or_s=$(./mgmt-xl-get-m-or-s "$1")
-nid=$(./mgmt-xl-get-node-id "$1")
+role=$(./mgmt-xl-get-role "$1" "$cluster")
+m_or_s=$(./mgmt-xl-get-m-or-s "$1" "$cluster")
+nid=$(./mgmt-xl-get-node-id "$1" "$cluster")
 
 configrepo=$(which dexxconfigrepo)
 
-awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\" ) {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$5,\$5\"/\"\$7,\$6}" "$configrepo"
+awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\" ) && (\$9 == \$clster") {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$5,\$5\"/\"\$7,\$6}" "$configrepo"

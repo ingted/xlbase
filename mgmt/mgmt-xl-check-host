@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ ! -e ./status/$1.status ]; then 
+if [ ! -e ./$2/status/$1.status ]; then 
 	echo 0
 	exit 999
 fi
 
-status=$(cat ./status/$1.status)
+status=$(cat ./$2/status/$1.status)
 if [ "$status" == "" ]; then
 	echo 0
 else

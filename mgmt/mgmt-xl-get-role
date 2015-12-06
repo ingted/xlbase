@@ -1,4 +1,4 @@
 #!/bin/bash
 
 hostrole=$(which dexxhostroles)
-cat $hostrole|grep $1|awk '{print $3}'
+grep $1|awk "(\$1 == \"$1\") && (\$6 == \"$2\"6 == \"$2\"6 == \"$2\"6 == \"$2\"6 == \"$2\"6 == \"$2\") {print $3}' $hostrole
