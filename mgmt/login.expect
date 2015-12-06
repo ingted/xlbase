@@ -4,6 +4,12 @@ set host [lindex $argv 0]
 set password [lindex $argv 1]
 
 spawn ssh-copy-id $host
-expect "password:"
-send "$password\n"
+exec sleep 10
+expect {
+	"password:" {
+		send "$password\n"
+	}
+	"already exist" {
+	}
+}
 expect eof

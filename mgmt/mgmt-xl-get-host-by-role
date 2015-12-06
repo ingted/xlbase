@@ -8,6 +8,8 @@ if [ "$1" == "dn" ] || [ "$1" == "coor" ] || [ "$1" == "gtm" ] || [ "$1" == "gtm
 	else
 		cat $hostroles|grep -E "$1\b"|awk "\$5 == \"$2\" {print \$1}"
 	fi
+elif [ "$1" == "--all" ] || [ "$1" == "-a" ]; then
+	cat $hostroles|awk '{print $1}'
 else
 	echo "wrong speficied role!"
 
