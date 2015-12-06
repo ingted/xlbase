@@ -7,21 +7,33 @@ else
 	nm=$1
 fi
 
+if [ "$6" == "" ]; then
+        
+ 	echo "cluster is required! sets to \"test\""
+	cluster=test
+else
+        cluster=$6
+fi
+
+
 echo $(date +"%T") \[\| xl-init \|\] BEGINNING...
+
+
 
 specified_cnm=$3
 specified_nid=$4
 specified_sm=$5
 
-hosts=$(./mgmt-xl-get-host-by-role "$1")
+
+
+hosts=$(./mgmt-xl-get-host-by-role "$1" $cluster)
 
 for host in $hosts; do
-	nid=$(./mgmt-xl-get-node-id "$host")
+	nid=$(./mgmt-xl-get-node-id "$host" $cluster))
 	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
-		sm=$(./mgmt-xl-get-m-or-s "$host")
+		sm=$(./mgmt-xl-get-m-or-s "$host"  $cluster)
 		if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
 			if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
-				#nid=$(./mgmt-xl-get-node-ids "$")
 
 				conf=$(./mgmt-xl-get-confname "$host"|awk 'NR>1 {print $1","$2","$3}'|sort|uniq)
 				dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)

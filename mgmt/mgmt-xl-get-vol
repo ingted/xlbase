@@ -1,7 +1,14 @@
 #!/bin/bash
 
 
-rst=$(./mgmt-xl-check-host "$1")
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+
+rst=$(./mgmt-xl-check-host "$1" $cluster)
 if [ "$rst" == 0 ]; then
 	echo "invalid specified host!"
 	exit 999
@@ -9,4 +16,4 @@ fi
 
 hostfile=$(which dexxhosts)
 
-awk "\$2 == \"$1\" {print \$5}" "$hostfile"
+awk "(\$2 == \"$1\") && (\$6 == \"$cluster\") {print \$5}" "$hostfile"
