@@ -1,0 +1,69 @@
+#!/bin/bash
+
+
+dcmd=${*:2}
+echo $dcmd
+hostfil=$(which dexxhosts)
+dhosts=$(awk '$3 == "h" {print $1}' $hostfil)
+
+for dh in $dhosts; do
+	ssh root@$dh bash <<'SSH_L1'
+		echo "$PATH" > ~/PATH.TMP
+		echo "$PATH"		
+
+
+SSH_L1
+
+	ssh root@$dh bash <<SSH_L1
+		if [ "$1" == "-a" ]; then
+			export PATH=$(cat ~/PATH.TMP) 
+                        echo $PATH
+			source /root/.bashrc
+			export PATH=$PATH:$(dirname $hostfil) 			
+			ids="\$(\$(which dls) -ll)"
+			ids=(\${ids//\\n/ })
+
+			for id in "\${ids[@]}"; do
+				echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
+				echo "[< Container >]" : ID\ \ \ \ \ \ \ : \$id
+				echo "[< Container >]" : Username : \$(/usr/bin/whoami)
+				echo "[< Container >]" : Hostname : \$(/bin/hostname)
+				
+				expath=\$(docker exec \$id 'pwd')
+				echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
+				#docker exec \$id ${*:2}
+				echo '/bin/bash -c "$dcmd"'
+				docker exec \$id /bin/bash -c "$dcmd"
+			done 
+			IFS=ifsold
+		else
+			echo Docker Host Mode: \(Please specify docker container ID\)
+			array_contains2 () { 
+			    local array="\$1[@]"
+			    local seeking=\$2
+			    local in=1
+			    for element in "\${!array}"; do
+			        if [[ \$element == \$seeking ]]; then
+			            in=0
+			            break
+			        fi
+			    done
+			    return \$in
+			}
+			if [[ \$(array_contains2 \$(/root/alias/dls -ll) $1 && echo 1) == 1 ]]; then 
+				docker exec $1 ${*:2} 
+			else
+				echo \$(/root/alias/dls -ll)
+				echo $1
+				echo \$(array_contains2 \$(/root/alias/dls -ll) $1)
+				echo Wrong container ID!
+			fi
+		fi 
+
+SSH_L1
+
+done
+
+
+
+#sed -r 's/:Host +=> +\"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\"/:Host               => \"\"/g' /usr/share/pcsd/ssl.rb
