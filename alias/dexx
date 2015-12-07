@@ -14,8 +14,12 @@ dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$1}" $hostfil)
 cnms=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
 
 
+echo ===========\$dhosts============
+echo  $dhosts
+echo ===========\$cnms\ \ ============
+echo  $cnms
+echo ===============================
 
-#echo  $dhosts
 
 for dh in $dhosts; do
 	ssh root@$dh bash <<'SSH_L1'
@@ -30,8 +34,14 @@ SSH_L1
 		export PATH=\$PATH:/root/xlbase/alias
 		dhosts_o="$dhosts"
 		dhosts=(\${dhosts_o//\\n/ })
+		echo =====\\\$dhosts in remote ========
+		echo \$dhosts
+		echo ===============================
 		cnms_o="$cnms"
 		cnms=(\${cnms_o//\\n/ })
+		echo =====\\\$cnms in remote ==========
+		echo \$cnms
+		echo ===============================
 		if [ "$1" == "-a" ]; then
 
                         ##echo "1: \$PATH"
@@ -70,7 +80,8 @@ SSH_L1
 			    local array="\$1[@]"
 			    local seeking=\$2
 			    local in=1
-			    for element in "\${!array}"; do
+				echo "$array"
+			    for element in \${!array}; do
 			        if [[ \$element == \$seeking ]]; then
 			            in=0
 			            break
@@ -80,9 +91,12 @@ SSH_L1
 			}
 			dlss=\$(\$(which dls) -ll)
 			dlsss=(\${dlss//\\n/ })			
+			echo =====\\\$dlsss in remote =========
+                	echo \$dlsss
+                	echo ===============================
+
 			#echo 123
 			#echo \${dlsss[1]}
-			#echo \${cnms[1]}
 			#echo \${dhosts[1]}
 			#echo 456
 			#Do not support IP so far...
