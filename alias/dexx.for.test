@@ -1,0 +1,90 @@
+#!/bin/bash
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+
+dcmd=${*:3}
+echo "distributed command: $dcmd"
+hostfil=$(which dexxhosts)
+dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $hostfil)
+
+
+
+echo ===========\$dhosts============
+echo  $dhosts
+echo ===============================
+
+
+for dhi in $dhosts; do
+	echo "dhi: $dhi"
+	dhtmp=(${dhi//\,/ })
+	dh=${dhtmp[1]}
+	dnm=${dhtmp[0]}
+	echo "awk string: (\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$2}"
+	cnms=$(awk "(\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
+	echo ===========\$cnms\ \ ============
+	echo  $cnms
+	echo ===============================
+	ssh root@$dh bash <<'SSH_L1'
+		echo "$PATH" > ~/PATH.TMP
+		#echo "$PATH"		
+
+
+SSH_L1
+
+	ssh root@$dh bash << SSH_L1
+		export PATH=\$(cat ~/PATH.TMP) 
+		export PATH=\$PATH:/root/xlbase/alias
+		dhosts_o="$dhosts"
+		dhosts=(\${dhosts_o//\\\n/ })
+		echo =====\\\$dhosts in remote ========
+		echo \$dhosts
+		echo ===============================
+		cnms_o="$cnms"
+		cnms_r=(\${cnms_o//\\\n/ })
+		echo =====\\\$cnms_r in remote ========i
+		echo \$cnms_o
+		echo \$cnms_r
+                echo \${cnms_r[0]}
+                echo $1
+		echo "\$cnms_o"
+		echo ===============================
+		echo Docker Host Mode: \(Please specify docker container ID\)
+		array_contains2 () { 
+		    local array="\$1[@]"
+		    local seeking=\$2
+		    local in=1
+			#echo "$array"
+		    for element in \${!array}; do
+		        if [[ \$element == \$seeking ]]; then
+		            in=0
+		            break
+		        fi
+		    done
+		    return \$in
+		}
+		dlss=\$(\$(which dls) -ll)
+		dlsss=(\${dlss//\\\n/ })			
+		echo =====\\\$dlsss in remote =========
+                echo \$dlsss
+		echo \${dlsss[0]}
+		echo $1
+                echo ===============================
+
+		if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
+			echo "I am the answer...orz"
+			docker exec $1 ${*:3} 
+		else
+			echo Wrong container ID!
+		fi
+
+SSH_L1
+
+done
+
+
+
