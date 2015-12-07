@@ -11,7 +11,7 @@ dcmd=${*:3}
 echo "distributed command: $dcmd"
 hostfil=$(which dexxhosts)
 dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$1}" $hostfil)
-cnms=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
+
 
 
 echo ===========\$dhosts============
@@ -22,6 +22,7 @@ echo ===============================
 
 
 for dh in $dhosts; do
+	cnms=$(awk "(\$4 == \"$dh\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
 	ssh root@$dh bash <<'SSH_L1'
 		echo "$PATH" > ~/PATH.TMP
 		#echo "$PATH"		
@@ -29,7 +30,7 @@ for dh in $dhosts; do
 
 SSH_L1
 
-	ssh root@$dh bash <<SSH_L1
+	ssh root@$dh bash << SSH_L1
 		export PATH=\$(cat ~/PATH.TMP) 
 		export PATH=\$PATH:/root/xlbase/alias
 		dhosts_o="$dhosts"
@@ -38,78 +39,40 @@ SSH_L1
 		echo \$dhosts
 		echo ===============================
 		cnms_o="$cnms"
-		cnms=(\${cnms_o//\\n/ })
-		echo =====\\\$cnms in remote ==========
-		echo \$cnms
+		cnms_r=(\${cnms_o//\\n/ })
+		echo =====\\\$cnms_r in remote ========
+		echo \$cnms_r
+                echo \${cnms_r[0]}
+                echo $1
+		echo $cnms
 		echo ===============================
-		if [ "$1" == "-a" ]; then
+		echo Docker Host Mode: \(Please specify docker container ID\)
+		array_contains2 () { 
+		    local array="\$1[@]"
+		    local seeking=\$2
+		    local in=1
+			echo "$array"
+		    for element in \${!array}; do
+		        if [[ \$element == \$seeking ]]; then
+		            in=0
+		            break
+		        fi
+		    done
+		    return \$in
+		}
+		dlss=\$(\$(which dls) -ll)
+		dlsss=(\${dlss//\\n/ })			
+		echo =====\\\$dlsss in remote =========
+                echo \$dlsss
+		echo \${dlsss[0]}
+		echo $1
+                echo ===============================
 
-                        ##echo "1: \$PATH"
-
-			#cat /root/.bashrc
-			#source /root/.bashrc
-			##echo "dexxhosts \$(which dexxhosts)"
-			#export PATH=\$PATH:\$(dirname \$(which dexxhosts))
-			##echo "2: \$PATH"
-			ids="\$(\$(which dls) -ll)"
-			#echo "ids: \$ids"
-			ids=(\${ids//\\n/ })
-
-			if [ "\$ids" == "" ]; then
-				echo "no alive containers!"
-			else
-			
-
-				for id in "\${ids[@]}"; do
-					echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
-					echo "[< Container >]" : ID\ \ \ \ \ \ \ : \$id
-					echo "[< Container >]" : Username : \$(/usr/bin/whoami)
-					echo "[< Container >]" : Hostname : \$(/bin/hostname)
-					
-					expath=\$(docker exec \$id 'pwd')
-					echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
-					#docker exec \$id ${*:2}
-					echo '/bin/bash -c "$dcmd"'
-					docker exec \$id /bin/bash -c "$dcmd"
-				done 
-				IFS=ifsold
-			fi
+		if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
+			docker exec $1 ${*:3} 
 		else
-			echo Docker Host Mode: \(Please specify docker container ID\)
-			array_contains2 () { 
-			    local array="\$1[@]"
-			    local seeking=\$2
-			    local in=1
-				echo "$array"
-			    for element in \${!array}; do
-			        if [[ \$element == \$seeking ]]; then
-			            in=0
-			            break
-			        fi
-			    done
-			    return \$in
-			}
-			dlss=\$(\$(which dls) -ll)
-			dlsss=(\${dlss//\\n/ })			
-			echo =====\\\$dlsss in remote =========
-                	echo \$dlsss
-                	echo ===============================
-
-			#echo 123
-			#echo \${dlsss[1]}
-			#echo \${dhosts[1]}
-			#echo 456
-			#Do not support IP so far...
-			#if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
-			if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
-				docker exec $1 ${*:3} 
-			else
-				#echo \$(\$(which dls) -ll)
-				#echo $1
-				#echo \$(array_contains2 \$(\$(which dls) -ll) "$1")
-				echo Wrong container ID!
-			fi
-		fi 
+			echo Wrong container ID!
+		fi
 
 SSH_L1
 
@@ -117,4 +80,3 @@ done
 
 
 
-#sed -r 's/:Host +=> +\"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\"/:Host               => \"\"/g' /usr/share/pcsd/ssl.rb
