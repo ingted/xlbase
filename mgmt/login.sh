@@ -20,6 +20,10 @@ fi
 echo -e "\npreparing login..."
 
 hosts=$(./mgmt-xl-get-host-by-role docker $cluster);
+
+#Because the containers are not ready yet, so not do this 
+# (key scan should not be performed)
+# (add container hosts to /etc/hosts still needed) now...
 allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
 for host in $hosts; do
 	echo ./mgmt-xl-get-ip $host $cluster
@@ -42,13 +46,23 @@ EOF
 		hostnamectl set-hostname \"$host\"
 		
 EOF
-		for ah in $allhosts; do
-			ahip=$(./mgmt-xl-get-ip $ah $cluster)
-			ssh $cip << EOF
-				cp /etc/hosts /etc/hosts.tmp
-				sed '//d' /etc/hosts.tmp
+	for ah in $allhosts; do
+		ahip=$(./mgmt-xl-get-ip $ah $cluster)
+		ahip_r=${ahip//./\\\.}
+		ssh $cip << EOF
+			cp /etc/hosts /etc/hosts.tmp
+			sed -i "/$ahip_r/d" /etc/hosts.tmp
+			echo "$ahip $ah" >> /etc/hosts.tmp
+			cp /etc/hosts.tmp /etc/hosts -f
+			#ssh-keygen -R $ah
+			#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
+			#ssh-keygen -R $ahip
+			#ssh-keyscan -H $ahip >> ~/.ssh/known_hosts
 EOF
-		done
+
+	done
+	ssh-keygen -R $host
+	ssh-keyscan -H $host >> ~/.ssh/known_hosts
 
 
 done
