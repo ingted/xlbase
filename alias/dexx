@@ -12,7 +12,7 @@ for dh in $dhosts; do
 			source /root/.bashrc
 			export PATH=$PATH:$(dirname $hostfil) 			
 
-			ids="\$(/root/alias/dls -ll)"
+			ids="\$($(which dls) -ll)"
 			ids=(\${ids//\\n/ })
 
 			for id in "\${ids[@]}"; do
