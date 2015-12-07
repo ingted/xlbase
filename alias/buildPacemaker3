@@ -117,6 +117,7 @@ function helptext() {
         echo "-b, --bind               If bind this container immediately"
         echo "-f, --force              If container with same name of specified one, remove it and go ahead!!"
         echo "-p, --pwd, --password    Password of root"
+	echo "-v, --vol, --volume"
 	echo "--pcmk, --pcmk-start     Start pacemaker"
 
         echo ""
