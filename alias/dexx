@@ -7,12 +7,20 @@ hostfil=$(which dexxhosts)
 dhosts=$(awk '$3 == "h" {print $1}' $hostfil)
 
 for dh in $dhosts; do
+	ssh root@$dh bash <<'SSH_L1'
+		echo "$PATH" > ~/PATH.TMP
+		echo "$PATH"		
+
+
+SSH_L1
+
 	ssh root@$dh bash <<SSH_L1
-		if [ "$1" == "-a" ]; then 
+		if [ "$1" == "-a" ]; then
+			export PATH=$(cat ~/PATH.TMP) 
+                        echo $PATH
 			source /root/.bashrc
 			export PATH=$PATH:$(dirname $hostfil) 			
-
-			ids="\$($(which dls) -ll)"
+			ids="\$(\$(which dls) -ll)"
 			ids=(\${ids//\\n/ })
 
 			for id in "\${ids[@]}"; do
