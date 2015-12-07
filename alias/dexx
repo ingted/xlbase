@@ -10,19 +10,25 @@ fi
 dcmd=${*:3}
 echo "distributed command: $dcmd"
 hostfil=$(which dexxhosts)
-dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$1}" $hostfil)
+dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $hostfil)
 
 
 
 echo ===========\$dhosts============
 echo  $dhosts
-echo ===========\$cnms\ \ ============
-echo  $cnms
 echo ===============================
 
 
-for dh in $dhosts; do
-	cnms=$(awk "(\$4 == \"$dh\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
+for dhi in $dhosts; do
+	echo "dhi: $dhi"
+	dhtmp=(${dhi//\,/ })
+	dh=${dhtmp[1]}
+	dnm=${dhtmp[0]}
+	echo "awk string: (\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$2}"
+	cnms=$(awk "(\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
+	echo ===========\$cnms\ \ ============
+	echo  $cnms
+	echo ===============================
 	ssh root@$dh bash <<'SSH_L1'
 		echo "$PATH" > ~/PATH.TMP
 		#echo "$PATH"		
