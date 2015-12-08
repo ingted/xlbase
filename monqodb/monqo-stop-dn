@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+
+echo "Opened 10002 count: $(netstat -a|grep 10002 |wc -l)"
+
+dnhostname=$(../mgmt/mgmt-xl-get-host-by-role dn alpha)
+
+for c in $dnhostname; do
+	if [ "$c" == "$(hostname)" ]; then
+		echo "======== datanode: $c ========"
+		pg_ctl -Z datanode stop -D $(./monqo-conf $c dn) -m immediate
+	fi
+
+	
+done
+
+
+echo "======== end @ $(hostname) ========"
