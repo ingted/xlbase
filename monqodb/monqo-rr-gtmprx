@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+echo "Opened 36666 count: $(netstat -a|grep 36666 |wc -l)"
+
+gtmprxhostname=$(../mgmt/mgmt-xl-get-host-by-role gtmprx alpha)
+
+for c in $gtmprxhostname; do
+	if [ "$c" == "$(hostname)" ]; then
+		echo "======== gtm proxy: $c ========"
+		gtm_ctl -Z gtm_proxy  restart -D $(./monqo-conf $c gtmprx) -m fast
+	fi
+
+	
+done
+
+
+echo "======== end @ $(hostname) ========"
