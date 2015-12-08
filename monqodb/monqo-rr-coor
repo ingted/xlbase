@@ -9,7 +9,7 @@ coorhostname=$(../mgmt/mgmt-xl-get-host-by-role coor alpha)
 for c in $coorhostname; do
 	if [ "$c" == "$(hostname)" ]; then
 		echo "======== coordinator: $c ========"
-		pg_ctl -Z coordinator restart -D $(./monqo-conf $c coor)
+		pg_ctl -Z coordinator restart -D $(./monqo-conf $c coor) -m fast
 	fi
 
 	

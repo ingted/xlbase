@@ -8,7 +8,7 @@ dnhostname=$(../mgmt/mgmt-xl-get-host-by-role dn alpha)
 for c in $dnhostname; do
 	if [ "$c" == "$(hostname)" ]; then
 		echo "======== datanode: $c ========"
-		pg_ctl -Z datanode restart -D $(./monqo-conf $c dn)
+		pg_ctl -Z datanode restart -D $(./monqo-conf $c dn) -m immediate
 	fi
 
 	
