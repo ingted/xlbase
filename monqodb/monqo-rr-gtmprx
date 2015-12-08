@@ -8,7 +8,12 @@ gtmprxhostname=$(../mgmt/mgmt-xl-get-host-by-role gtmprx alpha)
 for c in $gtmprxhostname; do
 	if [ "$c" == "$(hostname)" ]; then
 		echo "======== gtm proxy: $c ========"
-		gtm_ctl -Z gtm_proxy  restart -D $(./monqo-conf $c gtmprx) -m fast
+		gp=$(./monqo-conf $c gtmprx)
+		rm $gp/gtm_proxy.pid
+                gtm_ctl -Z gtm_proxy  restart -D $gp
+		sleep 5
+                echo 0 >> $gp/gtm_proxy.pid
+
 	fi
 
 	
