@@ -108,7 +108,7 @@ SSH_L1
 			#if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
 			if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
 			#if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
-				docker exec $1 ${*:3} 
+				docker exec $1 bash -c '${*:3}'
 			else
 				#echo \$(\$(which dls) -ll)
 				#echo $1
