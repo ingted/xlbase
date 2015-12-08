@@ -14,8 +14,8 @@ dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $host
 
 
 
-#echo ===========\$dhosts============
-#echo  $dhosts
+echo ===========\$dhosts============
+echo  $dhosts
 #echo ===========\$cnms\ \ ============
 #echo  $cnms
 #echo ===============================
@@ -80,6 +80,14 @@ SSH_L1
 					docker exec \$id /bin/bash -c "$dcmd"
 				done 
 				IFS=ifsold
+			fi
+		elif [ "$1" == "-h" ] ; then 
+			bash -c '${*:3}'
+
+		elif [ "$1" == "-n" ] ; then 
+			if [ "$3" == "$dh" ] || [ "$3" == "$dnm" ]; then 
+				bash -c '${*:4}'
+			
 			fi
 		else
 			echo Docker Host Mode: \(Please specify docker container ID\)
