@@ -7,7 +7,7 @@
   git checkout --track -b xlbase remotes/origin/backToOrigin
   source alias/util-disable-status 1 1 1
   ./make.sh
-
+  source ~/.bashrc
   docker run -it -v /opt/util:/opt --name util robotica/util:latest /sbin/my_init -- bash -l /util/get-tool
 
   cd alias
