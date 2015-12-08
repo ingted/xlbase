@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+
+echo "Opened 40001 count: $(netstat -a|grep 40001 |wc -l)"
+
+coorhostname=$(../mgmt/mgmt-xl-get-host-by-role coor alpha)
+
+for c in $coorhostname; do
+	if [ "$c" == "$(hostname)" ]; then
+		echo "======== coordinator: $c ========"
+		pg_ctl -Z coordinator stop -D $(./monqo-conf $c coor) -m immediate
+	fi
+
+	
+done
+
+
+echo "======== end @ $(hostname) ========"

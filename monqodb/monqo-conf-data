@@ -1,0 +1,9 @@
+#!/bin/bash
+xlgtm 		gtm,/home/postgres/data/gtm/data
+xlgtmsby 	gtmsby,/home/postgres/data/gtm-standby/data
+xlcd1 		gtmprx,/home/postgres/data/gtm_proxy1/data
+xlcd1 		coor,/home/postgres/data/coor_1/data
+xlcd1 		dn,/home/postgres/data/db_1/data
+xlcd2 		gtmprx,/home/postgres/data/gtm_proxy2/data
+xlcd2 		coor,/home/postgres/data/coor_2/data
+xlcd2 		dn,/home/postgres/data/db_2/data

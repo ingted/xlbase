@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+echo "Opened 36666 count: $(netstat -a|grep 36666 |wc -l)"
+
+gtmhostname=$(../mgmt/mgmt-xl-get-host-by-role gtmsby alpha)
+gtm_ctl -Z gtm status -D $(./monqo-conf $gtmhostname gtmsby)
+

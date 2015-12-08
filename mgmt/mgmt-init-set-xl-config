@@ -20,7 +20,7 @@ hostfile=$(which dexxhosts)
 
 
 dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") {print \$4}"|sort|uniq|sed '/^$/d')
-echo -e "start init hosts $dhosts"
+echo -e "start init hosts\n$dhosts"
 
 if [ "$dhosts" == "" ]; then 
 	echo no docker host records
