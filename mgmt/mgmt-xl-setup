@@ -1,7 +1,7 @@
 #!/bin/bash
 
 hostfile=
-dirfile=
+#dirfile=
 pguser=postgres
 
 if [ "$5" == "1" ]; then
@@ -21,15 +21,21 @@ else
         cluster=$6
 fi
 
+if [ "$7" == "" ]; then
+        pgver=9.2
+else
+        pgver=$7
+fi
+
 
 echo $(date +"%T") \[\| init-set-host \|\]
 ./mgmt-init-set-host "$1" "$hostfile" $cluster
 
 echo $(date +"%T") \[\| init-set-xl \|\]
-./mgmt-init-set-xl "$1" 9.2 
+./mgmt-init-set-xl "$1" $pgver
 
 echo $(date +"%T") \[\| xl-init-directories \|\]
-./mgmt-xl-init-directories "$1" "$dirfile" $pguser
+./mgmt-xl-init-directories "$1" "$cluster" $pguser $pgver
 
 
 

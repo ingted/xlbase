@@ -19,7 +19,12 @@ function main () {
 	esac
 
 	if [ "$cluster" == "" ]; then
-	        echo "cluster is required! exited..."
+	        echo "cluster is required! exit..."
+		exit 999
+	fi
+
+	if [ "$pgver" == "" ]; then
+	        echo "pgxl version is required! exit..."
 		exit 999
 	fi
 
@@ -79,7 +84,7 @@ function main () {
 		} && {
 			echo \$enter: $enter
 			if [ $enter == 1 ]; then 
-				./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update $cluster
+				./mgmt-xl-setup "$cnm" $role $specified_nid $specified_sm $update $cluster $pgver
 			fi;
 		}
 	done
@@ -116,6 +121,7 @@ while true ; do
  	-u|--update) update=1; shift;; 
 	-r|--role) role=$2; shift; shift;;
 	--sm|--slave-or-master) specified_sm=$2; shift; shift;;
+	-v|--pgver|--version) pgver=$2; shift; shift;;
 	--host|--hostname) specified_cnm=$2; shift; shift;;
         "") break;;
         *)

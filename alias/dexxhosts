@@ -13,3 +13,15 @@
 10.128.112.39    xlcd1 		p -  -			alpha
 10.128.112.40    xlcs2 		p -  -			alpha
 
+192.168.123.102  h1  		h -  -			test2
+192.168.123.107  h2  		h -  -			test2
+192.168.123.97   h3  		h -  -			test2
+192.168.123.103  n11 		c h1 /docker_volume/n11	test2
+192.168.123.104  n12 		c h1 /docker_volume/n12	test2 
+192.168.123.105  n13 		c h1 /docker_volume/n13	test2 
+192.168.123.106  n21 		c h3 /docker_volume/n21	test2 
+192.168.123.112  n22 		c h3 /docker_volume/n22	test2 
+192.168.123.113  n23 		c h3 /docker_volume/n23	test2 
+192.168.123.99   n31 		c h1 /docker_volume/n31	test2 
+192.168.123.108  n32 		c h2 /docker_volume/n32	test2 
+192.168.123.109  n33 		c h2 /docker_volume/n32	test2 

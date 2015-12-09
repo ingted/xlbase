@@ -9,17 +9,10 @@ else
 fi
 
 if [ "$2" == "" ]; then
-	echo "Cluster is required!."
-	exit 999
+	echo "DIRFILE is required! Use dexxpgdir."
+	DIRF=dexxpgdir
 else
-	cluster=$2
-fi
-
-if [ "$4" == "" ]; then
-	echo "pgxl version is required!."
-	exit 999
-else
-	pgxl=$4
+	DIRF=$2
 fi
 
 
@@ -31,10 +24,8 @@ else
 fi
 
 
-
-hostsitem=$(./mgmt-xl-get-host-by-cluster $cluster)
-dirdata=$(for hi in $hostsitem; do echo "$(./mgmt-xl-get-confname $hi $pgver $cluster)"|awk 'NR>2 {print $1}'; done)
-
+dirfile=$(which "$DIRF")
+dirdata=$(cat $dirfile)
 db64=$(echo "$dirdata"|base64)
 #echo $db64
 

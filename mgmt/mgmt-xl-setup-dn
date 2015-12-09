@@ -9,7 +9,7 @@ cluster=
 function main () {
 
 
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r dn  --host $cnm  -c $cluster
+	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r dn  --host $cnm  -c $cluster -v $pgver
 
 
 }
@@ -27,6 +27,7 @@ function helptext () {
 	echo "--host, --hostname	Container node name."
 	echo "-n, --nid, --nodeid	Container node group ID."
 	echo "--sm, --slave-master	Container node group role."
+	echo "-v                        pgxl version."
         echo ""
         exit $1
 
@@ -43,7 +44,8 @@ while true ; do
 	-n|--nid|--nodeid) nid=$2; shift; shift;;
 	--sm|--slave-master) slave_or_master=$2; shift; shift;;
  	-u|--update) update="-u"; shift;; 
-        "") break;;
+        -v|--pgver|--version) pgver=$2; shift; shift;;
+	"") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""
                 helptext 1;;

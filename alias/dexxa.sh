@@ -6,20 +6,16 @@ else
         cluster=$2
 fi
 
-
 dcmd=${*:3}
 echo "distributed command: $dcmd"
 hostfil=$(which dexxhosts)
 dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $hostfil)
-
-
 
 #echo ===========\$dhosts============
 #echo  $dhosts
 #echo ===========\$cnms\ \ ============
 #echo  $cnms
 #echo ===============================
-
 
 for dhi in $dhosts; do
 
@@ -31,7 +27,3 @@ for dhi in $dhosts; do
 
     ssh root@$dh 'bash -s' -- < dexxb.sh $1 \'$dcmd\' $cnms
 done
-
-
-
-#sed -r 's/:Host +=> +\"[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\"/:Host               => \"\"/g' /usr/share/pcsd/ssl.rb

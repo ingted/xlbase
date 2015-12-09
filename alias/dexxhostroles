@@ -16,3 +16,15 @@ xlcd1		1 dn		d m alpha
 xlcd2		2 dn		d m alpha
 xlcd1		1 gtmprx	g m alpha
 xlcd2		2 gtmprx	g m alpha
+h1  		0 docker	x x test2
+h2  		0 docker	x x test2
+h3  		0 docker	x x test2
+n11 		0 gtm		g m test2
+n12 		0 gtmsby	g s test2
+n13 		1 coor		c m test2
+n21 		1 coor 		c s test2
+n22 		1 dn		d m test2
+n23 		1 dn		d s test2
+n31 		1 gtmprx	x m test2
+n32 		1 gtmprx	x s test2
+n33 		2 coor		x m test2

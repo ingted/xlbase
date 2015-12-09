@@ -7,7 +7,7 @@ cluster=
 
 function main () {
 
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmsby -c $cluster
+	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r gtmsby -c $cluster -v $pgver
 
 
 }
@@ -22,6 +22,7 @@ function helptext () {
         echo "Options:"
         echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
 	echo "-u, --update		Update utility tools."
+	echo "-v                        pgxl version."
         echo ""
         exit $1
 
@@ -35,6 +36,7 @@ while true ; do
 	-c|--cluster) cluster=$2; shift; shift;;
         -f|--force) force="-f"; shift;;
  	-u|--update) update="-u"; shift;; 
+	-v|--pgver|--version) pgver=$2; shift; shift;;
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""
