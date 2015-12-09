@@ -104,6 +104,7 @@ function helptext () {
 	echo "-n, --nodeid"
 	echo "-u, --update		Update utility tools."
 	echo "-r, --role		Default is gtm."
+	echo "-v			pgver."
 	echo "-sm, --slave-or-master	Slave or master, default is master."
         echo ""
         exit $1

@@ -5,7 +5,7 @@
   hostroles=$(which dexxhostroles)      ; cat   $hostroles
       hosts=$(which dexxhosts)          ; cat       $hosts
 masterslave=$(which dexxmasterslave)    ; cat $masterslave
-      pgdir=$(which dexxpgdir)          ; cat       $pgdir
+#      pgdir=$(which dexxpgdir)          ; cat       $pgdir
 
 
 dexxparams

@@ -3,13 +3,12 @@
 update=
 nid=-
 slave_or_master=-
-cnm=-
-cluster=
+cnm="-"
+cluster=""
 
 function main () {
 
-
-	./mgmt-xl-setup-nodes $force $update -n $nid --sm $slave_or_master -r coor --host $cnm  -c $cluster -v $pgver
+	./mgmt-xl-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r coor --host "$cnm" -c "$cluster" -v "$pgver"
 
 
 }
