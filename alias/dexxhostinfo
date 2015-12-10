@@ -1,5 +1,10 @@
-gtm	#	1
-gtmsby	#	1
-coor	#	2
-dn	#	2
-gtmprx	#	2	
+gtm	#	1	test
+gtmsby	#	1	test
+coor	#	2	test
+dn	#	2	test
+gtmprx	#	2	test
+gtm	#	1	sit	
+gtmsby	#	0	sit	
+coor	#	2	sit	
+dn	#	2	sit	
+gtmprx	#	2	sit	

@@ -11,6 +11,7 @@ RUN ln -snf /bin/bash /bin/sh; \
 	#ls -l /bd_build; \
 	ls -l /addfiles; \
 	cp -rf /bd_build/util /; \
+	cp /addfiles/sources.list               /etc/apt/; \
 	/bd_build/prepare.sh && \
 	/bd_build/system_services.sh && \
 	/bd_build/utilities.sh && \

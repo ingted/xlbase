@@ -50,8 +50,8 @@ while true ; do
         esac
 done
 
-if [ "$cnt" == "0" ]; then
-	helptext 1;
-else
+#if [ "$cnt" == "0" ]; then
+#	helptext 1;
+#else
 	main
-fi
+#fi
