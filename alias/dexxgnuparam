@@ -1,0 +1,57 @@
+#!/bin/bash
+
+update=0
+specified_nid="-"
+specified_sm="-"
+specified_cnm="-"
+role="-"
+
+
+function main () {
+	return
+}
+
+
+function helptext () {
+        echo ""
+        echo "dexxgnuparam - A share script for gnu param parsing."
+        echo ""
+        echo "Usage: dexxgnuparam [options]"
+        echo ""
+        echo "Options:"
+	echo "-c, --cluster			cluster name."
+	echo "-n, --nodeid			"
+	echo "-h, --host, --hostname		"
+	echo "-m, --cnm, --container		"
+	echo "-r, --role			"
+	echo "-v, --pgver, --version		pgver."
+	echo "-s, --sm, --slave-or-master	Slave or master, default is master."
+        echo ""
+        exit $1
+
+}
+
+cnt=$#
+
+while true ; do
+        case "$1" in
+        --help|-\?) helptext 0;;
+	-c|--cluster) cluster=$2; shift; shift;;
+        -h|--host|--hostname) host=$2; shift; shift;;
+        -n|--node|--nodeid) specified_nid=$2; shift; shift;;
+	-m|--cnm|--container) specified_cnm=$2; shift; shift;;
+	-r|--role) role=$2; shift; shift;;
+	-s|--sm|--slave-or-master) specified_sm=$2; shift; shift;;
+	-v|--pgver|--version) pgver=$2; shift; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+if [ "$cnt" == "0" ]; then
+	helptext 1;
+else
+	main
+fi

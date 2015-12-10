@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+#source dexxgnuparam -v 9.5
+#echo $pgver
+
+
+source dexxgnuparam $@
+echo $pgver
+echo $host
