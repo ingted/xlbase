@@ -15,6 +15,12 @@ else
         cluster=$6
 fi
 
+if [ "$7" == "" ]; then
+ 	echo "pgver is required! exit"
+else
+        pgver=$7
+	exit 999
+fi
 
 echo $(date +"%T") \[\| xl-init \|\] BEGINNING...
 
@@ -35,7 +41,7 @@ for host in $hosts; do
 		if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
 			if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
 
-				conf=$(./mgmt-xl-get-confname "$host" $cluster|awk 'NR>2 {print $1","$2","$3}'|sort|uniq)
+				conf=$(./mgmt-xl-get-confname "$host" $pgver $cluster|awk 'NR>2 {print $1","$2","$3}'|sort|uniq)
 				if [ "$conf" == "invalid specified host!" ]; then
 					echo "invalid specified host! mgmt-xl-init failed!"
 					continue
@@ -43,9 +49,10 @@ for host in $hosts; do
 				dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 				
 				echo $(date +"%T") \[\| xl-init \|\] @$host $1 $dir
+				echo 555
 				util-bpx "$host" $2 cluster-xl-init.ps1 $host $1 $dir
-				
-				#echo $conf
+				echo 777	
+				echo "conf: $conf"
 				for i in $conf; do
 					echo $i
 					confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
