@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+echo "Opened 36666 count: $(netstat -a|grep 36666 |wc -l)"
+
+gtmsbyhostname=$(../mgmt/mgmt-xl-get-host-by-role gtmsby alpha)
+
+for c in $gtmsbyhostname; do
+	if [ "$c" == "$(hostname)" ]; then
+		echo "======== gtmsby: $c ========"
+		gp=$(./monqo-conf $c gtmsby)
+		rm $gp/gtm.pid
+                gtm_ctl -Z gtm restart -D $gp
+		sleep 5
+                echo 0 >> $gp/gtm.pid
+
+	fi
+
+	
+done
+
+
+echo "======== end @ $(hostname) ========"
