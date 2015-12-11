@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+listen_addresses = 			       '$(@@@m_coor_hostip@@@)'
+=======
 listen_addresses = 			       '$(@@@m_coor_hostip@@@ -c $cluster -m $host)'
+>>>>>>> a398bd6a7b6f0f1fa106481b36e51e127c63e1df
 port = 						$(@@@b_coor_port@@@)
 max_connections = 				$(@@@b_coor_mx_conn@@@)
 shared_buffers = 				$(@@@b_coor_shbuff@@@)
@@ -16,7 +20,13 @@ pooler_port = 					$(@@@b_coor_pooler_port@@@)
 max_pool_size = 				$(@@@b_coor_mx_pool@@@)
 max_coordinators = 				$(@@@b_coor_mx_coor@@@)
 max_datanodes = 				$(@@@b_coor_mx_dn@@@)
+<<<<<<< HEAD
+gtm_host = 				       '$(@@@m_coor_gtmprx@@@)'
+gtm_port = 					$(@@@b_coor_gtmprx_port@@@)
+pgxc_node_name = 			       '$(@@@m_coor_pgxcnodename@@@)'
+=======
 gtm_host = 				       '$(@@@m_coor_gtmprx@@@ -c $cluster -m $host)'
 gtm_port = 					$(@@@b_coor_gtmprx_port@@@)
 pgxc_node_name = 			       '$(@@@m_coor_pgxcnodename@@@ -c $cluster -m $host)'
+>>>>>>> a398bd6a7b6f0f1fa106481b36e51e127c63e1df
 
