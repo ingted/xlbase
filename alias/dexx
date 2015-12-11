@@ -15,7 +15,7 @@ dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $host
 
 
 #echo ===========\$dhosts============
-#echo  $dhosts
+echo  $dhosts
 #echo ===========\$cnms\ \ ============
 #echo  $cnms
 #echo ===============================

@@ -77,7 +77,8 @@ function @@@b_dn_port@@@          (){
 }
 function @@@b_dn_shbuff@@@        (){ 
 	source $(which dexxgnuparam) $@
-	echo $(getconf -a | grep PAGESIZE | awk '{printf "%f\n", $2 * 2 / 5}' | awk '{split($0, a, "."); print a[1]}')
+	#echo $(getconf -a | grep PAGESIZE | awk '{printf "%f\n", $2 * 2 / 5}' | awk '{split($0, a, "."); print a[1]}')
+	echo $(cat /proc/meminfo|grep MemTotal|awk '{printf "%f", $2 / 1024 / 5 * 2}'|awk '{split($0, a, "."); print a[1]}')
 }
 function @@@b_dn_wkmem@@@         (){  
 	source $(which dexxgnuparam) $@
