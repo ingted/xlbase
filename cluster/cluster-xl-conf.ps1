@@ -17,7 +17,7 @@ $dd | %{
 	$d | ?{
 		$_ -ne ""
 	} | %{
-		$configstr += $_
+		$configstr += "`n" + $_
 	}
 }
 

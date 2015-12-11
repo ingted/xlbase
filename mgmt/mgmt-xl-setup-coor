@@ -29,7 +29,9 @@ function helptext () {
 	echo "--sm, --slave-master	Container node group role."
 	echo "-v                        pgxl version."
         echo ""
-        exit $1
+	#break
+	#return	
+        #exit $1
 
 }
 
@@ -48,7 +50,8 @@ while true ; do
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""
-                helptext 1;;
+                helptext 1
+		return;;
         esac
 done
 
