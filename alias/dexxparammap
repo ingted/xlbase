@@ -99,7 +99,7 @@ function @@@m_coor_gtmprx@@@      (){
 }
 function @@@m_coor_hostip@@@      (){  
 	source $(which dexxgnuparam) $@
-	echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" dexxhosts)"
+	echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
 }
 function @@@m_coor_pgxcnodename@@@ (){  
 	source $(which dexxgnuparam) $@
@@ -121,7 +121,7 @@ function @@@m_dn_gtmprx@@@        (){
 }
 function @@@m_dn_hostip@@@        (){  
 	source $(which dexxgnuparam) $@
-	echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" dexxhosts)"
+	echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
 }
 function @@@m_dn_pgxcnodename@@@  (){   
 	source $(which dexxgnuparam) $@
