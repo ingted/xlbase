@@ -65,7 +65,7 @@ for host in $hosts; do
 				#echo "conf: $conf"
 				for i in $conf; do
 					echo $(date +"%T") \[\| xl-conf begin\|\] @$host $confpath
-					#echo "i: $i"
+					echo "i: $i"
 					confarr=(${i//\,/ })
 					#echo "$confarr"
 					#confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)

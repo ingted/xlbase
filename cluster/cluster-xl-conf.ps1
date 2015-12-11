@@ -5,6 +5,7 @@ param(
 
 $db64 = "$args".replace(" ", "")
 $dd = . decode-mgmt-msg.ps1 $db64
+write-host "dd: $dd"
 #if($hd.gettype().name -eq "string"){
 #       $out = $dd
 #} else {
