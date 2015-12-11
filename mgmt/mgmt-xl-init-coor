@@ -41,5 +41,5 @@ else
         pgver=$6
 fi
 
-
+#echo \<=================\>
 ./mgmt-xl-init coor $pgu $cnm $nid $sm $cluster $pgver

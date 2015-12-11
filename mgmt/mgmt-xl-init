@@ -1,11 +1,14 @@
 #!/bin/bash
 
+
 if [ "$1" == "" ]; then
 	echo "XL role is required!"
 	exit 999
 else
 	role=$1
 fi
+
+
 
 if [ "$6" == "" ]; then
         
@@ -15,11 +18,20 @@ else
         cluster=$6
 fi
 
+
 if [ "$7" == "" ]; then
  	echo "pgver is required! exit"
+	exit 999
 else
         pgver=$7
+fi
+
+
+if [ "$2" == "" ]; then
+ 	echo "pguser is required! exit"
 	exit 999
+else
+        pgu=$2
 fi
 
 echo $(date +"%T") \[\| xl-init \|\] BEGINNING...
@@ -49,22 +61,34 @@ for host in $hosts; do
 				dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 				
 				echo $(date +"%T") \[\| xl-init \|\] @$host $1 $dir
-				echo 555
-				util-bpx "$host" $2 cluster-xl-init.ps1 $host $1 $dir
-				echo 777	
-				echo "conf: $conf"
+				util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
+				#echo "conf: $conf"
 				for i in $conf; do
-					echo $i
-					confarr=(${i//,/ })
+					echo $(date +"%T") \[\| xl-conf begin\|\] @$host $confpath
+					#echo "i: $i"
+					confarr=(${i//\,/ })
+					#echo "$confarr"
 					#confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
 					confpath=${confarr[1]}
 					conftemp=${confarr[2]}
-					confexp=$(cat $conftemp.example)
-					confstr=$(echo "$(eval "cluster=$cluster; host=$host; source $(which dexxparammap); echo \"$confexp\"")")
-					echo $(date +"%T") \[\| xl-conf \|\] @$host $confpath
-					#config=
-					echo $confstr
-					#util-px "$1" cluster-xl-conf.ps1 $host $1 $dir $confpath $config
+					#echo "$(which $conftemp.example)"
+					#echo "$conftemp"
+					dexxdir=$(dirname $(which dexxhosts))
+					exp="$dexxdir/$conftemp.example"
+					if [ -e $exp ]; then
+						#echo $exp
+						confexp=$(cat $exp)
+						#echo "$confexp"
+
+						confstr=$(echo "$(eval "cluster=$cluster; host=$host; source $(which dexxparammap); echo \"$confexp\"")")
+						echo "$confstr"
+						conf64=$(echo "$confstr"|base64)
+
+						util-bpx "$host" $pgu cluster-xl-conf.ps1 $confpath $conf64
+					fi
+					echo $(date +"%T") \[\| xl-conf end  \|\] @$host 
+
+
 				done
 			fi
 		fi

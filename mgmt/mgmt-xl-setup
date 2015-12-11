@@ -37,6 +37,13 @@ echo $(date +"%T") \[\| init-set-xl \|\]
 echo $(date +"%T") \[\| xl-init-directories \|\]
 ./mgmt-xl-init-directories "$1" "$cluster" $pguser $pgver
 
+#echo $2
+
+#echo "###############"
+#echo "###############"
+#echo " #############"
+#echo "  ###########"
+#echo "   #########"
 
 
 case $2 in
@@ -50,6 +57,7 @@ case $2 in
 		./mgmt-xl-init-gtmprx $1 $3 $4 $pguser $cluster $pgver
 		;;
 	coor)
+		#echo coor
 		./mgmt-xl-init-coor $1 $3 $4 $pguser $cluster $pgver
 		;;
 	dn)
