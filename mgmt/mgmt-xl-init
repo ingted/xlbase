@@ -41,7 +41,7 @@ for host in $hosts; do
 		if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
 			if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
 
-				conf=$(./mgmt-xl-get-confname "$host" $pgver $cluster|awk 'NR>2 {print $1","$2","$3}'|sort|uniq)
+				conf=$(./mgmt-xl-get-confname "$host" $pgver $cluster|awk 'NR>2 {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
 				if [ "$conf" == "invalid specified host!" ]; then
 					echo "invalid specified host! mgmt-xl-init failed!"
 					continue
@@ -55,11 +55,15 @@ for host in $hosts; do
 				echo "conf: $conf"
 				for i in $conf; do
 					echo $i
-					confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
-					
+					confarr=(${i//,/ })
+					#confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
+					confpath=${confarr[1]}
+					conftemp=${confarr[2]}
+					confexp=$(cat $conftemp.example)
+					confstr=$(echo "$(eval "cluster=$cluster; host=$host; source $(which dexxparammap); echo \"$confexp\"")")
 					echo $(date +"%T") \[\| xl-conf \|\] @$host $confpath
 					#config=
-					
+					echo $confstr
 					#util-px "$1" cluster-xl-conf.ps1 $host $1 $dir $confpath $config
 				done
 			fi

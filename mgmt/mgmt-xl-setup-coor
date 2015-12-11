@@ -22,6 +22,7 @@ function helptext () {
         echo ""
         echo "Options:"
         echo "-f, --force		If container with same name of specified one, recreate it and go ahead!!"
+	echo "-c, 			cluster"
 	echo "-u, --update		Update utility tools."
 	echo "--host, --hostname	Container node name."
 	echo "-n, --nid, --nodeid	Container node group ID."
