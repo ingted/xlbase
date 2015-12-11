@@ -28,3 +28,14 @@ n23 		1 dn		d s test2
 n31 		1 gtmprx	x m test2
 n32 		1 gtmprx	x s test2
 n33 		2 coor		x m test2
+h1             	h docker        x x sit
+h2             	h docker        x x sit
+h3             	h docker        x x sit
+gtm            	c gtm 		g m sit
+coor1s         	c coor		c s sit
+dn1s           	c dn 		d s sit
+gtmprx1s       	c gtmprx 	g s sit
+coor1m         	c coor		c m sit
+dn1m           	c dn 		d m sit 
+gtmprx1m       	c gtmprx 	g m sit
+

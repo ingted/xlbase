@@ -19,37 +19,45 @@ function @@@b_coor_mx_dn@@@       (){
 	source dexxgnuparam $@
 	echo 2
 }
-function @@@b_coor_mx_pool@@@@    (){    
+function @@@b_coor_mx_pool@@@    (){    
 	source dexxgnuparam $@
 	echo 1000
 }
 function @@@b_coor_pooler_port@@@ (){    
 	source dexxgnuparam $@
+	echo 50001
 }
 function @@@b_coor_port@@@        (){    
 	source dexxgnuparam $@
+	echo 40001
 }
 function @@@b_coor_shbuff@@@      (){     
 	source dexxgnuparam $@
-
+	echo $(getconf -a | grep PAGESIZE | awk '{printf "%f\n", $2 * 2 / 5}' | awk '{split($0, a, "."); print a[1]}')
 }
 function @@@b_dn_cache_size@@@    (){   
 	source dexxgnuparam $@
+	echo 1024MB
 }
 function @@@b_dn_chkseg@@@        (){    
 	source dexxgnuparam $@
+	echo 32
 }
 function @@@b_dn_gtmprx_port@@@   (){    
 	source dexxgnuparam $@
+	echo 36666
 }
 function @@@b_dn_maintain_mem@@@  (){    
 	source dexxgnuparam $@
+	echo 1024MB
 }
 function @@@b_dn_mx_conn@@@       (){      
 	source dexxgnuparam $@
+	echo 1024
 }
 function @@@b_dn_mx_coor@@@       (){     
 	source dexxgnuparam $@
+	echo 
 }
 function @@@b_dn_mx_dn@@@         (){ 
 	source dexxgnuparam $@
@@ -74,6 +82,7 @@ function @@@m_coor_gtmprx@@@      (){
 }
 function @@@m_coor_hostip@@@      (){  
 	source dexxgnuparam $@
+	awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" dexxhosts
 }
 function @@@m_coor_pgxcnodename@@@(){  
 	source dexxgnuparam $@
