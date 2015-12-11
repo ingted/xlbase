@@ -1,4 +1,4 @@
-listen_addresses = 				       '$(@@@m_dn_hostip@@@)'
+listen_addresses = 				       '$(@@@m_dn_hostip@@@ -c $cluster -m $host)'
 port = 							$(@@@b_dn_port@@@)
 max_connections = 					$(@@@b_dn_mx_conn@@@)
 shared_buffers = 					$(@@@b_dn_shbuff@@@)
@@ -17,9 +17,9 @@ lc_time = 'en_US.utf8'
 default_text_search_config = 'pg_catalog.english'
 pooler_port = 						$(@@@b_dn_pooler_port@@@)
 max_pool_size = 					$(@@@b_dn_mx_pool@@@)
-max_coordinators = 					$(@@@b_dn_mx_coor@@@)
-max_datanodes = 					$(@@@b_dn_mx_dn@@@)
-gtm_host = 					       '$(@@@m_dn_gtmprx@@@)'
+max_coordinators = 					$(@@@b_dn_mx_coor@@@ -c $cluster -r coor)
+max_datanodes = 					$(@@@b_dn_mx_dn@@@  -c $cluster -r dn)
+gtm_host = 					       '$(@@@m_dn_gtmprx@@@ -c $cluster -m $host)'
 gtm_port = 						$(@@@b_dn_gtmprx_port@@@)
-pgxc_node_name = 				       '$(@@@m_dn_pgxcnodename@@@)'
+pgxc_node_name = 				       '$(@@@m_dn_pgxcnodename@@@ -c $cluster -m $host)'
 
