@@ -11,7 +11,7 @@
 10.128.112.37    xlgtm 		p -  -				alpha
 10.128.112.38    xlgtmsby 	p -  -				alpha
 10.128.112.39    xlcd1 		p -  -				alpha
-10.128.112.40    xlcs2 		p -  -				alpha
+10.128.112.40    xlcd2 		p -  -				alpha
 192.168.123.102  h1  		h -  -				test2
 192.168.123.107  h2  		h -  -				test2
 192.168.123.97   h3  		h -  -				test2
