@@ -37,5 +37,5 @@ xs	gtmprx	s 1 /postgres/data/gtmprx#_%/data	dexxconfgpx_s	gtm_proxy.conf	9.2 sit
 gm	gtm	m 1 /home/postgres/data/gtm/data	dexxconfgtm	gtm.conf	9.2 alpha
 gs	gtmsby	s 1 /home/postgres/data/gtmsby/data	dexxconfgtmsby	gtm.conf	9.2 alpha
 xm	gtmprx	m 1 /home/postgres/data/gtm_proxy#/data	dexxconfgpx_m	gtm_proxy.conf	9.2 alpha
-cm	coor	m 2 /home/postgres/data/coor#/data	dexxconfcoor_c	postgresql.conf	9.2 alpha 
-dm	dn	m 3 /home/postgres/data/db#/data	dexxconfdn_c	postgresql.conf	9.2 alpha 
+cm	coor	m 1 /home/postgres/data/coor_#/data	dexxconfcoor_c	postgresql.conf	9.2 alpha 
+dm	dn	m 1 /home/postgres/data/db_#/data	dexxconfdn_c	postgresql.conf	9.2 alpha 
