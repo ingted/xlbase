@@ -10,6 +10,7 @@ exec sleep 2
 expect {
 	$host {
 		send "a=\$(dirname \$(which dexxhosts)); cd \$a/../mgmt; ./mgmt-xl-get-confname \"$chost\" \"$ver\" \"$envv\"\n"
+                send "exit\n"
 	}
 }
 expect eof
