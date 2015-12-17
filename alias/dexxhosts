@@ -50,4 +50,4 @@
 10.128.112.90	 gtmprx2	c xl95gtmsby 	/docker_volume/95gtmprx2	test3
 10.128.112.91	 coor2		c xl95gtmsby 	/docker_volume/95coor2		test3
 10.128.112.92	 dn2		c xl95gtmsby 	/docker_volume/95dn2 		test3
-192.30.252.130 	 github.com	i -  -				test3
+192.30.252.130 	 github.com	i -  		-				test3

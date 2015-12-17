@@ -39,3 +39,7 @@ gs	gtmsby	s 1 /home/postgres/data/gtmsby/data	dexxconfgtmsby	gtm.conf	9.2 alpha
 xm	gtmprx	m 1 /home/postgres/data/gtm_proxy#/data	dexxconfgpx_m	gtm_proxy.conf	9.2 alpha
 cm	coor	m 1 /home/postgres/data/coor_#/data	dexxconfcoor_c	postgresql.conf	9.2 alpha 
 dm	dn	m 1 /home/postgres/data/db_#/data	dexxconfdn_c	postgresql.conf	9.2 alpha 
+gm	gtm	m 1 /home/postgres/data/gtm/data	dexxconfgtm	gtm.conf	9.2 test3
+xm	gtmprx	m 1 /home/postgres/data/gtm_proxy#/data	dexxconfgpx_m	gtm_proxy.conf	9.2 test3
+cm	coor	m 1 /home/postgres/data/coor_#/data	dexxconfcoor_c	postgresql.conf	9.2 test3 
+dm	dn	m 1 /home/postgres/data/db_#/data	dexxconfdn_c	postgresql.conf	9.2 test3 
