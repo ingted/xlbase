@@ -27,7 +27,8 @@ function helptext () {
 	echo "-v, --pgver, --version		pgver."
 	echo "-s, --sm, --slave-or-master	Slave or master, default is master."
         echo ""
-        exit $1
+	#return
+        #exit $1
 
 }
 
@@ -46,12 +47,13 @@ while true ; do
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""
-                helptext 1;;
+                helptext 1
+		break;;
         esac
 done
 
-if [ "$cnt" == "0" ]; then
-	helptext 1;
-else
+#if [ "$cnt" == "0" ]; then
+#	helptext 1;
+#else
 	main
-fi
+#fi

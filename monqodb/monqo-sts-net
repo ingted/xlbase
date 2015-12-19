@@ -1,0 +1,3 @@
+#!/bin/bash
+
+netstat -ap|grep -P '(10002|36666|40001)'

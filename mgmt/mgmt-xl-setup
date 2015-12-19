@@ -37,23 +37,31 @@ echo $(date +"%T") \[\| init-set-xl \|\]
 echo $(date +"%T") \[\| xl-init-directories \|\]
 ./mgmt-xl-init-directories "$1" "$cluster" $pguser $pgver
 
+#echo $2
+
+#echo "###############"
+#echo "###############"
+#echo " #############"
+#echo "  ###########"
+#echo "   #########"
 
 
 case $2 in
 	gtm)
-		./mgmt-xl-init-gtm $pguser $cluster
+		./mgmt-xl-init-gtm $pguser $cluster $pgver
 		;;
 	gtmsby)
-		./mgmt-xl-init-gtmsby $pguser $cluster
+		./mgmt-xl-init-gtmsby $pguser $cluster $pgver
 		;;            
 	gtmprx)
-		./mgmt-xl-init-gtmprx $1 $3 $4 $pguser $cluster
+		./mgmt-xl-init-gtmprx $1 $3 $4 $pguser $cluster $pgver
 		;;
 	coor)
-		./mgmt-xl-init-coor $1 $3 $4 $pguser $cluster
+		#echo coor
+		./mgmt-xl-init-coor $1 $3 $4 $pguser $cluster $pgver
 		;;
 	dn)
-		./mgmt-xl-init-dn $1 $3 $4 $pguser $cluster
+		./mgmt-xl-init-dn $1 $3 $4 $pguser $cluster $pgver
 		;;
 	*)              
 esac 

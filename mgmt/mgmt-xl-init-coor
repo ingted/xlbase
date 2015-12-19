@@ -34,4 +34,12 @@ else
 fi
 
 
-./mgmt-xl-init coor $pgu $cnm $nid $sm $cluster
+if [ "$6" == "" ]; then
+        echo "pgver is required! exit"
+        exit 999
+else
+        pgver=$6
+fi
+
+#echo \<=================\>
+./mgmt-xl-init coor $pgu $cnm $nid $sm $cluster $pgver

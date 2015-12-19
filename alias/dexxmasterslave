@@ -1,4 +1,11 @@
-n11	n12	gtm
-n13	n21	coor
-n22	n23	dn
-n31	n32	gtmprx
+n11		n12		gtm	test
+n13		n21		coor	test
+n22		n23		dn	test
+n31		n32		gtmprx	test
+gtm		gtmsby		gtm	sit	
+coor1m		coor1s		coor	sit
+dn1m		dn1s		dn	sit
+gtmprx1m	gtmprx2s	gtmprx	sit
+coor2m		coor2s		coor	sit
+dn2m		dn2s		dn	sit
+gtmprx2m	gtmprx2s	gtmprx	sit

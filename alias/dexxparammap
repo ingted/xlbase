@@ -1,89 +1,130 @@
 function @@@b_coor_chkseq@@@      (){
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
 	echo 32
 }   
 function @@@b_coor_gtmprx_port@@@ (){
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
 	echo 36666
 }
 
 function @@@b_coor_mx_conn@@@     (){
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
 	echo 2048
 }
 function @@@b_coor_mx_coor@@@     (){
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
 	echo 2
 }
 function @@@b_coor_mx_dn@@@       (){
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
 	echo 2
 }
-function @@@b_coor_mx_pool@@@@    (){    
-	source dexxgnuparam $@
+function @@@b_coor_mx_pool@@@    (){    
+	source $(which dexxgnuparam) $@
 	echo 1000
 }
 function @@@b_coor_pooler_port@@@ (){    
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 50001
 }
 function @@@b_coor_port@@@        (){    
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 40001
 }
 function @@@b_coor_shbuff@@@      (){     
-	source dexxgnuparam $@
-
+	source $(which dexxgnuparam) $@
+	echo $(getconf -a | grep PAGESIZE | awk '{printf "%f\n", $2 * 1 / 10}' | awk '{split($0, a, "."); print a[1]}')
 }
 function @@@b_dn_cache_size@@@    (){   
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 1024MB
 }
 function @@@b_dn_chkseg@@@        (){    
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 32
 }
 function @@@b_dn_gtmprx_port@@@   (){    
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 36666
 }
 function @@@b_dn_maintain_mem@@@  (){    
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 1024MB
 }
 function @@@b_dn_mx_conn@@@       (){      
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 1024
 }
 function @@@b_dn_mx_coor@@@       (){     
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo $(awk "(\$4 == \"$cluster\") && (\$1 == \"$role\") {print \$3}" $(which dexxhostinfo)) 
 }
 function @@@b_dn_mx_dn@@@         (){ 
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+        echo $(awk "(\$4 == \"$cluster\") && (\$1 == \"$role\") {print \$3}" $(which dexxhostinfo))
 }
 function @@@b_dn_mx_pool@@@       (){      
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 1000
 }
 function @@@b_dn_pooler_port@@@   (){ 
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 50002
 }
 function @@@b_dn_port@@@          (){   
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 10002
 }
 function @@@b_dn_shbuff@@@        (){ 
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	#echo $(getconf -a | grep PAGESIZE | awk '{printf "%f\n", $2 * 2 / 5}' | awk '{split($0, a, "."); print a[1]}')
+	echo $(cat /proc/meminfo|grep MemTotal|awk '{printf "%f", $2 / 1024 / 5 * 2}'|awk '{split($0, a, "."); print a[1]}')
 }
 function @@@b_dn_wkmem@@@         (){  
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo 1024MB
 }
 function @@@m_coor_gtmprx@@@      (){  
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	dhost=$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$4}" $(which dexxhosts))
+	chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
+	hostnid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" $(which dexxhostroles))
+	hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
+	for h in $chosts; do
+		hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$1,\$2,\$3}" $(which dexxhostroles))
+		sphrn=(${hostrolenid//\,})
+		if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ]; then
+			echo "${sphrn[0]}"
+		fi
+	done
 }
 function @@@m_coor_hostip@@@      (){  
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
 }
-function @@@m_coor_pgxcnodename@@@(){  
-	source dexxgnuparam $@
+function @@@m_coor_pgxcnodename@@@ (){  
+	source $(which dexxgnuparam) $@
+	echo $host
 }
 function @@@m_dn_gtmprx@@@        (){  
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+        dhost=$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$4}" $(which dexxhosts))
+        chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
+        hostnid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" $(which dexxhostroles))
+        hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
+        for h in $chosts; do
+                hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$1,\$2,\$3}" $(which dexxhostroles))
+                sphrn=(${hostrolenid//\,})
+                if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ]; then
+                        echo "${sphrn[0]}"
+                fi
+        done
 }
 function @@@m_dn_hostip@@@        (){  
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
 }
 function @@@m_dn_pgxcnodename@@@  (){   
-	source dexxgnuparam $@
+	source $(which dexxgnuparam) $@
+	echo $host
 }

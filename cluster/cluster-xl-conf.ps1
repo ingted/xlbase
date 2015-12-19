@@ -1,28 +1,24 @@
 #!/usr/bin/pash
 param(
-	$nodename, $role, $initpath
+	$confpath
 )
 
-function in{
-	param(
-		$testvalue
-		, $targetarray
-	)
-	
-	[bool] $(foreach ($i in $targetarray){
-		if($i -eq $testvalue){$true}
-	})
+$db64 = "$args".replace(" ", "")
+$dd = . decode-mgmt-msg.ps1 $db64
+write-host "dd: $dd"
+#if($hd.gettype().name -eq "string"){
+#       $out = $dd
+#} else {
+#       $out = $dd[0]
+#}
+$configstr = ""
+$dd | %{
+        $d = $_.split("`n")
+	$d | ?{
+		$_ -ne ""
+	} | %{
+		$configstr += "`n" + $_
+	}
 }
 
-$groles = @{gtm="gtm"; gtmsby="gtm"; gtmprx="gtm_proxy"}
-$droles = @{coor="coordinator"; dn="coordinator"}
-
-$r_in  = in $role $groles.keys
-$r_in2 = in $role $droles.keys
-if ($r_in){
-	initgtm -Z $groles[$role] -D $initpath
-} elseif ($r_in2){
-	initdb --nodename $nodename -D $initpath
-} else {
-	"wrong role specified!"
-}
+$configstr | out-file $confpath -Encoding ascii

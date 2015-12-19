@@ -33,5 +33,13 @@ else
         cluster=$5
 fi
 
+if [ "$6" == "" ]; then
+        echo "pgver is required! exit"
+	exit 999
+else
+        pgver=$6
+fi
 
-./mgmt-xl-init dn $pgu $cnm $nid $sm $cluster
+
+
+./mgmt-xl-init dn $pgu $cnm $nid $sm $cluster $pgver

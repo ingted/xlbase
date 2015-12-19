@@ -19,7 +19,7 @@ if [ "$4" == "" ]; then
 	echo "pgxl version is required!."
 	exit 999
 else
-	pgxl=$4
+	pgver=$4
 fi
 
 
@@ -35,13 +35,15 @@ fi
 hostsitem=$(./mgmt-xl-get-host-by-cluster $cluster)
 dirdata=$(for hi in $hostsitem; do echo "$(./mgmt-xl-get-confname $hi $pgver $cluster)"|awk 'NR>2 {print $1}'; done)
 
+#echo "$dirdata"
+
 db64=$(echo "$dirdata"|base64)
 #echo $db64
 
 echo $(date +"%T") \[\| cluster-dirs \|\]
 util-px "$nm" cluster-dirs.ps1 $db64
 
-util-px "$nm" if\(\(dir /postgres\) -eq \$null\){\"init xl dirs failed!\"}
+util-px "$nm" if\(\(dir /postgres\) -eq \$null\){\"init xl dirs failed\!\"}
 
 
 echo $(date +"%T") \[\| service-account \|\]

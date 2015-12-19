@@ -1,0 +1,15 @@
+#!/usr/bin/expect -f
+
+set host  [lindex $argv 0]
+set chost [lindex $argv 1]
+set ver   [lindex $argv 2]
+set envv  [lindex $argv 3]
+
+spawn ssh postgres@$host
+exec sleep 2
+expect {
+	$host {
+		send "a=\$(dirname \$(which dexxhosts)); cd \$a/../mgmt; ./mgmt-xl-get-confname \"$chost\" \"$ver\" \"$envv\"\n"
+	}
+}
+expect eof

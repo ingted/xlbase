@@ -30,6 +30,10 @@ function main () {
 
 	cnms=$(./mgmt-xl-get-host-by-role $role $cluster)
 	for cnm in $cnms; do
+		#echo "%%%%%%%%%%%%%%"
+		#echo "  %%%%%%%%%%"
+		#echo "  %%%%%%%%%%"
+		#echo "%%%%%%%%%%%%%%"
 		enter=1
 		{
 			nid=$(./mgmt-xl-get-node-id "$cnm" $cluster)

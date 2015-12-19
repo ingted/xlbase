@@ -11,6 +11,7 @@ RUN ln -snf /bin/bash /bin/sh; \
 	#ls -l /bd_build; \
 	ls -l /addfiles; \
 	cp -rf /bd_build/util /; \
+	cp /addfiles/sources.list               /etc/apt/; \
 	/bd_build/prepare.sh && \
 	/bd_build/system_services.sh && \
 	/bd_build/utilities.sh && \
@@ -18,6 +19,12 @@ RUN ln -snf /bin/bash /bin/sh; \
 	apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D; \
         echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list; \
         apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A6A19B38D3D831EF; \
+
+	echo "91.189.89.49 keyserver.ubuntu.com" >> /etc/hosts; \
+	echo "18.9.60.141 pgp.mit.edu" >> /etc/hosts; \
+	echo "54.230.213.123 download.mono-project.com" >> /etc/hosts; \
+
+	echo "91.189.91.24 archive.ubuntu.com" >> /etc/hosts; \
 
 
 	apt-get -y update; \

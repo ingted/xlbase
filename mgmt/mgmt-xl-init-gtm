@@ -13,4 +13,13 @@ else
 	pgu=$1
 fi
 
-./mgmt-xl-init gtm $pgu - - - $cluster
+
+if [ "$3" == "" ]; then
+        echo "pgver is required! exit"
+        exit 999
+else
+        pgver=$3
+fi
+
+
+./mgmt-xl-init gtm $pgu "-" "-" "-" $cluster $pgver

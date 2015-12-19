@@ -15,7 +15,7 @@ dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $host
 
 
 #echo ===========\$dhosts============
-#echo  $dhosts
+echo  $dhosts
 #echo ===========\$cnms\ \ ============
 #echo  $cnms
 #echo ===============================
@@ -106,11 +106,11 @@ SSH_L1
 			}
 			dlss=\$(\$(which dls) -ll)
 			dlsss=(\${dlss//\\\n/ })			
-			#echo =====\\\$dlsss in remote =========
-                	#echo \$dlsss
-			#echo \${dlsss[0]}
-			#echo $1
-                	#echo ===============================
+			echo =====\\\$dlsss in remote =========
+                	echo \$dlsss
+			echo \${dlsss[0]}
+			echo $1
+                	echo ===============================
 
 			#Do not support IP so far...
 			#if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
