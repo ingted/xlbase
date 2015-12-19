@@ -41,3 +41,13 @@
 10.0.10.226	 dn2m		c h3 /docker_volume/dn2_m	sit
 10.0.10.228	 gtmprx2m	c h3 /docker_volume/gtmprx2_m 	sit
 192.30.252.130 	 github.com	i -  -				sit
+10.128.112.45	 xl95gtm	h -  -				test3
+10.128.112.48	 xl95gtmsby	h -  -				test3 
+10.128.112.47	 gtm		c xl95gtm 	/docker_volume/95gtm 		test3
+10.128.112.80	 gtmprx		c xl95gtm	/docker_volume/95gtmprx		test3
+10.128.112.81	 coor		c xl95gtm 	/docker_volume/95coor		test3
+10.128.112.82	 dn		c xl95gtmsby 	/docker_volume/95dn 		test3
+10.128.112.90	 gtmprx2	c xl95gtmsby 	/docker_volume/95gtmprx2	test3
+10.128.112.91	 coor2		c xl95gtmsby 	/docker_volume/95coor2		test3
+10.128.112.92	 dn2		c xl95gtmsby 	/docker_volume/95dn2 		test3
+192.30.252.130 	 github.com	i -  		-				test3
