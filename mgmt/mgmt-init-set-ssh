@@ -1,5 +1,12 @@
 #!/bin/bash
 
+echo if gpu now?
+read ifgpu
+
+if [ "$ifgpu" == "1" ] || [ "$ifgpu" == "y" ] || [ "$ifgpu" == "yes" ]; then
+	gpu "installation commit"
+fi
+
 if [ "$1" == "" ]; then
         rootpath=/root
 else
