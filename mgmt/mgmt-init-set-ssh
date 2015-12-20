@@ -24,7 +24,7 @@ fi
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster)
 echo "$dhosts"
 for host in $dhosts; do
-	cip=$(./mgmt-xl-get-ip $host $cluster)
+	cip=$(./mgmt-xl-get-ip "$host" "$cluster")
 	echo $cip
 	(ssh $cip << EOF
 		cd "$rootpath"
@@ -33,6 +33,7 @@ for host in $dhosts; do
   		cd xlbase
 	  	git checkout --track -b xlbase remotes/origin/backToOrigin
 		source alias/util-disable-status 1 1 1
+		echo "====\$(hostname)====="
 		./make.sh
 EOF
 ) &

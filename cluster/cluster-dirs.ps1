@@ -11,7 +11,7 @@ $dd = . decode-mgmt-msg.ps1 $db64
 #	$out = $dd[0]
 #}
 
-$dd | %{
+$dd | select-object -uniq | %{
 	$d = $_.split("`n")
 	$d | ?{
 		$_ -ne ""	
