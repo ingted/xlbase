@@ -1,33 +1,21 @@
 #!/bin/bash
-if [ "$1" == "" ]; then
-        hostyp=h
-else
-        hostyp="$1"
-fi
 
 if [ "$2" == "" ]; then
-        extyp="-a"
-else
-        extyp="$2"
-fi
-
-if [ "$3" == "" ]; then
         cluster=test
 else
-        cluster="$3"
+        cluster=$2
 fi
 
 
-dcmd=${*:4}
+dcmd=${*:3}
 echo "distributed command: $dcmd"
 hostfil=$(which dexxhosts)
-dhosts=$(awk "(\$3 == \"$hostyp\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $hostfil)
-#echo "awk \"(\\\$3 == \\\"$hostyp\\\") && (\\\$6 == \\\"$cluster\\\") {print \\\$2\\\",\\\"\\\"$1\\\"}\" $hostfil"
+dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $hostfil)
 
 
 
 #echo ===========\$dhosts============
-#echo  $dhosts
+echo  $dhosts
 #echo ===========\$cnms\ \ ============
 #echo  $cnms
 #echo ===============================
@@ -59,20 +47,21 @@ SSH_L1
 		cnms_o="$cnms"
 		cnms_r=(\${cnms_o//\\\n/ })
 		#echo =====\\\$cnms_r remote ========
-		echo \${cnms_r[2]}
+		#echo \$cnms_r
 		#echo ===============================
-		if [ "$extyp" == "-a" ]; then
+		if [ "$1" == "-a" ]; then
 
-                        echo "1: \$PATH"
+                        ##echo "1: \$PATH"
 
-			##cat /root/\.bashrc
-			##source /root/.bashrc
+			#cat /root/.bashrc
+			#source /root/.bashrc
 			##echo "dexxhosts \$(which dexxhosts)"
-			##export PATH=\$PATH:\$(dirname \$(which dexxhosts))
+			#export PATH=\$PATH:\$(dirname \$(which dexxhosts))
 			##echo "2: \$PATH"
 			ids="\$(\$(which dls) -ll)"
 			#echo "ids: \$ids"
 			ids=(\${ids//\\\n/ })
+
 			if [ "\$ids" == "" ]; then
 				echo "no alive containers!"
 			else
@@ -86,28 +75,29 @@ SSH_L1
 					
 					expath=\$(docker exec \$id 'pwd')
 					echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
-					#docker exec \$id ${*:3}
+					#docker exec \$id ${*:2}
 					echo '/bin/bash -c "$dcmd"'
 					docker exec \$id /bin/bash -c "$dcmd"
 				done 
 				IFS=ifsold
 			fi
-		elif [ "$extyp" == "-h" ] ; then 
-			bash -c '${*:4}'
+		elif [ "$1" == "-h" ] ; then 
+			bash -c '${*:3}'
 
-		elif [ "$extyp" == "-n" ] ; then 
-			if [ "$4" == "$dh" ] || [ "$4" == "$dnm" ]; then 
-				bash -c '${*:5}'
+		elif [ "$1" == "-n" ] ; then 
+			if [ "$3" == "$dh" ] || [ "$3" == "$dnm" ]; then 
+				bash -c '${*:4}'
 			
 			fi
 		else
 			echo Docker Host Mode: \(Please specify docker container ID\)
-			array_contains2() {
+			array_contains2 () { 
 			    local array="\$1[@]"
-			    local seeking="\$2"
+			    local seeking=\$2
 			    local in=1
+				#echo "$array"
 			    for element in \${!array}; do
-			        if [ "\$element" == "\$seeking" ]; then
+			        if [[ \$element == \$seeking ]]; then
 			            in=0
 			            break
 			        fi
@@ -116,22 +106,21 @@ SSH_L1
 			}
 			dlss=\$(\$(which dls) -ll)
 			dlsss=(\${dlss//\\\n/ })			
-			#echo =====\\\$dlsss in remote =========
-                	#echo \$dlsss
-                	#echo \$cnms
-			#echo \${dlsss[0]}
-			#echo $extyp
-                	#echo ===============================
+			echo =====\\\$dlsss in remote =========
+                	echo \$dlsss
+			echo \${dlsss[0]}
+			echo $1
+                	echo ===============================
 
 			#Do not support IP so far...
-			#if [[ \$(array_contains2 dlsss "$extyp" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$extyp" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$extyp" && echo 1 || echo 0) == 1 ]]; then 
-			if [[ \$(array_contains2 dlsss "$extyp" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$extyp" && echo 1 || echo 0) == 1 ]]; then 
-			#if [[ \$(array_contains2 cnms_r "$extyp" && echo 1 || echo 0) == 1 ]]; then 
-				docker exec $extyp bash -c '${*:4}'
+			#if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
+			if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
+			#if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
+				docker exec $1 bash -c '${*:3}'
 			else
 				#echo \$(\$(which dls) -ll)
-				#echo $extyp
-				#echo \$(array_contains2 \$(\$(which dls) -ll) "$extyp")
+				#echo $1
+				#echo \$(array_contains2 \$(\$(which dls) -ll) "$1")
 				echo Wrong container ID!
 			fi
 		fi 
