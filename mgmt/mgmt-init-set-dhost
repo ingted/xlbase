@@ -35,6 +35,9 @@ for host in $dhosts; do
 		source alias/util-disable-status 1 1 1
 		echo "====\$(hostname)====="
 		./make.sh
+		cd mgmt
+		./mgmt-init-set-xl-config $cluster
+		./mgmt-xl-setup-all $cluster
 EOF
 ) &
 
