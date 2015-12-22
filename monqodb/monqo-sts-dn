@@ -8,7 +8,10 @@ dnhostname=$(../mgmt/mgmt-xl-get-host-by-role dn alpha)
 for c in $dnhostname; do
 	if [ "$c" == "$(hostname)" ]; then
 		echo "======== datanode: $c ========"
-		pg_ctl -Z datanode  status -D $(./monqo-conf $c dn)
+		cc=$(./monqo-conf $c dn)
+		pg_ctl -Z datanode  status -D $cc
+		ccc=$(head -1 "$cc/postmaster.pid")
+		echo "Opened 40001 count real: $(netstat -ap|grep 40001|grep $ccc|wc -l)"
 	fi
 
 	

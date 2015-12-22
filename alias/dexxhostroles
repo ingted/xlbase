@@ -44,4 +44,12 @@ gtmprx2s       	2 gtmprx 	g s sit
 coor2m         	2 coor		c m sit
 dn2m           	2 dn 		d m sit 
 gtmprx2m       	2 gtmprx 	g m sit
-
+xl95gtm        	0 docker        x x test3
+xl95gtmsby     	0 docker        x x test3
+gtm            	0 gtm 		g m test3
+coor         	1 coor		c s test3
+dn           	1 dn 		d s test3
+gtmprx       	1 gtmprx 	g s test3
+coor2         	2 coor		c m test3
+dn2          	2 dn 		d m test3 
+gtmprx2       	2 gtmprx 	g m test3

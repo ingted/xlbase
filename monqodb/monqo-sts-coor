@@ -8,7 +8,12 @@ coorhostname=$(../mgmt/mgmt-xl-get-host-by-role coor alpha)
 for c in $coorhostname; do
 	if [ "$c" == "$(hostname)" ]; then
 		echo "======== coordinator: $c ========"
-		pg_ctl -Z coordinator  status -D $(./monqo-conf $c coor)
+		cc=$(./monqo-conf $c coor)
+		pg_ctl -Z coordinator  status -D $cc
+		ccc=$(head -1 "$cc/postmaster.pid")
+		#echo $ccc
+		echo "Opened 40001 count real: $(netstat -ap|grep 40001|grep $ccc|wc -l)"
+
 	fi
 
 	

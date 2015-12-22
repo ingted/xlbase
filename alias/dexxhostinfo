@@ -13,3 +13,8 @@ gtmsby	#	0	sit
 coor	#	2	sit	
 dn	#	2	sit	
 gtmprx	#	2	sit	
+gtm	#	1	test3	
+gtmsby	#	0	test3	
+coor	#	2	test3	
+dn	#	2	test3	
+gtmprx	#	2	test3	
