@@ -36,7 +36,7 @@ case "$1" in
         check_for_upstart 1
         check_privsep_dir
         log_daemon_msg "Starting SSH Server" "sshd" || true
-        if start-stop-daemon --start --quiet --oknodo --pidfile /var/run/sshd.pid --exec /usr/sbin/sshd; then
+        if start-stop-daemon --start --quiet --oknodo --pidfile /var/run/sshd.pid --exec /usr/sbin/sshd -- -f /etc/ssh/sshd_config; then
             log_end_msg 0 || true
         else
             log_end_msg 1 || true
