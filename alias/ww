@@ -1,24 +1,4 @@
 #!/bin/bash
-
-function mgmt-xl-get-host-by-ip() {
-
-	hosts=$(which dexxhosts)
-	
-	if [ "$2" == "" ]; then
-	        cluster=test
-	else
-	        cluster=$2
-	fi
-	
-	if [ "$1" != "--all" ] && [ "$1" == "-a" ]; then
-	        awk "(\$6 == \"$cluster\") {print \$2}" $hosts
-	else
-	        awk "(\$6 == \"$cluster\") && (\$1 == \"$1\") {print \$2}" $hosts
-	
-	fi
-}
-
-
 if [ "$1" == "" ]; then
         hostyp=h
 else
@@ -60,7 +40,9 @@ for dhi in $dhosts; do
 	echo @ $dh
         dnm=${dhtmp[0]}
         cnms=$(awk "(\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
-        cips=$(awk "(\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$1}" $hostfil)
+	#echo $cnms
+	cips=$(awk "(\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$1}" $hostfil)
+	#echo $cips
 	ssh root@$dh bash <<'SSH_L1'
 		echo "$PATH" > ~/PATH.TMP
 		#echo "$PATH"		
@@ -78,49 +60,11 @@ SSH_L1
 		#echo ==echo ===============================
 		cnms_o="$cnms"
 		cnms_r=(\${cnms_o//\\\n/ })
+		cips_o="$cips"
+		cips_r=(\${cips_o//\\\n/ })
 		#echo =====\\\$cnms_r remote ========
 		#echo \${cnms_r[2]}
 		#echo ===============================
-		if [ "$extyp" == "-a" ]; then
-
-                        echo "1: \$PATH"
-
-			##cat /root/\.bashrc
-			##source /root/.bashrc
-			##echo "dexxhosts \$(which dexxhosts)"
-			##export PATH=\$PATH:\$(dirname \$(which dexxhosts))
-			##echo "2: \$PATH"
-			ids="\$(\$(which dls) -ll)"
-			#echo "ids: \$ids"
-			ids=(\${ids//\\\n/ })
-			if [ "\$ids" == "" ]; then
-				echo "no alive containers!"
-			else
-			
-
-				for id in "\${ids[@]}"; do
-					echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
-					echo "[< Container >]" : ID\ \ \ \ \ \ \ : \$id
-					echo "[< Container >]" : Username : \$(/usr/bin/whoami)
-					echo "[< Container >]" : Hostname : \$(/bin/hostname)
-					
-					expath=\$(docker exec \$id 'pwd')
-					echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
-					#docker exec \$id ${*:3}
-					echo '/bin/bash -c "$dcmd"'
-					docker exec \$id /bin/bash -c "$dcmd"
-				done 
-				IFS=ifsold
-			fi
-		elif [ "$extyp" == "-h" ] ; then 
-			bash -c '${*:4}'
-
-		elif [ "$extyp" == "-n" ] ; then 
-			if [ "$4" == "$dh" ] || [ "$4" == "$dnm" ]; then 
-				bash -c '${*:5}'
-			
-			fi
-		else
 			echo Docker Host Mode: \(Please specify docker container ID\)
 			array_contains2() {
 			    local array="\$1[@]"
@@ -136,11 +80,9 @@ SSH_L1
 			}
 			dlss=\$(\$(which dls) -ll)
 			dlsss=(\${dlss//\\\n/ })			
-	                cips_o="$cips"
-        	        cips_r=(\${cips_o//\\\n/ })
 			#echo =====\\\$dlsss in remote =========
                 	#echo \$dlsss
-                	#echo \$cnms
+                	#echo \$cnms_r
 			#echo \${dlsss[0]}
 			#echo $extyp
                 	#echo ===============================
@@ -149,9 +91,10 @@ SSH_L1
 			if [[ \$(array_contains2 dlsss "$extyp" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cips_r "$extyp" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$extyp" && echo 1 || echo 0) == 1 ]]; then 
 			#if [[ \$(array_contains2 dlsss "$extyp" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$extyp" && echo 1 || echo 0) == 1 ]]; then 
 			#if [[ \$(array_contains2 cnms_r "$extyp" && echo 1 || echo 0) == 1 ]]; then 
-				extypp=$(mgmt-xl-get-host-by-ip "$extyp" "$cluster")
-                                if [ "\$extypp" != "" ]; then extyp=\$extypp; else extyp=\$extyp; fi
-
+				extypp=$(./mgmt-xl-get-host-by-ip "$extyp" "$cluster")
+				#echo "->\$extypp"
+				if [ "\$extypp" != "" ]; then extyp=\$extypp; else extyp=\$extyp; fi
+				#echo \$extyp
 				docker exec \$extyp bash -c '${*:4}'
 			else
 				#echo \$(\$(which dls) -ll)
@@ -159,7 +102,6 @@ SSH_L1
 				#echo \$(array_contains2 \$(\$(which dls) -ll) "$extyp")
 				echo Wrong container ID!
 			fi
-		fi 
 
 SSH_L1
 
