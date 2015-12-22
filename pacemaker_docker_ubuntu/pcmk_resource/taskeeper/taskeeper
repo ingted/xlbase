@@ -1,0 +1,178 @@
+#!/usr/bin/env python
+# -*- encoding: utf8 -*-
+
+## @package tools
+#@brief  Keep a job by configure.
+#@details  根據資料庫排程，定時自動執行器.
+#@authors Evan
+#@version 0.1
+#@date 2015-12-21
+
+import os
+import sys
+import time
+import optparse
+
+#3-party package
+import pymssql
+import cPickle as pk
+
+_name = 'taskeeper'
+_pidfile = '.pid'
+_tempfile = '.jobs'
+_default_log = ['']
+_logdir = lambda x='': os.path.join(_default_log[0], x)
+_listfmt = '%s %s:%s #%s'
+_logfmt = lambda x: '%s/%s/%s %s:%s:%s %s\n' % tuple(
+    time.localtime()[:6]+ (x,))
+
+_getTempFile = lambda : pk.load(
+    open(_tempfile)) if os.path.exists(_tempfile) else {}
+
+def action(opts, _log, debug=False):
+    _interval = opts.get('interval', 5)
+    _cmd = opts.get('cmd', '')
+
+    def _wmsg(text):
+        print text
+        _log(text)
+
+    if _interval < 1:
+        _wmsg('Error: Interval value can not less then 1.')
+    if _cmd == '':
+        _wmsg('Error: Command is empty.')
+
+    _wmsg(_cmd)
+    if not debug: os.system(_cmd) #直接執行不管結果
+    #_wmsg(os.popen(_cmd).read()) #寫入結果
+    time.sleep(_interval)
+
+#Insert task from mssql process
+def mssql(options):
+    exec(open(options.config).read())
+    while db_type == "mssql":
+        _temp = {}
+        #exec('import %s' % options.config)
+
+        _conn = pymssql.connect(**db_opts)
+        _c = _conn.cursor()
+        _c.execute(cmd)
+        print 'Job list:'
+        for l in _c.fetchall():
+            _temp['%s@%s' % (l[0], l[2])] = {
+                'cmd': l[4],
+                'interval': int(l[6]),
+                'str': l[7],
+                'end': l[8],
+            }
+            print _listfmt % (l[0], l[2], l[3], l[5])
+
+        _conn.close()
+
+        _tmp = _getTempFile()
+        pk.dump(_temp, open(_tempfile, 'w'))
+
+        for l in set(_temp.keys()) - set(_tmp.keys()):
+            if options.debug: l += ' --debug'
+            os.system('python %s --action %s &' % (_name, l,))
+
+        print '%s/%s/%s %s:%s:%s check database: %s jobs.' % tuple(
+            time.localtime()[:6] + (len(_temp),))
+        time.sleep(options.interval)
+
+def main(options):
+    _default_log[0] = options.log
+    if options.action:
+        _log = open(_logdir('%s.log' % options.action), 'a')
+        def _write(text):
+            _log.write(_logfmt(text))
+            _log.flush()
+        while 1:
+            _temp = _getTempFile()
+            _tmp = _temp.get(options.action, None)
+            if _tmp:
+                action(_tmp, _write, debug=options.debug) #fork process
+            else:
+                _write('%s Exit' % options.action)
+                _log.close()
+                return 0
+    elif options.stop:
+        if os.path.exists(_tempfile): os.remove(_tempfile)
+        if os.path.exists(_pidfile):
+            with open(_pidfile) as f:
+                os.system('kill %s' % f.read())
+            os.remove(_pidfile)
+        else:
+            print "Process don't exists!"
+    elif options.status:
+        _proc = os.popen('ps aux|grep %s' % _name).read()
+        _alive = lambda x: "Alive." if x in _proc else "Terminate."
+        if os.path.exists(_pidfile):
+            with open(_pidfile) as f:
+                _pid = f.read()
+                print 'PID:', _pid, '>>', _alive(_pid)
+        else: print "Terminate."
+        print 'Sub Process: %s' % len(filter(lambda x: '--action' in x, _proc.split('\n')))
+
+    elif options.config:
+        if os.path.exists(_pidfile):
+            print 'Process already start!'
+            return 1
+        with open(_pidfile, 'w') as f:
+            f.write(str(os.getpid()))
+        if os.path.exists(_tempfile): os.remove(_tempfile)
+        if not os.path.exists(_logdir()): os.mkdir(_logdir())
+        #Read in configure file.
+        mssql(options)
+        if os.path.exists(_pidfile): os.remove(_pidfile)
+    else:
+        print 'Nothing Happened!'
+
+    return 0
+
+if __name__ == '__main__':
+    #usage = "usage: %prog [options] arg1 arg2"
+    #parser = optparse.OptionParser(usage=usage)
+    parser = optparse.OptionParser(usage=main.__doc__)
+    #"""
+    parser.add_option("--action", type="string",
+                      help="Action Name.",
+                      dest="action", default=None)
+
+    parser.add_option("--config", type="string",
+                      help="Set Configure File.",
+                      dest="config", default='config')
+
+    parser.add_option("--log", type="string",
+                      help="Set aother log directory.",
+                      dest="log", default='log')
+
+    parser.add_option("-i", "--interval", type="int",
+                      help="Set Interval Time(second).",
+                      dest="interval", default=60)
+
+    parser.add_option("--stop", action="store_true",
+                      help="Stop all task.",
+                      dest="stop", default=False)
+
+    parser.add_option("--once", action="store_true",
+                      help="Once Execution.",
+                      dest="once", default=False)
+
+    parser.add_option("--status", action="store_true",
+                      help="Check status now.",
+                      dest="status", default=False)
+
+    parser.add_option("--debug", action="store_true",
+                      help="Debug Mode.",
+                      dest="debug", default=False)
+    #"""
+    options, args = parser.parse_args()
+
+    if len(args) != 0:
+        parser.print_help()
+        sys.exit(1)
+
+    sys.exit(main(options))
+
+

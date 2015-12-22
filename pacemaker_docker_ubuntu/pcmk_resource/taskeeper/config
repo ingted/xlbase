@@ -1,0 +1,31 @@
+#This resource for python.
+
+db_type = 'mssql'
+
+db_opts = {
+    'host': '10.0.10.246\DROIETL',
+    'user': 'sa',
+    'password': "/'],lp123",
+    'database': "JOBS"
+}
+
+#unikey = schedule_id @ step_id
+#unikey 注意請勿重複
+cmd = """
+    SELECT JS.[schedule_id]
+        ,JS.[job_id]
+        ,ST.[step_id]
+        ,ST.[step_name]
+        ,ST.[command]
+        ,S.[name]
+        ,S.[freq_subday_interval] seconds
+        ,S.[active_start_date]
+        ,S.[active_end_date]
+    FROM [JOBS].[dbo].[JOBSCHD] JS
+        INNER JOIN [JOBS].[dbo].[JOBS] J ON
+        JS.[job_id] = J.[job_id]
+        INNER JOIN [JOBS].[dbo].[STEPS] ST ON
+        ST.[job_id] = J.[job_id]
+        INNER JOIN [JOBS].[dbo].[SCHD] S ON
+        S.[schedule_id] = JS.[schedule_id]
+"""
