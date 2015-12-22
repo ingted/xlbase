@@ -27,6 +27,7 @@ for host in $dhosts; do
 	cip=$(./mgmt-xl-get-ip "$host" "$cluster")
 	echo $cip
 	(ssh $cip << EOF
+		mkdir -p "$rootpath"
 		cd "$rootpath"
 		rm xlbase -rf
 		git clone https://github.com/ingted/xlbase.git
