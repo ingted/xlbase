@@ -20,6 +20,13 @@ else
         cluster=$2
 fi
 
+if [ "$3" == "" ]; then
+        updonly=0
+else
+        updonly="$3"
+fi
+
+
 
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster)
 echo "$dhosts"
@@ -30,20 +37,26 @@ for host in $dhosts; do
 		#rm ~/.hushlogin
 		mkdir -p "$rootpath"
 		cd "$rootpath"
-		rm xlbase -rf
-		GIT_TRACE=1; GIT_CURL_VERBOSE=1
-		git clone --verbose http://github.com/ingted/xlbase.git
-  		cd xlbase
-	  	git checkout --track -b xlbase remotes/origin/backToOrigin
+		if [ "$updonly" == 0 ]; then
+			rm xlbase -rf
+			GIT_TRACE=1; GIT_CURL_VERBOSE=1
+			git clone --verbose http://github.com/ingted/xlbase.git
+  			cd xlbase
+	  		git checkout --track -b xlbase remotes/origin/backToOrigin
+		else
+			cd xlbase
+			git pull
+		fi
 		source alias/util-disable-status 1 1 1
 		echo "====\$(hostname)====="
 		./make.sh
 		source ~/.bashrc
-		echo \$(which dexxhosts)
-		echo \$PATH
+		#echo "=>\$(which dexxhosts)"
+		#echo "=>\$PATH"
 		cd mgmt
-		./mgmt-init-set-xl-config $cluster
-		./mgmt-xl-setup-all $cluster
+		expect set.expect
+		#./mgmt-init-set-xl-config $cluster
+		#./mgmt-xl-setup-all $cluster
 EOF
 ) 
 
