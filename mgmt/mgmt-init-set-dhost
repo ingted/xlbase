@@ -37,6 +37,7 @@ for host in $dhosts; do
 		echo "====\$(hostname)====="
 		./make.sh
 		source ~/.bashrc
+		which dexxhosts
 		cd mgmt
 		./mgmt-init-set-xl-config $cluster
 		./mgmt-xl-setup-all $cluster

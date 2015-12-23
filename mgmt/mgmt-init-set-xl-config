@@ -35,7 +35,7 @@ else
 		cd "./$fnm"
 		#echo $(pwd)
 		#chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$4 != \"-\") {print \$2}"|sort|uniq|sed '/^$/d')
-		chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") {print \$2}"|sort|uniq|sed '/^$/d')
+		chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$3 != \"i\") {print \$2}"|sort|uniq|sed '/^$/d')
 		for cnm in $chosts; do
 			echo init $cnm...
 			mkdir -p $cnm
