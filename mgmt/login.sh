@@ -92,6 +92,8 @@ EOF
 EOF
 
 	done
-
+	ssh $cip << EOF
+		if [ -e ~/.hushlogin ]; then rm ~/.hushlogin; fi
+EOF
 
 done

@@ -27,10 +27,12 @@ for host in $dhosts; do
 	cip=$(./mgmt-xl-get-ip "$host" "$cluster")
 	echo $cip
 	(ssh $cip << EOF
+		#rm ~/.hushlogin
 		mkdir -p "$rootpath"
 		cd "$rootpath"
 		rm xlbase -rf
-		git clone https://github.com/ingted/xlbase.git
+		GIT_TRACE=1; GIT_CURL_VERBOSE=1
+		git clone --verbose http://github.com/ingted/xlbase.git
   		cd xlbase
 	  	git checkout --track -b xlbase remotes/origin/backToOrigin
 		source alias/util-disable-status 1 1 1
@@ -43,7 +45,7 @@ for host in $dhosts; do
 		./mgmt-init-set-xl-config $cluster
 		./mgmt-xl-setup-all $cluster
 EOF
-) &
+) 
 
 done
 
