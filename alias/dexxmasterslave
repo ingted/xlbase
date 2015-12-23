@@ -1,7 +1,9 @@
-n11		n12		gtm	test
-n13		n21		coor	test
-n22		n23		dn	test
-n31		n32		gtmprx	test
+n11		n12		gtm	test	192.168.123.180	pcmk
+n13		n21		coor	test	192.168.123.181	pcmk
+n22		n23		dn	test	192.168.123.182	repl
+n31		n32		gtmprx	test	192.168.123.183	pcmk
+n33		n41		coor	test	192.168.123.184	pcmk
+n42		n43		coor	test	192.168.123.185	pcmk
 gtm		gtmsby		gtm	sit	
 coor1m		coor1s		coor	sit
 dn1m		dn1s		dn	sit
