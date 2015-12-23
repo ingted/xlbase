@@ -4,7 +4,11 @@ set cluster  [lindex $argv 0]
 
 spawn bash
 exec sleep 2
-send "./mgmt-init-set-xl-config \$cluster\n"
-send "./mgmt-xl-setup-all $cluster\n"
-send "exit\n"
+expect {
+	"" {
+		send "./mgmt-init-set-xl-config \$cluster\n"
+		send "./mgmt-xl-setup-all $cluster\n"
+		send "exit\n"
+	}
+}
 expect eof
