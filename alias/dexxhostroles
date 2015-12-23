@@ -8,6 +8,10 @@ n22 		1 dn		d m test
 n23 		1 dn		d s test
 n31 		1 gtmprx	x m test
 n32 		1 gtmprx	x s test
+n33 		2 coor		c m test
+n41 		2 coor		c s test
+n42 		3 coor		c m test
+n43 		3 coor		c s test
 xlgtm		0 gtm		g m alpha
 xlgtmsby	0 gtmsby	g s alpha
 xlcd1		1 coor		c m alpha
