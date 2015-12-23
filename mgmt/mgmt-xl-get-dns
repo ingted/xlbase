@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$1
+fi
+
+
+
+hostfile=$(which dexxhosts)
+
+awk "(\$3 == \"i\") && (\$6 == \"$cluster\") {print \$1\",\"\$2}" "$hostfile"
