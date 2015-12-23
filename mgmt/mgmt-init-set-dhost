@@ -54,7 +54,7 @@ for host in $dhosts; do
 		#echo "=>\$(which dexxhosts)"
 		#echo "=>\$PATH"
 		cd mgmt
-		expect set.expect
+		./set.expect $cluster
 		#./mgmt-init-set-xl-config $cluster
 		#./mgmt-xl-setup-all $cluster
 EOF
