@@ -12,7 +12,26 @@
 192.168.123.98   n41 		c h2 /docker_volume/n41		test 
 192.168.123.99   n42 		c h2 /docker_volume/n42		test 
 192.168.123.117  n43 		c h1 /docker_volume/n43		test 
-192.30.252.130 	 github.com	i -  -				test
+
+140.117.11.7 	 ftp.nsysu.edu.tw		i - -		test
+91.189.95.83 	 ppa.launchpad.net		i - -		test
+140.113.168.126  ubuntu.cs.nctu.edu.tw		i - -		test
+91.189.91.15 	 security.ubuntu.com		i - -		test
+103.245.222.68 	 apt.dockerproject.org		i - -		test
+91.189.88.149 	 archive.ubuntu.com		i - -		test
+211.73.64.9   	 free.nchc.org.tw		i - -		test
+43.249.73.223 	 pypi.python.org		i - -		test
+103.245.222.133  raw.githubusercontent.com	i - -		test
+45.58.41.142 	 postgis.net			i - -		test
+140.211.15.132 	 download.osgeo.org		i - -		test
+192.30.252.144 	 codeload.github.com		i - -		test
+91.189.89.49 	 keyserver.ubuntu.com		i - -		test
+18.9.60.141 	 pgp.mit.edu			i - -		test
+54.230.213.123 	 download.mono-project.com	i - -		test
+192.30.252.130 	 github.com			i - -		test
+
+
+
 10.128.112.37    xlgtm 		p -  -				alpha
 10.128.112.38    xlgtmsby 	p -  -				alpha
 10.128.112.39    xlcd1 		p -  -				alpha
@@ -56,3 +75,6 @@
 10.128.112.91	 coor2		c xl95gtmsby 	/docker_volume/95coor2		test3
 10.128.112.92	 dn2		c xl95gtmsby 	/docker_volume/95dn2 		test3
 192.30.252.130 	 github.com	i -  		-				test3
+
+
+
