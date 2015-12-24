@@ -62,7 +62,7 @@ for host in $dhosts; do
 		#./mgmt-init-set-xl-config $cluster
 		#./mgmt-xl-setup-all $cluster
 EOF
-) & 
+)  
 
 done
 
