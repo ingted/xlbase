@@ -3,6 +3,7 @@
 
 spawn bash
 exec sleep 2
+set timeout 15000
 expect {
 	"" {
 		send "source alias/util-disable-status 0 0 0; ./make.sh; exit\n"
