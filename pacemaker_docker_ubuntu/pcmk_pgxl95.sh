@@ -65,6 +65,7 @@ make_image()
         echo "  git remote add -f origin https://github.com/ingted/xlbase.git; \\" 	>> Dockerfile
         echo "  git config core.sparseCheckout true; \\"				>> Dockerfile
         echo "  echo \"cluster/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
+        echo "  echo \"monqodb/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
 	echo "  git checkout --track -b backToOrigin origin/backToOrigin"		>> Dockerfile
         #echo "  git pull origin backToOrigin"						>> Dockerfile
 

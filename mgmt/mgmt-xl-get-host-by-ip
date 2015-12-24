@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+
+hosts=$(which dexxhosts)
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+if [ "$1" != "--all" ] && [ "$1" == "-a" ]; then
+	awk "(\$6 == \"$cluster\") {print \$2}" $hosts
+else
+	awk "(\$6 == \"$cluster\") && (\$1 == \"$1\") {print \$2}" $hosts	
+
+fi

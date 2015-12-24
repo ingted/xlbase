@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo if gpu now?
+read ifgpu
+
+if [ "$ifgpu" == "1" ] || [ "$ifgpu" == "y" ] || [ "$ifgpu" == "yes" ]; then
+	gpu "installation commit"
+fi
+
+if [ "$1" == "" ]; then
+        rootpath="/root"
+else
+        rootpath=$1
+fi
+
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+if [ "$3" == "" ]; then
+        updonly=0
+else
+        updonly="$3"
+fi
+
+
+
+dhosts=$(./mgmt-xl-get-host-by-role docker $cluster)
+echo "$dhosts"
+for host in $dhosts; do
+	cip=$(./mgmt-xl-get-ip "$host" "$cluster")
+	echo $cip
+	(ssh $cip << EOF
+		#rm ~/.hushlogin
+		mkdir -p "$rootpath"
+		cd "$rootpath"
+		if [ "$updonly" == 0 ]; then
+			rm xlbase -rf
+			GIT_TRACE=1; GIT_CURL_VERBOSE=1
+			git clone --verbose http://github.com/ingted/xlbase.git
+  			cd xlbase
+	  		git checkout --track -b xlbase remotes/origin/backToOrigin
+		else
+			cd xlbase
+			git pull
+		fi
+		source alias/util-disable-status 1 1 1
+		echo "====\$(hostname)====="
+		./make.sh
+		source ~/.bashrc
+		#echo "=>\$(which dexxhosts)"
+		#echo "=>\$PATH"
+		cd mgmt
+		./set.expect $cluster
+		#./mgmt-init-set-xl-config $cluster
+		#./mgmt-xl-setup-all $cluster
+EOF
+) 
+
+done
+
