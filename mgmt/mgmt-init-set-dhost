@@ -47,7 +47,7 @@ for host in $dhosts; do
 			cd xlbase
 			git pull
 		fi
-		source alias/util-disable-status 1 1 1
+		source alias/util-disable-status 0 0 0
 		echo "====\$(hostname)====="
 		./make.sh
 		source ~/.bashrc
@@ -62,7 +62,7 @@ for host in $dhosts; do
 		#./mgmt-init-set-xl-config $cluster
 		#./mgmt-xl-setup-all $cluster
 EOF
-) 
+) & 
 
 done
 
