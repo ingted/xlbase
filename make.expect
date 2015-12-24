@@ -5,9 +5,7 @@ spawn bash
 exec sleep 2
 expect {
 	"" {
-		send "source alias/util-disable-status 0 0 0\n"
-                send "./make.sh\n"
-		send "exit\n"
+		send "source alias/util-disable-status 0 0 0; ./make.sh; exit\n"
 	}
 }
 expect eof

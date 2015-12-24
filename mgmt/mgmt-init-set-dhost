@@ -4,7 +4,9 @@ echo if gpu now?
 read ifgpu
 
 if [ "$ifgpu" == "1" ] || [ "$ifgpu" == "y" ] || [ "$ifgpu" == "yes" ]; then
+	cd ..
 	gpu "installation commit"
+	cd mgmt
 fi
 
 if [ "$1" == "" ]; then
