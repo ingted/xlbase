@@ -77,4 +77,15 @@
 192.30.252.130 	 github.com	i -  		-				test3
 
 
-
+10.128.112.37    xlgtm          h -  	 	-		alpha2
+10.128.112.38    xlgtmsby       h -  	 	-		alpha2
+10.128.112.39    xlcd1          h -  	 	-		alpha2
+10.128.112.40    xlcd2          h -  	 	-		alpha2
+10.128.112.50    xl2gtm 	c xlgtm  	-		alpha2
+10.128.112.51    xl2gtmsby 	c xlgtmsby  	-		alpha2
+10.128.112.52    xl2coor1 	c xlcd1  	-		alpha2
+10.128.112.53    xl2coor2 	c xlcd2		-		alpha2
+10.128.112.96    xl2dn1 	c xlcd1  	-		alpha2
+10.128.112.97    xl2dn2 	c xlcd2		-		alpha2
+10.128.112.98    xl2gtmp1 	c xlcd1  	-		alpha2
+10.128.112.99    xl2gtmp2 	c xlcd2		-		alpha2

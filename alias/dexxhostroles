@@ -57,3 +57,15 @@ gtmprx       	1 gtmprx 	g s test3
 coor2         	2 coor		c m test3
 dn2          	2 dn 		d m test3 
 gtmprx2       	2 gtmprx 	g m test3
+xlgtm         	0 docker        x x alpha2
+xlgtmsby      	0 docker        x x alpha2
+xlcd1		0 docker	x x alpha2
+xlcd2		0 docker	x x alpha2
+xl2gtm		0 gtm		g m alpha2
+xl2gtmsby	0 gtmsby	g s alpha2
+xl2coor1	1 coor		c m alpha2
+xl2coor2	2 coor		c m alpha2
+xl2gtmp1	1 gtm		g m alpha2
+xl2gtmp2	2 gtm		g m alpha2
+xl2dn1		1 dn		d m alpha2
+xl2dn2		2 dn		d m alpha2
