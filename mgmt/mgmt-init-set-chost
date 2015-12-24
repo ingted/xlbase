@@ -1,0 +1,102 @@
+#!/bin/bash
+
+echo if gpu now?
+read ifgpu
+
+if [ "$ifgpu" == "1" ] || [ "$ifgpu" == "y" ] || [ "$ifgpu" == "yes" ]; then
+	cd ..
+	gpu "installation commit"
+	cd mgmt
+fi
+
+if [ "$1" == "" ]; then
+        rootpath="/root"
+else
+        rootpath=$1
+fi
+
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+if [ "$3" == "" ]; then
+        updonly=0
+else
+        updonly="$3"
+fi
+
+
+if [ "$4" == "" ]; then
+        ifmake=0
+else
+        ifmake="$4"
+fi
+
+
+chosts=$(./mgmt-xl-get-base $cluster 3 c)
+echo "$chosts"
+for host in $chosts; do
+	cip=$(./mgmt-xl-get-ip "$host" "$cluster")
+	echo $cip
+	(ssh $cip << EOF
+                touch ~/.hushlogin
+                expp=$(which expect)
+                if [ "$expp" == "" ]; then
+                        apt-get -y install expect
+                fi
+
+                IFPS1=$(grep ps1ed ~/.bashrc)
+                if [ "$IFPS1" == "" ]; then
+                        echo 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ "' >> ~/.bashrc
+                        echo "#ps1ed" >> ~/.bashrc
+
+                fi
+                sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
+                sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
+                echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+                echo "nameserver 168.95.1.1" >> /etc/resolv.conf
+                ssh-keygen -R $host
+                ssh-keyscan -H $host >> ~/.ssh/known_hosts
+
+
+
+
+		#rm ~/.hushlogin
+		mkdir -p "$rootpath"
+		cd "$rootpath"
+		if [ "$updonly" == 0 ]; then
+			rm xlbase -rf
+			GIT_TRACE=1; GIT_CURL_VERBOSE=1
+			git clone --verbose http://github.com/ingted/xlbase.git
+  			cd xlbase
+	  		git checkout --track -b xlbase remotes/origin/backToOrigin
+		else
+			cd xlbase
+			git pull
+		fi
+		source alias/util-disable-status 1 1 1
+		echo "====\$(hostname)====="
+		./make.sh
+		source ~/.bashrc
+		#echo "=>\$(which dexxhosts)"
+		#echo "=>\$PATH"
+
+		eexp=$(which expect)
+		if [ "$eexp" == "" ]; then
+			apt-get -y install expect
+		fi
+		if [ "$ifmake" != "0" ]; then
+			./make.expect
+		fi
+		cd mgmt
+		./set.expect $cluster
+		#./mgmt-init-set-xl-config $cluster
+		#./mgmt-xl-setup-all $cluster
+EOF
+) &
+
+done
+

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [ "$2" == "" ]; then
+if [ "$1" == "" ]; then
         cluster=test
 else
         cluster=$1
 fi
 
+./mgmt-xl-get-base "$cluster" 3 i
 
+#hostfile=$(which dexxhosts)
 
-hostfile=$(which dexxhosts)
-
-awk "(\$3 == \"i\") && (\$6 == \"$cluster\") {print \$1\",\"\$2}" "$hostfile"
+#awk "(\$3 == \"i\") && (\$6 == \"$cluster\") {print \$1\",\"\$2}" "$hostfile"

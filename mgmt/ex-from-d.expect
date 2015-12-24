@@ -1,0 +1,34 @@
+#!/usr/bin/expect -f
+
+set dh  	[lindex $argv 0]
+set cmd		[lindex $argv 1]
+set timeout  	[lindex $argv 2]
+set usero  	[lindex $argv 3]
+
+set user "$usero@"
+
+if [ string match $usero "" ] {
+	set user ""
+}
+
+if { $timeout < 0 } {
+        set timeout 360
+}
+
+
+set timeout $timeout 
+spawn ssh $user$dh 
+exec sleep 2
+expect {
+	{[$#] $} {
+		send "$cmd\n"
+		send " echo eofxlbase\n"
+	}
+} 
+
+expect {
+	"eofxlbase" { 
+		send "exit\n"
+	}
+}
+

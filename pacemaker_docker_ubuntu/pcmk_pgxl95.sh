@@ -66,6 +66,8 @@ make_image()
         echo "  git config core.sparseCheckout true; \\"				>> Dockerfile
         echo "  echo \"cluster/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
         echo "  echo \"monqodb/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
+        echo "  echo \"mgmt/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
+        echo "  echo \"alias/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
 	echo "  git checkout --track -b backToOrigin origin/backToOrigin"		>> Dockerfile
         #echo "  git pull origin backToOrigin"						>> Dockerfile
 

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+        cluster=test
+else
+        cluster="$1"
+fi
+
+
+
+
+
+
+
+hosts=$(./mgmt-xl-get-base $cluster 3 c "\$2\",\"\$4")
+echo "$hosts"
+for h in $hosts; do
+	hh=(${h//,/ })
+	dh=${hh[1]}
+	ch=${hh[0]}
+	
+	#expect -c "set timeout 1000; spawn ssh $dh; expect {[\$#] \$}; send \"don2 $ch; echo eofxlbase\\\n\"; expect {eofxlbase}"
+	expect -c "set timeout 1000; spawn ssh $dh; expect {[\$#] \$}; send \"don2 $ch\\n\"; expect {[\$#]}; send \"echo eofxlbase\\n\"; expect {eofxlbase}"
+
+done
+
