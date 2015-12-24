@@ -4,4 +4,4 @@ if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_
 if [ ! -e /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
 
 echo ${@:2}
-docker build ${@:2} -t $1 .
+/usr/bin/docker build ${@:2} -t $1 .
