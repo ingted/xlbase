@@ -54,6 +54,10 @@ for host in $dhosts; do
 		#echo "=>\$(which dexxhosts)"
 		#echo "=>\$PATH"
 		cd mgmt
+		eexp=$(which expect)
+		if [ "$eexp" == "" ]; then
+			apt-get -y install expect
+		fi
 		./set.expect $cluster
 		#./mgmt-init-set-xl-config $cluster
 		#./mgmt-xl-setup-all $cluster
