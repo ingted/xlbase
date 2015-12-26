@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./mgmt-init-set-xl-config test
+
+expect -dc 'spawn ./login.sh; expect {{name:}{ send "test\n" }}'

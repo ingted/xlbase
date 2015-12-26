@@ -73,6 +73,7 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
   	git config core.sparseCheckout true; \
   	echo "mgmt/*" >> .git/info/sparse-checkout; \
   	echo "alias/*" >> .git/info/sparse-checkout; \
+  	echo "monqo/*" >> .git/info/sparse-checkout; \
   	echo "UTILVER" >> .git/info/sparse-checkout; \
 	git checkout --track -b backToOrigin origin/backToOrigin; \
         #cp /addfiles/pash /usr/sbin; \
@@ -96,6 +97,9 @@ RUN cp /addfiles/dbus*  /usr/bin/; \
         echo "\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ " > /etc/container_environment/PS1; \
 	echo "export HOME=/root/" >> /root/.bashrc; \
 	cat /addfiles/bashrc_4_ps1 >> /root/.bashrc
+
+RUN apt-get -y purge openssh-server; \
+	apt-get -y install openssh-server
 
 
 #ENTRYPOINT ["/bin/bash"]
