@@ -41,6 +41,12 @@ echo "$chosts"
 for host in $chosts; do
 	cip=$(./mgmt-xl-get-ip "$host" "$cluster")
 	echo $cip
+	for h4c in $chosts; do
+        	h4cip=$(./mgmt-xl-get-ip "$h4c" "$cluster")
+
+
+
+
 	(ssh $cip << EOF
                 touch ~/.hushlogin
                 expp=$(which expect)

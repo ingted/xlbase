@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+        cluster=test
+else
+        cluster="$1"
+fi
+
+if [ "$2" == "" ]; then
+	col=3
+else
+	col="$2"
+fi
+
+
+if [ "$3" == "" ]; then
+	colval=i
+else
+	colval="$3"
+fi
+
+if [ "$4" == "" ]; then
+        val="\$1\",\"\$2"
+else
+        val="$4"
+fi
+
+
+
+
+hostfile=$(which dexxhosts)
+
+awk "(\$$col != \"$colval\") && (\$6 == \"$cluster\") {print $val}" "$hostfile"

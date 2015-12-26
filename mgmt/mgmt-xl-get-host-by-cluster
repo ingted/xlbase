@@ -1,10 +1,10 @@
 #!/bin/bash
 
-
 if [ "$1" == "" ]; then
         cluster=test
 else
-        cluster=$1
+        cluster="$1"
 fi
 
-./mgmt-xl-get-host-by-role --all $cluster 
+
+./mgmt-xl-get-base-not $cluster 3 i
