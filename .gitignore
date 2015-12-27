@@ -5,3 +5,4 @@ mgmt/alpha
 mgmt/test
 mgmt/sit
 mgmt/test3
+*.swp

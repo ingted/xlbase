@@ -89,3 +89,36 @@
 10.128.112.97    xl2dn2 	c xlcd2		-		alpha2
 10.128.112.98    xl2gtmp1 	c xlcd1  	-		alpha2
 10.128.112.99    xl2gtmp2 	c xlcd2		-		alpha2
+
+
+192.168.123.131  apd  		h -  -				test2
+192.168.123.122  apc  		h -  -				test2
+192.168.123.119  an11 		c apd /docker_volume/an11	test2
+192.168.123.134  an12 		c apd /docker_volume/an12	test2 
+192.168.123.129  an13 		c apd /docker_volume/an13	test2 
+192.168.123.128  an21 		c apd /docker_volume/an21	test2 
+192.168.123.130  an22 		c apd /docker_volume/an22	test2 
+192.168.123.132  an23 		c apd /docker_volume/an23	test2 
+192.168.123.133  an31 		c apd /docker_volume/an31	test2 
+192.168.123.125  an32 		c apc /docker_volume/an32	test2 
+192.168.123.105  an33 		c apc /docker_volume/an33	test2 
+192.168.123.121  an41 		c apc /docker_volume/an41	test2 
+192.168.123.124  an42 		c apc /docker_volume/an42	test2 
+192.168.123.127  an43 		c apc /docker_volume/an43	test2 
+
+140.117.11.7 	 ftp.nsysu.edu.tw		i - -		test2
+91.189.95.83 	 ppa.launchpad.net		i - -		test2
+140.113.168.126  ubuntu.cs.nctu.edu.tw		i - -		test2
+91.189.91.15 	 security.ubuntu.com		i - -		test2
+103.245.222.68 	 apt.dockerproject.org		i - -		test2
+91.189.88.149 	 archive.ubuntu.com		i - -		test2
+211.73.64.9   	 free.nchc.org.tw		i - -		test2
+43.249.73.223 	 pypi.python.org		i - -		test2
+103.245.222.133  raw.githubusercontent.com	i - -		test2
+45.58.41.142 	 postgis.net			i - -		test2
+140.211.15.132 	 download.osgeo.org		i - -		test2
+192.30.252.144 	 codeload.github.com		i - -		test2
+91.189.89.49 	 keyserver.ubuntu.com		i - -		test2
+18.9.60.141 	 pgp.mit.edu			i - -		test2
+54.230.213.123 	 download.mono-project.com	i - -		test2
+192.30.252.130 	 github.com			i - -		test2

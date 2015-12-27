@@ -4,10 +4,10 @@ coor	#	1	test
 dn	#	1	test
 gtmprx	#	1	test
 gtm	#	1	test2
-gtmsby	#	1	testt
-coor	#	2	testt
-dn	#	1	testt
-gtmprx	#	1	testt
+gtmsby	#	1	test2
+coor	#	2	test2
+dn	#	1	test2
+gtmprx	#	1	test2
 gtm	#	1	sit	
 gtmsby	#	0	sit	
 coor	#	2	sit	
@@ -18,3 +18,8 @@ gtmsby	#	0	test3
 coor	#	2	test3	
 dn	#	2	test3	
 gtmprx	#	2	test3	
+gtm	#	1	test2
+gtmsby	#	1	test2
+coor	#	2	test2
+dn	#	2	test2
+gtmprx	#	2	test2

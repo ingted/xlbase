@@ -16,5 +16,7 @@ RUN bash /addfiles/packages_pcmk/do.sh; \
   git config core.sparseCheckout true; \
   echo "cluster/*" >> .git/info/sparse-checkout; \
   echo "monqodb/*" >> .git/info/sparse-checkout; \
+  echo "mgmt/*" >> .git/info/sparse-checkout; \
+  echo "alias/*" >> .git/info/sparse-checkout; \
   git checkout --track -b backToOrigin origin/backToOrigin
 ADD ./pcsd /root/pcsds

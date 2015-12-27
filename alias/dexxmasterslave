@@ -11,3 +11,9 @@ gtmprx1m	gtmprx2s	gtmprx	sit
 coor2m		coor2s		coor	sit
 dn2m		dn2s		dn	sit
 gtmprx2m	gtmprx2s	gtmprx	sit
+n11		n12		gtm	test	192.168.123.190	repl
+n13		n21		coor	test	192.168.123.191	repl
+n22		n23		dn	test	192.168.123.192	repl
+n31		n32		gtmprx	test	192.168.123.193	repl
+n33		n41		coor	test	192.168.123.194	repl
+n42		n43		coor	test	192.168.123.195	repl
