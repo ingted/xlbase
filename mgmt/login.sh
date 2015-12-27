@@ -19,7 +19,7 @@ if [ "$password" == "" ]; then
         password="/'],lp123"
 fi
 
-echo -e "\npreparing login..."
+echo -e "\npreparing login...$cluster"
 
 expp=$(which expect)
 if [ "$expp" == "" ]; then

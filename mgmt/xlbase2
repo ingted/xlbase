@@ -1,5 +1,10 @@
 #!/bin/bash
 
+expp=$(which expect)
+if [ "$expp" == "" ]; then
+        apt-get -y install expect
+fi
+
 cd ..
 
 source alias/util-disable-status 1 1 1
