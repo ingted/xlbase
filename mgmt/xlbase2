@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ..
 
 source alias/util-disable-status 1 1 1
 ./make.sh
