@@ -208,4 +208,4 @@ done
 
 
 
-echo eofloginsh
+echo eofcloginsh
