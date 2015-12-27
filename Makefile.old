@@ -7,7 +7,7 @@ all: base pace uti1
 base:
 	@echo -e ">>> base <<<"
 	@./bashrc
-	@exped=$$(grep "#exped" ~/.bashrc); if [ "$$exped" == "" ] || [ ! -e ./exped ]; then sed -i -e "/#exped/d"  ~/.bashrc; echo "export PATH=$$(pwd)/alias:\$$PATH #exped" >> ~/.bashrc; fi
+	@exped=$$(grep "#exped" ~/.bashrc); if [ "$$exped" == "" ] || [ ! -e ./exped ]; then echo "export PATH=$$(pwd)/alias:\$$PATH" >> ~/.bashrc; echo "#exped" >> ~/.bashrc;  fi
 	@touch exped
 	@echo -e "\t@ $$(pwd)"
 	@$(MAKE) -C dockerfiles 
