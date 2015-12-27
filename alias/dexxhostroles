@@ -60,15 +60,15 @@ xl2dn2		2 dn		d m alpha2
 
 apc  		0 docker	x x test2
 apd 		0 docker	x x test2
-n11 		0 gtm		g m test2
-n12 		0 gtmsby	g s test2
-n13 		1 coor		c m test2
-n21 		1 coor 		c s test2
-n22 		1 dn		d m test2
-n23 		1 dn		d s test2
-n31 		1 gtmprx	x m test2
-n32 		1 gtmprx	x s test2
-n33 		2 coor		c m test2
-n41 		2 coor		c s test2
-n42 		3 coor		c m test2
-n43 		3 coor		c s test2
+an11 		0 gtm		g m test2
+an12 		0 gtmsby	g s test2
+an13 		1 coor		c m test2
+an21 		1 coor 		c s test2
+an22 		1 dn		d m test2
+an23 		1 dn		d s test2
+an31 		1 gtmprx	x m test2
+an32 		1 gtmprx	x s test2
+an33 		2 coor		c m test2
+an41 		2 coor		c s test2
+an42 		3 coor		c m test2
+an43 		3 coor		c s test2
