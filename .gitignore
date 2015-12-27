@@ -3,6 +3,7 @@ pacemaker_docker_ubuntu/Dockerfile
 pacemaker_docker_ubuntu/*.tar
 mgmt/alpha
 mgmt/test
+mgmt/test2
 mgmt/sit
 mgmt/test3
 *.swp
