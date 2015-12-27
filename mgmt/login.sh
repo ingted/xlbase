@@ -41,9 +41,11 @@ for host in $hosts; do
 		echo "processing... $cip: $host"
    	     	echo 1=========================================
 	#fi   	
-	     	ssh-keygen -R $cip 
+	     	ssh-keygen -R $cip
+	     	ssh-keygen -R $host
    	     	echo 2=========================================
    	     	ssh-keyscan -H $cip >> ~/.ssh/known_hosts
+   	     	ssh-keyscan -H $host >> ~/.ssh/known_hosts
    	     	echo 3=========================================
    	     	./login.expect $cip $password > /dev/null
    	     	echo 4=========================================
