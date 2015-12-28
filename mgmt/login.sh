@@ -23,7 +23,7 @@ echo -e "\npreparing login...$cluster"
 
 expp=$(which expect)
 if [ "$expp" == "" ]; then
-	apt-get -y install expect
+	apt-get -y --force-yes install expect
 fi
 
 hosts=$(./mgmt-xl-get-host-by-role docker $cluster);
@@ -53,7 +53,7 @@ for host in $hosts; do
      		touch ~/.hushlogin
      		expp=$(which expect)
      		if [ "$expp" == "" ]; then
-     		        apt-get -y install expect
+     		        apt-get -y  --force-yes  install expect
      		fi
 
      		IFPS1=$(grep ps1ed ~/.bashrc)
