@@ -38,43 +38,47 @@ for host in $hosts; do
 	echo ./mgmt-xl-get-ip $host $cluster
 	cip=$(./mgmt-xl-get-ip $host $cluster)
 	#if [ "$cip" != "" ]; then
-		echo "processing... $cip: $host"
-   	     	echo 1=========================================
+	echo "processing... $cip: $host"
+   	echo 1=========================================
 	#fi   	
-	     	ssh-keygen -R $cip
-	     	ssh-keygen -R $host
-   	     	echo 2=========================================
-   	     	ssh-keyscan -H $cip >> ~/.ssh/known_hosts
-   	     	ssh-keyscan -H $host >> ~/.ssh/known_hosts
-   	     	echo 3=========================================
-   	     	./login.expect $cip $password > /dev/null
-   	     	echo 4=========================================
-   	     	ssh $cip << 'EOF'
-   	     		touch ~/.hushlogin
-   	     		expp=$(which expect)
-   	     		if [ "$expp" == "" ]; then
-   	     		        apt-get -y install expect
-   	     		fi
+     	ssh-keygen -R $cip
+     	ssh-keygen -R $host
+     	echo 2=========================================
+     	ssh-keyscan -H $cip >> ~/.ssh/known_hosts
+     	ssh-keyscan -H $host >> ~/.ssh/known_hosts
+     	echo 3=========================================
+     	./login.expect $cip $password > /dev/null
+     	echo 4=========================================
+     	ssh $cip << 'EOF'
+     		touch ~/.hushlogin
+     		expp=$(which expect)
+     		if [ "$expp" == "" ]; then
+     		        apt-get -y install expect
+     		fi
 
-   	     		IFPS1=$(grep ps1ed ~/.bashrc)
-   	     		if [ "$IFPS1" == "" ]; then 
-   				echo 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ "' >> ~/.bashrc
-	     			echo "#ps1ed" >> ~/.bashrc
+     		IFPS1=$(grep ps1ed ~/.bashrc)
+     		if [ "$IFPS1" == "" ]; then 
+			echo 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ "' >> ~/.bashrc
+     			echo "#ps1ed" >> ~/.bashrc
 
-   	     		fi
-   	     		sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
-   	     		sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
-   	     		echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-   	     		echo "nameserver 168.95.1.1" >> /etc/resolv.conf
+     		fi
+     		sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
+     		sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
+     		echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+     		echo "nameserver 168.95.1.1" >> /etc/resolv.conf
 EOF
 	
-   	     	ssh $cip << EOF
-			ssh-keygen -R "$host"
-			ssh-keyscan -H "$host" >> ~/.ssh/known_hosts
+	for dhost in $hosts; do
+        	dhip=$(./mgmt-xl-get-ip $host $cluster)
+		ssh $cip << EOF
+			ssh-keygen -R "$dhost"
+			ssh-keygen -R "$dhip"
+			ssh-keyscan -H "$dhost" >> ~/.ssh/known_hosts
+			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
    	     		bash -c 'echo "$host" > /etc/hostname'
 	   	     	hostnamectl set-hostname "$host"
 EOF
-	
+	done
 		for ah in $allhosts; do
 			ahip=$(./mgmt-xl-get-ip $ah $cluster)
 			ahip_r=${ahip//./\\\.}
