@@ -7,7 +7,7 @@ set sleepo [lindex $argv 2]
 set sleep "$sleepo"
 
 if [ string match $sleepo "" ] {
-        set sleep 10
+        set sleep 2
 }
 
 

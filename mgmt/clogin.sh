@@ -39,7 +39,7 @@ for dhost in $dhosts; do
 		echo 1=========================================
 		ssh $dhost "ssh-keygen -R $chost; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keygen -R $cnm; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
 		echo 2=========================================
-		sleep=10
+		sleep=2
 		VAR=$(ssh $dhost << EOF
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
@@ -78,7 +78,7 @@ for ch in $chosts; do
                 echo 1=========================================
                 ssh $chost "ssh-keygen -R $hhost; ssh-keyscan -H $hhost >> ~/.ssh/known_hosts; ssh-keygen -R $hhnm; ssh-keyscan -H $hhnm >> ~/.ssh/known_hosts"
                 echo 2=========================================
-                sleep=10
+                sleep=2
                 VAR=$(ssh $chost << EOF
 			expp=\$(which expect)
 			if [ "\$expp" == "" ]; then
