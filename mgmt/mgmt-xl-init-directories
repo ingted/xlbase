@@ -34,7 +34,7 @@ fi
 
 hostsitem=$(./mgmt-xl-get-host-by-cluster $cluster)
 #echo "$hostsitem"
-dirdata=$(for hii in $hostsitem; do hhii=(${hii//,/ }); ./mgmt-xl-get-confname ${hhii[1]} $pgver $cluster|awk 'NR>2 {print $1}'; done)
+dirdata=$(for hii in $hostsitem; do hhii=(${hii//,/ }); ./mgmt-xl-get-confname ${hhii[1]} $pgver $cluster|awk 'NR>2 {print $1}'|sort|uniq; done)
 
 #echo "$dirdata"
 

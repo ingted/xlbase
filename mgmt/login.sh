@@ -79,40 +79,40 @@ EOF
 	   	     	hostnamectl set-hostname "$host"
 EOF
 	done
-		for ah in $allhosts; do
-			ahip=$(./mgmt-xl-get-ip $ah $cluster)
-			ahip_r=${ahip//./\\\.}
+	for ah in $allhosts; do
+		ahip=$(./mgmt-xl-get-ip $ah $cluster)
+		ahip_r=${ahip//./\\\.}
 
-			ssh $cip << EOF
-				cp /etc/hosts /etc/hosts.tmp
-				sed -i "/$ahip_r/d" /etc/hosts.tmp
-				echo "$ahip $ah" >> /etc/hosts.tmp
-				cp /etc/hosts.tmp /etc/hosts -f
-				#ssh-keygen -R $ah
-				#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
-				#ssh-keygen -R $ahip
-				#ssh-keyscan -H $ahip >> ~/.ssh/known_hosts
-EOF
-
-		done
-
-		for ad in $dnss; do
-			ad_r=${ad//,/ }
-			ad_ipo=($ad_r)
-			ad_ip=${ad_ipo[0]}
-			echo =======================================================
-			echo $ad_r $ad_ipo $ad_ipi
-			echo =======================================================
-			ssh $cip << EOF
-				cp /etc/hosts /etc/hosts.tmp
-				sed -i "/$ad_ip/d" /etc/hosts.tmp
-				echo "$ad_r" >> /etc/hosts.tmp
-				cp /etc/hosts.tmp /etc/hosts -f
-EOF
-
-		done
 		ssh $cip << EOF
-			if [ -e ~/.hushlogin ]; then rm ~/.hushlogin; fi
+			cp /etc/hosts /etc/hosts.tmp
+			sed -i "/$ahip_r/d" /etc/hosts.tmp
+			echo "$ahip $ah" >> /etc/hosts.tmp
+			cp /etc/hosts.tmp /etc/hosts -f
+			#ssh-keygen -R $ah
+			#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
+			#ssh-keygen -R $ahip
+			#ssh-keyscan -H $ahip >> ~/.ssh/known_hosts
+EOF
+
+	done
+
+	for ad in $dnss; do
+		ad_r=${ad//,/ }
+		ad_ipo=($ad_r)
+		ad_ip=${ad_ipo[0]}
+		echo =======================================================
+		echo $ad_r $ad_ipo $ad_ipi
+		echo =======================================================
+		ssh $cip << EOF
+			cp /etc/hosts /etc/hosts.tmp
+			sed -i "/$ad_ip/d" /etc/hosts.tmp
+			echo "$ad_r" >> /etc/hosts.tmp
+			cp /etc/hosts.tmp /etc/hosts -f
+EOF
+
+	done
+	ssh $cip << EOF
+		if [ -e ~/.hushlogin ]; then rm ~/.hushlogin; fi
 EOF
 
 done
