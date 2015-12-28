@@ -17,3 +17,12 @@ an22		an23		dn	test2	192.168.123.192	repl
 an31		an32		gtmprx	test2	192.168.123.193	repl
 an33		an41		coor	test2	192.168.123.194	repl
 an42		an43		coor	test2	192.168.123.195	repl
+
+
+coor1m		coor1s		coor	alpha2	coor1v		repl
+coor2m		coor2s		coor	alpha2	coor2v		repl
+dn1m		dn1s		dn	alpha2	dn1v		repl
+dn2m		dn2s		dn	alpha2	dn2v		repl
+gtmprx1m	gtmprx1s	gtmprx	alpha2	gtmprx1v	repl
+gtmprx2m	gtmprx2s	gtmprx	alpha2	gtmprx2v	repl
+

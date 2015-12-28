@@ -66,18 +66,24 @@
 192.30.252.130 	 github.com	i -  		-				test3
 
 
-10.128.112.37    xlgtm          h -  	 	-		alpha2
-10.128.112.38    xlgtmsby       h -  	 	-		alpha2
-10.128.112.39    xlcd1          h -  	 	-		alpha2
-10.128.112.40    xlcd2          h -  	 	-		alpha2
-10.128.112.50    xl2gtm 	c xlgtm  	-		alpha2
-10.128.112.51    xl2gtmsby 	c xlgtmsby  	-		alpha2
-10.128.112.52    xl2coor1 	c xlcd1  	-		alpha2
-10.128.112.53    xl2coor2 	c xlcd2		-		alpha2
-10.128.112.96    xl2dn1 	c xlcd1  	-		alpha2
-10.128.112.97    xl2dn2 	c xlcd2		-		alpha2
-10.128.112.98    xl2gtmp1 	c xlcd1  	-		alpha2
-10.128.112.99    xl2gtmp2 	c xlcd2		-		alpha2
+10.128.112.34    xlcd1          h -  	 	-			alpha2
+10.128.112.35    xlcd2	        h -  	 	-			alpha2
+10.128.112.37	 coor1s		c xlcd1		/docker_volume/c1s 	alpha2
+10.128.112.38	 coor2s		c xlcd2		/docker_volume/c2s 	alpha2
+10.128.112.39	 coor1m		c xlcd1		/docker_volume/c1m 	alpha2
+10.128.112.40	 coor2m		c xlcd2		/docker_volume/c2m 	alpha2
+10.128.112.58    xlgtm_mgmt     h -  	 	-			alpha2
+10.128.112.59    xlgtmsby_mgmt  h -  	 	-			alpha2
+10.128.112.69    xlgtm     	h -  	 	-			alpha2
+10.128.112.70    xlgtmsby  	h -  	 	-			alpha2
+10.128.112.49    dn1s 		c xlcd1  	/docker_volume/d1s	alpha2
+10.128.112.50    dn2s 		c xlcd2  	/docker_volume/d1s	alpha2
+10.128.112.51    dn1m 		c xlcd1  	/docker_volume/d2m	alpha2
+10.128.112.52    dn2m 		c xlcd2  	/docker_volume/d2m	alpha2
+10.128.112.65    gtmprx1s 	c xlcd1  	/docker_volume/g1s	alpha2
+10.128.112.66    gtmprx2s 	c xlcd2		/docker_volume/g2s	alpha2
+10.128.112.67    gtmprx1m 	c xlcd1  	/docker_volume/g1m	alpha2
+10.128.112.68    gtmprx2m 	c xlcd2		/docker_volume/g2m	alpha2
 
 
 192.168.123.131  apd  		h -  -				test2
