@@ -9,4 +9,6 @@ if [ "$1" == "" ]; then
 else
 	git commit --no-edit --message="$1"
 fi
+
+#expect -c "set timeout 360; spawn git push; expect {The upstream branch of your current branch does not match.*} 
 git push

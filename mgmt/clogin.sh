@@ -30,44 +30,41 @@ dnss=$(./mgmt-xl-get-dns $cluster)
 allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
 
 
-#for dhost in $dhosts; do
-#	for ch in $chosts; do
-#		chh=(${ch//,/ })
-#		chost=${chh[0]}
-#		cnm=${chh[1]}
-#		echo "processing... $chost of $dhost"
-#		echo 1=========================================
-#		ssh $dhost "ssh-keygen -R $chost"
-#		ssh $dhost "ssh-keyscan -H $chost >> ~/.ssh/known_hosts"
-#		ssh $dhost "ssh-keygen -R $cnm"
-#		ssh $dhost "ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
-#		echo 2=========================================
-#		sleep=10
-#		VAR=$(ssh $dhost << EOF
-#	        	expect -c "
-#	        	        spawn ssh-copy-id $chost
-#	        	        exec sleep $sleep
-#	        	        expect {
-#	        	                \"password:\" {
-#	        	                        send \"$password\\n\"
-#	        	                }
-#	        	                \"(yes/no)?\" {
-#	        	                        send \"yes\\n\"
-#	        	                }
-#	        	                \"already exist\" {
-#	        	                }
-#	        	        }
-#	        	        expect {
-#	        	                *{}
-#	        	        }
-#	        	        exit
-#	        	"
-#EOF
-#)
-#
-#		echo 3=========================================
-#	done
-#done
+for dhost in $dhosts; do
+	for ch in $chosts; do
+		chh=(${ch//,/ })
+		chost=${chh[0]}
+		cnm=${chh[1]}
+		echo "processing... $chost of $dhost"
+		echo 1=========================================
+		ssh $dhost "ssh-keygen -R $chost; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keygen -R $cnm; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
+		echo 2=========================================
+		sleep=10
+		VAR=$(ssh $dhost << EOF
+	        	expect -c "
+	        	        spawn ssh-copy-id $chost
+	        	        exec sleep $sleep
+	        	        expect {
+	        	                \"password:\" {
+	        	                        send \"$password\\n\"
+	        	                }
+	        	                \"(yes/no)?\" {
+	        	                        send \"yes\\n\"
+	        	                }
+	        	                \"already exist\" {
+	        	                }
+	        	        }
+	        	        expect {
+	        	                *{}
+	        	        }
+	        	        exit
+	        	"
+EOF
+)
+
+		echo 3=========================================
+	done
+done
 
 
 for ch in $chosts; do
@@ -79,10 +76,7 @@ for ch in $chosts; do
                 hhnm=${hhh[1]}
                 echo "processing... $hhost of $chost"
                 echo 1=========================================
-                ssh $chost "ssh-keygen -R $hhost"
-                ssh $chost "ssh-keyscan -H $hhost >> ~/.ssh/known_hosts"
-                ssh $chost "ssh-keygen -R $hhnm"
-                ssh $chost "ssh-keyscan -H $hhnm >> ~/.ssh/known_hosts"
+                ssh $chost "ssh-keygen -R $hhost; ssh-keyscan -H $hhost >> ~/.ssh/known_hosts; ssh-keygen -R $hhnm; ssh-keyscan -H $hhnm >> ~/.ssh/known_hosts"
                 echo 2=========================================
                 sleep=10
                 VAR=$(ssh $chost << EOF
@@ -105,10 +99,34 @@ for ch in $chosts; do
                                         }
                                 }
                                 expect {
+					\"password:\" {
+                                                send \"$password\\n\"
+                                        }
                                         *{}
                                 }
                                 exit
                         "
+                        expect -c "
+                                spawn ssh-copy-id $hhnm
+                                exec sleep $sleep
+                                expect {
+                                        \"password:\" {
+                                                send \"$password\\n\"
+                                        }
+                                        \"(yes/no)?\" {
+                                                send \"yes\\n\"
+                                        }
+                                        \"already exist\" {
+                                        }
+                                }
+                                expect {
+                                        \"password:\" {
+                                                send \"$password\\n\"
+                                        }
+                                        *{}
+                                }
+                                exit
+			"
 EOF
 )
 
