@@ -6,7 +6,7 @@ slave_or_master=s
 cluster=
 
 function main () {
-
+	echo ./mgmt-xl-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r gtmsby -c "$cluster" -v "$pgver"
 	./mgmt-xl-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r gtmsby -c "$cluster" -v "$pgver"
 
 
