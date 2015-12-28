@@ -71,7 +71,7 @@ for host in $dhosts; do
 		fi
 		cd mgmt
 		ls ./set.expect
-		#./set.expect $cluster
+		./set.expect $cluster
 		#./mgmt-init-set-xl-config $cluster => change to set.expect
 		#./mgmt-xl-setup-all $cluster => change to set.expect
 EOF

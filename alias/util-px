@@ -2,14 +2,16 @@
 
 #echo "\$* : $*"
 
+pash=$(docker exec an11 which pash)
+
 if [ "$1" == "-a" ]; then
 
 	for id in $(dls -ll); do
 		echo "$id: "
-		docker exec $id ${*:2}
+		docker exec $id mono $pash -c cd /root/pcmk/cluster/\; ${*:2}
 	done
 else
-	rtn=$(docker exec $1 pash -c cd /root/pcmk/cluster/\; ${*:2})
+	rtn=$(docker exec $1 mono $pash -c cd /root/pcmk/cluster/\; ${*:2})
 	#testrtn=$(echo $rtn|grep "Error response from daemon")
 	#if [ "$testrtn" == "" ]; then 
 	#	echo "Try util..."
