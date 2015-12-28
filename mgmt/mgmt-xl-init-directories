@@ -39,7 +39,7 @@ dirdata=$(for hii in $hostsitem; do hhii=(${hii//,/ }); ./mgmt-xl-get-confname $
 #echo "$dirdata"
 
 db64=$(echo "$dirdata"|base64)
-echo $db64
+#echo $db64
 
 echo $(date +"%T") \[\| cluster-dirs \|\]
 util-px "$nm" cluster-dirs.ps1 $db64
