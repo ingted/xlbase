@@ -2,7 +2,7 @@
 
 #echo "\$* : $*"
 
-pash=$(docker exec an11 which pash)
+pash=$(docker exec $1 which pash)
 
 if [ "$1" == "-a" ]; then
 
