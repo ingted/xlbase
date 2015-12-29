@@ -46,7 +46,7 @@ for host in $dhosts; do
 		#rm ~/.hushlogin
 		mkdir -p "$rootpath"
 		cd "$rootpath"
-		rp=$(ls $rootpath/xlbase)
+		rp=\$(ls $rootpath/xlbase)
 		if [ "$updonly" == 0 ] || [ "$?" != 0 ] || [ "$rp" == "" ]; then
 			rm xlbase -rf
 			GIT_TRACE=1; GIT_CURL_VERBOSE=1
