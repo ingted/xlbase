@@ -53,14 +53,14 @@ gtm		0 gtm		g m alpha2
 gtmsby		0 gtmsby	g s alpha2
 coor1m		1 coor		c m alpha2
 coor2m		2 coor		c m alpha2
-gtmprx1m	1 gtm		g m alpha2
-gtmprx2m	2 gtm		g m alpha2
+gtmprx1m	1 gtmprx	g m alpha2
+gtmprx2m	2 gtmprx	g m alpha2
 dn1m		1 dn		d m alpha2
 dn2m		2 dn		d m alpha2
 coor1s		1 coor		c s alpha2
 coor2s		2 coor		c s alpha2
-gtmprx1s	1 gtm		g s alpha2
-gtmprx2s	2 gtm		g s alpha2
+gtmprx1s	1 gtmprx	g s alpha2
+gtmprx2s	2 gtmprx	g s alpha2
 dn1s		1 dn		d s alpha2
 dn2s		2 dn		d s alpha2
 
