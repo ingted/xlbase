@@ -45,13 +45,14 @@ for host in $dhosts; do
 		#rm ~/.hushlogin
 		mkdir -p "$rootpath"
 		cd "$rootpath"
-		if [ "$updonly" == 0 ]; then
+		rp=$(ls $rootpath/xlbase)
+		if [ "$updonly" == 0 ] || [ "$?" != 0 ] || [ "$rp" == "" ]; then
 			rm xlbase -rf
 			GIT_TRACE=1; GIT_CURL_VERBOSE=1
 			git clone --verbose http://github.com/ingted/xlbase.git
   			cd xlbase
 	  		git checkout --track -b xlbase remotes/origin/backToOrigin
-		else
+		else 
 			cd xlbase
 			git pull
 		fi
