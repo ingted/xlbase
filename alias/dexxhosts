@@ -72,10 +72,10 @@
 10.128.112.38	 coor2s		c xlcd2		/docker_volume/c2s 	alpha2
 10.128.112.39	 coor1m		c xlcd1		/docker_volume/c1m 	alpha2
 10.128.112.40	 coor2m		c xlcd2		/docker_volume/c2m 	alpha2
-10.128.112.58    xlgtm_mgmt     h -  	 	-			alpha2
-10.128.112.59    xlgtmsby_mgmt  h -  	 	-			alpha2
-10.128.112.69    xlgtm     	c xlgtm_mgmt 	-			alpha2
-10.128.112.70    xlgtmsby  	c xlgtmsby_mgmt	-			alpha2
+10.128.112.58    xlgtm    	h -  	 	-			alpha2
+10.128.112.59    xlgtmsby  	h -  	 	-			alpha2
+10.128.112.69    gtm     	c xlgtm_mgmt 	-			alpha2
+10.128.112.70    gtmsby  	c xlgtmsby_mgmt	-			alpha2
 10.128.112.49    dn1s 		c xlcd1  	/docker_volume/d1s	alpha2
 10.128.112.50    dn2s 		c xlcd2  	/docker_volume/d1s	alpha2
 10.128.112.51    dn1m 		c xlcd1  	/docker_volume/d2m	alpha2
