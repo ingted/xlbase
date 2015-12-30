@@ -129,11 +129,14 @@ done
 for ch in $chosts; do
 	chh=(${ch//,/ })
 	chost=${chh[0]}
+	cnm=${chh[1]}
         for hh in $hosts; do
                 hhh=(${hh//,/ })
                 hhost=${hhh[0]}
                 hhnm=${hhh[1]}
                 echo "processing... $hhost of $chost"
+		./login.expect $chost $password $sleep
+		./login.expect $cnm   $password $sleep
                 echo 4=========================================
                 ssh $chost "ssh-keygen -R $hhost; ssh-keygen -R $hhnm; ssh-keyscan -H $hhost >> ~/.ssh/known_hosts; ssh-keyscan -H $hhnm >> ~/.ssh/known_hosts"
                 echo 5=========================================
