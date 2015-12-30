@@ -47,6 +47,9 @@ for host in $hosts; do
      	ssh-keyscan -H $cip >> ~/.ssh/known_hosts
      	ssh-keyscan -H $host >> ~/.ssh/known_hosts
      	echo 3=========================================
+	if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
+		./genkey.expect	
+	fi
      	./login.expect $cip $password > /dev/null
      	echo 4=========================================
 	ssh $cip << EOF
@@ -85,6 +88,8 @@ EOF
 			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
    	     		bash -c 'echo "$host" > /etc/hostname'
 	   	     	hostnamectl set-hostname "$host"
+			./login.expect $dhost $password
+			./login.expect $dhip  $password
 EOF
 	done
 	for ah in $allhosts; do

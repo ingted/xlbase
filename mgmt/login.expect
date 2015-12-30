@@ -18,6 +18,9 @@ expect {
 	"password:" {
 		send "$password\n"
 	}
+	"(yes/no)?" {
+                send "yes\n"
+	}
 	"already exist" {
 	}
 }

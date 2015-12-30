@@ -1,0 +1,33 @@
+#!/usr/bin/expect -f
+
+ spawn ssh-keygen -b 2048 -t rsa
+ expect "id_rsa):"
+ send "\r"
+ expect {
+         "Enter passphrase (empty for no passphrase):" {
+                 send "\r"
+                 expect {
+                         "Enter same passphrase again:" {
+                                 send "\r"
+                         }
+                 }
+         }
+         "Overwrite (y/n)?" {
+                 send "y\r"
+                 expect {
+                         "passphrase (empty for no passphrase):" {
+                                 send "\r"
+                                 expect {
+                                         "Enter same passphrase again:" {
+                                                 send "\r"
+                                         }
+                                 }
+                         }
+                 }
+         }
+ }
+ expect {
+         SHA256 {
+
+         }
+ }
