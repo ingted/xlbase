@@ -42,38 +42,40 @@ for dhost in $dhosts; do
 		sleep=2
 		VAR=$(ssh $dhost << EOF
 
-			expect -c "
-				spawn ssh-keygen -b 2048 -t rsa
-				expect \"id_rsa):\"
-				send \"\r\"
-				expect {
-					\"Enter passphrase (empty for no passphrase):\" {
-						send \"\r\"
-						expect {
-							\"Enter same passphrase again:\" {
-								send \"\r\"
+			if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
+				expect -c "
+					spawn ssh-keygen -b 2048 -t rsa
+					expect \"id_rsa):\"
+					send \"\r\"
+					expect {
+						\"Enter passphrase (empty for no passphrase):\" {
+							send \"\r\"
+							expect {
+								\"Enter same passphrase again:\" {
+									send \"\r\"
+								}
 							}
 						}
-					}
-					\"Overwrite (y/n)?\" {
-						send \"y\r\"
-						expect {
-							\"passphrase (empty for no passphrase):\" {
-								send \"\r\"
-								expect {
-									\"Enter same passphrase again:\" {
-										send \"\r\"
+						\"Overwrite (y/n)?\" {
+							send \"y\r\"
+							expect {
+								\"passphrase (empty for no passphrase):\" {
+									send \"\r\"
+									expect {
+										\"Enter same passphrase again:\" {
+											send \"\r\"
+										}
 									}
 								}
 							}
 						}
 					}
-				}
-				expect {
-					SHA256 {
-						
-					}
-				}"
+					expect {
+						SHA256 {
+							
+						}
+					}"
+			fi
 
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
