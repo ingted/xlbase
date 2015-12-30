@@ -1,0 +1,36 @@
+
+        spawn ssh-copy-id 
+set timeout -1
+        exec sleep 
+        expect {
+                "password:" {
+                        send "\n"
+                }
+                "(yes/no)?" {
+                        send "yes\n"
+expect {
+"(yes/no)?" {
+send "yes\n"
+}
+}
+                }
+                "already exist" {
+                }
+"No identities found" {
+set nif 1
+}
+        }
+if { $nif eq 1 } {
+send "ssh-keygen -b 2048 -t rsa -q\r"
+expect "id_rsa):"
+send "\r"
+expect "Enter passphrase (empty for no passphrase):"
+send "\r"
+expect "Enter same passphrase again:"
+send "\r"
+}
+        expect {
+                * {}
+        }
+        exit
+

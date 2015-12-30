@@ -37,10 +37,44 @@ for dhost in $dhosts; do
 		cnm=${chh[1]}
 		echo "processing... $chost of $dhost"
 		echo 1=========================================
-		ssh $dhost "ssh-keygen -R $chost; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keygen -R $cnm; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
+		ssh $dhost "ssh-keygen -R $chost; ssh-keygen -R $cnm; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
 		echo 2=========================================
 		sleep=2
 		VAR=$(ssh $dhost << EOF
+
+			expect -c "
+				spawn ssh-keygen -b 2048 -t rsa
+				expect \"id_rsa):\"
+				send \"\r\"
+				expect {
+					\"Enter passphrase (empty for no passphrase):\" {
+						send \"\r\"
+						expect {
+							\"Enter same passphrase again:\" {
+								send \"\r\"
+							}
+						}
+					}
+					\"Overwrite (y/n)?\" {
+						send \"y\r\"
+						expect {
+							\"passphrase (empty for no passphrase):\" {
+								send \"\r\"
+								expect {
+									\"Enter same passphrase again:\" {
+										send \"\r\"
+									}
+								}
+							}
+						}
+					}
+				}
+				expect {
+					SHA256 {
+						
+					}
+				}"
+
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
 	        	        exec sleep $sleep
@@ -55,10 +89,29 @@ for dhost in $dhosts; do
 	        	                }
 	        	        }
 	        	        expect {
-	        	                *{}
+	        	                * {}
 	        	        }
 	        	        exit
 	        	"
+			expect -c "
+                                spawn ssh-copy-id $cnm
+                                exec sleep $sleep
+                                expect {
+                                        \"password:\" {
+                                                send \"$password\\n\"
+                                        }
+                                        \"(yes/no)?\" {
+                                                send \"yes\\n\"
+                                        }
+                                        \"already exist\" {
+                                        }
+                                }
+                                expect {
+                                        * {}
+                                }
+                                exit
+                        "
+
 EOF
 )
 

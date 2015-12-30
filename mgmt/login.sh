@@ -52,7 +52,7 @@ for host in $hosts; do
 	ssh $cip << EOF
 		ccip="$cip"
 		ciprp=\${ccip//./\\\.}
-		sed -i.bak -r s/#ListenAddress[[:space:]]+[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+/ListenAddress\ \$ciprp/g /etc/ssh/sshd_config
+		sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$ciprp/g /etc/ssh/sshd_config
 		sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
 		service ssh restart
 
