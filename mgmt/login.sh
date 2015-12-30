@@ -82,6 +82,8 @@ EOF
 	for dhost in $hosts; do
         	dhip=$(./mgmt-xl-get-ip $host $cluster)
 		ssh $cip << EOF
+			tarpath=\$(dirname \$(which dexxhosts))/../mgmt
+                        cd \$tarpath
 			ssh-keygen -R "$dhost"
 			ssh-keygen -R "$dhip"
 			ssh-keyscan -H "$dhost" >> ~/.ssh/known_hosts
