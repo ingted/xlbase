@@ -41,85 +41,87 @@ for dhost in $dhosts; do
 		echo 2=========================================
 		sleep=2
 		VAR=$(ssh $dhost << EOF
-			tarpath=\$(dirname \$(which dexxhosts))/../mgmt
-			cd \$tarpath
+			#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
+			#cd \$tarpath
 			
 			if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
 				./genkey.expect
-			#	expect -c "
-			#		spawn ssh-keygen -b 2048 -t rsa
-			#		expect \"id_rsa):\"
-			#		send \"\r\"
-			#		expect {
-			#			\"Enter passphrase (empty for no passphrase):\" {
-			#				send \"\r\"
-			#				expect {
-			#					\"Enter same passphrase again:\" {
-			#						send \"\r\"
-			#					}
-			#				}
-			#			}
-			#			\"Overwrite (y/n)?\" {
-			#				send \"y\r\"
-			#				expect {
-			#					\"passphrase (empty for no passphrase):\" {
-			#						send \"\r\"
-			#						expect {
-			#							\"Enter same passphrase again:\" {
-			#								send \"\r\"
-			#							}
-			#						}
-			#					}
-			#				}
-			#			}
-			#		}
-			#		expect {
-			#			SHA256 {
-			#				
-			#			}
-			#		}"
+				expect -c "
+					spawn ssh-keygen -b 2048 -t rsa
+					expect \"id_rsa):\"
+					send \"\r\"
+					expect {
+						\"Enter passphrase (empty for no passphrase):\" {
+							send \"\r\"
+							expect {
+								\"Enter same passphrase again:\" {
+									send \"\r\"
+								}
+							}
+						}
+						\"Overwrite (y/n)?\" {
+							send \"y\r\"
+							expect {
+								\"passphrase (empty for no passphrase):\" {
+									send \"\r\"
+									expect {
+										\"Enter same passphrase again:\" {
+											send \"\r\"
+										}
+									}
+								}
+							}
+						}
+					}
+					expect {
+						SHA256 {
+							
+						}
+					}"
 			fi
-			cd \$tarpath
-			./login.expect $chost "$password" $sleep
-			cd \$tarpath
-			./login.expect $cnm   "$password" $sleep
+			#cd \$tarpath
+			#./login.expect $chost "$password" $sleep
+			#cd \$tarpath
+			#./login.expect $cnm   "$password" $sleep
 
-	        	#expect -c "
-	        	#        spawn ssh-copy-id $chost
-	        	#        exec sleep $sleep
-	        	#        expect {
-	        	#                \"password:\" {
-	        	#                        send \"$password\\n\"
-	        	#                }
-	        	#                \"(yes/no)?\" {
-	        	#                        send \"yes\\n\"
-	        	#                }
-	        	#                \"already exist\" {
-	        	#                }
-	        	#        }
-	        	#        expect {
-	        	#                * {}
-	        	#        }
-	        	#        exit
-	        	#"
-			#expect -c "
-                        #        spawn ssh-copy-id $cnm
-                        #        exec sleep $sleep
-                        #        expect {
-                        #                \"password:\" {
-                        #                        send \"$password\\n\"
-                        #                }
-                        #                \"(yes/no)?\" {
-                        #                        send \"yes\\n\"
-                        #                }
-                        #                \"already exist\" {
-                        #                }
-                        #        }
-                        #        expect {
-                        #                * {}
-                        #        }
-                        #        exit
-                        #"
+	        	expect -c "
+	        	        spawn ssh-copy-id $chost
+	        	        exec sleep $sleep
+	        	        expect {
+	        	                \"password:\" {
+	        	                        send \"$password\\n\"
+	        	                }
+	        	                \"(yes/no)?\" {
+	        	                        send \"yes\\n\"
+	        	                }
+	        	                \"already exist\" {
+	        	                }
+	        	        }
+	        	        expect {
+	        	                * {}
+	        	        }
+				expect eof
+	        	        exit
+	        	"
+			expect -c "
+                                spawn ssh-copy-id $cnm
+                                exec sleep $sleep
+                                expect {
+                                        \"password:\" {
+                                                send \"$password\\n\"
+                                        }
+                                        \"(yes/no)?\" {
+                                                send \"yes\\n\"
+                                        }
+                                        \"already exist\" {
+                                        }
+                                }
+                                expect {
+                                        * {}
+                                }
+				expect eof
+                                exit
+                        "
 
 EOF
 )
@@ -170,6 +172,7 @@ for ch in $chosts; do
                                         }
                                         *{}
                                 }
+				expect eof
                                 exit
                         "
                         expect -c "
@@ -191,6 +194,7 @@ for ch in $chosts; do
                                         }
                                         *{}
                                 }
+				expect eof
                                 exit
 			"
 EOF

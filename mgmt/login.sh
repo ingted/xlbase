@@ -81,17 +81,38 @@ EOF
 	
 	for dhost in $hosts; do
         	dhip=$(./mgmt-xl-get-ip $host $cluster)
+		sleep=2
 		ssh $cip << EOF
-			tarpath=\$(dirname \$(which dexxhosts))/../mgmt
-                        cd \$tarpath
+			#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
+                        #cd \$tarpath
 			ssh-keygen -R "$dhost"
 			ssh-keygen -R "$dhip"
 			ssh-keyscan -H "$dhost" >> ~/.ssh/known_hosts
 			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
    	     		bash -c 'echo "$host" > /etc/hostname'
 	   	     	hostnamectl set-hostname "$host"
-			./login.expect $dhost "$password"
-			./login.expect $dhip  "$password"
+			expect -c "
+                                spawn ssh-copy-id $dhost
+                                exec sleep $sleep
+                                expect {
+                                        \"password:\" {
+                                                send \"$password\\n\"
+                                        }
+                                        \"(yes/no)?\" {
+                                                send \"yes\\n\"
+                                        }
+                                        \"already exist\" {
+                                        }
+                                }
+                                expect {
+                                        \"password:\" {
+                                                send \"$password\\n\"
+                                        }
+                                        *{}
+                                }
+                                expect eof
+                                exit
+                        "
 EOF
 	done
 	for ah in $allhosts; do
