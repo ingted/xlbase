@@ -103,6 +103,8 @@ EOF
                                         }
                                         \"already exist\" {
                                         }
+					\"All keys were skipped\" {
+					}
                                 }
                                 expect {
                                         \"password:\" {
