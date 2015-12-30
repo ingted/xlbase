@@ -130,9 +130,9 @@ for ch in $chosts; do
                 hhost=${hhh[0]}
                 hhnm=${hhh[1]}
                 echo "processing... $hhost of $chost"
-                echo 1=========================================
-                ssh $chost "ssh-keygen -R $hhost; ssh-keyscan -H $hhost >> ~/.ssh/known_hosts; ssh-keygen -R $hhnm; ssh-keyscan -H $hhnm >> ~/.ssh/known_hosts"
-                echo 2=========================================
+                echo 4=========================================
+                ssh $chost "ssh-keygen -R $hhost; ssh-keygen -R $hhnm; ssh-keyscan -H $hhost >> ~/.ssh/known_hosts; ssh-keyscan -H $hhnm >> ~/.ssh/known_hosts"
+                echo 5=========================================
                 sleep=2
                 VAR=$(ssh $chost << EOF
 			expp=\$(which expect)
@@ -185,7 +185,7 @@ for ch in $chosts; do
 EOF
 )
 
-                echo 3=========================================
+                echo 6=========================================
         done
 done
 

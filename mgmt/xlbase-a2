@@ -1,0 +1,24 @@
+#!/bin/bash
+
+expp=$(which expect)
+if [ "$expp" == "" ]; then
+        apt-get -y install expect
+fi
+
+cd ..
+
+source alias/util-disable-status 1 1 1
+./make.sh
+source ~/.bashrc
+
+cd mgmt
+
+./mgmt-init-set-xl-config alpha2
+
+expect -c "set timeout 300; spawn ./login.sh; expect {name\:}; send \"alpha2\\n\"; expect {Password:}; send \"/'],lp123\\n\"; expect {eofloginsh}"
+
+echo -e "\nlogin done."
+
+expect -c "set timeout 3600; spawn ./mgmt-init-set-dhost /alpha alpha2 0 0; expect {if gpu now?}; send \"0\n\"; expect {eofisdsh}" 
+
+expect -c "set timeout 300; spawn ./clogin.sh; expect {name\:}; send \"alpha2\\n\"; expect {Password:}; send \"/'],lp123\\n\"; expect {eofcloginsh}"
