@@ -41,7 +41,9 @@ for dhost in $dhosts; do
 		echo 2=========================================
 		sleep=2
 		VAR=$(ssh $dhost << EOF
-
+			tarpath=\$(dirname \$(which dexxhosts))/../mgmt
+			cd \$tarpath
+			
 			if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
 				./genkey.expect
 			#	expect -c "
@@ -77,8 +79,9 @@ for dhost in $dhosts; do
 			#			}
 			#		}"
 			fi
-
+			cd \$tarpath
 			./login.expect $chost "$password" $sleep
+			cd \$tarpath
 			./login.expect $cnm   "$password" $sleep
 
 	        	#expect -c "
