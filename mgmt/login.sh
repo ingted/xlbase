@@ -86,6 +86,8 @@ EOF
 		ssh $cip << EOF
 			cp /etc/hosts /etc/hosts.tmp
 			sed -i "/$ahip_r/d" /etc/hosts.tmp
+			sed -i "/\ $ah\ /d" /etc/hosts.tmp
+			sed -i "/\ $ah\$/d" /etc/hosts.tmp
 			echo "$ahip $ah" >> /etc/hosts.tmp
 			cp /etc/hosts.tmp /etc/hosts -f
 			#ssh-keygen -R $ah
@@ -106,6 +108,8 @@ EOF
 		ssh $cip << EOF
 			cp /etc/hosts /etc/hosts.tmp
 			sed -i "/$ad_ip/d" /etc/hosts.tmp
+			sed -i "/\ $ad\ /d" /etc/hosts.tmp
+			sed -i "/\ $ad\$/d" /etc/hosts.tmp
 			echo "$ad_r" >> /etc/hosts.tmp
 			cp /etc/hosts.tmp /etc/hosts -f
 EOF
