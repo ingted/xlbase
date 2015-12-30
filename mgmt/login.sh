@@ -50,7 +50,9 @@ for host in $hosts; do
      	./login.expect $cip $password > /dev/null
      	echo 4=========================================
 	ssh $cip << EOF
-		sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $cip/g /etc/ssh/sshd_config
+		ccip="$cip"
+		ciprp=\${ccip//./\\.}
+		sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ciprp/g /etc/ssh/sshd_config
 		sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
 		service ssh restart
 
