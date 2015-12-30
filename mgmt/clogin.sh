@@ -78,8 +78,8 @@ for dhost in $dhosts; do
 			#		}"
 			fi
 
-			./login.expect $chost $password $sleep
-			./login.expect $cnm   $password $sleep
+			./login.expect $chost "$password" $sleep
+			./login.expect $cnm   "$password" $sleep
 
 	        	#expect -c "
 	        	#        spawn ssh-copy-id $chost
@@ -130,8 +130,8 @@ for ch in $chosts; do
 	chh=(${ch//,/ })
 	chost=${chh[0]}
 	cnm=${chh[1]}
-	./login.expect $chost $password $sleep
-	./login.expect $cnm   $password $sleep
+	./login.expect $chost "$password" $sleep
+	./login.expect $cnm   "$password" $sleep
         for hh in $hosts; do
                 hhh=(${hh//,/ })
                 hhost=${hhh[0]}
