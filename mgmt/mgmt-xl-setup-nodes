@@ -59,8 +59,10 @@ function main () {
 						
 						(
 							if [ "$force" == "1" ]; then 
+								echo buildPacemaker3 -a $cip -n $cnm -v $vol -f -p -
 								buildPacemaker3 -a $cip -n $cnm -v $vol -f -p -
 							else
+								echo buildPacemaker3 -a $cip -n $cnm -v $vol -p -
 								buildPacemaker3 -a $cip -n $cnm -v $vol -p -
 							fi
 						) || (
