@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cluster=$1
+
+hostips=$(./mgmt-xl-get-base-not $cluster 3 i \$1)
+
+for a in $hostips; do
+	for b in $hostips; do
+		echo "$b from $a: "
+		ssh $a ssh $b hostname
+	done
+done

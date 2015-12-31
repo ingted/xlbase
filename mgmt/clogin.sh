@@ -141,7 +141,7 @@ for ch in $chosts; do
                 hhh=(${hh//,/ })
                 hhost=${hhh[0]}
                 hhnm=${hhh[1]}
-                echo "processing... $hhost of $chost"
+                echo "processing... $hhost($hhnm) of $chost($cnm)"
 
                 echo 4=========================================
                 ssh $chost "ssh-keygen -R $hhost; ssh-keygen -R $hhnm; ssh-keyscan -H $hhost >> ~/.ssh/known_hosts; ssh-keyscan -H $hhnm >> ~/.ssh/known_hosts"
@@ -199,7 +199,7 @@ for ch in $chosts; do
 			"
 EOF
 )
-
+		echo \$VAR
                 echo 6=========================================
         done
 done
