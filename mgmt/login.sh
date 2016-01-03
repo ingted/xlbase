@@ -134,19 +134,17 @@ EOF
 							expect {
 								\"password:\" {
 	                	                                        send \"$password\\n\"
+									expect eof
         		                                        }
 
 							}
                                         	}
                                 	        \"password:\" {
                                 	                send \"$password\\n\"
+							expect eof
                                 	        }
-                                	        *{}
                                 	}
-				} else {
-
 				}
-                                expect eof
 	                        exit
                         "
 EOF
