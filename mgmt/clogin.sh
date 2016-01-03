@@ -32,35 +32,35 @@ allhosts=$(./mgmt-xl-get-host-by-role -a $cluster);
 
 expstr="
 				expect {
-                                        \"password:\" {
-                                                set conti \"1\"
-                                                send \"$password\\n\"
+                                        \\\"password:\\\" {
+                                                set conti \\\"1\\\"
+                                                send \\\"$password\\\\n\\\"
                                         }
-                                        \"(yes/no)?\" {
-                                                set conti \"1\"
-                                                send \"yes\\n\"
+                                        \\\"(yes/no)?\\\" {
+                                                set conti \\\"1\\\"
+                                                send \\\"yes\\\\n\\\"
                                         }
-                                        \"already exist\" {
-                                                set conti \"0\"
+                                        \\\"already exist\\\" {
+                                                set conti \\\"0\\\"
                                         }
-                                        \"All keys were skipped\" {
-                                                set conti \"0\"
+                                        \\\"All keys were skipped\\\" {
+                                                set conti \\\"0\\\"
                                         }
                                 }
-                                if [ string match \\\$conti \"1\" ] {
+                                if [ string match \\\\\\\$conti \\\"1\\\" ] {
                                         expect {
-                                                \"(yes/no)?\" {
-                                                        send \"yes\\n\"
+                                                \\\"(yes/no)?\\\" {
+                                                        send \\\"yes\\\\n\\\"
                                                         expect {
-                                                                \"password:\" {
-                                                                        send \"$password\\n\"
+                                                                \\\"password:\\\" {
+                                                                        send \\\"$password\\\\n\\\"
                                                                         expect eof
                                                                 }
 
                                                         }
                                                 }
-                                                \"password:\" {
-                                                        send \"$password\\n\"
+                                                \\\"password:\\\" {
+                                                        send \\\"$password\\\\n\\\"
                                                         expect eof
                                                 }
                                         }
