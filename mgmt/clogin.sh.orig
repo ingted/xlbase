@@ -47,12 +47,24 @@ expstr="
                                         \\\"All keys were skipped\\\" {
                                                 set conti \\\"0\\\"
                                         }
-					eof {
-						set conti \\\"0\\\"
-					}
                                 }
                                 if [ string match \\\\\\\$conti \\\"1\\\" ] {
-					set conti \\\"0\\\"
+                                        expect {
+                                                \\\"(yes/no)?\\\" {
+                                                        send \\\"yes\\\\n\\\"
+                                                        expect {
+                                                                \\\"password:\\\" {
+                                                                        send \\\"$password\\\\n\\\"
+                                                                        expect eof
+                                                                }
+
+                                                        }
+                                                }
+                                                \\\"password:\\\" {
+                                                        send \\\"$password\\\\n\\\"
+                                                        expect eof
+                                                }
+                                        }
                                 } else {
 					expect eof
 					break		
@@ -76,9 +88,7 @@ for dhost in $dhosts; do
 			#cd \$tarpath
 			
 			if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
-				echo 2.1======================================c
 				./genkey.expect
-				echo 2.2======================================c
 				expect -c "
 					spawn ssh-keygen -b 2048 -t rsa
 					expect \"id_rsa):\"
@@ -116,13 +126,12 @@ for dhost in $dhosts; do
 			#./login.expect $chost "$password" $sleep
 			#cd \$tarpath
 			#./login.expect $cnm   "$password" $sleep
-			echo 2.3======================================c
+
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
 	        	        exec sleep $sleep
 	        	        $expstr
 	        	"
-			echo 2.4======================================c
 			expect -c "
                                 spawn ssh-copy-id $cnm
                                 exec sleep $sleep
@@ -131,7 +140,7 @@ for dhost in $dhosts; do
 
 EOF
 )
-		echo $VAR
+
 		echo 3========================================c
 	done
 done
