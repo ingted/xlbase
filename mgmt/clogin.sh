@@ -175,7 +175,7 @@ for ch in $chosts; do
 			"
 EOF
 )
-		echo \$VAR
+		echo $VAR
                 echo 6========================================c
         done
 done
