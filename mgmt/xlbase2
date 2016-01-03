@@ -21,4 +21,4 @@ echo -e "\nlogin done."
 
 expect -c "set timeout 3600; spawn ./mgmt-init-set-dhost /test2 test2 1 0; expect {if gpu now?}; send \"0\n\"; expect {eofisdsh}" 
 
-expect -c "set timeout 300; spawn ./clogin.sh; expect {name\:}; send \"test2\\n\"; expect {Password:}; send \"/'],lp123\\n\"; expect {eofcloginsh}"
+expect -c "set timeout 3600; spawn ./clogin.sh; expect {name\:}; send \"test2\\n\"; expect {Password:}; send \"/'],lp123\\n\"; expect {eofcloginsh}"
