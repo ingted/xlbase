@@ -64,7 +64,9 @@ expstr="
                                                         expect eof
                                                 }
                                         }
-                                }
+                                } else {
+					expect eof
+				}
                                 exit
 "
 
