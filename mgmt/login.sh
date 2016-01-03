@@ -113,21 +113,21 @@ EOF
                                 exec sleep $sleep
                                 expect {
                                         \"password:\" {
-						set continue \"1\"
+						set conti \"1\"
                                                 send \"$password\\n\"
                                         }
                                         \"(yes/no)?\" {
-						set continue \"1\"
+						set conti \"1\"
                                                 send \"yes\\n\"
                                         }
                                         \"already exist\" {
-						set continue \"0\"
+						set conti \"0\"
                                         }
 					\"All keys were skipped\" {
-						set continue \"0\"
+						set conti \"0\"
 					}
                                 }
-				if [ string match \$continue \"1\" ] {
+				if [ string match \\\$conti \"1\" ] {
                                 	expect {
 						\"(yes/no)?\" {
                                                 	send \"yes\\n\"
