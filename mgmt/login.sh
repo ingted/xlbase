@@ -26,41 +26,56 @@ if [ "$expp" == "" ]; then
 	apt-get -y --force-yes install expect
 fi
 
-hosts=$(./mgmt-xl-get-host-by-role docker $cluster);
+dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
 dnss=$(./mgmt-xl-get-dns $cluster)
 #Because the containers are not ready yet, so not do this 
 # (key scan should not be performed)
 # (add container hosts to /etc/hosts still needed) now...
 allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
 
+for ah in $allhosts; do
+	ahip=$(./mgmt-xl-get-ip $ah $cluster)
+	ahip_r=${ahip//./\\\.}
 
-for host in $hosts; do
-	echo ./mgmt-xl-get-ip $host $cluster
-	cip=$(./mgmt-xl-get-ip $host $cluster)
-	#if [ "$cip" != "" ]; then
-	echo "processing... $cip: $host"
+	cp /etc/hosts /etc/hosts.tmp
+	sed -i "/$ahip_r/d" /etc/hosts.tmp
+	sed -i "/\ $ah\ /d" /etc/hosts.tmp
+	sed -i "/\ $ah\$/d" /etc/hosts.tmp
+	echo "$ahip $ah" >> /etc/hosts.tmp
+	cp /etc/hosts.tmp /etc/hosts -f
+
+done
+
+
+
+for dhost in $dhosts; do
+	echo ./mgmt-xl-get-ip $dhost $cluster
+	dip=$(./mgmt-xl-get-ip $dhost $cluster)
+	#if [ "$dip" != "" ]; then
+	echo "processing... $dip: $dhost"
    	echo 1=========================================
 	#fi   	
-     	ssh-keygen -R $cip
-     	ssh-keygen -R $host
+     	ssh-keygen -R $dip
+     	ssh-keygen -R $dhost
      	echo 2=========================================
-     	ssh-keyscan -H $cip >> ~/.ssh/known_hosts
-     	ssh-keyscan -H $host >> ~/.ssh/known_hosts
+     	ssh-keyscan -H $dip >> ~/.ssh/known_hosts
+     	ssh-keyscan -H $dhost >> ~/.ssh/known_hosts
      	echo 3=========================================
 	if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
+		echo 3.1=======================================
 		./genkey.expect	
 	fi
-     	./login.expect $cip "$password" > /dev/null
+     	./login.expect $dip "$password" > /dev/null
      	echo 4=========================================
-	ssh $cip << EOF
-		ccip="$cip"
-		ciprp=\${ccip//./\\\.}
-		sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$ciprp/g /etc/ssh/sshd_config
+	ssh $dip << EOF
+		cdip="$dip"
+		diprp=\${cdip//./\\\.}
+		sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$diprp/g /etc/ssh/sshd_config
 		sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
 		service ssh restart
 
 EOF
-     	ssh $cip << 'EOF'
+     	ssh $dip << 'EOF'
      		touch ~/.hushlogin
      		expp=$(which expect)
      		if [ "$expp" == "" ]; then
@@ -79,20 +94,20 @@ EOF
      		echo "nameserver 168.95.1.1" >> /etc/resolv.conf
 EOF
 	
-	for dhost in $hosts; do
+	for ddhost in $dhosts; do
         	dhip=$(./mgmt-xl-get-ip $host $cluster)
 		sleep=2
-		ssh $cip << EOF
+		ssh $dip << EOF
 			#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
                         #cd \$tarpath
-			ssh-keygen -R "$dhost"
+			ssh-keygen -R "$ddhost"
 			ssh-keygen -R "$dhip"
-			ssh-keyscan -H "$dhost" >> ~/.ssh/known_hosts
+			ssh-keyscan -H "$ddhost" >> ~/.ssh/known_hosts
 			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
-   	     		bash -c 'echo "$host" > /etc/hostname'
-	   	     	hostnamectl set-hostname "$host"
+   	     		bash -c 'echo "$dhost" > /etc/hostname'
+	   	     	hostnamectl set-hostname "$dhost"
 			expect -c "
-                                spawn ssh-copy-id $dhost
+                                spawn ssh-copy-id $ddhost
                                 exec sleep $sleep
                                 expect {
                                         \"password:\" {
@@ -121,7 +136,7 @@ EOF
 		ahip=$(./mgmt-xl-get-ip $ah $cluster)
 		ahip_r=${ahip//./\\\.}
 
-		ssh $cip << EOF
+		ssh $dip << EOF
 			cp /etc/hosts /etc/hosts.tmp
 			sed -i "/$ahip_r/d" /etc/hosts.tmp
 			sed -i "/\ $ah\ /d" /etc/hosts.tmp
@@ -143,7 +158,7 @@ EOF
 		echo =======================================================
 		echo $ad_r $ad_ipo $ad_ipi
 		echo =======================================================
-		ssh $cip << EOF
+		ssh $dip << EOF
 			cp /etc/hosts /etc/hosts.tmp
 			sed -i "/$ad_ip/d" /etc/hosts.tmp
 			sed -i "/\ $ad\ /d" /etc/hosts.tmp
@@ -153,7 +168,7 @@ EOF
 EOF
 
 	done
-	ssh $cip << EOF
+	ssh $dip << EOF
 		if [ -e ~/.hushlogin ]; then rm ~/.hushlogin; fi
 EOF
 
