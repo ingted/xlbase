@@ -71,10 +71,8 @@ for dhost in $dhosts; do
 		ssh $dhost "ssh-keygen -R $chost; ssh-keygen -R $cnm; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
 		echo 2========================================c
 		sleep=2
-		VAR=$(ssh $dhost << EOF
-			#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
-			#cd \$tarpath
-			
+		ssh $dhost << EOF
+			echo 2.0======================================c
 			if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
 				echo 2.1======================================c
 				./genkey.expect
@@ -112,10 +110,6 @@ for dhost in $dhosts; do
 						}
 					}"
 			fi
-			#cd \$tarpath
-			#./login.expect $chost "$password" $sleep
-			#cd \$tarpath
-			#./login.expect $cnm   "$password" $sleep
 			echo 2.3======================================c
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
@@ -130,8 +124,8 @@ for dhost in $dhosts; do
                         "
 
 EOF
-)
-		echo $VAR
+
+		#echo $VAR
 		echo 3========================================c
 	done
 done
