@@ -75,6 +75,7 @@ for dhost in $dhosts; do
 		service ssh restart
 
 EOF
+     	echo 5=========================================
      	ssh $dip << 'EOF'
      		touch ~/.hushlogin
      		expp=$(which expect)
@@ -94,8 +95,9 @@ EOF
      		echo "nameserver 168.95.1.1" >> /etc/resolv.conf
 EOF
 	
+     	echo 6=========================================
 	for ddhost in $dhosts; do
-        	dhip=$(./mgmt-xl-get-ip $host $cluster)
+        	dhip=$(./mgmt-xl-get-ip $dhost $cluster)
 		sleep=2
 		ssh $dip << EOF
 			#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
@@ -111,26 +113,44 @@ EOF
                                 exec sleep $sleep
                                 expect {
                                         \"password:\" {
+						set continue \"1\"
                                                 send \"$password\\n\"
                                         }
                                         \"(yes/no)?\" {
+						set continue \"1\"
                                                 send \"yes\\n\"
                                         }
                                         \"already exist\" {
+						set continue \"0\"
                                         }
 					\"All keys were skipped\" {
+						set continue \"0\"
 					}
                                 }
-                                expect {
-                                        \"password:\" {
-                                                send \"$password\\n\"
-                                        }
-                                        *{}
-                                }
+				if [ string match \$continue \"1\" ] {
+                                	expect {
+						\"(yes/no)?\" {
+                                                	send \"yes\\n\"
+							expect {
+								\"password:\" {
+	                	                                        send \"$password\\n\"
+        		                                        }
+
+							}
+                                        	}
+                                	        \"password:\" {
+                                	                send \"$password\\n\"
+                                	        }
+                                	        *{}
+                                	}
+				} else {
+
+				}
                                 expect eof
-                                exit
+	                        exit
                         "
 EOF
+     	echo 7=========================================
 	done
 	for ah in $allhosts; do
 		ahip=$(./mgmt-xl-get-ip $ah $cluster)
