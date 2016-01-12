@@ -1,10 +1,10 @@
 192.168.123.102  h1  		h -  -				test
 192.168.123.107  h2  		h -  -				test
 192.168.123.103  n11 		c h1 /docker_volume/n11		test
-192.168.123.104  n12 		c h1 /docker_volume/n12		test 
+192.168.123.135  n12 		c h1 /docker_volume/n12		test 
 192.168.123.108  n13 		c h2 /docker_volume/n13		test 
-192.168.123.109  n21 		c h2 /docker_volume/n21		test 
-192.168.123.113  n22 		c h1 /docker_volume/n22		test 
+192.168.123.127  n21 		c h2 /docker_volume/n21		test 
+192.168.123.130  n22 		c h1 /docker_volume/n22		test 
 192.168.123.114  n23 		c h1 /docker_volume/n23		test 
 192.168.123.115  n31 		c h1 /docker_volume/n31		test 
 192.168.123.92   n32 		c h2 /docker_volume/n32		test 
