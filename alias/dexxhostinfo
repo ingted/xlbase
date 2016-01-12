@@ -23,3 +23,7 @@ gtmsby	#	1	alpha2
 coor	#	2	alpha2
 dn	#	2	alpha2
 gtmprx	#	2	alpha2
+gtm     #       1       htest2
+gtmsby  #       1       htest2
+coor    #       2       htest2
+dn      #       2       htest2

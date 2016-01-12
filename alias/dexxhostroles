@@ -78,3 +78,17 @@ an33 		2 coor		c m test2
 an41 		2 coor		c s test2
 an42 		3 coor		c m test2
 an43 		3 coor		c s test2
+apc  		0 docker	x x htest2
+apd 		0 docker	x x htest2
+an11 		0 gtm		g m htest2
+an12 		0 gtmsby	g s htest2
+an13 		1 coor		c m htest2
+an21 		1 coor 		c s htest2
+an22 		1 dn		d m htest2
+an23 		1 dn		d s htest2
+an31 		1 gtmprx	x m htest2
+an32 		1 gtmprx	x s htest2
+an33 		2 coor		c m htest2
+an41 		2 coor		c s htest2
+an42 		3 coor		c m htest2
+an43 		3 coor		c s htest2
