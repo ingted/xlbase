@@ -282,16 +282,19 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 #RUN apt-get -y install g++-5
 
 	cd /root/Downloads/clusterLab/; \
-	git clone https://github.com/ingted/clusterLab.git; \
+	#git clone https://github.com/ingted/clusterLab.git; \
 	
 	
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
 	cd /root/Downloads/clusterLab/libqb; \
-	git clone https://github.com/ClusterLabs/libqb.git; \
+	#git clone https://github.com/ClusterLabs/libqb.git; \
+	git clone https://github.com/ingted/libqb.git; \
 	wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
-	tar xpvf ./v0.17.2.tar.gz; \
-	cd libqb-0.17.2; \
+	#tar xpvf ./v0.17.2.tar.gz; \
+	#cd libqb-0.17.2; \
+
+	cd libqb
 	./autogen.sh; \
 	./configure; \
 	make -j8; \
@@ -330,14 +333,17 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 	#WORKDIR /root/Downloads/clusterLab/corosync
 	cd /root/Downloads/clusterLab/corosync; \
-	git clone https://github.com/ClusterLabs/corosync.git; \
+	#git clone https://github.com/ClusterLabs/corosync.git; \
+	git clone https://github.com/ingted/corosync.git; \
 
 	cd /root/Downloads/corosync; \
 	git clone https://github.com/corosync/corosync.git; \
 	wget "https://github.com/corosync/corosync/archive/v2.3.5.tar.gz"; \
 
-	tar zxvf ./v2.3.5.tar.gz; \
-	cd corosync-2.3.5; \
+	#tar zxvf ./v2.3.5.tar.gz; \
+	#cd corosync-2.3.5; \
+
+	cd corosync
 	./autogen.sh; \
 	./configure; \
 	make -j8 ; \
@@ -364,7 +370,8 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	#WORKDIR /root/Downloads/clusterLab/resource-agents
 	cd /root/Downloads/clusterLab/resource-agents; \
 	#RUN wget "https://github.com/ClusterLabs/resource-agents/archive/v3.9.6.tar.gz"; \
-	git clone https://github.com/ClusterLabs/resource-agents.git; \
+	#git clone https://github.com/ClusterLabs/resource-agents.git; \
+	git clone https://github.com/ingted/resource-agents.git; \
 	#tar xzvf v3.9.6.tar.gz; \
 	#cd resource-agents-3.9.6; \
 	cd resource-agents; \
@@ -375,7 +382,8 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 	#WORKDIR /root/Downloads/clusterLab/crmsh
 	cd /root/Downloads/clusterLab/crmsh; \
-	git clone https://github.com/ClusterLabs/crmsh.git; \
+	#git clone https://github.com/ClusterLabs/crmsh.git; \
+	git clone https://github.com/ingted/crmsh.git; \
 	wget "https://github.com/ClusterLabs/crmsh/archive/2.1.0.tar.gz"; \
 	tar zxvf 2.1.0.tar.gz; \
 	cd crmsh-2.1.0; \ 
@@ -425,7 +433,8 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 	#WORKDIR /root/Downloads/clusterLab/pacemaker
 	cd /root/Downloads/clusterLab/pacemaker; \
-	git clone https://github.com/ClusterLabs/pacemaker.git; \
+	#git clone https://github.com/ClusterLabs/pacemaker.git; \
+	git clone https://github.com/ingted/pacemaker.git; \
 	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
 	#apt-get -y install rpm; \
  
