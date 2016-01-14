@@ -221,6 +221,7 @@ RUN	apt-get -y install \
 	#apt-get -y install monodevelop; \
 	mkdir -p /root/Downloads/fs; \
 	mkdir -p /root/Downloads/corosync; \
+	mkdir -p /root/Downloads/cluster-glue; \
 	mkdir -p /root/Downloads/clusterLab/libqb; \
 	mkdir -p /root/Downloads/clusterLab/corosync; \
 	mkdir -p /root/Downloads/clusterLab/cluster-glue; \
@@ -286,24 +287,6 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	
 	
 
-	#WORKDIR /root/Downloads/clusterLab/libqb
-	cd /root/Downloads/clusterLab/libqb; \
-	#git clone https://github.com/ClusterLabs/libqb.git; \
-	git clone https://github.com/ingted/libqb.git; \
-	wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
-	#tar xpvf ./v0.17.2.tar.gz; \
-	#cd libqb-0.17.2; \
-
-	cd libqb
-	./autogen.sh; \
-	./configure; \
-	make -j8; \
-
-	cd /root/Downloads/clusterLab/libqb/libqb; \
-        ./autogen.sh; \
-        ./configure; \
-        make -j8; \
-
 
 	apt-get -y install software-properties-common libnss3-dev groff mercurial uuid-dev snmpd \
 		#pacemaker-mgmt cluster-glue-dev 
@@ -325,6 +308,27 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	sed -i.bak -e s/postgres\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	sed -i.bak -e s/osdba\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \ 
 	sed -i.bak -e s/voltdb\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
+	useradd --system -U -ms /bin/bash haclient; \
+	sed -i.bak -e s/haclient\:\!/haclient\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
+	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
+	useradd --system -m -g haclient -s /bin/bash hacluster; \
+
+	#WORKDIR /root/Downloads/clusterLab/libqb
+	cd /root/Downloads/clusterLab/libqb; \
+	#git clone https://github.com/ClusterLabs/libqb.git; \
+	git clone https://github.com/ingted/libqb.git; \
+	wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
+	#tar xpvf ./v0.17.2.tar.gz; \
+	#cd libqb-0.17.2; \
+
+	#./autogen.sh; \
+	#./configure; \
+	#make -j8; \
+
+	cd /root/Downloads/clusterLab/libqb/libqb; \
+        ./autogen.sh; \
+        ./configure; \
+        make -j8; \
 
 	#ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl
 	cp /addfiles/bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl; \
@@ -343,7 +347,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	#tar zxvf ./v2.3.5.tar.gz; \
 	#cd corosync-2.3.5; \
 
-	cd corosync
+	cd /root/Downloads/clusterLab/corosync/corosync; \
 	./autogen.sh; \
 	./configure; \
 	make -j8 ; \
@@ -351,13 +355,14 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 
 	#WORKDIR /root/Downloads/clusterLab/cluster-glue
 	cd /root/Downloads/clusterLab/cluster-glue; \
+	git clone https://github.com/ingted/cluster-glue.git; \
 
 	#apt-get -y install mercurial uuid-dev; \
-
+	cd /root/Downloads/cluster-glue; \	
 	hg clone http://hg.linux-ha.org/glue cluster-glue; \
 	#ls -l /root/Downloads/clusterLab/cluster-glue; \
 	#ls -l /root/Downloads/clusterLab; \
-	cd cluster-glue; \
+	cd /root/Downloads/clusterLab/cluster-glue/cluster-glue; \
 	./autogen.sh; \
 	./configure --enable-fatal-warmings=yes; \
 	make -j8; \
@@ -396,10 +401,17 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	./configure; \
 	make; \
 
+	mkdir /var/log/pcsd; \
+	mkdir /var/lib/pcsd; \
+	mkdir /usr/share/pcsd; \
+	chown hacluster:haclient /var/log/pcsd -R; \
+	chown hacluster:haclient /var/lib/pcsd -R; \
+	chown hacluster:haclient /usr/share/pcsd -R; \
 
-
+	
 	#WORKDIR /root/Downloads/clusterLab/pcs
 	cd /root/Downloads/clusterLab/pcs; \
+	git clone https://github.com/ingted/pcs.git; \
 	wget "https://github.com/ClusterLabs/pcs/archive/0.9.141.tar.gz"; \
 	tar zxvf 0.9.141.tar.gz; \
 	#ls -l; \
@@ -411,7 +423,7 @@ RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.b
 	#make install_pcsd
 
 
-
+	chown hacluster:haclient /root/Downloads/clusterLab/pcs -R; \
 
 	#WORKDIR /root/Downloads/clusterLab/fence-agents
 	cd /root/Downloads/clusterLab/fence-agents; \
