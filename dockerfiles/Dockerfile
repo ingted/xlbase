@@ -89,10 +89,10 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
         apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D; \
 	echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list; \
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A6A19B38D3D831EF; \
-	rm /var/lib/apt/lists/* -vrf
+	rm /var/lib/apt/lists/* -vrf; \
 	#apt-get -y update
 
-RUN	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"; \
+	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"; \
         bash /docker_scripts/120_dbus.sh; \
         service dbus status; \
         /usr/bin/timedatectl set-timezone  Asia/Taipei; \
@@ -116,9 +116,9 @@ RUN	bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/sy
 		cvs; \
 
 	cd /root/Downloads; \
-	dpkg -i /addfiles/packages/cgroup-lite_1.9_all.deb
+	dpkg -i /addfiles/packages/cgroup-lite_1.9_all.deb; \
 
-RUN	apt-get -y install \
+	apt-get -y install \
         	dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl docker.io dsniff \
         	flex \
         	g++ gcc gdb gettext git git-arch git-completion git-core git-doc git-email git-svn \
@@ -239,11 +239,11 @@ RUN	apt-get -y install \
 	rm fsharp -f; \
 	git clone https://github.com/fsharp/fsharp.git; \
 	cd fsharp; \
-	mkdir -p .paket
+	mkdir -p .paket; \
 	
 #ADD ./paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.bootstrapper.exe
 #ADD ./paket.dependencies /root/Downloads/fs/fsharp/paket.dependencies
-RUN cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.bootstrapper.exe; \
+	cp /addfiles/paket.bootstrapper.exe /root/Downloads/fs/fsharp/.paket/paket.bootstrapper.exe; \
 	cp /addfiles/paket.dependencies /root/Downloads/fs/fsharp/paket.dependencies; \
 
 	#WORKDIR /root/Downloads/fs/fsharp/.paket/
@@ -759,6 +759,7 @@ RUN chmod 755 /etc/container_environment; \
 	bash -c 'echo "postgres ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "osdba ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	bash -c 'echo "voltdb ALL=(ALL)    ALL" >> /etc/sudoers'; \	
+	bash -c 'echo "hacluster ALL=(ALL)    ALL" >> /etc/sudoers'; \	
 	#cp /addfiles/pash /usr/sbin; \
 	cp /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug/Pash.exe /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug/pash; \
 	cp /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug/* /usr/bin; \
