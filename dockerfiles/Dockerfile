@@ -311,10 +311,10 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	useradd --system -U -ms /bin/bash haclient; \
 	sed -i.bak -e s/haclient\:\!/haclient\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
-	useradd --system -m -g haclient -s /bin/bash hacluster; \
+	useradd --system -m -g haclient -s /bin/bash hacluster
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
-	cd /root/Downloads/clusterLab/libqb; \
+RUN cd /root/Downloads/clusterLab/libqb; \
 	#git clone https://github.com/ClusterLabs/libqb.git; \
 	git clone https://github.com/ingted/libqb.git; \
 	wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
@@ -329,6 +329,7 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
         ./autogen.sh; \
         ./configure; \
         make -j8; \
+	make install; \
 
 	#ADD ./bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl
 	cp /addfiles/bashrc_4_xl /root/Downloads/pgxl95/bashrc_4_xl; \
@@ -351,7 +352,7 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	./autogen.sh; \
 	./configure; \
 	make -j8 ; \
-
+	#make install; \
 
 	#WORKDIR /root/Downloads/clusterLab/cluster-glue
 	cd /root/Downloads/clusterLab/cluster-glue; \
@@ -366,7 +367,7 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	./autogen.sh; \
 	./configure --enable-fatal-warmings=yes; \
 	make -j8; \
-
+	make install; \
 
 
 	#apt-get -y install snmpd pacemaker-mgmt cluster-glue-dev
@@ -383,7 +384,7 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	./autogen.sh; \
 	./configure; \
 	make; \
-
+	#make install; \
 
 	#WORKDIR /root/Downloads/clusterLab/crmsh
 	cd /root/Downloads/clusterLab/crmsh; \
@@ -400,6 +401,7 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	./autogen.sh; \
 	./configure; \
 	make; \
+	make install; \
 
 	mkdir /var/log/pcsd; \
 	mkdir /var/lib/pcsd; \
@@ -449,7 +451,9 @@ RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	git clone https://github.com/ingted/pacemaker.git; \
 	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
 	#apt-get -y install rpm; \
- 
+	cd pacemaker; \ 
+	
+
 	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
 	#cd pacemaker-Pacemaker-1.1.13-rc3; \
 	#./autogen.sh; \
