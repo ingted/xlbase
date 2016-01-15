@@ -48,7 +48,7 @@ ifNoCheck=$8
 
 
 if [ "$ifNoCheck" == 1 ]; then
-	conf=$(./mgmt-xl-get-confname "$specified_cnm" $pgver $cluster|awk 'NR>2 {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
+	conf=$(./mgmt-xl-get-confname-no-check $role $pgver $cluster $specified_nid $specified_sm|awk 'NR>2 {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
 	if [ "$conf" == "invalid specified host!" ]; then
 		echo "invalid specified host! mgmt-xl-init failed!"
 		continue
@@ -69,6 +69,7 @@ if [ "$ifNoCheck" == 1 ]; then
                 #echo "$(which $conftemp.example)"
                 #echo "$conftemp"
                 dexxdir=$(dirname $(which dexxhosts))
+		echo "gen => $conftemp.example"
                 exp="$dexxdir/$conftemp.example"
                 if [ -e $exp ]; then
                         #echo $exp
@@ -76,7 +77,7 @@ if [ "$ifNoCheck" == 1 ]; then
                         #echo "$confexp"
 
                         confstr=$(echo "$(eval "cluster=$cluster; host=$host; source $(which dexxparammap); echo \"$confexp\"")")
-                        echo "$confstr"
+                        #echo "$confstr"
                         conf64=$(echo "$confstr"|base64)
 
                         util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64

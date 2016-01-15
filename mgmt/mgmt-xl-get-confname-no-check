@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [ "$2" == "" ]; then
+        echo "PGVER is required! Use 9.2."
+        PGVER="9.2"
+else
+	echo "PGVER sets to $2."
+        PGVER="$2"
+fi
+
+
+if [ "$3" == "" ]; then
+        echo "Cluster is required! Use \"test\"."
+        cluster=test
+else
+	echo "cluster sets to \"$3\"."
+        cluster="$3"
+fi
+
+#rst=$(./mgmt-xl-check-host "$1" "$cluster")
+#if [ "$rst" == 0 ]; then
+#	echo "invalid specified host!"
+#	exit 999
+#fi
+
+role=$1
+m_or_s=$5
+nid=$4
+
+#echo $role
+#echo $m_or_s
+#echo $nid
+
+configrepo=$(which dexxconfigrepo)
+
+#for r in $role; do
+	awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\") && (\$9 == \"$cluster\") {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$5,\$5\"/\"\$7,\$6}" "$configrepo"
+#done
