@@ -69,14 +69,14 @@ if [ "$ifNoCheck" == 1 ]; then
                 #echo "$(which $conftemp.example)"
                 #echo "$conftemp"
                 dexxdir=$(dirname $(which dexxhosts))
-		echo "gen => $conftemp.example"
+		#echo "gen => $conftemp.example"
                 exp="$dexxdir/$conftemp.example"
                 if [ -e $exp ]; then
                         #echo $exp
                         confexp=$(cat $exp)
                         #echo "$confexp"
 
-                        confstr=$(echo "$(eval "cluster=$cluster; host=$host; source $(which dexxparammap); echo \"$confexp\"")")
+                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; source $(which dexxparammap); echo \"$confexp\"")")
                         #echo "$confstr"
                         conf64=$(echo "$confstr"|base64)
 

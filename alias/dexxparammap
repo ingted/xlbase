@@ -132,5 +132,5 @@ function @@@hba_all_hostip@@@	  (){
 	source $(which dexxgnuparam) $@
 	hostfile=$(which dexxhosts)
 
-	echo "$(awk "(\$6 == \"$cluster\") && (\$3 != \"i\") {print \"host all all \"\$1\"/32 trust\"}" "$hostfile")"
+	echo "$(awk "(\$6 == \"$cluster\") && (\$3 != \"i\") {print \"host\tall\t\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
 }
