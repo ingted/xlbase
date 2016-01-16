@@ -59,8 +59,7 @@ if [ "$ifNoCheck" == 1 ]; then
         util-bpx "$specified_cnm" $pgu cluster-xl-init.ps1 $specified_cnm $1 $dir
         #echo "conf: $conf"
         for i in $conf; do
-                echo $(date +"%T") \[\| xl-conf begin\|\] @$specified_cnm $confpath
-                echo "i: $i"
+                echo $(date +"%T") \[\| xl-conf begin\|\] @$specified_cnm $i
                 confarr=(${i//\,/ })
                 #echo "$confarr"
                 #confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
@@ -82,7 +81,7 @@ if [ "$ifNoCheck" == 1 ]; then
 
                         util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
                 fi
-                echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm
+                echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm $confpath
 
 
         done	

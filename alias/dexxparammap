@@ -134,3 +134,28 @@ function @@@hba_all_hostip@@@	  (){
 
 	echo "$(awk "(\$6 == \"$cluster\") && (\$3 != \"i\") {print \"host\tall\t\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
 }
+function @@@hba_repl_hostip@@@     (){
+        source $(which dexxgnuparam) $@
+        msfile=$(which dexxmasterslave)
+	hostfile=$(which dexxhosts)
+	slavecnm=$(awk "(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
+        echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$slavecnm\") {print \"host\treplication\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
+}
+function @@@ha_wal@@@     (){
+        source $(which dexxgnuparam) $@
+        msfile=$(which dexxmasterslave)
+        slavecnm=$(awk "(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
+	if [ "$slavecnm" != "" ]; then
+		echo "max_wal_senders = 5"
+	        echo "wal_level = hot_standby"
+	fi
+}
+function @@@ha_sby@@@     (){
+        source $(which dexxgnuparam) $@
+        msfile=$(which dexxmasterslave)
+        mastercnm=$(awk "(\$4 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" "$msfile")
+	echo $mastercnm
+	if [ "$mastercnm" != "" ]; then
+		echo "hot_standby = on"
+	fi
+}
