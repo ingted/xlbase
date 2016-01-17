@@ -56,7 +56,7 @@ if [ "$ifNoCheck" == 1 ]; then
         dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 
         echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $1 $dir
-        util-bpx "$specified_cnm" $pgu cluster-xl-init.ps1 $specified_cnm $1 $dir
+        util-bpx "$specified_cnm" $pgu cluster-xl-init.ps1 $specified_cnm $1 $dir 1
         #echo "conf: $conf"
         for i in $conf; do
                 echo $(date +"%T") \[\| xl-conf begin\|\] @$specified_cnm $i
