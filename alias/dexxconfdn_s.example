@@ -22,5 +22,4 @@ max_datanodes = 					$(@@@b_dn_mx_dn@@@  -c $cluster -r dn)
 gtm_host = 					       '$(@@@m_dn_gtmprx@@@ -c $cluster -m $host)'
 gtm_port = 						$(@@@b_dn_gtmprx_port@@@)
 pgxc_node_name = 				       '$(@@@m_dn_pgxcnodename@@@ -c $cluster -m $host)'
-$(@@@ha_wal@@@ -c $cluster -m $host)
 $(@@@ha_sby@@@ -c $cluster -m $host)
