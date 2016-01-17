@@ -39,5 +39,5 @@ if ($r_in){
 	write-host "initdb --nodename $nodename -D $initpath"
 	initdb --nodename $nodename -D $initpath
 } else {
-	"wrong role specified!"
+	"wrong data specified to init!"
 }
