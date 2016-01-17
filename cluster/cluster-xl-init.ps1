@@ -25,20 +25,25 @@ $purge = {
         }
 }
 
+
+$debug_cnt = {
+	if($ifDebug){write-host ("item #:" + [int](dir $initpath).count)}
+}
+
 $groles = @{gtm="gtm"; gtmsby="gtm"; gtmprx="gtm_proxy"}
-$droles = @{coor="coordinator"; dn="coordinator"}
+$droles = @{coor="coordinator"; dn="datanode"}
 
 $r_in  = in $role $groles.keys
 $r_in2 = in $role $droles.keys
-if($ifDebug){write-host ("item #:" + (dir $initpath).count)}
+& $debug_cnt
 if ($r_in){
 	& $purge $initpath $ifPurgeExistingData
-	if($ifDebug){write-host ("item #:" + (dir $initpath).count)}
+	& $debug_cnt
 	write-host $("initgtm -Z " + $groles[$role] + " -D $initpath")
 	initgtm -Z $groles[$role] -D $initpath
 } elseif ($r_in2){
 	& $purge $initpath $ifPurgeExistingData
-	if($ifDebug){write-host ("item #:" + (dir $initpath).count)}
+	& $debug_cnt
 	write-host "initdb --nodename $nodename -D $initpath"
 	initdb --nodename $nodename -D $initpath
 } else {
