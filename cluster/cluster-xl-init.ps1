@@ -20,7 +20,7 @@ $purge = {
 	)
 	if($confirm) {
                 $path = [io.directoryinfo] $toPurge
-                $path.delete()
+                $path.delete($true)
                 $path.create()
         }
 }
