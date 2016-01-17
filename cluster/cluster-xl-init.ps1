@@ -1,6 +1,6 @@
 #!/usr/bin/pash
 param(
-	$nodename, $role, $initpath, $ifPurgeExiistingData, $ifDebug
+	$nodename, $role, $initpath, $ifPurgeExistingData, $ifDebug
 )
 
 function in{
