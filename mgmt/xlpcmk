@@ -1,3 +1,8 @@
 #!/bin/bash
-dexx an13 test2 rm\ /postgres/dn1_s/\*\ -rf
-dexx an13 test2 pg_basebackup\ -h\ an22\ -U\ postgres\ -D\ /postgres/dn1_s/\ -X\ stream\ -p10002\ -P\ /\'],lp123
+
+dexx an22 test2 "setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/dn1_m/ stop"
+./mgmt-xl-init dn postgres an22 1 m test2 9.2 1
+dexx an22 test2 "sed -i.bak -e s/an31/an23/g /postgres/dn1_m/postgresql.conf"
+dexx an22 test2 "setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/dn1_m/ start"
+#dexx an13 test2 "rm /postgres/dn1_s/* -rf"
+#dexx an13 test2 "export PGPASSWORD=\\\\\\\"/\\\\'],lp123\\\\\\\"; /usr/local/pgsql/bin/pg_basebackup -h an22 -U postgres -D /postgres/dn1_s/ -X stream -p10002 -P -w"

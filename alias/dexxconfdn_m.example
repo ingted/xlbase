@@ -23,5 +23,13 @@ gtm_host = 					       '$(@@@m_dn_gtmprx@@@ -c $cluster -m $host)'
 gtm_port = 						$(@@@b_dn_gtmprx_port@@@)
 pgxc_node_name = 				       '$(@@@m_dn_pgxcnodename@@@ -c $cluster -m $host)'
 $(@@@ha_wal@@@ -c $cluster -m $host)
-full_page_write = on
+full_page_writes = on
 synchronous_commit = on
+archive_mode = on
+archive_command = 					'$(@@@wal_archive@@@)'
+restart_after_crash  = off
+replication_timeout = 5000
+wal_receiver_status_interval = 2
+max_standby_streaming_delay = -1
+max_standby_archive_delay = -1
+hot_standby_feedback = on

@@ -159,3 +159,10 @@ function @@@ha_sby@@@     (){
 		echo "hot_standby = on"
 	fi
 }
+function @@@wal_archive@@@ (){
+	source $(which dexxgnuparam) $@
+	echo "cp %p /postgres/%f"
+
+
+
+}
