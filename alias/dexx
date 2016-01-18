@@ -28,105 +28,119 @@ for dhi in $dhosts; do
 	echo @ $dh
         dnm=${dhtmp[0]}
         cnms=$(awk "(\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
-
-	ssh root@$dh bash <<'SSH_L1'
-		echo "$PATH" > ~/PATH.TMP
-		#echo "$PATH"		
-
-
+	pcnt=0
+	tout=20
+	while [ $pcnt -lt 1 ]; do 
+		pi=$(ping $dh -c 1 -W $tout)
+		pout=$?
+		echo $pout $pcnt $tout
+		if [ "$pout" == 0 ]; then
+			break
+		fi
+		pcnt=`expr $pcnt + 1`
+		tout=`expr $tout \* 3`
+	done
+	if [ "$pout" == 0 ]; then
+		ssh root@$dh bash <<'SSH_L1'
+			echo "$PATH" > ~/PATH.TMP
+			#echo "$PATH"		
+	
+	
 SSH_L1
-
-	ssh root@$dh bash << SSH_L1
-		export PATH=\$(cat ~/PATH.TMP) 
-		export PATH=\$PATH:/root/xlbase/alias
-		dhosts_o="$dhosts"
-		dhosts=(\${dhosts_o//\\\n/ })
-		#echo =====\\\$dhosts in remote ========
-		#echo ==echo \$dhosts
-		#echo ==echo ===============================
-		cnms_o="$cnms"
-		cnms_r=(\${cnms_o//\\\n/ })
-		#echo =====\\\$cnms_r remote ========
-		#echo \$cnms_r
-		#echo ===============================
-		if [ "$1" == "-a" ]; then
-
-                        ##echo "1: \$PATH"
-
-			#cat /root/.bashrc
-			#source /root/.bashrc
-			##echo "dexxhosts \$(which dexxhosts)"
-			#export PATH=\$PATH:\$(dirname \$(which dexxhosts))
-			##echo "2: \$PATH"
-			ids="\$(\$(which dls) -ll)"
-			#echo "ids: \$ids"
-			ids=(\${ids//\\\n/ })
-
-			if [ "\$ids" == "" ]; then
-				echo "no alive containers!"
+	
+		ssh root@$dh bash << SSH_L1
+			export PATH=\$(cat ~/PATH.TMP) 
+			export PATH=\$PATH:/root/xlbase/alias
+			dhosts_o="$dhosts"
+			dhosts=(\${dhosts_o//\\\n/ })
+			#echo =====\\\$dhosts in remote ========
+			#echo ==echo \$dhosts
+			#echo ==echo ===============================
+			cnms_o="$cnms"
+			cnms_r=(\${cnms_o//\\\n/ })
+			#echo =====\\\$cnms_r remote ========
+			#echo \$cnms_r
+			#echo ===============================
+			if [ "$1" == "-a" ]; then
+	
+	                        ##echo "1: \$PATH"
+	
+				#cat /root/.bashrc
+				#source /root/.bashrc
+				##echo "dexxhosts \$(which dexxhosts)"
+				#export PATH=\$PATH:\$(dirname \$(which dexxhosts))
+				##echo "2: \$PATH"
+				ids="\$(\$(which dls) -ll)"
+				#echo "ids: \$ids"
+				ids=(\${ids//\\\n/ })
+	
+				if [ "\$ids" == "" ]; then
+					echo "no alive containers!"
+				else
+				
+	
+					for id in "\${ids[@]}"; do
+						echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
+						echo "[< Container >]" : ID\ \ \ \ \ \ \ : \$id
+						echo "[< Container >]" : Username : \$(/usr/bin/whoami)
+						echo "[< Container >]" : Hostname : \$(/bin/hostname)
+						
+						expath=\$(docker exec \$id 'pwd')
+						echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
+						#docker exec \$id "${*:2}"
+						echo /bin/bash -c "$dcmd"
+						docker exec \$id /bin/bash -c "$dcmd"
+					done 
+					IFS=ifsold
+				fi
+			elif [ "$1" == "-h" ] ; then 
+				bash -c "${*:3}"
+				#echo 123
+	
+			elif [ "$1" == "-n" ] ; then 
+				if [ "$3" == "$dh" ] || [ "$3" == "$dnm" ]; then 
+					bash -c "${*:4}"
+				
+				fi
 			else
-			
-
-				for id in "\${ids[@]}"; do
-					echo "[< Server    >]" : IP\ \ \ \ \ \ \ : $dh
-					echo "[< Container >]" : ID\ \ \ \ \ \ \ : \$id
-					echo "[< Container >]" : Username : \$(/usr/bin/whoami)
-					echo "[< Container >]" : Hostname : \$(/bin/hostname)
-					
-					expath=\$(docker exec \$id 'pwd')
-					echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
-					#docker exec \$id ${*:2}
-					echo '/bin/bash -c "$dcmd"'
-					docker exec \$id /bin/bash -c "$dcmd"
-				done 
-				IFS=ifsold
-			fi
-		elif [ "$1" == "-h" ] ; then 
-			bash -c '${*:3}'
-
-		elif [ "$1" == "-n" ] ; then 
-			if [ "$3" == "$dh" ] || [ "$3" == "$dnm" ]; then 
-				bash -c '${*:4}'
-			
-			fi
-		else
-			echo Docker Host Mode: \(Please specify docker container ID\)
-			array_contains2 () { 
-			    local array="\$1[@]"
-			    local seeking=\$2
-			    local in=1
-				#echo "$array"
-			    for element in \${!array}; do
-			        if [[ \$element == \$seeking ]]; then
-			            in=0
-			            break
-			        fi
-			    done
-			    return \$in
-			}
-			dlss=\$(\$(which dls) -ll)
-			dlsss=(\${dlss//\\\n/ })			
-			echo =====\\\$dlsss in remote =========
-                	echo \$dlsss
-			echo \${dlsss[0]}
-			echo $1
-                	echo ===============================
-
-			#Do not support IP so far...
-			#if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
-			if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
-			#if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
-				docker exec $1 bash -c '${*:3}'
-			else
-				#echo \$(\$(which dls) -ll)
-				#echo $1
-				#echo \$(array_contains2 \$(\$(which dls) -ll) "$1")
-				echo Wrong container ID!
-			fi
-		fi 
-
+				echo Docker Host Mode: \(Please specify docker container ID\)
+				array_contains2 () { 
+				    local array="\$1[@]"
+				    local seeking=\$2
+				    local in=1
+					#echo "$array"
+				    for element in \${!array}; do
+				        if [[ \$element == \$seeking ]]; then
+				            in=0
+				            break
+				        fi
+				    done
+				    return \$in
+				}
+				dlss=\$(\$(which dls) -ll)
+				dlsss=(\${dlss//\\\n/ })			
+				echo =====\\\$dlsss in remote =========
+	                	#echo \$dlsss
+				#echo \${dlsss[0]}
+				echo target hostname: $1
+	                	echo ===============================
+	
+				#Do not support IP so far...
+				#if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
+				if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
+				#if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
+					docker exec $1 bash -c "${*:3}"
+					#echo 234
+				else
+					#echo \$(\$(which dls) -ll)
+					#echo $1
+					#echo \$(array_contains2 \$(\$(which dls) -ll) "$1")
+					echo Wrong container ID!
+				fi
+			fi 
+	
 SSH_L1
-
+	fi
 done
 
 

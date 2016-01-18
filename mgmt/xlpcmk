@@ -1,0 +1,3 @@
+#!/bin/bash
+dexx an13 test2 rm\ /postgres/dn1_s/\*\ -rf
+dexx an13 test2 pg_basebackup\ -h\ an22\ -U\ postgres\ -D\ /postgres/dn1_s/\ -X\ stream\ -p10002\ -P\ /\'],lp123

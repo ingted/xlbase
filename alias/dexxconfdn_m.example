@@ -23,3 +23,5 @@ gtm_host = 					       '$(@@@m_dn_gtmprx@@@ -c $cluster -m $host)'
 gtm_port = 						$(@@@b_dn_gtmprx_port@@@)
 pgxc_node_name = 				       '$(@@@m_dn_pgxcnodename@@@ -c $cluster -m $host)'
 $(@@@ha_wal@@@ -c $cluster -m $host)
+full_page_write = on
+synchronous_commit = on
