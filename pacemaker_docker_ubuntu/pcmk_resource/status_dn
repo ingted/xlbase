@@ -1,0 +1,51 @@
+#!/bin/bash
+
+ip=192.168.137.116
+confport=10002
+#result=$((setuser postgres /usr/local/pgsql/bin/postgres --datanode -D /postgres/dn1_m) 2>&1)
+result=$((setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/dn1_m status) 2>&1)
+
+#if [ $? != 0 ]; then
+	echo $result
+	if [ "$result" == "pg_ctl: no server running" ]; then
+		echo "daemon not running! trying conf port..."
+		nss=$(netstat -anp|grep "/tmp/.s.PGSQL.$confport")
+		if [ "$nss" == "" ]; then
+			echo "not running verified!"
+		else
+			echo $nss 
+			echo "pid file corrupted!"
+		fi
+	else
+        	pid=$(echo $result|sed -r 's/.*+?PID:\ ([[:digit:]]+).*/\1/g')
+		nss=$(netstat -anp|grep -P "$pid/(postgres|gtm|gtm_proxy)"|grep /tmp/.s.PGSQL)
+		if [ "$nss" == "" ]; then
+			echo "pid in pid file is not correct!! trying conf port..."
+			cnss=$(netstat -anp|grep "/tmp/.s.PGSQL.$confport")
+                	if [ "$cnss" == "" ]; then
+				echo "no correct pid found!"
+                	else
+                	        echo "nss: $nss"
+				echo "cnss:$cnss"
+                	        echo "pid file corrupted!"
+                	fi
+		fi	
+		echo "pid in pid file is correct!! reteieving port..."
+		port=$(echo $nss|sed -r 's/.*\.([[:digit:]]+)$/\1/g')
+		echo "port opened at $port."
+		ipport=$(netstat -anp|grep $pid|grep $ip:$port|grep LISTEN)
+		if [ "$ipport" != "" ]; then
+			if [ "$port" == "$confport" ]; then
+	                        echo "status veridied! binding at confport $port -> $ip:$confport"
+			else
+				echo "not binding at confport $port -> $ip:$confport"
+			fi
+                else
+			echo "not binding at confport $port -> $ip:$confport"
+		fi
+		#if [ "$ipport" == "" ]; then
+		#	exit 1
+		#else
+	fi
+#fi
+

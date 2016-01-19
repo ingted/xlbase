@@ -1,0 +1,57 @@
+#!/bin/bash
+
+ip=192.168.137.132
+confport=36666
+#result=$((setuser postgres /usr/local/pgsql/bin/postgres --datanode -D /postgres/dn1_m) 2>&1)
+result=$((setuser postgres /usr/local/pgsql/bin/gtm_ctl -Z gtm -D /postgres/gtm status) 2>&1)
+
+#if [ $? != 0 ]; then
+	echo $result
+	if [ "$(echo $result|grep -P 'gtm_ctl: could not open PID file')" != "" ]; then
+		echo "daemon not running! trying conf port..."
+		nss=$(netstat -anp|grep $confport|grep "/gtm")
+		if [ "$nss" != "" ]; then
+			#exit 0
+			echo $nss 
+			echo "pid file corrupted! port is open."
+		#	exit 0
+		else
+			echo "not running verified!"
+		fi
+	else
+        	pid=$(echo $result|sed -r 's/.*+?PID:\ ([[:digit:]]+).*/\1/g')
+		nss=$(netstat -anp|grep -P "$pid/(gtm|gtm_proxy)")
+		#echo $nss
+		#echo ==================1
+		if [ "$nss" == "" ]; then
+			echo "pid in pid file is not correct! trying conf port..."
+			cnss=$(netstat -anp|grep -P "$confport")
+			#echo ================2
+                	if [ "$cnss" == "" ]; then
+				echo "no correct pid found!"
+                	        #exit 0
+                	else
+                	        echo "nss: $nss"
+				echo "cnss:$cnss"
+                	        echo "pid file corrupted!"
+                	        #exit 0
+                	fi
+		fi	
+		#echo ===================3
+		ipport=$(echo $nss|grep -P "$ip:$confport"|grep LISTEN)
+		if [ "$ipport" == "" ]; then 
+			echo "not binding at conf ip:port -> $ip:$confport"	
+		else
+			echo "status veridied!"
+		fi
+		#echo ===================4
+		#echo pid $pid
+		#echo nss $nss
+		#echo ipport $ipport
+		#if [ "$ipport" == "" ]; then
+		#	exit 1
+		#else
+		#	exit 0
+	fi
+#fi
+

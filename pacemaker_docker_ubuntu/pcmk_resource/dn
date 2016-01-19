@@ -1,0 +1,32 @@
+#!/bin/bash
+
+role="dn" ###cfgrole###
+cnm=$(hostname)
+mypath="/etc/init.d"
+pglib="/usr/local/pgsql/bin"
+pgdir="/postgres/dn1_m"
+dexx="/root/pcmk/alias" ###cfgdexx###
+
+export PATH=$PATH:$mypath
+
+case "$1" in
+    start)
+        launcher --start   -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
+        ;;
+    stop)
+        launcher --stop    -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
+        ;;
+    restart)
+        launcher --restart -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
+        ;;
+    status)
+        #launcher --status -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
+	status_dn
+        ;;
+    *)
+        echo "Usage : ${name} {start|stop|status}"
+        exit 1
+
+esac
+
+exit 0

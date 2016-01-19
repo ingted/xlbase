@@ -1,0 +1,27 @@
+#!/bin/bash
+
+role="gtm" ###cfgrole###
+cnm=$(hostname)
+mypath="/etc/init.d"
+pglib="/usr/local/pgsql/bin/"
+dexx="/root/pcmk/alias/" ###cfgdexx###
+
+export PATH=$PATH:$mypath
+
+case "$1" in
+    start)
+        launcher --start  -d $pglib -r $role -n $cnm -p $dexx
+        ;;
+    stop)
+        launcher --stop   -d $pglib -r $role -n $cnm -p $dexx
+        ;;
+    status)
+        launcher --status -d $pglib -r $role -n $cnm -p $dexx
+        ;;
+    *)
+        echo "Usage : ${name} {start|stop|status}"
+        exit 1
+
+esac
+
+exit 0

@@ -1,0 +1,116 @@
+#!/usr/bin/env python
+# -*- encoding: utf8 -*-
+
+##i@package xl-launcher
+#@brief  執行特定角色啟動呼叫程序.
+#@details  啟動停止以及檢視程序狀態是否符合.
+#@authors Evan
+#@revision Anibal
+#@version 0.2
+#@date 2016-01-19
+
+import os
+import sys
+import optparse
+
+_user = "postgres"
+
+
+
+#getData = lambda tag, path: filter(
+#    lambda x: x.endswith(tag),
+#    map(
+#        lambda x: x.strip('\r\n'),
+#        os.popen(path).readlines()
+#    )
+#)
+
+_settings = {
+    "rolestrs" : {
+      'gtm'   : {'role': 'gtm'},
+      'gtmsby': {'role': 'gtm'},
+      'gtmprx': {'role': 'gtm_proxy'},
+      'coor'  : {'role': 'coordinator'},
+      'dn'    : {'role': 'datanode'}
+    }
+}
+
+##@brief ENTRY function.
+#@param options: It's like a dictionary.
+#@return 0
+#@warning None
+def main(options):
+    _cmdg = options.libpath + '/gtm_ctl'
+    _cmdp = options.libpath + '/pg_ctl'
+    _rolestr = _settings["rolestrs"][options.role]["role"]
+    #_env = 'cd %s; %,s' % (options.dirpath, _expect % (_set['role']))
+    #_path = getData(_set['tag'], _env)[0].split()[0]
+    #if len(_path) < 0: raise Exception('Can not get the path!')
+    if options.role in ["gtm", "gtmsby", "gtmprx"]:
+        _cmd = _cmdg
+    elif options.role in ["coor", "dn"]:
+        _cmd = _cmdp
+    else:
+        raise Exception('Wrong role!')
+
+    getCMD = lambda act: 'setuser %s %s -Z %s -D %s %s' % (_user, _cmd, _rolestr, options.pgpath, act)
+    _CMD = lambda x: getCMD(x)
+    if options.start:
+        print _CMD('start')
+        os.system(_CMD('start'))
+    elif options.stop:
+        print _CMD('stop')
+        os.system(_CMD('stop'))
+    elif options.restart:
+	print _CMD('restart')
+        os.system(_CMD('restart'))
+    else:
+        print 'Options: --(start|stop|restart|status)'
+    return 0
+
+if __name__ == '__main__':
+    #usage = "usage: %prog [options] arg1 arg2"
+    #parser = optparse.OptionParser(usage=usage)
+    parser = optparse.OptionParser(usage=main.__doc__)
+
+    parser.add_option("--start", action="store_true",
+                      help="Start process.",
+                      dest="start", default=False)
+
+    parser.add_option("--stop", action="store_true",
+                      help="Stop process.",
+                      dest="stop", default=False)
+
+    parser.add_option("--restart", action="store_true",
+                      help="Restart process.",
+                      dest="restart", default=False)
+
+    parser.add_option("-l", "--libdir", type="string",
+                      help="pg lib directory",
+                      dest="libpath")
+
+    parser.add_option("-n", "--name", type="string",
+                      help="Node Name",
+                      dest="name", default="")
+
+    parser.add_option("-r", "--role", type="string",
+                      help="Role Name",
+                      dest="role", default="")
+
+    parser.add_option("-p", "--path", type="string",
+                      help="dexx path",
+                      dest="dexxpath", default="")
+
+    parser.add_option("-d", "--dbdir", type="string",
+                      help="pg db path",
+                      dest="pgpath", default="")
+    #"""
+    options, args = parser.parse_args()
+
+    if len(args) != 0:
+        parser.print_help()
+        sys.exit(1)
+
+    sys.exit(main(options))
+
+
