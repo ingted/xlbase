@@ -75,11 +75,11 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/gnu/libnettle.so.4         /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libgnutls-deb0.so.28   /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libhogweed.so.2        /usr/lib/x86_64-linux-gnu/; \   
-	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/
+	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; \
 
 
 
-RUN sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
+	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	ln -s /bin/true /etc/init.d/systemd-logind; \
  	ln -snf /root/Downloads/https /usr/lib/apt/methods/https; \
         apt-get purge openjdk-7-*; \
@@ -384,7 +384,7 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 	./autogen.sh; \
 	./configure; \
 	make; \
-	#make install; \
+	make install; \
 
 	#WORKDIR /root/Downloads/clusterLab/crmsh
 	cd /root/Downloads/clusterLab/crmsh; \
@@ -456,9 +456,9 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 
 	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
 	#cd pacemaker-Pacemaker-1.1.13-rc3; \
-	#./autogen.sh; \
-	#./configure; \
-	#make -j8; \
+	./autogen.sh; \
+	./configure; \
+	make -j8; \
 	
 	mkdir -p /root/Downloads/pash; \
 	cd /root/Downloads/pash; \
@@ -701,20 +701,20 @@ RUN chmod 755 /etc/container_environment; \
 #Available as /sbin/setuser.
 
 	#WORKDIR /root/Downloads/clusterLab/libqb/libqb-0.17.2
-	cd /root/Downloads/clusterLab/libqb/libqb-0.17.2; \
+	#cd /root/Downloads/clusterLab/libqb/libqb-0.17.2; \
 	#make install; \
 
 	#WORKDIR /root/Downloads/clusterLab/corosync/corosync-2.3.5
-	cd /root/Downloads/clusterLab/corosync/corosync-2.3.5; \
+	#cd /root/Downloads/clusterLab/corosync/corosync-2.3.5; \
 	#make install; \
 
 
 	#WORKDIR /root/Downloads/clusterLab/cluster-glue/cluster-glue
-	cd /root/Downloads/clusterLab/cluster-glue/cluster-glue; \
+	#cd /root/Downloads/clusterLab/cluster-glue/cluster-glue; \
 	#make install; \
 
 
-	cd /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug; \
+	#cd /root/Downloads/pash/Pash/Source/PashConsole/bin/Debug; \
 	
 
 
