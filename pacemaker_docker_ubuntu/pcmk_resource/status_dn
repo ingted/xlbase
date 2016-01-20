@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ip=192.168.137.116
+ip=192.168.137.129
 confport=10002
 #result=$((setuser postgres /usr/local/pgsql/bin/postgres --datanode -D /postgres/dn1_m) 2>&1)
 result=$((setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/dn1_m status) 2>&1)
@@ -10,7 +10,8 @@ result=$((setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/
 	if [ "$result" == "pg_ctl: no server running" ]; then
 		echo "daemon not running! trying conf port..."
 		nss=$(netstat -anp|grep "/tmp/.s.PGSQL.$confport")
-		if [ "$nss" == "" ]; then
+		lsof=$(lsof -U|grep "/tmp/.s.PGSQL.$confport")
+		if [ "$nss" == "" ] || [ "$lsof" == "" ] ; then
 			echo "not running verified!"
 		else
 			echo $nss 
@@ -36,7 +37,7 @@ result=$((setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/
 		ipport=$(netstat -anp|grep $pid|grep $ip:$port|grep LISTEN)
 		if [ "$ipport" != "" ]; then
 			if [ "$port" == "$confport" ]; then
-	                        echo "status veridied! binding at confport $port -> $ip:$confport"
+	                        echo "status verified! binding at confport $port -> $ip:$confport"
 			else
 				echo "not binding at confport $port -> $ip:$confport"
 			fi

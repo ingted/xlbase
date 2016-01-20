@@ -10,7 +10,8 @@ result=$((setuser postgres /usr/local/pgsql/bin/gtm_ctl -Z gtm -D /postgres/gtm 
 	if [ "$(echo $result|grep -P 'gtm_ctl: could not open PID file')" != "" ]; then
 		echo "daemon not running! trying conf port..."
 		nss=$(netstat -anp|grep $confport|grep "/gtm")
-		if [ "$nss" != "" ]; then
+		lsof=$(lsof -U|grep "/tmp/.s.PGSQL.$confport")
+		if [ "$nss" != "" ] && [ "$lsof" != "" ]; then
 			#exit 0
 			echo $nss 
 			echo "pid file corrupted! port is open."

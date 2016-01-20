@@ -2,10 +2,14 @@
 
 role="dn" ###cfgrole###
 cnm=$(hostname)
+ip="192.168.137.129" ###cfgip###
+port=10002 ###cfgport###
 mypath="/etc/init.d"
 pglib="/usr/local/pgsql/bin"
 pgdir="/postgres/dn1_m"
 dexx="/root/pcmk/alias" ###cfgdexx###
+
+
 
 export PATH=$PATH:$mypath
 
@@ -21,7 +25,7 @@ case "$1" in
         ;;
     status)
         #launcher --status -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
-	status_dn
+	xlstatus -i $ip -p $port -r $role -d $pgdir
         ;;
     *)
         echo "Usage : ${name} {start|stop|status}"

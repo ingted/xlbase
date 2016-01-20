@@ -1,0 +1,120 @@
+#!/bin/bash
+
+#ip=192.168.137.129
+#confport=10002
+#result=$((setuser postgres /usr/local/pgsql/bin/postgres --datanode -D /postgres/dn1_m) 2>&1)
+
+
+function main () {
+	nodetyp=$(if [ "$noderole" == "gtm" ] || [ "$noderole" == "gtmprx" ] || [ "$noderole" == "gtmsby" ]; then echo g; else echo p; fi)
+	binary=$(if [ "$nodetyp" == "g" ]; then echo gtm_ctl; else echo pg_ctl; fi)
+	result=$((setuser postgres /usr/local/pgsql/bin/$binary -Z $noderole -D $pgdir status) 2>&1)
+	echo $result
+	if [ "$result" == "$binary: no server running" ]; then
+		echo "daemon not running! trying conf port..."
+		nss=$(if [ "$nodetyp" == "p" ]; then
+			netstat -anp|grep "/tmp/.s.PGSQL.$confport"
+		else
+			netstat -anp|grep $confport|grep "/gtm"
+		fi)
+		lsof=$(if [ "$nodetyp" == "p" ]; then
+			lsof -U|grep "/tmp/.s.PGSQL.$confport"
+		else
+			lsof|grep -P "$confport\ \(LISTEN\)"|grep gtm
+		fi)
+		if [ "$nss" == "" ] || [ "$lsof" == "" ] ; then
+			echo "not running verified!"
+		else
+			echo $nss 
+			echo "pid file corrupted! port is open."
+		fi
+	else
+        	pid=$(echo $result|sed -r 's/.*+?PID:\ ([[:digit:]]+).*/\1/g')
+		nss=$(if [ "$nodetyp" == "p" ]; then
+			netstat -anp|grep -P "$pid/postgres"|grep /tmp/.s.PGSQL
+		else
+			netstat -anp|grep -P "$pid/(gtm|gtm_proxy)"
+		fi)
+		if [ "$nss" == "" ]; then
+			echo "pid in pid file is not correct!! trying conf port..."
+			cnss=$(if [ "$nodetyp" == "p" ]; then
+				netstat -anp|grep "/tmp/.s.PGSQL.$confport"
+			else
+				netstat -anp|grep -P "$confport"
+			fi)
+                	if [ "$cnss" == "" ]; then
+				echo "no correct pid found!"
+                	else
+                	        echo "nss: $nss"
+				echo "cnss:$cnss"
+                	        echo "pid file corrupted!"
+                	fi
+		fi
+		if [ "$nodetyp" == "p" ]; then	
+			echo "pid in pid file is correct!! reteieving port..."
+			port=$(echo $nss|sed -r 's/.*\.([[:digit:]]+)$/\1/g')
+			echo "port opened at $port."
+			ipport=$(netstat -anp|grep $pid|grep $ip:$port|grep LISTEN)
+		else
+			ipport=$(echo $nss|grep -P "$ip:$confport"|grep LISTEN)
+		fi
+
+		if [ "$ipport" != "" ]; then
+			if [ "$nodetyp" == "p" ] && [ "$port" == "$confport" ]; then
+	                        echo "status verified! binding at confport $port -> $ip:$confport"
+			elif [ "$nodetyp" == "g" ]; then
+				echo "status veridied!"
+			else
+				echo "not binding at confport $port -> $ip:$confport"
+			fi
+                else
+			echo "not binding at confport $port -> $ip:$confport"
+		fi
+		#if [ "$ipport" == "" ]; then
+		#	exit 1
+		#else
+	fi
+}
+
+
+function helptext () {
+        echo ""
+        echo "xlstatus: A tool for get xlbase status."
+        echo ""
+        echo "Usage: ./xlstatus [options]"
+        echo ""
+        echo "Options:"
+        echo "-i, --ip             	ip."
+        echo "-p, --port, --confport    "
+        echo "-r, --role"
+        echo "-d, --pgdir              	initialized path."
+        echo "-r, --role                Default is gtm."
+        echo "-v                        pgver."
+        echo "-sm, --slave-or-master    Slave or master, default is master."
+        echo ""
+        exit $1
+
+}
+
+cnt=$#
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+        -i|--ip) ip=$2; shift; shift;;
+        -p|--port|--confport) confport=$2; shift; shift;;
+	-r|--role) noderole=$2; shift; shift;;
+	-d|--pgdir) pgdir=$2; shift; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+if [ "$cnt" == "0" ]; then
+        helptext 1;
+else
+        main
+fi
+
