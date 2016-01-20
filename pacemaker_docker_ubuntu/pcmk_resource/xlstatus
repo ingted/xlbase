@@ -10,7 +10,8 @@ function main () {
 	binary=$(if [ "$nodetyp" == "g" ]; then echo gtm_ctl; else echo pg_ctl; fi)
 	result=$((setuser postgres /usr/local/pgsql/bin/$binary -Z $noderole -D $pgdir status) 2>&1)
 	echo $result
-	if [ "$result" == "$binary: no server running" ]; then
+	gtmnopidfile=$(echo $result|grep "$binary: could not open PID file")
+	if [ "$result" == "$binary: no server running" ] || [ "$gtmnopidfile" != "" ]; then
 		echo "daemon not running! trying conf port..."
 		nss=$(if [ "$nodetyp" == "p" ]; then
 			netstat -anp|grep "/tmp/.s.PGSQL.$confport"
@@ -24,9 +25,11 @@ function main () {
 		fi)
 		if [ "$nss" == "" ] || [ "$lsof" == "" ] ; then
 			echo "not running verified!"
+			exit 0
 		else
 			echo $nss 
 			echo "pid file corrupted! port is open."
+			exit 1
 		fi
 	else
         	pid=$(echo $result|sed -r 's/.*+?PID:\ ([[:digit:]]+).*/\1/g')
@@ -40,35 +43,41 @@ function main () {
 			cnss=$(if [ "$nodetyp" == "p" ]; then
 				netstat -anp|grep "/tmp/.s.PGSQL.$confport"
 			else
-				netstat -anp|grep -P "$confport"
+				netstat -anp|grep -P "$confport\s\+(?!""TIME_WAIT)"
 			fi)
                 	if [ "$cnss" == "" ]; then
 				echo "no correct pid found!"
+				exit 2
                 	else
                 	        echo "nss: $nss"
 				echo "cnss:$cnss"
                 	        echo "pid file corrupted!"
+				exit 3
                 	fi
-		fi
-		if [ "$nodetyp" == "p" ]; then	
-			echo "pid in pid file is correct!! reteieving port..."
-			port=$(echo $nss|sed -r 's/.*\.([[:digit:]]+)$/\1/g')
-			echo "port opened at $port."
-			ipport=$(netstat -anp|grep $pid|grep $ip:$port|grep LISTEN)
 		else
-			ipport=$(echo $nss|grep -P "$ip:$confport"|grep LISTEN)
-		fi
-
-		if [ "$ipport" != "" ]; then
-			if [ "$nodetyp" == "p" ] && [ "$port" == "$confport" ]; then
-	                        echo "status verified! binding at confport $port -> $ip:$confport"
-			elif [ "$nodetyp" == "g" ]; then
-				echo "status veridied!"
+			if [ "$nodetyp" == "p" ]; then	
+				echo "pid in pid file is correct!! reteieving port..."
+				port=$(echo $nss|sed -r 's/.*\.([[:digit:]]+)$/\1/g')
+				echo "port opened at $port."
+				ipport=$(netstat -anp|grep $pid|grep $ip:$port|grep LISTEN)
 			else
-				echo "not binding at confport $port -> $ip:$confport"
+				ipport=$(echo $nss|grep -P "$ip:$confport"|grep LISTEN)
 			fi
-                else
-			echo "not binding at confport $port -> $ip:$confport"
+			if [ "$ipport" != "" ]; then
+				if [ "$nodetyp" == "p" ] && [ "$port" == "$confport" ]; then
+	        	                echo "status verified! binding at confport $port -> $ip:$confport"
+					exit 0
+				elif [ "$nodetyp" == "g" ]; then
+					echo "status veridied!"
+					exit 0
+				else
+					echo "not binding at confport $port -> $ip:$confport"
+					exit 4
+				fi
+                	else
+				echo "status verified! not binding at confport $port -> $ip:$confport"
+				exit 5
+			fi
 		fi
 		#if [ "$ipport" == "" ]; then
 		#	exit 1

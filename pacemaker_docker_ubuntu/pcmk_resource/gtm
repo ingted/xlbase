@@ -6,7 +6,7 @@ ip="192.168.137.132" ###cfgip###
 port=36666 ###cfgport###
 mypath="/etc/init.d"
 pglib="/usr/local/pgsql/bin"
-pgdir="/postgres/dn1_m"
+pgdir="/postgres/gtm"
 dexx="/root/pcmk/alias" ###cfgdexx###
 
 export PATH=$PATH:$mypath

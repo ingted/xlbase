@@ -51,22 +51,23 @@ def main(options):
     elif options.role in ["coor", "dn"]:
         _cmd = _cmdp
     else:
-        raise Exception('Wrong role!')
+        #raise Exception('Wrong role!')
+	return -1
 
     getCMD = lambda act: 'setuser %s %s -Z %s -D %s %s' % (_user, _cmd, _rolestr, options.pgpath, act)
     _CMD = lambda x: getCMD(x)
     if options.start:
         print _CMD('start')
-        os.system(_CMD('start'))
+        return os.system(_CMD('start'))
     elif options.stop:
         print _CMD('stop')
-        os.system(_CMD('stop'))
+        return os.system(_CMD('stop'))
     elif options.restart:
 	print _CMD('restart')
-        os.system(_CMD('restart'))
+        return os.system(_CMD('restart'))
     else:
         print 'Options: --(start|stop|restart|status)'
-    return 0
+    return 1
 
 if __name__ == '__main__':
     #usage = "usage: %prog [options] arg1 arg2"
