@@ -33,6 +33,9 @@ $debug_cnt = {
 $groles = @{gtm="gtm"; gtmsby="gtm"; gtmprx="gtm_proxy"}
 $droles = @{coor="coordinator"; dn="datanode"}
 
+$ip = [io.directoryinfo] $initpath
+if(!$ip.exists){$ip.create()}
+
 $r_in  = in $role $groles.keys
 $r_in2 = in $role $droles.keys
 & $debug_cnt
