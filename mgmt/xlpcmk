@@ -1,5 +1,6 @@
 #!/bin/bash
-
+dexx an22 test2 "cd /root/pcmk/; ./get-tool"
+dexx an13 test2 "cd /root/pcmk/; ./get-tool"
 dexx an22 test2 "setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/dn1_m/ stop"
 ./mgmt-xl-init dn postgres an22 1 m test2 9.2 1
 dexx an22 test2 "sed -i.bak -e s/an31/an23/g /postgres/dn1_m/postgresql.conf"
