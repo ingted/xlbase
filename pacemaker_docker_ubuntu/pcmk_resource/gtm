@@ -24,7 +24,7 @@ case "$1" in
 	launcher --restart -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
 	;;
     status)
-	xlstatus -i $ip -p $port -r $role -d $pgdir
+	xlstatus -i $ip -p $port -r $role -d $pgdir && exit 0 || exit $?
         ;;
     *)
         echo "Usage : ${name} {start|stop|status}"
