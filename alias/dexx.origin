@@ -8,25 +8,24 @@ fi
 
 
 dcmd=${*:3}
-echo ==========dexx start===========
-echo -e "distributed command: $dcmd"
+echo "distributed command: $dcmd"
 hostfil=$(which dexxhosts)
 dhosts=$(awk "(\$3 == \"h\") && (\$6 == \"$cluster\") {print \$2\",\"\$1}" $hostfil)
 
 
 
 #echo ===========\$dhosts============
-echo -e "distributor:\n$dhosts"
+echo  $dhosts
 #echo ===========\$cnms\ \ ============
 #echo  $cnms
-echo ===============================
+#echo ===============================
 
 
 for dhi in $dhosts; do
 
 	dhtmp=(${dhi//\,/ })
         dh=${dhtmp[1]}
-	echo -e "\n=>to node: $dh"
+	echo @ $dh
         dnm=${dhtmp[0]}
         cnms=$(awk "(\$4 == \"$dnm\") && (\$6 == \"$cluster\") {print \$2}" $hostfil)
 	pcnt=0
@@ -34,7 +33,7 @@ for dhi in $dhosts; do
 	while [ $pcnt -lt 1 ]; do 
 		pi=$(ping $dh -c 1 -W $tout)
 		pout=$?
-		echo -e "=>spawning... $pout $pcnt $tout"
+		echo $pout $pcnt $tout
 		if [ "$pout" == 0 ]; then
 			break
 		fi
@@ -62,7 +61,7 @@ SSH_L1
 			#echo =====\\\$cnms_r remote ========
 			#echo \$cnms_r
 			#echo ===============================
-			if [ "$1" == "-a" ] || [ "$1" == "--ad" ]; then
+			if [ "$1" == "-a" ]; then
 	
 	                        ##echo "1: \$PATH"
 	
@@ -90,11 +89,7 @@ SSH_L1
 						echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
 						#docker exec \$id "${*:2}"
 						echo /bin/bash -c "$dcmd"
-						if [ "$1" == "--ad" ]; then
-							docker exec -d \$id /bin/bash -c "$dcmd"
-						else
-							docker exec \$id /bin/bash -c "$dcmd"
-						fi
+						docker exec -it \$id /bin/bash -c "$dcmd"
 					done 
 					IFS=ifsold
 				fi
@@ -108,7 +103,7 @@ SSH_L1
 				
 				fi
 			else
-				echo -e "\\nDocker Host Mode: (Please specify docker container ID)"
+				echo Docker Host Mode: \(Please specify docker container ID\)
 				array_contains2 () { 
 				    local array="\$1[@]"
 				    local seeking=\$2
@@ -124,7 +119,7 @@ SSH_L1
 				}
 				dlss=\$(\$(which dls) -ll)
 				dlsss=(\${dlss//\\\n/ })			
-				echo ========= remote info =========
+				echo =====\\\$dlsss in remote =========
 	                	#echo \$dlsss
 				#echo \${dlsss[0]}
 				echo target hostname: $1
@@ -134,11 +129,7 @@ SSH_L1
 				#if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 dhosts "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms "$1" && echo 1 || echo 0) == 1 ]]; then 
 				if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
 				#if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
-					if [ "$3" == "-d" ]; then
-						docker exec -d $1 bash -c "${*:4}"
-					else
-						docker exec $1 bash -c "${*:3}"
-					fi
+					docker exec -it $1 bash -c "${*:3}"
 					#echo 234
 				else
 					#echo \$(\$(which dls) -ll)
