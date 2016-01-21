@@ -38,7 +38,10 @@ make_image()
 	fi
 	#echo "ADD ./debs /root/debs" >> Dockerfile
 	echo "RUN mkdir -p /addfiles/packages_pcmk; \\"					>> Dockerfile
- 	echo "	mkdir -p /root/pcmk"	 						>> Dockerfile
+ 	echo "	mkdir -p /root/pcmk; \\" 						>> Dockerfile
+ 	echo "	mkdir -p /addfiles/resource_pcmk; \\" 					>> Dockerfile
+ 	echo "	cp /addfiles/resource_pcmk/xlstatus /etc/init.d; \\"			>> Dockerfile
+ 	echo "	cp /addfiles/resource_pcmk/launcher /etc/init.d"			>> Dockerfile
 	
 	#for f in $(ls $parent/debs/); do
 	#	echo "ADD $parent/debs/$f /root/debs/$f"
@@ -51,7 +54,7 @@ make_image()
 	echo "ADD $corosync_config /etc/corosync/" 					>> Dockerfile
 	echo "ADD ./functions /lib/lsb/init-functions" 					>> Dockerfile
 	echo "ADD ./util/* /root/pcmk/" 						>> Dockerfile
-	
+	echo "ADD ./pcmk_resource/* /addfiles/resource_pcmk"	
 
 	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" 				>> Dockerfile
 	echo "	apt-get -y update; apt-get -y upgrade; \\" 				>> Dockerfile

@@ -1,65 +1,15 @@
-
-10.128.112.47	coor1v		v		255.255.255.0	coor1m
-10.128.112.48	coor2v		v		255.255.255.0	coor2m	
-10.128.113.37	coor1s_cv 	coor1s		255.255.255.0	-
-10.128.113.38	coor2m_cv 	coor2m		255.255.255.0	-
-10.128.113.39	coor1m_cv 	coor1m		255.255.255.0	-
-10.128.113.40	coor2s_cv 	coor2s		255.255.255.0	-
-10.128.113.47	dn1s_cv		coor1s		255.255.255.0	-
-10.128.113.48	dn2s_cv		coor2s		255.255.255.0	-
-10.128.113.49	dn1m_cv		coor1m		255.255.255.0	-
-10.128.113.50	dn2m_cv		coor2m		255.255.255.0	-
-10.128.113.51	dn1v		v		255.255.255.0	dn1m
-10.128.113.52	dn2v		v		255.255.255.0	dn2m
-10.128.113.53	gp1s_cv		coor1s		255.255.255.0	-
-10.128.113.54	gp2s_cv		coor2s		255.255.255.0	-
-10.128.113.55	gp1m_cv		coor1m		255.255.255.0	-
-10.128.113.56	gp2m_cv		coor2m		255.255.255.0	-
-10.128.113.57	gp1v		v		255.255.255.0	gtmprx1m
-10.128.113.58	gp2v		v		255.255.255.0	gtmprx2m
-10.128.114.36	xlgtm_v		v		255.255.255.0	xlgtm
-10.128.114.37	xlgtm		xlgtm		255.255.255.0	-
-10.128.114.38	xlgtmsby	xlgtmsby	255.255.255.0	-
-
-
-
-
-
-
-
-
-
-
-
-
-#192.168.123.131  apd  		h -  -				test2
-#192.168.123.122  apc  		h -  -				test2
-#192.168.123.119  an11 		c apd /docker_volume/an11	test2
-#192.168.123.134  an12 		c apd /docker_volume/an12	test2 
-#192.168.123.129  an13 		c apd /docker_volume/an13	test2 
-#192.168.123.128  an21 		c apd /docker_volume/an21	test2 
-#192.168.123.130  an22 		c apd /docker_volume/an22	test2 
-#192.168.123.132  an23 		c apd /docker_volume/an23	test2 
-#192.168.123.133  an31 		c apd /docker_volume/an31	test2 
-#192.168.123.125  an32 		c apc /docker_volume/an32	test2 
-#192.168.123.105  an33 		c apc /docker_volume/an33	test2 
-#192.168.123.121  an41 		c apc /docker_volume/an41	test2 
-#192.168.123.124  an42 		c apc /docker_volume/an42	test2 
-#192.168.123.127  an43 		c apc /docker_volume/an43	test2 
-#
-#140.117.11.7 	 ftp.nsysu.edu.tw		i - -		test2
-#91.189.95.83 	 ppa.launchpad.net		i - -		test2
-#140.113.168.126  ubuntu.cs.nctu.edu.tw		i - -		test2
-#91.189.91.15 	 security.ubuntu.com		i - -		test2
-#103.245.222.68 	 apt.dockerproject.org		i - -		test2
-#91.189.88.149 	 archive.ubuntu.com		i - -		test2
-#211.73.64.9   	 free.nchc.org.tw		i - -		test2
-#43.249.73.223 	 pypi.python.org		i - -		test2
-#103.245.222.133  raw.githubusercontent.com	i - -		test2
-#45.58.41.142 	 postgis.net			i - -		test2
-#140.211.15.132 	 download.osgeo.org		i - -		test2
-#192.30.252.144 	 codeload.github.com		i - -		test2
-#91.189.89.49 	 keyserver.ubuntu.com		i - -		test2
-#18.9.60.141 	 pgp.mit.edu			i - -		test2
-#54.230.213.123 	 download.mono-project.com	i - -		test2
-#192.30.252.130 	 github.com			i - -		test2
+mgmt            hostname type reside  cluster toGTM           	toClient        toVolt          inXL
+192.168.137.124 apd      h    -       test2   -			-		-		-
+192.168.137.122 apc      h    -       test2   -			-		-		-
+192.168.137.119 an11     c    apd     test2   192.168.138.119	-		-		-
+192.168.137.126 an12     c    apd     test2   192.168.138.126	-		-		-
+192.168.137.129 an13     c    apd     test2   -			192.168.137.129	192.168.139.129	192.168.140.129
+192.168.137.104 an21     c    apd     test2   -			192.168.137.104	192.168.139.104	192.168.140.104
+192.168.137.116 an22     c    apd     test2   -			-		192.168.139.116	192.168.140.116	
+192.168.137.132 an23     c    apd     test2   -			-		192.168.139.132	192.168.140.132
+192.168.137.136 an31     c    apd     test2   192.168.138.136 	-		-		-	
+192.168.137.125 an32     c    apc     test2   192.168.138.125 	-		-		-	
+192.168.137.106 an33     c    apc     test2   -			192.168.137.106	192.168.139.106	192.168.140.106	
+192.168.137.121 an41     c    apc     test2   -			192.168.137.121	192.168.139.121	192.168.140.121	
+192.168.137.109 an42     c    apc     test2   -			192.168.137.109	192.168.139.109	192.168.140.109	
+192.168.137.113 an43     c    apc     test2   -			192.168.137.113	192.168.139.113	192.168.140.113

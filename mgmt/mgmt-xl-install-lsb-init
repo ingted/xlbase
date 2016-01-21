@@ -1,0 +1,89 @@
+#!/bin/bash
+
+update=
+nid=-
+slave_or_master=-
+cnm=-
+cluster=
+
+
+role="gtm" ###cfgrole###
+cnm=$(hostname)
+ip="192.168.137.132" ###cfgip###
+port=36666 ###cfgport###
+mypath="/etc/init.d"
+pglib="/usr/local/pgsql/bin"
+pgdir="/postgres/gtm" ###cfgpgdir###
+dexx="/root/pcmk/alias" ###cfgdexx###
+
+cat $exp|sed -e s/###cfgrole###/role=\"gtm\"/g|sed -e s/###cfgip###/ip=\"$()\"/g|head -5
+
+
+dexxdir=$(dirname $(which dexxhosts))
+exp="$dexxdir/resource.example"
+                if [ -e $exp ]; then
+                        #echo $exp
+                        confexp=$(cat $exp)
+                        #echo "$confexp"
+
+                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; source $(which dexxparammap); echo \"$confexp\"")")
+                        #echo "$confstr"
+                        conf64=$(echo "$confstr"|base64)
+
+                        util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
+                fi
+                echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm $confpath
+
+
+function main () {
+
+	echo ./mgmt-xl-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r dn  --host "$cnm"  -c "$cluster" -v "$pgver"
+	./mgmt-xl-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r dn  --host "$cnm"  -c "$cluster" -v "$pgver"
+
+
+}
+
+
+function helptext () {
+        echo ""
+        echo "mgmt-xl-setup-dn - A tool for setup a xlbase data node ."
+        echo ""
+        echo "Usage: ./mgmt-xl-setup-dn [options]"
+        echo ""
+        echo "Options:"
+        echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
+	echo "-u, --update		Update utility tools."
+	echo "--host, --hostname	Container node name."
+	echo "-n, --nid, --nodeid	Container node group ID."
+	echo "--sm, --slave-master	Container node group role."
+	echo "-v                        pgxl version."
+        echo ""
+        exit $1
+
+}
+
+cnt=$#
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+        -c|--cluster) cluster=$2; shift; shift;;
+	-f|--force) force="-f"; shift;;
+	--host|--hostname) cnm=$2; shift; shift;;
+	-n|--nid|--nodeid) nid=$2; shift; shift;;
+	--sm|--slave-master) slave_or_master=$2; shift; shift;;
+ 	-u|--update) update="-u"; shift;; 
+        -v|--pgver|--version) pgver=$2; shift; shift;;
+	"") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+if [ $cnt == 0 ]; then
+        helptext 1
+else
+        main
+fi
+
