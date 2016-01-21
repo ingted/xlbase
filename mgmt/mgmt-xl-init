@@ -48,7 +48,7 @@ ifNoCheck=$8
 
 
 if [ "$ifNoCheck" == 1 ]; then
-	conf=$(./mgmt-xl-get-confname-no-check $role $pgver $cluster $specified_nid $specified_sm|awk 'NR>2 {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
+	conf=$(./mgmt-xl-get-confname-no-check $role $pgver $cluster $specified_nid $specified_sm|awk 'NR>2 && ($3 != "-") {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
 	if [ "$conf" == "invalid specified host!" ]; then
 		echo "invalid specified host! mgmt-xl-init failed!"
 		continue
@@ -95,7 +95,7 @@ else
 			if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
 				if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
 	
-					conf=$(./mgmt-xl-get-confname "$host" $pgver $cluster|awk 'NR>2 {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
+					conf=$(./mgmt-xl-get-confname "$host" $pgver $cluster|awk 'NR>2 && ($3 != "-") {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
 					if [ "$conf" == "invalid specified host!" ]; then
 						echo "invalid specified host! mgmt-xl-init failed!"
 						continue

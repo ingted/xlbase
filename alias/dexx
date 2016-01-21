@@ -89,7 +89,7 @@ SSH_L1
 						echo "[< Container >]" : PATH\ \ \ \ \ : \$expath
 						#docker exec \$id "${*:2}"
 						echo /bin/bash -c "$dcmd"
-						docker exec \$id /bin/bash -c "$dcmd"
+						docker exec -it \$id /bin/bash -c "$dcmd"
 					done 
 					IFS=ifsold
 				fi
