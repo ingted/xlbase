@@ -21,4 +21,4 @@ $dd | %{
 	}
 }
 
-$configstr | out-file $confpath -Encoding ascii
+$configstr | out-file $confpath -Encoding ascii -Force
