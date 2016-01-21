@@ -20,6 +20,6 @@ $dd | %{
 		$configstr += "`n" + $_
 	}
 }
-$cp = [io.directoryinfo] $confpath
-if(!$cp.exists){$cp.create()}
+$cp = [io.fileinfo] $confpath
+if(!$cp.Directory.exists){$cp.Directory.create()}
 $configstr | out-file $confpath -Encoding ascii -Force

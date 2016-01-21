@@ -1,0 +1,35 @@
+#!/bin/bash
+
+role="coor" ###cfgrole###
+cnm=$(hostname)
+ip="192.168.137.132" ###cfgip###
+port=40001 ###cfgport###
+mypath="/etc/init.d"
+pglib="/usr/local/pgsql/bin"
+pgdir="/postgres/coor1_m"
+dexx="/root/pcmk/alias" ###cfgdexx###
+
+export PATH=$PATH:$mypath
+
+case "$1" in
+    start)
+	launcher --start -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
+        #launcher --start  -d $pglib -r $role -n $cnm -p $dexx
+        ;;
+    stop)
+	launcher --stop -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
+        #launcher --stop   -d $pglib -r $role -n $cnm -p $dexx
+        ;;
+    restart)
+	launcher --restart -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
+	;;
+    status)
+	xlstatus -i $ip -p $port -r $role -d $pgdir && exit 0 || exit $?
+        ;;
+    *)
+        echo "Usage : ${name} {start|stop|status|restart}"
+        exit 1
+
+esac
+
+exit 0
