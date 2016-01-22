@@ -1,12 +1,29 @@
 #!/bin/bash
+set "" "-c" test2 "-m" an22 "-r" dn "-s" m
+source $(which dexxgnuparam) $@
+dexxdir=$(dirname $(which dexxhosts))
+exp=$(which resource.example)
+drfil=$(which dexxhostroles)
+difil=$(which dexxhostips)
+hrinfo=$(./mgmt-xl-get-role $specified_cnm $cluster \$3\",\"\$5\",\"\$7)
 
-update=
-nid=-
-slave_or_master=-
-cnm=-
-cluster=
+#echo "$hrinfo"
 
+for hi in $hrinfo; do
 
+#	echo "$hi"
+	hi_splt_by_cma=(${hi//,/ })
+#	echo "${hi_splt_by_cma[0]}"
+	if [ "$role" != "-" ] && [ "${hi_splt_by_cma[0]}" == "$role" ]; then
+	
+		hsbc=${hi_splt_by_cma[2]}
+		awk "(\$2 == \"$hsbc\") && (\$5 == \"$cluster\") {print \$6\",\"\$7\",\"\$8\",\"\$9}" $difil
+	fi
+
+done
+
+#source $(which dexxgnuparam) -c test2 -m an22 -r dn -s m
+exit
 role="gtm" ###cfgrole###
 cnm=$(hostname)
 ip="192.168.137.132" ###cfgip###
@@ -19,8 +36,6 @@ dexx="/root/pcmk/alias" ###cfgdexx###
 cat $exp|sed -e s/###cfgrole###/role=\"gtm\"/g|sed -e s/###cfgip###/ip=\"$()\"/g|head -5
 
 
-dexxdir=$(dirname $(which dexxhosts))
-exp="$dexxdir/resource.example"
                 if [ -e $exp ]; then
                         #echo $exp
                         confexp=$(cat $exp)
@@ -44,46 +59,22 @@ function main () {
 }
 
 
-function helptext () {
-        echo ""
-        echo "mgmt-xl-setup-dn - A tool for setup a xlbase data node ."
-        echo ""
-        echo "Usage: ./mgmt-xl-setup-dn [options]"
-        echo ""
-        echo "Options:"
-        echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
-	echo "-u, --update		Update utility tools."
-	echo "--host, --hostname	Container node name."
-	echo "-n, --nid, --nodeid	Container node group ID."
-	echo "--sm, --slave-master	Container node group role."
-	echo "-v                        pgxl version."
-        echo ""
-        exit $1
 
-}
+hosts=$(./mgmt-xl-get-host-by-role "$role" $cluster)
+        for host in $hosts; do
+                nid=$(./mgmt-xl-get-node-id "$host" $cluster)
+                if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
+                        sm=$(./mgmt-xl-get-m-or-s "$host"  $cluster)
+                        if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
+                                if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
 
-cnt=$#
+                                        conf=$(./mgmt-xl-get-confname "$host" $pgver $cluster|awk 'NR>2 && ($3 != "-") {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
+                                        if [ "$conf" == "invalid specified host!" ]; then
+                                                echo "invalid specified host! mgmt-xl-init failed!"
+                                                continue
+                                        fi
+                                        dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 
-while true ; do
-        case "$1" in
-        --help|-h|-\?) helptext 0;;
-        -c|--cluster) cluster=$2; shift; shift;;
-	-f|--force) force="-f"; shift;;
-	--host|--hostname) cnm=$2; shift; shift;;
-	-n|--nid|--nodeid) nid=$2; shift; shift;;
-	--sm|--slave-master) slave_or_master=$2; shift; shift;;
- 	-u|--update) update="-u"; shift;; 
-        -v|--pgver|--version) pgver=$2; shift; shift;;
-	"") break;;
-        *)
-                echo "[ERROR!!] Unknown option \"$1\""
-                helptext 1;;
-        esac
-done
-
-if [ $cnt == 0 ]; then
-        helptext 1
-else
-        main
-fi
+                                        echo $(date +"%T") \[\| xl-init \|\] @$host $1 $dir
+                                        util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
 

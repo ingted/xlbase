@@ -26,9 +26,10 @@ function helptext () {
 	echo "-r, --role			"
 	echo "-v, --pgver, --version		pgver."
 	echo "-s, --sm, --slave-or-master	Slave or master, default is master."
+	echo "-i, --hrid			hostroleid."
         echo ""
 	#return
-        #exit $1
+        exit $1
 
 }
 
@@ -44,6 +45,7 @@ while true ; do
 	-r|--role) role=$2; shift; shift;;
 	-s|--sm|--slave-or-master) specified_sm=$2; shift; shift;;
 	-v|--pgver|--version) pgver=$2; shift; shift;;
+	-i|--hrid) hrid=$2; shift; shift;;
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""

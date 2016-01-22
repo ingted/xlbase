@@ -6,5 +6,12 @@ else
 	cluster=$2
 fi
 
+if [ "$3" == "" ]; then
+        val="\$3"
+else
+        val="$3"
+fi
+
+#echo "(\$1 == \"$1\") && (\$6 == \"$cluster\") {print $val}"
 hostrole=$(which dexxhostroles)
-awk "(\$1 == \"$1\") && (\$6 == \"$cluster\") {print \$3}" $hostrole
+awk "(\$1 == \"$1\") && (\$6 == \"$cluster\") {print $val}" $hostrole
