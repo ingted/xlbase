@@ -39,9 +39,8 @@ make_image()
 	#echo "ADD ./debs /root/debs" >> Dockerfile
 	echo "RUN mkdir -p /addfiles/packages_pcmk; \\"					>> Dockerfile
  	echo "	mkdir -p /root/pcmk; \\" 						>> Dockerfile
- 	echo "	mkdir -p /addfiles/resource_pcmk; \\" 					>> Dockerfile
- 	echo "	cp /addfiles/resource_pcmk/xlstatus /etc/init.d; \\"			>> Dockerfile
- 	echo "	cp /addfiles/resource_pcmk/launcher /etc/init.d"			>> Dockerfile
+ 	echo "	mkdir -p /addfiles/resource_pcmk" 					>> Dockerfile
+
 	
 	#for f in $(ls $parent/debs/); do
 	#	echo "ADD $parent/debs/$f /root/debs/$f"
@@ -57,6 +56,8 @@ make_image()
 	echo "ADD ./pcmk_resource/* /addfiles/resource_pcmk"	
 
 	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" 				>> Dockerfile
+ 	echo "	cp /addfiles/resource_pcmk/xlstatus /etc/init.d; \\"			>> Dockerfile
+ 	echo "	cp /addfiles/resource_pcmk/launcher /etc/init.d; \\"			>> Dockerfile
 	echo "	apt-get -y update; apt-get -y upgrade; \\" 				>> Dockerfile
 	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \\" 			>> Dockerfile
 	echo "	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions; \\" 		>> Dockerfile
