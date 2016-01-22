@@ -2,6 +2,7 @@
 
 git config --global user.name "anibal.yeh"
 git config --global user.email anibal.yeh@gmail.com
+git config --global push.default simple
 
 if [ -e exped ]; then
 	rm exped
