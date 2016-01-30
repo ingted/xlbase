@@ -99,8 +99,11 @@ function @@@m_coor_gtmprx@@@      (){
 	done
 }
 function @@@m_coor_hostip@@@      (){  
-	source $(which dexxgnuparam) $@
-	echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
+	dexxgnuparam=$(which dexxgnuparam)
+	source $dexxgnuparam $@
+	dirpath=$(dirname $dexxgnuparam)
+	#echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
+	gawk -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
 }
 function @@@m_coor_pgxcnodename@@@ (){  
 	source $(which dexxgnuparam) $@
