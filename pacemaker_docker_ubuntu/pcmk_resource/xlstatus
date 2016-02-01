@@ -68,7 +68,7 @@ function main () {
 	        	                echo "status verified! binding at confport $port -> $ip:$confport"
 					exit 0
 				elif [ "$nodetyp" == "g" ]; then
-					echo "status veridied!"
+					echo "status verified!"
 					exit 0
 				else
 					echo "not binding at confport $port -> $ip:$confport"
