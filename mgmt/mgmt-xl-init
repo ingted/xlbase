@@ -84,6 +84,8 @@ if [ "$ifNoCheck" == 1 ]; then
                         conf64=$(echo "$confstr"|base64)
 
                         util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
+			listenvip=()
+			util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role orz prz dir
                 fi
                 echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm $confpath
 

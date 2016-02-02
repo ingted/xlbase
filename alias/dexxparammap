@@ -95,7 +95,11 @@ function @@@gtmprx@@@        (){
         for h in $chosts; do
                 hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
                 sphrn=(${hostrolenid//\,})
-		echo $sphrn
+		#echo ${sphrn[1]} $hostnid
+		#echo ${sphrn[2]} "gtmprx"
+		#echo ${sphrn[3]} $specified_sm
+		#echo ${sphrn[0]}
+
 
                 if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$specified_sm" ]; then
                         gphrid="${sphrn[0]}"
@@ -103,23 +107,35 @@ function @@@gtmprx@@@        (){
                         break
                 fi
         done
-	
-        awk "{print \"$gphrid\"}" $(which dexxhostips)
-        awk "(\$5 == \"$cluster\") && (\$2 == \"$gphrid\") {print \$10}" $(which dexxhostips)
+	#echo $gphrid	
+        #awk "{print \"$gphrid\"}" $(which dexxhostips)
+        awk "(\$5 == \"$cluster\") && (\$2 == \"$gphrid\") {print \$13}" $(which dexxhostips)
 }
 
 
 
 function @@@m_coor_gtmprx@@@      (){  
 	source $(which dexxgnuparam) $@
-	@@@gtmprx@@@ -c $cluster -m $host
+	@@@gtmprx@@@ -c $cluster -m $specified_cnm -s $specified_sm
 }
+function @@@hostip@@@      (){
+        dexxgnuparam=$(which dexxgnuparam)
+        source $dexxgnuparam $@
+        dirpath=$(dirname $dexxgnuparam)
+        gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
+}
+
+function @@@hostvip@@@      (){
+        dexxgnuparam=$(which dexxgnuparam)
+        source $dexxgnuparam $@
+        dirpath=$(dirname $dexxgnuparam)
+        gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostvip.awk $dirpath/dexxhostips
+}
+
 function @@@m_coor_hostip@@@      (){  
 	dexxgnuparam=$(which dexxgnuparam)
 	source $dexxgnuparam $@
-	dirpath=$(dirname $dexxgnuparam)
-	#echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
-	gawk -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
+	@@@hostip@@@ -r $role -i $hrid -s $specified_sm -c $cluster
 }
 function @@@m_coor_pgxcnodename@@@ (){  
 	source $(which dexxgnuparam) $@
@@ -127,7 +143,7 @@ function @@@m_coor_pgxcnodename@@@ (){
 }
 function @@@m_dn_gtmprx@@@        (){  
 	source $(which dexxgnuparam) $@
-        @@@gtmprx@@@ -c $cluster -m $specified_cnm
+        @@@gtmprx@@@ -c $cluster -m $specified_cnm -s $specified_sm
 	#source $(which dexxgnuparam) $@
         #dhost=$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$4}" $(which dexxhosts))
         #chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
@@ -146,10 +162,11 @@ function @@@m_dn_gtmprx@@@        (){
 function @@@m_dn_hostip@@@        (){ 
 	dexxgnuparam=$(which dexxgnuparam) 
 	source $dexxgnuparam $@
-        dirpath=$(dirname $dexxgnuparam)
-	#echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
-	#echo $hrid $specified_sm $role
-	gawk -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
+        #dirpath=$(dirname $dexxgnuparam)
+	##echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
+	##echo $hrid $specified_sm $role
+	#gawk -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
+	@@@hostip@@@ -r $role -i $hrid -s $specified_sm -c $cluster
 }
 function @@@m_dn_pgxcnodename@@@  (){   
 	source $(which dexxgnuparam) $@
