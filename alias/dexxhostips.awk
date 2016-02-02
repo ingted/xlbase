@@ -55,32 +55,36 @@ BEGIN {
 				print ipstr
 				break
 			case "coor":
-				if(!($7 in tmpip)){tmpip[1]=$7}
-				if(!($8 in tmpip)){tmpip[length(tmpip) + 1]=$8}
-				if(!($9 in tmpip)){tmpip[length(tmpip) + 1]=$9}
-				if(ms == "m"){
-					if(!($11 in tmpip)){tmpip[length(tmpip) + 1]=$11}
-					if(!($12 in tmpip)){tmpip[length(tmpip) + 1]=$12}
-					if(!($13 in tmpip)){tmpip[length(tmpip) + 1]=$13}
+				if(!($7 in tmpip) && ($7 != "-")){tmpip[1]=$7}
+				if(!($8 in tmpip) && ($8 != "-")){tmpip[length(tmpip) + 1]=$8}
+				if(!($9 in tmpip) && ($9 != "-")){tmpip[length(tmpip) + 1]=$9}
+				if(sm == "m"){
+					if(!($11 in tmpip) && ($11 != "-")){tmpip[length(tmpip) + 1]=$11}
+					if(!($12 in tmpip) && ($12 != "-")){tmpip[length(tmpip) + 1]=$12}
+					if(!($13 in tmpip) && ($13 != "-")){tmpip[length(tmpip) + 1]=$13}
 				}
 				for (i = 1; i <= length(tmpip); i++) {
 					ipstr=tmpip[i]","ipstr
 				}
 				gsub(/,$/,"",ipstr)
+				gsub(/,$/,"",ipstr)
+				gsub(/,$/,"",ipstr)
 				print ipstr
 				break
 			case "dn":
-				if(!($7 in tmpip)){tmpip[1]=$7}
-				if(!($8 in tmpip)){tmpip[length(tmpip) + 1]=$8}
-				if(!($9 in tmpip)){tmpip[length(tmpip) + 1]=$9}
-				if(ms == "m"){
-					if(!($11 in tmpip)){tmpip[length(tmpip) + 1]=$11}
-					if(!($12 in tmpip)){tmpip[length(tmpip) + 1]=$12}
-					if(!($13 in tmpip)){tmpip[length(tmpip) + 1]=$13}
+				if(!($7 in tmpip) && ($7 != "-")){tmpip[1]=$7}
+				if(!($8 in tmpip) && ($8 != "-")){tmpip[length(tmpip) + 1]=$8}
+				if(!($9 in tmpip) && ($9 != "-")){tmpip[length(tmpip) + 1]=$9}
+				if(sm == "m"){
+					if(!($11 in tmpip) && ($11!= "-")){tmpip[length(tmpip) + 1]=$11}
+					if(!($12 in tmpip) && ($12 != "-")){tmpip[length(tmpip) + 1]=$12}
+					if(!($13 in tmpip) && ($13 != "-")){tmpip[length(tmpip) + 1]=$13}
 				}
 				for (i = 1; i <= length(tmpip); i++) {
 					ipstr=tmpip[i]","ipstr
 				}
+				gsub(/,$/,"",ipstr)
+				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				print ipstr
 				break

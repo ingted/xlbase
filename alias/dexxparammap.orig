@@ -91,23 +91,18 @@ function @@@gtmprx@@@        (){
         chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
         hostnid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" $(which dexxhostroles))
         hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
-        #echo 123
+	#echo 123
         for h in $chosts; do
-                hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
+	        hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
                 sphrn=(${hostrolenid//\,})
-		echo $sphrn
-
+		echo ${sphrn[2]
                 if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$specified_sm" ]; then
                         gphrid="${sphrn[0]}"
-
                         break
                 fi
         done
-	
-        awk "{print \"$gphrid\"}" $(which dexxhostips)
-        awk "(\$5 == \"$cluster\") && (\$2 == \"$gphrid\") {print \$10}" $(which dexxhostips)
+        awk "(\$5 == \"$cluster\") && (\$2 == gphrid) {print \$10}" $(which dexxhostips)
 }
-
 
 
 function @@@m_coor_gtmprx@@@      (){  

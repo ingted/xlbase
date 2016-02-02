@@ -1,4 +1,4 @@
-listen_addresses = 				       '$(@@@m_dn_hostip@@@ -c $cluster -m $host)'
+listen_addresses = 				       '$(@@@m_dn_hostip@@@ -c $cluster -m $host -i $hrid -s $sm -r $role)'
 port = 							$(@@@b_dn_port@@@)
 max_connections = 					$(@@@b_dn_mx_conn@@@)
 shared_buffers = 					$(@@@b_dn_shbuff@@@)
@@ -26,7 +26,7 @@ $(@@@ha_sby@@@ -c $cluster -m $host)
 full_page_writes = on
 synchronous_commit = on
 archive_mode = on
-archive_command =                                       '$(@@@wal_archive@@@)'
+archive_command =                                       '$(@@@wal_archive@@@ -c $cluster -r dn -s $sm -n $nid)'
 hot_standby = on
 restart_after_crash = off
 replication_timeout = 5000

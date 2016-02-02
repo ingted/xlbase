@@ -73,9 +73,13 @@ if [ "$ifNoCheck" == 1 ]; then
                 if [ -e $exp ]; then
                         #echo $exp
                         confexp=$(cat $exp)
+			hrid=$(./mgmt-xl-get-hrid $specified_cnm $cluster)
+			nid=$(./mgmt-xl-get-node-id $specified_cnm $cluster)
+			sm=$(./mgmt-xl-get-m-or-s $specified_cnm $cluster)
                         #echo "$confexp"
+			#echo $hrid
 
-                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; source $(which dexxparammap); echo \"$confexp\"")")
+                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; hrid=$hrid; nid=$nid; sm=$sm; role=$role;  source $(which dexxparammap); echo \"$confexp\"")")
                         #echo "$confstr"
                         conf64=$(echo "$confstr"|base64)
 
@@ -119,10 +123,13 @@ else
 						exp="$dexxdir/$conftemp.example"
 						if [ -e $exp ]; then
 							#echo $exp
+							hrid=$(./mgmt-xl-get-hrid $host $cluster)
+							nid=$(./mgmt-xl-get-node-id $host $cluster)
+							sm=$(./mgmt-xl-get-m-or-s $host $cluster)
 							confexp=$(cat $exp)
 							#echo "$confexp"
-	
-							confstr=$(echo "$(eval "cluster=$cluster; host=$host; source $(which dexxparammap); echo \"$confexp\"")")
+								
+							confstr=$(echo "$(eval "cluster=$cluster; host=$host; hrid=$hrid; nid=$nid; sm=$sm; role=$role; source $(which dexxparammap); echo \"$confexp\"")")
 							echo "$confstr"
 							conf64=$(echo "$confstr"|base64)
 	

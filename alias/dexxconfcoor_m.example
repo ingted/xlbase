@@ -1,4 +1,4 @@
-listen_addresses = 			       '$(@@@m_coor_hostip@@@ -c $cluster -m $host)'
+listen_addresses = 			       '$(@@@m_coor_hostip@@@ -c $cluster -m $host -i $hrid -s $sm -r $role)'
 port = 						$(@@@b_coor_port@@@)
 max_connections = 				$(@@@b_coor_mx_conn@@@)
 shared_buffers = 				$(@@@b_coor_shbuff@@@)

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gawk -v role=coor -v nid=1 -v ms=m -v hrid=5 -f dexxhostips.awk dexxhostips
+gawk -v role=coor -v nid=1 -v ms=s -v hrid=5 -f dexxhostips.awk dexxhostips
