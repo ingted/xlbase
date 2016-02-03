@@ -84,8 +84,24 @@ if [ "$ifNoCheck" == 1 ]; then
                         conf64=$(echo "$confstr"|base64)
 
                         util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
-			listenvip=()
-			util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role orz prz dir
+			listenvip=$(
+				dexxgnuparam=$(which dexxgnuparam)
+        			dirpath=$(dirname $dexxgnuparam)
+				source dexxparammap
+				@@@hostvip@@@ -c $cluster -r $role -i $hrid -s $sm -f $dirpath/dexxhostvip.awk $dirpath/dexxhostips
+			)
+			listenport=$(
+				dexxgnuparam=$(which dexxgnuparam)
+                                dirpath=$(dirname $dexxgnuparam)
+                                source dexxparammap
+				case $role in
+					coor) echo 40001;;
+					dn) echo 10002;;
+					gtm|gtmsby|gtmprx) echo 36666;;
+				esac
+				
+			)
+			util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport $confpath
                 fi
                 echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm $confpath
 
