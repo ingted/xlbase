@@ -13,7 +13,7 @@ gc "/addfiles/resource_pcmk/$role"|%{
 	else{$str}
 	
 }|out-file "/etc/init.d/$role" -encoding ascii -force
-chmod +x "/etc/init.d/$role
+chmod +x "/etc/init.d/$role"
 ([io.fileinfo] "/addfiles/resource_pcmk/xlstatus").copyto("/etc/init.d/xlstatus")
 ([io.fileinfo] "/addfiles/resource_pcmk/launcher").copyto("/etc/init.d/launcher")
 chmod +x "/etc/init.d/xlstatus"
