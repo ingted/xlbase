@@ -88,7 +88,7 @@ if [ "$ifNoCheck" == 1 ]; then
 				dexxgnuparam=$(which dexxgnuparam)
         			dirpath=$(dirname $dexxgnuparam)
 				source dexxparammap
-				@@@hostvip@@@ -c $cluster -r $role -i $hrid -s $sm -f $dirpath/dexxhostvip.awk $dirpath/dexxhostips
+				@@@hostvip@@@ -c $cluster -r $role -i $hrid -s $sm
 			)
 			listenport=$(
 				dexxgnuparam=$(which dexxgnuparam)
@@ -101,7 +101,8 @@ if [ "$ifNoCheck" == 1 ]; then
 				esac
 				
 			)
-			util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport $confpath
+			echo $role ,$listenvip ,$listenport ,$confpath
+			util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport $i
                 fi
                 echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm $confpath
 
