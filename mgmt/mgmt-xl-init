@@ -43,7 +43,11 @@ specified_nid=$4
 specified_sm=$5
 
 ifNoCheck=$8
-
+if [ "$9" != 0 ]; then
+	ifResourceOnly=$9
+else
+	ifResourceOnly=0
+fi
 
 
 
@@ -56,7 +60,9 @@ if [ "$ifNoCheck" == 1 ]; then
         dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 
         echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $1 $dir
-        util-bpx "$specified_cnm" $pgu cluster-xl-init.ps1 $specified_cnm $1 $dir 1 1
+	if [ $ifResourceOnly != 1 ]; then
+	        util-bpx "$specified_cnm" $pgu cluster-xl-init.ps1 $specified_cnm $1 $dir 1 1
+	fi
         #echo "conf: $conf"
         for i in $conf; do
                 echo $(date +"%T") \[\| xl-conf begin\|\] @$specified_cnm $i
@@ -70,20 +76,22 @@ if [ "$ifNoCheck" == 1 ]; then
                 dexxdir=$(dirname $(which dexxhosts))
 		#echo "gen => $conftemp.example"
                 exp="$dexxdir/$conftemp.example"
+
                 if [ -e $exp ]; then
                         #echo $exp
                         confexp=$(cat $exp)
 			hrid=$(./mgmt-xl-get-hrid $specified_cnm $cluster)
 			nid=$(./mgmt-xl-get-node-id $specified_cnm $cluster)
 			sm=$(./mgmt-xl-get-m-or-s $specified_cnm $cluster)
+
                         #echo "$confexp"
 			#echo $hrid
-
-                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; hrid=$hrid; nid=$nid; sm=$sm; role=$role;  source $(which dexxparammap); echo \"$confexp\"")")
+			if [ $ifResourceOnly != 1 ]; then
+	                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; hrid=$hrid; nid=$nid; sm=$sm; role=$role;  source $(which dexxparammap); echo \"$confexp\"")")
                         #echo "$confstr"
-                        conf64=$(echo "$confstr"|base64)
-
-                        util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
+        	                conf64=$(echo "$confstr"|base64)
+	                        util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
+			fi
 			listenvip=$(
 				dexxgnuparam=$(which dexxgnuparam)
         			dirpath=$(dirname $dexxgnuparam)
@@ -101,8 +109,8 @@ if [ "$ifNoCheck" == 1 ]; then
 				esac
 				
 			)
-			echo $role ,$listenvip ,$listenport ,$confpath
-			util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport $i
+			#echo $role ,$listenvip ,$listenport ,$confpath
+			util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]}
                 fi
                 echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm $confpath
 
@@ -153,6 +161,25 @@ else
 							conf64=$(echo "$confstr"|base64)
 	
 							util-bpx "$host" $pgu cluster-xl-conf.ps1 $confpath $conf64
+                        				listenvip=$(
+                        				        dexxgnuparam=$(which dexxgnuparam)
+                        				        dirpath=$(dirname $dexxgnuparam)
+                        				        source dexxparammap
+                        				        @@@hostvip@@@ -c $cluster -r $role -i $hrid -s $sm
+                        				)
+                        				listenport=$(
+                        				        dexxgnuparam=$(which dexxgnuparam)
+                        				        dirpath=$(dirname $dexxgnuparam)
+                        				        source dexxparammap
+                        				        case $role in
+                        				                coor) echo 40001;;
+                        				                dn) echo 10002;;
+                        				                gtm|gtmsby|gtmprx) echo 36666;;
+                        				        esac
+
+                        				)
+                        				#echo $role ,$listenvip ,$listenport ,$confpath
+                        				util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]}
 						fi
 						echo $(date +"%T") \[\| xl-conf end  \|\] @$host 
 	
