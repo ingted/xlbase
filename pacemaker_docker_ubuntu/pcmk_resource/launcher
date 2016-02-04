@@ -65,8 +65,11 @@ def main(options):
     elif options.restart:
 	print _CMD('restart')
         return os.system(_CMD('restart'))
+    elif options.promote:
+	print _CMD('promote')
+        return os.system(_CMD('promote'))
     else:
-        print 'Options: --(start|stop|restart|status)'
+        print 'Options: --i(start|stop|restart|status|promote)'
     return 1
 
 if __name__ == '__main__':
@@ -85,6 +88,10 @@ if __name__ == '__main__':
     parser.add_option("--restart", action="store_true",
                       help="Restart process.",
                       dest="restart", default=False)
+
+    parser.add_option("--promote", action="store_true",
+                      help="Promote slave to master.",
+                      dest="promote", default=False)
 
     parser.add_option("-l", "--libdir", type="string",
                       help="pg lib directory",
