@@ -181,9 +181,12 @@ function @@@hba_all_hostip@@@	  (){
 function @@@hba_repl_hostip@@@     (){
         source $(which dexxgnuparam) $@
         msfile=$(which dexxmasterslave)
-	hostfile=$(which dexxhosts)
+	ipfile=$(which dexxhostips)
+	rolefile=$(which dexxhostroles)
 	slavecnm=$(awk "(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
-        echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$slavecnm\") {print \"host\treplication\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
+	hrid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$7}" "$rolefile")
+        #echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$slavecnm\") {print \"host\treplication\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
+        echo "$(awk "(\$5 == \"$cluster\") && (\$2 == \"$hrid\") {print \"host\treplication\tall\t\t\"\$9\"/32\ttrust\"}" "$ipfile")"
 }
 function @@@ha_wal@@@     (){
         source $(which dexxgnuparam) $@

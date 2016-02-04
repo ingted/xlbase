@@ -4,7 +4,7 @@ dexx an13 test2 "cd /root/pcmk/; ./get-tool"
 dexx an22 test2 -d "service dn stop"
 #dexx an22 test2 "setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/dn1_m/ stop"
 ./mgmt-xl-init dn postgres an22 1 m test2 9.2 1
-./mgmt-xl-init dn postgres an13 1 s test2 9.2 1
+./mgmt-xl-init dn postgres an13 1 s test2 9.2 1 1
 dexx an22 test2 "sed -i.bak -e s/an31/an23/g /postgres/dn1_m/postgresql.conf"
 #dexx an22 test2 "setuser postgres /usr/local/pgsql/bin/pg_ctl -Z datanode -D /postgres/dn1_m/ start"
 dexx an22 test2 -d "service dn start"
