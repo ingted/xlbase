@@ -27,6 +27,11 @@ role=$1
 m_or_s=$5
 nid=$4
 
+if [ "$6" != "" ]; then 
+	pathms=$6
+else
+	pathms=$m_or_s
+fi
 #echo $role
 #echo $m_or_s
 #echo $nid
@@ -34,5 +39,5 @@ nid=$4
 configrepo=$(which dexxconfigrepo)
 
 #for r in $role; do
-	awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\") && (\$9 == \"$cluster\") {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$5,\$5\"/\"\$7,\$6}" "$configrepo"
+	awk "(\$2 == \"$role\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\") && (\$9 == \"$cluster\") {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$pathms\", \$5); print \$5,\$5\"/\"\$7,\$6}" "$configrepo"
 #done

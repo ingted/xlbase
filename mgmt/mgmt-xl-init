@@ -41,22 +41,28 @@ echo $(date +"%T") \[\| xl-init \|\] BEGINNING...
 specified_cnm=$3
 specified_nid=$4
 specified_sm=$5
-
 ifNoCheck=$8
+
 if [ "$9" != "" ]; then
-	ifNoInit=$9
+        pathms=$9
+else
+        pathms=$specified_sm
+fi
+
+if [ "$10" != "" ]; then
+	ifNoInit=$10
 else
 	ifNoInit=1
 fi
 
-if [ "$10" != "" ]; then
-        ifNoConf=$10
+if [ "$11" != "" ]; then
+        ifNoConf=$11
 else
         ifNoConf=1
 fi
 
-if [ "$11" != "" ]; then
-        ifNoRsrc=$11
+if [ "$12" != "" ]; then
+        ifNoRsrc=$12
 else
         ifNoRsrc=1
 fi
@@ -65,7 +71,7 @@ fi
 
 
 if [ "$ifNoCheck" == 1 ]; then
-	conf=$(./mgmt-xl-get-confname-no-check $role $pgver $cluster $specified_nid $specified_sm|awk 'NR>2 && ($3 != "-") {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
+	conf=$(./mgmt-xl-get-confname-no-check $role $pgver $cluster $specified_nid $specified_sm $pathms|awk 'NR>2 && ($3 != "-") {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
 	if [ "$conf" == "invalid specified host!" ]; then
 		echo "invalid specified host! mgmt-xl-init failed!"
 		continue
@@ -79,7 +85,8 @@ if [ "$ifNoCheck" == 1 ]; then
         #echo "conf: $conf"
 	hrid=$(./mgmt-xl-get-hrid $specified_cnm $cluster)
 	nid=$(./mgmt-xl-get-node-id $specified_cnm $cluster)
-	sm=$(./mgmt-xl-get-m-or-s $specified_cnm $cluster)
+	#sm=$(./mgmt-xl-get-m-or-s $specified_cnm $cluster)
+	sm=$specified_sm
 
         for i in $conf; do
                 echo $(date +"%T") \[\| xl-conf begin\|\] @$specified_cnm $i
