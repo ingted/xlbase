@@ -6,6 +6,9 @@ dexx an22 test2 -d "service dn stop"
 #./mgmt-xl-init dn postgres an22 1 m test2 9.2 1
 #./mgmt-xl-init dn postgres an13 1 s test2 9.2 1 1
 
+dexx an22 test2 "service dn stop"
+dexx an13 test2 "service dn stop"
+
 ./mgmt-xl-init dn postgres an22 1 m test2 9.2 1 "" 0 0 0
 ./mgmt-xl-init dn postgres an13 1 s test2 9.2 1 "" 1 1 0
 

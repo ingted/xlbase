@@ -144,20 +144,6 @@ function @@@m_coor_pgxcnodename@@@ (){
 function @@@m_dn_gtmprx@@@        (){  
 	source $(which dexxgnuparam) $@
         @@@gtmprx@@@ -c $cluster -m $specified_cnm -s $specified_sm
-	#source $(which dexxgnuparam) $@
-        #dhost=$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$4}" $(which dexxhosts))
-        #chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
-        #hostnid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" $(which dexxhostroles))
-        #hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
-        #for h in $chosts; do
-        #        hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
-        #        sphrn=(${hostrolenid//\,})
-        #        if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$specified_sm" ]; then
-        #                gphrid="${sphrn[0]}"
-	#		break
-        #        fi
-        #done
-	#awk "(\$5 == \"$cluster\") && (\$2 == gphrid) {print \$10}" $(which dexxhostips)
 }
 function @@@m_dn_hostip@@@        (){ 
 	dexxgnuparam=$(which dexxgnuparam) 
