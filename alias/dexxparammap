@@ -101,7 +101,7 @@ function @@@gtmprx@@@        (){
 		#echo ${sphrn[0]}
 
 
-                if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$specified_sm" ]; then
+                if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$hostsm" ]; then
                         gphrid="${sphrn[0]}"
 
                         break
