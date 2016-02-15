@@ -1,4 +1,4 @@
 standby_mode = on
-primary_conninfo = 'host = $(@@@hostvip@@@ -c $cluster -i $hrid -s $sm -r $role) port = $(if [ $role == "coor" ]; then @@@b_coor_port@@@; else @@@b_dn_port@@@; fi) user = postgres'
+primary_conninfo = 'host = $(@@@hostvip@@@ -c $cluster -i $hrid -u $sm -r $role) port = $(if [ $role == "coor" ]; then @@@b_coor_port@@@; else @@@b_dn_port@@@; fi) user = postgres'
 trigger_file = '/tmp/postgresql.trigger'
 

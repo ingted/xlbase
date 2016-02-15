@@ -87,29 +87,43 @@ function @@@b_dn_wkmem@@@         (){
 
 function @@@gtmprx@@@        (){
         source $(which dexxgnuparam) $@
-        dhost=$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$4}" $(which dexxhosts))
-        chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
-        hostnid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" $(which dexxhostroles))
-        hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
-        #echo 123
-        for h in $chosts; do
-                hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
-                sphrn=(${hostrolenid//\,})
-		#echo ${sphrn[1]} $hostnid
-		#echo ${sphrn[2]} "gtmprx"
-		#echo ${sphrn[3]} $specified_sm
-		#echo ${sphrn[0]}
+
+	
 
 
-                if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$hostsm" ]; then
-                        gphrid="${sphrn[0]}"
+        #dhost=$(awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {if(\$4 in key){}else{key[\$4]=\"\"; val[1]=\$4}}END{print val[1]}" $(which dexxhosts))
+	##echo $dhost
+        #chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
+	##echo 234
+        #hostnidsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2\",\"\$5}" $(which dexxhostroles))
+	##echo $hostnid
+        ##hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
+        ##echo 123
+	#hosttmp=(${hostnidsm//,/ })
+	#hostnid=${hosttmp[0]}
+	#hostsm=${hosttmp[1]}
 
-                        break
-                fi
-        done
-	#echo $gphrid	
-        #awk "{print \"$gphrid\"}" $(which dexxhostips)
-        awk "(\$5 == \"$cluster\") && (\$2 == \"$gphrid\") {print \$13}" $(which dexxhostips)
+	#echo $hostsm
+	#echo $hostnid
+        #for h in $chosts; do
+        #        #awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \">>>>\"\$7,\$2,\$3,\$5}" $(which dexxhostroles)
+        #        hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
+        #        sphrn=(${hostrolenid//\ / })
+	#	echo ${sphrn[1]} $hostnid
+	#	echo ${sphrn[2]} "gtmprx"
+	#	echo ${sphrn[3]} $specified_sm
+	#	echo ${sphrn[0]}
+
+
+        #        #if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$hostsm" ]; then
+        #        #        gphrid="${sphrn[0]}"
+
+        #        #        break
+        #        #fi
+        #done
+	###echo $gphrid	
+        ###awk "{print \"$gphrid\"}" $(which dexxhostips)
+        ##awk "(\$5 == \"$cluster\") && (\$2 == \"$gphrid\") {print \$13}" $(which dexxhostips)
 }
 
 
@@ -176,7 +190,7 @@ function @@@hba_repl_hostip@@@     (){
         msfile=$(which dexxmasterslave)
 	ipfile=$(which dexxhostips)
 	rolefile=$(which dexxhostroles)
-	slavecnm=$(awk "(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
+	slavecnm=$(awk "{if(\"$specified_sm\" == \"m\"){col=\$1}else{col=\$2}}(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
 	hrid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$7}" "$rolefile")
         #echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$slavecnm\") {print \"host\treplication\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
         echo "$(awk "(\$5 == \"$cluster\") && (\$2 == \"$hrid\") {print \"host\treplication\tall\t\t\"\$13\"/32\ttrust\"}" "$ipfile")"
@@ -184,11 +198,15 @@ function @@@hba_repl_hostip@@@     (){
 function @@@ha_wal@@@     (){
         source $(which dexxgnuparam) $@
         msfile=$(which dexxmasterslave)
-        slavecnm=$(awk "(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
-	if [ "$slavecnm" != "" ]; then
+	
+	if [ $currsm != m ]; then
+		return
+	fi
+        #slavecnm=$(awk "(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
+	#if [ "$slavecnm" != "" ]; then
 		echo "max_wal_senders = 5"
 	        echo "wal_level = hot_standby"
-	fi
+	#fi
 }
 function @@@ha_sby@@@     (){
         source $(which dexxgnuparam) $@

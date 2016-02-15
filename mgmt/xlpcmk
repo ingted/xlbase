@@ -1,4 +1,7 @@
 #!/bin/bash
+
+echo $PATH
+
 dexx an22 test2 "cd /root/pcmk/; ./get-tool"
 dexx an13 test2 "cd /root/pcmk/; ./get-tool"
 dexx an22 test2 -d "service dn stop"
