@@ -67,7 +67,11 @@ else
         ifNoRsrc=1
 fi
 
-
+if [ "$13" != "" ]; then
+        currsm=$13
+else
+        currsm=$specified_sm
+fi
 
 
 if [ "$ifNoCheck" == 1 ]; then
@@ -109,7 +113,7 @@ if [ "$ifNoCheck" == 1 ]; then
                         #echo "$confexp"
 			#echo $hrid
 			if [ $ifNoConf != 1 ]; then
-	                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; hrid=$hrid; nid=$nid; sm=$sm; role=$role;  source $(which dexxparammap); echo \"$confexp\"")")
+	                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; hrid=$hrid; nid=$nid; sm=$sm; role=$role; currsm=$currsm;  source $(which dexxparammap); echo \"$confexp\"")")
                         #echo "$confstr"
         	                conf64=$(echo "$confstr"|base64)
 	                        util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
@@ -125,7 +129,7 @@ if [ "$ifNoCheck" == 1 ]; then
 			dexxgnuparam=$(which dexxgnuparam)
         		dirpath=$(dirname $dexxgnuparam)
 			source dexxparammap
-			@@@hostvip@@@ -c $cluster -r $role -i $hrid -s $sm
+			@@@hostvip@@@ -c $cluster -r $role -i $hrid -u $currsm
 		)
 		listenport=$(
 			dexxgnuparam=$(which dexxgnuparam)
@@ -139,7 +143,7 @@ if [ "$ifNoCheck" == 1 ]; then
 			
 		)
 		#echo $role ,$listenvip ,$listenport ,$confpath
-		util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]}
+		util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]} $currsm
 	fi
         echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm
 
@@ -183,7 +187,7 @@ else
 							confexp=$(cat $exp)
 							#echo "$confexp"
 								
-							confstr=$(echo "$(eval "cluster=$cluster; host=$host; hrid=$hrid; nid=$nid; sm=$sm; role=$role; source $(which dexxparammap); echo \"$confexp\"")")
+							confstr=$(echo "$(eval "cluster=$cluster; host=$host; hrid=$hrid; nid=$nid; sm=$sm; role=$role; currsm=$sm; source $(which dexxparammap); echo \"$confexp\"")")
 							echo "$confstr"
 							conf64=$(echo "$confstr"|base64)
 	
@@ -196,7 +200,7 @@ else
                         		        dexxgnuparam=$(which dexxgnuparam)
                         		        dirpath=$(dirname $dexxgnuparam)
                         		        source dexxparammap
-                        		        @@@hostvip@@@ -c $cluster -r $role -i $hrid -s $sm
+                        		        @@@hostvip@@@ -c $cluster -r $role -i $hrid -u $sm
                         		)
                         		listenport=$(
                         		        dexxgnuparam=$(which dexxgnuparam)

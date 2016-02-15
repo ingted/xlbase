@@ -1,15 +1,15 @@
 #!/usr/bin/pash
 param(
-	$role, $ip, $port, $pgdir
+	$role, $ip, $port, $pgdir, $currsm
 )
 
 gc "/addfiles/resource_pcmk/$role"|%{
 	$str = $_
 	
-	if($str -match "###cfgrole###"){"role=`"$role`""}
-	elseif($str -match "###cfgip###"){"ip=`"$ip`""}
-	elseif($str -match "###cfgport###"){"port=`"$port`""}
-	elseif($str -match "###cfgpgd###"){"pgdir=`"$pgdir`""}
+	if(    $str -match "###cfgrole###"){"role=`"$role`" ###cfgrole###"}
+	elseif($str -match "###cfgip###"  ){"ip=`"$ip`" ###cfgip###"}
+	elseif($str -match "###cfgport###"){"port=`"$port`" ###cfgport###"}
+	elseif($str -match "###cfgpgd###" ){"pgdir=`"$pgdir`" ###cfgpgd###"}
 	else{$str}
 	
 }|out-file "/etc/init.d/$role" -encoding ascii -force

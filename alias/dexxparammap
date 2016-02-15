@@ -122,25 +122,32 @@ function @@@hostip@@@      (){
         dexxgnuparam=$(which dexxgnuparam)
         source $dexxgnuparam $@
         dirpath=$(dirname $dexxgnuparam)
-        gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
+        gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v currsm=$currsm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
 }
 
 function @@@hostvip@@@      (){
         dexxgnuparam=$(which dexxgnuparam)
         source $dexxgnuparam $@
         dirpath=$(dirname $dexxgnuparam)
-        gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostvip.awk $dirpath/dexxhostips
+        gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v currsm=$currsm -f $dirpath/dexxhostvip.awk $dirpath/dexxhostips
 }
 
 function @@@m_coor_hostip@@@      (){  
 	dexxgnuparam=$(which dexxgnuparam)
 	source $dexxgnuparam $@
-	@@@hostip@@@ -r $role -i $hrid -s $specified_sm -c $cluster
+	@@@hostip@@@ -r $role -i $hrid -c $cluster -u $currsm
 }
+function @@@nodename@@@ (){  
+	source $(which dexxgnuparam) $@
+	dexxroles=$(which dexxhostroles)
+	echo $(gawk "(\$1 == \"$specified_cnm\") && (\$6 == \"$cluster\"){print \$3\$2}" $dexxroles)
+}
+
 function @@@m_coor_pgxcnodename@@@ (){  
 	source $(which dexxgnuparam) $@
-	echo $host
+	@@@nodename@@@ -c $cluster -m $specified_cnm
 }
+
 function @@@m_dn_gtmprx@@@        (){  
 	source $(which dexxgnuparam) $@
         @@@gtmprx@@@ -c $cluster -m $specified_cnm -s $specified_sm
@@ -156,7 +163,7 @@ function @@@m_dn_hostip@@@        (){
 }
 function @@@m_dn_pgxcnodename@@@  (){   
 	source $(which dexxgnuparam) $@
-	echo $host
+	@@@nodename@@@ -c $cluster -m $specified_cnm
 }
 function @@@hba_all_hostip@@@	  (){
 	source $(which dexxgnuparam) $@
@@ -172,7 +179,7 @@ function @@@hba_repl_hostip@@@     (){
 	slavecnm=$(awk "(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
 	hrid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$7}" "$rolefile")
         #echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$slavecnm\") {print \"host\treplication\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
-        echo "$(awk "(\$5 == \"$cluster\") && (\$2 == \"$hrid\") {print \"host\treplication\tall\t\t\"\$9\"/32\ttrust\"}" "$ipfile")"
+        echo "$(awk "(\$5 == \"$cluster\") && (\$2 == \"$hrid\") {print \"host\treplication\tall\t\t\"\$13\"/32\ttrust\"}" "$ipfile")"
 }
 function @@@ha_wal@@@     (){
         source $(which dexxgnuparam) $@

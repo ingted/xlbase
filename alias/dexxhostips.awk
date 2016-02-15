@@ -15,12 +15,13 @@ BEGIN {
 
 } 
 {
-	tmpip[1]="";
+	tmpipk[""]="";
+	tmpipv[1]="";
 	if($2 == hrid && $5 == cluster) {
 		switch (role){
 			case "gtm":
 				if($6 != $10){
-					if(ms == "m"){
+					if(currsm == "m"){
 						ipstr=$6","$10
 					} else {
 						ipstr=$6
@@ -32,7 +33,7 @@ BEGIN {
 				break
 			case "gtmsby":
 				if($6 != $10){
-					if(ms == "m"){
+					if(currsm == "m"){
 						ipstr=$6","$10
 					} else {
 						ipstr=$6
@@ -44,7 +45,7 @@ BEGIN {
 				break
 			case "gtmprx":
 				if($9 != $13){
-					if(ms == "m"){
+					if(currsm == "m"){
 						ipstr=$9","$13
 					} else {
 						ipstr=$9
@@ -55,34 +56,46 @@ BEGIN {
 				print ipstr
 				break
 			case "coor":
-				if(!($7 in tmpip) && ($7 != "-")){tmpip[1]=$7}
-				if(!($8 in tmpip) && ($8 != "-")){tmpip[length(tmpip) + 1]=$8}
-				if(!($9 in tmpip) && ($9 != "-")){tmpip[length(tmpip) + 1]=$9}
-				if(sm == "m"){
-					if(!($11 in tmpip) && ($11 != "-")){tmpip[length(tmpip) + 1]=$11}
-					if(!($12 in tmpip) && ($12 != "-")){tmpip[length(tmpip) + 1]=$12}
-					if(!($13 in tmpip) && ($13 != "-")){tmpip[length(tmpip) + 1]=$13}
+				if(!($7 in tmpipk) && ($7 != "-")){tmpipk[$7]; tmpipv[1]=$7}
+				if(!($8 in tmpipk) && ($8 != "-")){tmpipk[$8]; tmpipv[length(tmpipk) + 1]=$8}
+				if(!($9 in tmpipk) && ($9 != "-")){tmpipk[$9]; tmpipv[length(tmpipk) + 1]=$9}
+				if(currsm == "m"){
+					if(!($11 in tmpipk) && ($11 != "-")){tmpipk[$11]; tmpipv[length(tmpipk) + 1]=$11}
+					if(!($12 in tmpipk) && ($12 != "-")){tmpipk[$12]; tmpipv[length(tmpipk) + 1]=$12}
+					if(!($13 in tmpipk) && ($13 != "-")){tmpipk[$13]; tmpipv[length(tmpipk) + 1]=$13}
 				}
-				for (i = 1; i <= length(tmpip); i++) {
-					ipstr=tmpip[i]","ipstr
+				for (i = 1; i <= length(tmpipk); i++) {
+					ipstr=tmpipv[i]","ipstr
 				}
+				gsub(/,,/,"",ipstr)
+				gsub(/,,/,"",ipstr)
+				gsub(/,,/,"",ipstr)
+				gsub(/^,/,"",ipstr)
+				gsub(/^,/,"",ipstr)
+				gsub(/^,/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				print ipstr
 				break
 			case "dn":
-				if(!($7 in tmpip) && ($7 != "-")){tmpip[1]=$7}
-				if(!($8 in tmpip) && ($8 != "-")){tmpip[length(tmpip) + 1]=$8}
-				if(!($9 in tmpip) && ($9 != "-")){tmpip[length(tmpip) + 1]=$9}
-				if(sm == "m"){
-					if(!($11 in tmpip) && ($11!= "-")){tmpip[length(tmpip) + 1]=$11}
-					if(!($12 in tmpip) && ($12 != "-")){tmpip[length(tmpip) + 1]=$12}
-					if(!($13 in tmpip) && ($13 != "-")){tmpip[length(tmpip) + 1]=$13}
+				if(!($7 in tmpipk) && ($7 != "-")){tmpipk[$7]; tmpipv[1]=$7}
+				if(!($8 in tmpipk) && ($8 != "-")){tmpipk[$8]; tmpipv[length(tmpipv) + 1]=$8}
+				if(!($9 in tmpipk) && ($9 != "-")){tmpipk[$9]; tmpipv[length(tmpipv) + 1]=$9}
+				if(currsm == "m"){
+					if(!($11 in tmpipk) && ($11 != "-")){tmpipk[$11]; tmpipv[length(tmpipv) + 1]=$11}
+					if(!($12 in tmpipk) && ($12 != "-")){tmpipk[$12]; tmpipv[length(tmpipv) + 1]=$12}
+					if(!($13 in tmpipk) && ($13 != "-")){tmpipk[$13]; tmpipv[length(tmpipv) + 1]=$13}
 				}
-				for (i = 1; i <= length(tmpip); i++) {
-					ipstr=tmpip[i]","ipstr
+				for (i = 1; i <= length(tmpipk); i++) {
+					ipstr=tmpipv[i]","ipstr
 				}
+				gsub(/,,/,"",ipstr)
+				gsub(/,,/,"",ipstr)
+				gsub(/,,/,"",ipstr)
+				gsub(/^,/,"",ipstr)
+				gsub(/^,/,"",ipstr)
+				gsub(/^,/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)

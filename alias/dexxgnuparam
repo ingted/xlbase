@@ -2,10 +2,10 @@
 
 update=0
 specified_nid="-"
-specified_sm="-"
+specified_sm="master"
 specified_cnm="-"
 role="-"
-
+cursm="master"
 
 function main () {
 	return
@@ -27,6 +27,7 @@ function helptext () {
 	echo "-v, --pgver, --version		pgver."
 	echo "-s, --sm, --slave-or-master	Slave or master, default is master."
 	echo "-i, --hrid			hostroleid."
+	echo "-u, --currsm			current sm"
         echo ""
 	#return
         exit $1
@@ -46,6 +47,7 @@ while true ; do
 	-s|--sm|--slave-or-master) specified_sm=$2; shift; shift;;
 	-v|--pgver|--version) pgver=$2; shift; shift;;
 	-i|--hrid) hrid=$2; shift; shift;;
+	-u|--currsm) currsm=$2; shift; shift;;
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""

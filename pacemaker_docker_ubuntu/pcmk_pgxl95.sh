@@ -53,7 +53,7 @@ make_image()
 	echo "ADD $corosync_config /etc/corosync/" 					>> Dockerfile
 	echo "ADD ./functions /lib/lsb/init-functions" 					>> Dockerfile
 	echo "ADD ./util/* /root/pcmk/" 						>> Dockerfile
-	echo "ADD ./pcmk_resource/* /addfiles/resource_pcmk"	
+	echo "ADD ./pcmk_resource/* /addfiles/resource_pcmk"				>> Dockerfile	
 
 	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" 				>> Dockerfile
  	echo "	cp /addfiles/resource_pcmk/xlstatus /etc/init.d; \\"			>> Dockerfile
