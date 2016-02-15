@@ -190,7 +190,8 @@ function @@@hba_repl_hostip@@@     (){
         msfile=$(which dexxmasterslave)
 	ipfile=$(which dexxhostips)
 	rolefile=$(which dexxhostroles)
-	slavecnm=$(awk "{if(\"$specified_sm\" == \"m\"){col=\$1}else{col=\$2}}(\$4 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2}" "$msfile")
+	slavecnm=$(awk "{if(\"$specified_sm\" == \"m\"){col=\$1}else{col=\$2}}(\$4 == \"$cluster\") 
+		&& (col == \"$specified_cnm\") {if(\"$specified_sm\" == \"m\"){print \$2}" "$msfile")
 	hrid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$7}" "$rolefile")
         #echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$slavecnm\") {print \"host\treplication\tall\t\t\"\$1\"/32\ttrust\"}" "$hostfile")"
         echo "$(awk "(\$5 == \"$cluster\") && (\$2 == \"$hrid\") {print \"host\treplication\tall\t\t\"\$13\"/32\ttrust\"}" "$ipfile")"
