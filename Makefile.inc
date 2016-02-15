@@ -4,7 +4,7 @@ PACENAME = robotica/pcmk_ubuntu
 PACEVERSION = latest
 UTILNAME = robotica/util
 UTILVERSION = latest
-
+SHELL = #!/bin/bash 
 DB = dbuild
 
 BEN = if [ "$$DISABLEBASE" == "1" ]; then export BEN=0; else export BEN=1; fi;

@@ -2,6 +2,7 @@
 
 make_image()
 {
+	export PATH=/bin/:$PATH
 	if [ "$from" == "" ]; then 
 		from="robotica/xlbase:latest"
 	fi
