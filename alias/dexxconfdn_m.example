@@ -19,10 +19,10 @@ pooler_port = 						$(@@@b_dn_pooler_port@@@)
 max_pool_size = 					$(@@@b_dn_mx_pool@@@)
 max_coordinators = 					$(@@@b_dn_mx_coor@@@ -c $cluster -r coor)
 max_datanodes = 					$(@@@b_dn_mx_dn@@@  -c $cluster -r dn)
-gtm_host = 					       '$(@@@m_dn_gtmprx@@@ -c $cluster -m $host -s $sm)'
+gtm_host = 					       '$(@@@m_dn_gtmprx@@@ -c $cluster -m $host)'
 gtm_port = 						$(@@@b_dn_gtmprx_port@@@)
 pgxc_node_name = 				       '$(@@@m_dn_pgxcnodename@@@ -c $cluster -m $host)'
-$(@@@ha_wal@@@ -c $cluster -m $host)
+$(@@@ha_wal@@@ -u $currsm)
 full_page_writes = on
 synchronous_commit = on
 archive_mode = on

@@ -73,7 +73,7 @@ an21 		1 coor 		c s test2	6
 an22 		1 dn		d m test2	7
 an13 		1 dn		d s test2	8
 an31 		1 gtmprx	x m test2	
-an32 		1 gtmprx	x s test2	10
+an32 		2 gtmprx	x m test2	10
 an33 		2 coor		c m test2	11
 an41 		2 coor		c s test2	12
 an42 		3 coor		c m test2	13

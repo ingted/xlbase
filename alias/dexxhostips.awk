@@ -62,14 +62,14 @@ BEGIN {
 				if(!($8 in tmpipk) && ($8 != "-")){tmpipk[$8]; tmpipv[length(tmpipk) + 1]=$8}
 				if(!($9 in tmpipk) && ($9 != "-")){tmpipk[$9]; tmpipv[length(tmpipk) + 1]=$9}
 				if(currsm == "m"){
-					print 111
+					#print 111
 					if(!($11 in tmpipk) && ($11 != "-")){tmpipk[$11]; tmpipv[length(tmpipk) + 1]=$11}
 					if(!($12 in tmpipk) && ($12 != "-")){tmpipk[$12]; tmpipv[length(tmpipk) + 1]=$12}
 					if(!($13 in tmpipk) && ($13 != "-")){tmpipk[$13]; tmpipv[length(tmpipk) + 1]=$13}
 				}
-				print length(tmpipk);
+				#print length(tmpipk);
 				for (i = 1; i <= length(tmpipk); i++) {
-					print ipstr
+					#print ipstr
 					ipstr=tmpipv[i]","ipstr
 				}
 				gsub(/,,/,",",ipstr)

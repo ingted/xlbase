@@ -88,49 +88,59 @@ function @@@b_dn_wkmem@@@         (){
 function @@@gtmprx@@@        (){
         source $(which dexxgnuparam) $@
 
-	
-
-
-        #dhost=$(awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {if(\$4 in key){}else{key[\$4]=\"\"; val[1]=\$4}}END{print val[1]}" $(which dexxhosts))
-	##echo $dhost
-        #chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
-	##echo 234
-        #hostnidsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2\",\"\$5}" $(which dexxhostroles))
-	##echo $hostnid
-        ##hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
-        ##echo 123
-	#hosttmp=(${hostnidsm//,/ })
-	#hostnid=${hosttmp[0]}
-	#hostsm=${hosttmp[1]}
-
-	#echo $hostsm
+        dhost=$(awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {if(\$4 in key){}else{key[\$4]=\"\"; val[1]=\$4}}END{print val[1]}" $(which dexxhosts))
+	#echo $dhost
+        chosts=$(awk "(\$6 == \"$cluster\") && (\$4 == \"$dhost\") {print \$2}" $(which dexxhosts))
+	#echo 234
+        hostnidsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$2\",\"\$5}" $(which dexxhostroles))
 	#echo $hostnid
-        #for h in $chosts; do
-        #        #awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \">>>>\"\$7,\$2,\$3,\$5}" $(which dexxhostroles)
-        #        hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
-        #        sphrn=(${hostrolenid//\ / })
-	#	echo ${sphrn[1]} $hostnid
-	#	echo ${sphrn[2]} "gtmprx"
-	#	echo ${sphrn[3]} $specified_sm
-	#	echo ${sphrn[0]}
+        #hostsm=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$specified_cnm\") {print \$5}" $(which dexxhostroles))
+        #echo 123
+	hosttmp=(${hostnidsm//,/ })
+	hostnid=${hosttmp[0]}
+	hostsm=${hosttmp[1]}
+
+	#echo ======= $hostsm
+	#echo $hostnid
+	gtmprxNotFound=1
+        for h in $chosts; do
+                #awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \">>>>\"\$7,\$2,\$3,\$5}" $(which dexxhostroles)
+                hostrolenid=$(awk "(\$6 == \"$cluster\") && (\$1 == \"$h\") {print \$7,\$2,\$3,\$5}" $(which dexxhostroles))
+                sphrn=(${hostrolenid//\ / })
+		#echo ${sphrn[1]} $hostnid
+		#echo ${sphrn[2]} "gtmprx"
+		#echo ${sphrn[3]} $hostsm
+		#echo ${sphrn[0]}
 
 
-        #        #if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$hostsm" ]; then
-        #        #        gphrid="${sphrn[0]}"
+                if [ "${sphrn[2]}" == "gtmprx" ] && [ "${sphrn[1]}" == "$hostnid" ] && [ "${sphrn[3]}" == "$hostsm" ]; then
+                        gphrid="${sphrn[0]}"
+			gtmprxNotFound=0
+                        break
+                fi
 
-        #        #        break
-        #        #fi
-        #done
-	###echo $gphrid	
-        ###awk "{print \"$gphrid\"}" $(which dexxhostips)
-        ##awk "(\$5 == \"$cluster\") && (\$2 == \"$gphrid\") {print \$13}" $(which dexxhostips)
+	done
+	#echo ======================
+	if [ $gtmprxNotFound == 1 ]; then
+	#	echo nofound
+		for h in $chosts; do
+			if [ "${sphrn[2]}" == "gtm" ]; then
+        	                gphrid="${sphrn[0]}"
+	#			echo found
+        	                break
+        	        fi
+        	done
+	fi
+	#echo $gphrid	
+        ##awk "{print \"$gphrid\"}" $(which dexxhostips)
+        awk "(\$5 == \"$cluster\") && (\$2 == \"$gphrid\") {print \$13}" $(which dexxhostips)
 }
 
 
 
 function @@@m_coor_gtmprx@@@      (){  
 	source $(which dexxgnuparam) $@
-	@@@gtmprx@@@ -c $cluster -m $specified_cnm -s $specified_sm
+	@@@gtmprx@@@ -c $cluster -m $specified_cnm
 }
 function @@@hostip@@@      (){
         dexxgnuparam=$(which dexxgnuparam)
@@ -198,7 +208,7 @@ function @@@hba_repl_hostip@@@     (){
 }
 function @@@ha_wal@@@     (){
         source $(which dexxgnuparam) $@
-        msfile=$(which dexxmasterslave)
+        #msfile=$(which dexxmasterslave)
 	
 	if [ $currsm != m ]; then
 		return
@@ -211,12 +221,15 @@ function @@@ha_wal@@@     (){
 }
 function @@@ha_sby@@@     (){
         source $(which dexxgnuparam) $@
-        msfile=$(which dexxmasterslave)
-        mastercnm=$(awk "(\$4 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" "$msfile")
-	echo $mastercnm
-	if [ "$mastercnm" != "" ]; then
-		echo "hot_standby = on"
+        #msfile=$(which dexxmasterslave)
+        #mastercnm=$(awk "(\$4 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" "$msfile")
+	#echo $mastercnm
+	if [ $currsm != s ]; then
+		return
 	fi
+	#if [ "$mastercnm" != "" ]; then
+		echo "hot_standby = on"
+	#fi
 }
 function @@@wal_archive@@@ (){
 	source $(which dexxgnuparam) $@
@@ -224,6 +237,6 @@ function @@@wal_archive@@@ (){
 	awk "(\$2 == \"$role\") && (\$3 == \"$specified_sm\") && (\$9 == \"$cluster\") && (\$1 == \"b\" ) {gsub(\"#\", \"$specified_nid\", \$5); gsub(\"%\", \"$specified_sm\", \$5); print \"cp %p \"\$5\"/%f\"}" "$configrepo"
 	#echo "cp %p /postgres/%f"
 
-pgver=$pgver; nid=$specified_nid; sm=$specified_sm;
+	#pgver=$pgver; nid=$specified_nid; sm=$specified_sm;
 
 }
