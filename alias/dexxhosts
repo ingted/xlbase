@@ -32,10 +32,24 @@
 
 
 
-10.128.112.37    xlgtm 		p -  -				alpha
-10.128.112.38    xlgtmsby 	p -  -				alpha
-10.128.112.39    xlcd1 		p -  -				alpha
-10.128.112.40    xlcd2 		p -  -				alpha
+10.128.113.58    h1 h  -  -				alpha
+10.128.113.59    h2 h  -  -				alpha
+10.128.112.65    h3 h  -  -				alpha
+10.128.112.66    h4 h  -  -				alpha
+10.128.114.47	gtm       c	h1	/docker_volume/gtm	alpha	
+10.128.114.48	gtmsby	  c	h2	/docker_volume/gtmsby	alpha
+10.128.113.36	gtmprx1m  c	h3	/docker_volume/gtmprx1m	alpha	
+10.128.113.37	gtmprx2m  c	h4	/docker_volume/gtmprx2m	alpha	
+10.128.113.38	gtmprx1s  c	h4	/docker_volume/gtmprx1s	alpha	
+10.128.113.39	gtmprx2s  c	h3	/docker_volume/gtmprx2s	alpha	
+10.128.113.65	coor1m	  c	h3	/docker_volume/coor1m  	alpha 
+10.128.113.66	coor2m	  c	h4	/docker_volume/coor2m  	alpha 
+10.128.113.67	coor1s	  c	h4	/docker_volume/coor1s  	alpha 
+10.128.113.68	coor2s	  c	h3	/docker_volume/coor2s  	alpha 
+10.128.113.49	dn1m	  c	h3	/docker_volume/dn1m    	alpha 
+10.128.113.50	dn2m	  c	h4	/docker_volume/dn2m    	alpha 
+10.128.113.51	dn1s	  c	h4	/docker_volume/dn1s    	alpha 
+10.128.113.52	dn2s	  c	h3	/docker_volume/dn2s    	alpha 
 
 10.0.10.211	 h1		h -  -				sit 
 10.0.10.208	 h2		h -  -				sit 
@@ -53,6 +67,8 @@
 10.0.10.224	 coor2m		c h3 /docker_volume/coor2_m	sit
 10.0.10.226	 dn2m		c h3 /docker_volume/dn2_m	sit
 10.0.10.228	 gtmprx2m	c h3 /docker_volume/gtmprx2_m 	sit
+
+
 192.30.252.130 	 github.com	i -  -				sit
 10.128.112.45	 xl95gtm	h -  		-				test3
 10.128.112.48	 xl95gtmsby	h -  		-				test3 
