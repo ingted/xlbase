@@ -12,14 +12,24 @@ n33 		2 coor		c m test
 n41 		2 coor		c s test
 n42 		3 coor		c m test
 n43 		3 coor		c s test
-xlgtm		0 gtm		g m alpha	1
-xlgtmsby	0 gtmsby	g s alpha	2
-xlcd1		1 coor		c m alpha	3
-xlcd2		2 coor		c m alpha	4
-xlcd1		1 dn		d m alpha	5
-xlcd2		2 dn		d m alpha	6
-xlcd1		1 gtmprx	g m alpha	7
-xlcd2		2 gtmprx	g m alpha	8
+h1             	0 docker        x x alpha	1
+h2             	0 docker        x x alpha	2
+h3             	0 docker        x x alpha	3
+h4		0 docker	x x alpha	4
+gtm		0 gtm		g m alpha	5
+gtmsby		0 gtmsby	g s alpha	6
+coor1m		1 coor		c m alpha	7
+coor2m		2 coor		c m alpha	8
+coor1s		1 coor		c s alpha	9
+coor2s		2 coor		c s alpha	10
+dn1m		1 dn		d m alpha	11
+dn2m		2 dn		d m alpha	12
+dn1s		1 dn		d s alpha	13
+dn2s		2 dn		d s alpha	14
+gtmprx1m	1 gtmprx	g m alpha	15
+gtmprx2m	2 gtmprx	g m alpha	16
+gtmprx1s	1 gtmprx	g s alpha	17
+gtmprx2s	2 gtmprx	g s alpha	18
 h1             	0 docker        x x sit
 h2             	0 docker        x x sit
 h3             	0 docker        x x sit

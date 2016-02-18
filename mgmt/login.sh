@@ -95,6 +95,24 @@ EOF
      		echo "nameserver 168.95.1.1" >> /etc/resolv.conf
 EOF
 	
+	for ah in $allhosts; do
+		ahip=$(./mgmt-xl-get-ip $ah $cluster)
+		ahip_r=${ahip//./\\\.}
+
+		ssh $dip << EOF
+			cp /etc/hosts /etc/hosts.tmp
+			sed -i "/$ahip_r/d" /etc/hosts.tmp
+			sed -i "/\ $ah\ /d" /etc/hosts.tmp
+			sed -i "/\ $ah\$/d" /etc/hosts.tmp
+			echo "$ahip $ah" >> /etc/hosts.tmp
+			cp /etc/hosts.tmp /etc/hosts -f
+			#ssh-keygen -R $ah
+			#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
+			#ssh-keygen -R $ahip
+			#ssh-keyscan -H $ahip >> ~/.ssh/known_hosts
+EOF
+
+	done
      	echo 6=========================================
 	for ddhost in $dhosts; do
         	dhip=$(./mgmt-xl-get-ip $dhost $cluster)
@@ -111,6 +129,7 @@ EOF
 			expect -c "
                                 spawn ssh-copy-id $ddhost
                                 exec sleep $sleep
+				set conti \"1\"
                                 expect {
                                         \"password:\" {
 						set conti \"1\"
@@ -150,24 +169,7 @@ EOF
 EOF
      	echo 7=========================================
 	done
-	for ah in $allhosts; do
-		ahip=$(./mgmt-xl-get-ip $ah $cluster)
-		ahip_r=${ahip//./\\\.}
 
-		ssh $dip << EOF
-			cp /etc/hosts /etc/hosts.tmp
-			sed -i "/$ahip_r/d" /etc/hosts.tmp
-			sed -i "/\ $ah\ /d" /etc/hosts.tmp
-			sed -i "/\ $ah\$/d" /etc/hosts.tmp
-			echo "$ahip $ah" >> /etc/hosts.tmp
-			cp /etc/hosts.tmp /etc/hosts -f
-			#ssh-keygen -R $ah
-			#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
-			#ssh-keygen -R $ahip
-			#ssh-keyscan -H $ahip >> ~/.ssh/known_hosts
-EOF
-
-	done
 
 	for ad in $dnss; do
 		ad_r=${ad//,/ }
