@@ -36,11 +36,11 @@ else
         ifmake="$4"
 fi
 
-
-dhosts=$(./mgmt-xl-get-host-by-role docker $cluster)
+curroot=$(pwd)
+dhosts=$($curroot/mgmt-xl-get-host-by-role docker $cluster)
 echo "$dhosts"
 for host in $dhosts; do
-	cip=$(./mgmt-xl-get-ip "$host" "$cluster")
+	cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
 	echo $cip
 	(ssh $cip << EOF
 		#rm ~/.hushlogin
@@ -79,7 +79,7 @@ for host in $dhosts; do
 		#./mgmt-init-set-xl-config $cluster => change to set.expect
 		#./mgmt-xl-setup-all $cluster => change to set.expect
 EOF
-)
+) &
 
 done
 
