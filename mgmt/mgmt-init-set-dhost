@@ -62,7 +62,7 @@ for host in $dhosts; do
 		fi
 		source $rootpath/xlbase/alias/util-disable-status 1 1 1
 		echo "====\$(hostname)====="
-		$rootpath/xlbase/make.sh
+		./make.sh
 		source ~/.bashrc
 		#echo "=>\$(which dexxhosts)"
 		#echo "=>\$PATH"
@@ -72,11 +72,11 @@ for host in $dhosts; do
 			apt-get -y install expect
 		fi
 		if [ "$ifmake" != "0" ]; then
-			$rootpath/xlbase/make.expect
+			./make.expect
 		fi
-		#cd mgmt
+		cd mgmt
 		ls $rootpath/xlbase/mgmt/set.expect
-		$rootpath/xlbase/mgmt/set.expect $cluster $rootpath/xlbase/mgmt
+		./set.expect $cluster
 		#./mgmt-init-set-xl-config $cluster => change to set.expect
 		#./mgmt-xl-setup-all $cluster => change to set.expect
 EOF

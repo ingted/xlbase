@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-$2/mgmt-xl-setup-coor    -f -u -v 9.2 -c $1 
-$2/mgmt-xl-setup-dn      -f -u -v 9.2 -c $1 
-$2/mgmt-xl-setup-gtm     -f -u -v 9.2 -c $1 
+./mgmt-xl-setup-coor    -f -u -v 9.2 -c $1 
+./mgmt-xl-setup-dn      -f -u -v 9.2 -c $1 
+./mgmt-xl-setup-gtm     -f -u -v 9.2 -c $1 
 #./mgmt-xl-setup-gtm.bak -f -u -v 9.2 -c $1&
-$2/mgmt-xl-setup-gtmprx  -f -u -v 9.2 -c $1 
-$2/mgmt-xl-setup-gtmsby  -f -u -v 9.2 -c $1 
+./mgmt-xl-setup-gtmprx  -f -u -v 9.2 -c $1 
+./mgmt-xl-setup-gtmsby  -f -u -v 9.2 -c $1 
