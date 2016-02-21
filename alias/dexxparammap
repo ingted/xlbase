@@ -146,6 +146,7 @@ function @@@hostip@@@      (){
         dexxgnuparam=$(which dexxgnuparam)
         source $dexxgnuparam $@
         dirpath=$(dirname $dexxgnuparam)
+	#echo "gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v currsm=$currsm"
         gawk -v cluster=$cluster -v role=$role -v hrid=$hrid -v currsm=$currsm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
 }
 
