@@ -173,14 +173,17 @@ else
 						echo $(date +"%T") \[\| xl-conf begin \(common mode\)\|\] @$host $confpath
 						echo "i: $i"
 						confarr=(${i//\,/ })
+						echo 123
 						#echo "$confarr"
 						#confpath=$(echo "$conf"|awk '{split($0, a, ","); print a[2]}'|sort|uniq)
 						confpath=${confarr[1]}
 						conftemp=${confarr[2]}
 						#echo "$(which $conftemp.example)"
 						#echo "$conftemp"
+						echo 234
 						dexxdir=$(dirname $(which dexxhosts))
 						exp="$dexxdir/$conftemp.example"
+						echo $exp
 						if [ -e $exp ]; then
 							#echo $exp
 
