@@ -170,7 +170,7 @@ else
 					nid=$(./mgmt-xl-get-node-id $host $cluster)
 					sm=$(./mgmt-xl-get-m-or-s $host $cluster)
 					for i in $conf; do
-						echo $(date +"%T") \[\| xl-conf begin\|\] @$host $confpath
+						echo $(date +"%T") \[\| xl-conf begin \(common mode\)\|\] @$host $confpath
 						echo "i: $i"
 						confarr=(${i//\,/ })
 						#echo "$confarr"
@@ -188,9 +188,9 @@ else
 							#echo "$confexp"
 								
 							confstr=$(echo "$(eval "cluster=$cluster; host=$host; hrid=$hrid; nid=$nid; sm=$sm; role=$role; currsm=$sm; source $(which dexxparammap); echo \"$confexp\"")")
-							echo "$confstr"
+							echo -e "conf string: \n$confstr"
 							conf64=$(echo "$confstr"|base64)
-	
+							echo ">0>0>0>0>0>0>0>0>0> h: $host r: $role"	
 							util-bpx "$host" $pgu cluster-xl-conf.ps1 $confpath $conf64
 
 
