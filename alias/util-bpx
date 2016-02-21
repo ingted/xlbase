@@ -2,7 +2,8 @@
 
 pcmd="${*:2}"
 #echo "$pcmd"
-bcmd="cd /root/pcmk/cluster/; setuser $2 mono $(which pash) -c ${*:3}"
+pash=$(docker exec $1 which pash)
+bcmd="cd /root/pcmk/cluster/; setuser $2 mono $pash -c ${*:3}"
 #echo "$bcmd"
 #rtn=$(cat << EOF
 #$(docker exec $1 /bin/bash -lc "$bcmd")
