@@ -82,9 +82,9 @@ if [ "$ifNoCheck" == 1 ]; then
 	fi
         dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 
-        echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $1 $dir
+        echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $role $dir
 	if [ $ifNoInit != 1 ]; then
-	        util-bpx "$specified_cnm" $pgu cluster-xl-init.ps1 $specified_cnm $1 $dir 1 1
+	        util-bpx "$specified_cnm" $pgu cluster-xl-init.ps1 $specified_cnm $role $dir 1 1
 	fi
         #echo "conf: $conf"
 	hrid=$(./mgmt-xl-get-hrid $specified_cnm $cluster)
