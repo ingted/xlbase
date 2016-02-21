@@ -8,7 +8,7 @@ exec sleep 2
 expect {
 	"" {
 		send "$mgmtpath/mgmt-init-set-xl-config $cluster\n"
-		send "$mgmtpath/mgmt-xl-setup-all $cluster\n"
+		send "$mgmtpath/mgmt-xl-setup-all $cluster $mgmtpath\n"
 		send "exit\n"
 	}
 }
