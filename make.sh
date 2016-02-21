@@ -1,10 +1,10 @@
 #!/bin/bash
 t1=$(date)
-apt-get -y install software-properties-common automake autogen autoconf
-add-apt-repository -y ppa:zfs-native/stable
-apt-get -y update
-apt-get -y install -y ubuntu-zfs
-modprobe zfs
+#apt-get -y install software-properties-common automake autogen autoconf
+#add-apt-repository -y ppa:zfs-native/stable
+#apt-get -y update
+#apt-get -y install -y ubuntu-zfs
+#modprobe zfs
 
 (make)||(echo "Started @ $t1"; t2=$(date); echo "Ended   @ $t2")
 source ~/.bashrc
