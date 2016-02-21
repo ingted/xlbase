@@ -1,4 +1,4 @@
-nodename = '$(@@@nodename@@@ -c $cluster -m gtm)'				# Specifies the node name.
+nodename = '$(@@@nodename@@@ -c $cluster -m gtmsby)'				# Specifies the node name.
 listen_addresses = '$(@@@hostip@@@ -r $role -i $hrid -c $cluster -u $currsm)'	# Listen addresses of this GTM.
 port = $(@@@b_coor_gtmprx_port@@@)	# Port number of this GTM.
 startup = ACT				# Start mode. ACT/STANDBY.
