@@ -1,0 +1,16 @@
+nodename = '$(@@@nodename@@@ -c $cluster -m gtm)'				# Specifies the node name.
+listen_addresses = ''			# Listen addresses of this GTM.
+port = 6666				# Port number of this GTM.
+startup = ACT				# Start mode. ACT/STANDBY.
+#active_host = ''			# Listen address of active GTM.
+#active_port =				# Port number of active GTM.
+					# (changes requires restart)
+keepalives_idle = 0			# Keepalives_idle parameter.
+keepalives_interval = 0		# Keepalives_interval parameter.
+keepalives_count = 0			# Keepalives_count internal parameter.
+log_file = 'gtm.log'			# Log file name
+log_min_messages = WARNING		# log_min_messages.  Default WARNING.
+				  	# Valid value: DEBUG, DEBUG5, DEBUG4, DEBUG3,
+					# DEBUG2, DEBUG1, INFO, NOTICE, WARNING,
+					# ERROR, LOG, FATAL, PANIC
+synchronous_backup = off	# If backup to standby is synchronous
