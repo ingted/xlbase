@@ -307,12 +307,13 @@ RUN mkdir -p /addfiles; \
 	useradd --system -U -ms /bin/bash osdba; \
 	useradd --system -U -ms /bin/bash voltdb; \
 	sed -i.bak -e s/postgres\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
-	sed -i.bak -e s/osdba\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \ 
-	sed -i.bak -e s/voltdb\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
+	sed -i.bak -e s/osdba\:\!/osdba\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \ 
+	sed -i.bak -e s/voltdb\:\!/voltdb\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	useradd --system -U -ms /bin/bash haclient; \
+	useradd --system -m -g haclient -s /bin/bash hacluster
 	sed -i.bak -e s/haclient\:\!/haclient\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
-	useradd --system -m -g haclient -s /bin/bash hacluster
+
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
 RUN cd /root/Downloads/clusterLab/libqb; \
