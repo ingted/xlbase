@@ -20,6 +20,15 @@
 
 cd /addfiles/packages_pcmk
 
+
+#'Acquire::http::proxy "http://10.128.101.1:8080/";' 	>> /etc/apt/apt.conf   
+#'Acquire::https::proxy "https://10.128.101.1:8080/";'  	>> /etc/apt/apt.conf
+#'Acquire::ftp::proxy "ftp://10.128.101.1:8080/";' 	>> /etc/apt/apt.conf
+
+
+
+
+
 dpkg -i vim-common_7.4.826-1ubuntu1_amd64.deb
 dpkg -i vim-tiny_7.4.826-1ubuntu1_amd64.deb 
 dpkg -i vim-runtime_7.4.826-1ubuntu1_all.deb 
