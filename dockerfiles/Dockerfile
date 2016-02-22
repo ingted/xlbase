@@ -735,14 +735,14 @@ RUN chmod 755 /etc/container_environment; \
 
 
 	#WORKDIR /root/Downloads/clusterLab/pcs/pcs-0.9.141
-	cd /root/Downloads/clusterLab/pcs/pcs-0.9.141; \
+	#cd /root/Downloads/clusterLab/pcs/pcs-0.9.141; \
 	#RUN apt-get -y install ruby-dev; \
-	make; \
-	cd pcsd; \
-	gem install eventmachine -v '1.0.7'; \
-	gem install bundler; \
-	make get_gems; \
-	cd ..; \
+	#make; \
+	#cd pcsd; \
+	#gem install eventmachine -v '1.0.7'; \
+	#gem install bundler; \
+	#make get_gems; \
+	#cd ..; \
 	#make install; \
 	#make install_pcsd install_settings=true; \
 
