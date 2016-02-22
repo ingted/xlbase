@@ -248,14 +248,27 @@ function @@@wal_archive@@@ (){
 
 function @@@gtm_sby@@@	(){
 	source $(which dexxgnuparam) $@
-	if [ $currsm == m ]; then
+	if [ "$currsm" == m ]; then
 		echo -e "startup = ACT                           # Start mode. ACT/STANDBY."
+		return
 	else
+		colNum=$(if [ $specified_sm == m ]; then echo "\$1"; else echo "\$2"; fi)
+		sColNum=$(if [ $specified_sm == m ]; then echo "\$2"; else echo "\$1"; fi)
+		slaveNode=$(awk "{key[\"****\"]=\"****\";}(\$4 == \"$cluster\") && ($colNum == \"$specified_cnm\") {if($colNum in key){}else{key[$colNum]=\"\"; val[1]=$sColNum}}END{print val[1]}" $(which dexxmasterslave))
+		#echo $slaveNode
+		#echo awk "{key[\"****\"]=\"****\";}(\$4 == \"$cluster\") && ($colNum == \"$specified_cnm\") {if($colNum in key){}else{key[$colNum]=\"\"; val[1]=$sColNum}}END{print val[1]}" $(which dexxmasterslave)
+		#echo awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$1 == \"$slaveNode\") {if(\$1 in key){}else{key[\$1]=\"\"; val[1]=\$7}}END{print val[1]}" $(which dexxhostroles)
+		slavehrid=$(awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$1 == \"$slaveNode\") {if(\$1 in key){}else{key[\$1]=\"\"; val[1]=\$7}}END{print val[1]}" $(which dexxhostroles))
+		#echo =============$slaverole $slavehrid 
+		ah=$(@@@hostip@@@ -r "$slaverole" -i "$slavehrid" -u s -c $cluster)
+		ap=$(@@@b_coor_gtmprx_port@@@)
 		echo -e "
 startup = STANDBY
-active_host = '$(@@@hostip@@@ -r $slaverole -i $slavehrid -u m -c $cluster)'                       # Listen address of active GTM.
-active_port = $(@@@b_coor_gtmprx_port@@@)                         # Port number of active GTM.
+active_host = '$ah'                       # Listen address of active GTM.
+active_port = $ap                    # Port number of active GTM.
                                        # (changes requires restart)
 "
+		return
 	fi
+	return
 }

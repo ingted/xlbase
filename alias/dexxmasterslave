@@ -1,9 +1,9 @@
-n11		n12		gtm	test	192.168.123.180	pcmk
-n13		n21		coor	test	192.168.123.181	pcmk
-n22		n23		dn	test	192.168.123.182	repl
-n31		n32		gtmprx	test	192.168.123.183	pcmk
-n33		n41		coor	test	192.168.123.184	pcmk
-n42		n43		coor	test	192.168.123.185	pcmk
+n11		n12		gtm	test	
+n13		n21		coor	test	
+n22		n23		dn	test	
+n31		n32		gtmprx	test	
+n33		n41		coor	test	
+n42		n43		coor	test	
 gtm		gtmsby		gtm	sit	
 coor1m		coor1s		coor	sit
 dn1m		dn1s		dn	sit
@@ -11,24 +11,31 @@ gtmprx1m	gtmprx2s	gtmprx	sit
 coor2m		coor2s		coor	sit
 dn2m		dn2s		dn	sit
 gtmprx2m	gtmprx2s	gtmprx	sit
-an23		an12		gtm	test2	192.168.137.190	repl
-an23		an21		coor	test2	192.168.137.191	repl
-an22		an13		dn	test2	192.168.137.192	repl
-an31		an32		gtmprx	test2	192.168.137.193	repl
-an33		an41		coor	test2	192.168.137.194	repl
-an42		an43		coor	test2	192.168.137.195	repl
+an23		an12		gtm	test2	
+an23		an21		coor	test2	
+an22		an13		dn	test2	
+an31		an32		gtmprx	test2	
+an33		an41		coor	test2	
+an42		an43		coor	test2	
 
-an11		an12		gtm	htest2	192.168.123.190	repl
-an13		an21		coor	htest2	192.168.123.191	repl
-an22		an23		dn	htest2	192.168.123.192	repl
-an31		an32		gtmprx	htest2	192.168.123.193	repl
-an33		an41		coor	htest2	192.168.123.194	repl
-an42		an43		coor	htest2	192.168.123.195	repl
+an11		an12		gtm	htest2	
+an13		an21		coor	htest2	
+an22		an23		dn	htest2	
+an31		an32		gtmprx	htest2	
+an33		an41		coor	htest2	
+an42		an43		coor	htest2	
 
-coor1m		coor1s		coor	alpha2	coor1v		repl
-coor2m		coor2s		coor	alpha2	coor2v		repl
-dn1m		dn1s		dn	alpha2	dn1v		repl
-dn2m		dn2s		dn	alpha2	dn2v		repl
-gtmprx1m	gtmprx1s	gtmprx	alpha2	gtmprx1v	repl
-gtmprx2m	gtmprx2s	gtmprx	alpha2	gtmprx2v	repl
+coor1m		coor1s		coor	alpha2	
+coor2m		coor2s		coor	alpha2	
+dn1m		dn1s		dn	alpha2	
+dn2m		dn2s		dn	alpha2	
+gtmprx1m	gtmprx1s	gtmprx	alpha2	
+gtmprx2m	gtmprx2s	gtmprx	alpha2	
 
+gtm		gtmsby		gtm	alpha	
+coor1m		coor1s		coor	alpha	
+coor2m		coor2s		coor	alpha	
+dn1m		dn1s		dn	alpha	
+dn2m		dn2s		dn	alpha	
+gtmprx1m	gtmprx1s	gtmprx	alpha	
+gtmprx2m	gtmprx2s	gtmprx	alpha	
