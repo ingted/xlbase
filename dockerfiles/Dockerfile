@@ -119,7 +119,9 @@ RUN mkdir -p /addfiles; \
 	dpkg -i /addfiles/packages/cgroup-lite_1.9_all.deb; \
 
 	apt-get -y install \
-        	dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl docker.io dsniff \
+        	dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl \
+		#docker.io \
+		dsniff \
         	flex \
         	g++ gcc gdb gettext git git-arch git-completion git-core git-doc git-email git-svn \
         	intltool \
@@ -312,7 +314,7 @@ RUN mkdir -p /addfiles; \
 	useradd --system -U -ms /bin/bash haclient; \
 	useradd --system -m -g haclient -s /bin/bash hacluster
 	sed -i.bak -e s/haclient\:\!/haclient\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
-	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
+	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; 
 
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
