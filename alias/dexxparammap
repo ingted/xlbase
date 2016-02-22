@@ -184,7 +184,7 @@ function @@@m_dn_hostip@@@        (){
 	##echo "$(awk "(\$6 == \"$cluster\") && (\$2 == \"$specified_cnm\") {print \$1}" $(which dexxhosts))"
 	##echo $hrid $specified_sm $role
 	#gawk -v role=$role -v hrid=$hrid -v sm=$specified_sm -f $dirpath/dexxhostips.awk $dirpath/dexxhostips
-	@@@hostip@@@ -r $role -i $hrid -s $specified_sm -c $cluster
+	@@@hostip@@@ -r $role -i $hrid -u $currsm -c $cluster
 }
 function @@@m_dn_pgxcnodename@@@  (){   
 	source $(which dexxgnuparam) $@
@@ -235,9 +235,27 @@ function @@@ha_sby@@@     (){
 function @@@wal_archive@@@ (){
 	source $(which dexxgnuparam) $@
 	configrepo=$(which dexxconfigrepo)
+	#echo $currsm
+	if [ $currsm != m ]; then
+                return
+        fi
 	awk "(\$2 == \"$role\") && (\$3 == \"$specified_sm\") && (\$9 == \"$cluster\") && (\$1 == \"b\" ) {gsub(\"#\", \"$specified_nid\", \$5); gsub(\"%\", \"$specified_sm\", \$5); print \"cp %p \"\$5\"/%f\"}" "$configrepo"
 	#echo "cp %p /postgres/%f"
 
 	#pgver=$pgver; nid=$specified_nid; sm=$specified_sm;
 
+}
+
+function @@@gtm_sby@@@	(){
+	source $(which dexxgnuparam) $@
+	if [ $currsm == m ]; then
+		echo -e "startup = ACT                           # Start mode. ACT/STANDBY."
+	else
+		echo -e "
+startup = STANDBY
+active_host = '$(@@@hostip@@@ -r $slaverole -i $slavehrid -u m -c $cluster)'                       # Listen address of active GTM.
+active_port = $(@@@b_coor_gtmprx_port@@@)                         # Port number of active GTM.
+                                       # (changes requires restart)
+"
+	fi
 }

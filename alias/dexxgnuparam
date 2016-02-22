@@ -27,6 +27,8 @@ function helptext () {
 	echo "-v, --pgver, --version		pgver."
 	echo "-s, --sm, --slave-or-master	Slave or master, default is master."
 	echo "-i, --hrid			hostroleid."
+	echo "--sr				slaverole"
+	echo "--sh				slavehrid"
 	echo "-u, --currsm			current sm"
         echo ""
 	#return
@@ -48,6 +50,9 @@ while true ; do
 	-v|--pgver|--version) pgver=$2; shift; shift;;
 	-i|--hrid) hrid=$2; shift; shift;;
 	-u|--currsm) currsm=$2; shift; shift;;
+	--sr) slaverole=$2; shift; shift;;
+	--sh) slavehrid=$2; shift; shift;;
+
         "") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""
