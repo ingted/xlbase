@@ -164,6 +164,7 @@ else
 					dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 					
 					echo $(date +"%T") \[\| xl-init \|\] @$host $1 $dir
+					echo util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
 					util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
 					#echo "conf: $conf"
 					hrid=$(./mgmt-xl-get-hrid $host $cluster)
