@@ -75,10 +75,10 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/gnu/libnettle.so.4         /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libgnutls-deb0.so.28   /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libhogweed.so.2        /usr/lib/x86_64-linux-gnu/; \   
-	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; \
+	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; 
 
 
-	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb; \
+RUN	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb; \
 	ls /etc/init/cgroup-lite.conf;
 
 RUN	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
