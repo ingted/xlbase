@@ -13,7 +13,6 @@ function in{
 		if($i -eq $testvalue){$true}
 	})
 }
-0000
 $purge = {
 	param(
 		$toPurge, $confirm
@@ -25,14 +24,11 @@ $purge = {
         }
 }
 
-123
 $debug_cnt = {
 	if($ifDebug){write-host ("item #:" + [int](dir $initpath).count)}
 }
-234
 $groles = @{gtm="gtm"; gtmsby="gtm"; gtmprx="gtm_proxy"}
 $droles = @{coor="coordinator"; dn="datanode"}
-567
 $ip = [io.directoryinfo] $initpath
 if(!$ip.exists){$ip.create()}
 
