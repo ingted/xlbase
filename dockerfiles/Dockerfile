@@ -422,7 +422,7 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 	cd /root/Downloads/clusterLab/pcs; \
 	git clone https://github.com/ingted/pcs.git; \
 	wget "https://github.com/ClusterLabs/pcs/archive/0.9.141.tar.gz"; \
-	cp /root/Downloads/clusterLab/pcs/pcs /
+	cp /root/Downloads/clusterLab/pcs/pcs; \
 	chown hacluster:haclient /pcs -R; \
 	#cd /pcs;
 	#tar zxvf 0.9.141.tar.gz; \
