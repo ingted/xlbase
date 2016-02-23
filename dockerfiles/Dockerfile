@@ -78,8 +78,10 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; \
 
 
+	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb; \
+	ls /etc/init/cgroup-lite.conf;
 
-	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
+RUN	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	ln -s /bin/true /etc/init.d/systemd-logind; \
  	ln -snf /root/Downloads/https /usr/lib/apt/methods/https; \
         apt-get purge openjdk-7-*; \
