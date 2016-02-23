@@ -116,9 +116,10 @@ RUN mkdir -p /addfiles; \
 		cvs; \
 
 	cd /root/Downloads; \
-	dpkg -i /addfiles/packages/cgroup-lite_1.9_all.deb; \
+	#dpkg -i /addfiles/packages/cgroup-lite_1.9_all.deb; \
+	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb;
 
-	apt-get -y install \
+RUN	apt-get -y install \
         	dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl \
 		#docker.io \
 		dsniff \
