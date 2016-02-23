@@ -161,11 +161,13 @@ else
 						echo "invalid specified host! mgmt-xl-init failed!"
 						continue
 					fi
+					#echo $conf
 					dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 					
-					echo $(date +"%T") \[\| xl-init \|\] @$host $1 $dir
-					echo util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
-					util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
+					echo $(date +"%T") \[\| xl-init \|\] @$host $role $dir
+					#echo util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
+					#echo $dir
+					util-bpx "$host" $pgu cluster-xl-init.ps1 $host $role $dir 1
 					#echo "conf: $conf"
 					hrid=$(./mgmt-xl-get-hrid $host $cluster)
 					nid=$(./mgmt-xl-get-node-id $host $cluster)

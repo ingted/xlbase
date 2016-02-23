@@ -34,6 +34,5 @@ nid=$(./mgmt-xl-get-node-id "$1" "$cluster"|sort|uniq)
 configrepo=$(which dexxconfigrepo)
 
 for r in $role; do
-	echo $r
 	awk "(\$2 == \"$r\") && (\$8 == \"$PGVER\") && (\$3 == \"$m_or_s\") && (\$9 == \"$cluster\") {gsub(\"#\", \"$nid\", \$5); gsub(\"%\", \"$m_or_s\", \$5); print \$5,\$5\"/\"\$7,\$6}" "$configrepo"
 done
