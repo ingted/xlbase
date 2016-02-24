@@ -6,7 +6,7 @@ else
         cluster=$2
 fi
 
-c2param=${cluster//,/ }
+c2param=(${cluster//,/ })
 
 if [ ${c2param[2]} == "p" ]; then
 
