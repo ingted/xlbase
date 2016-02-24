@@ -25,4 +25,6 @@ chown hacluster:haclient /usr/lib/ruby/gems/1.9.1 -R;
 echo | gem install bundler rdoc rack sinatra sinatra-reloader open4 orderedhash rpam --no-rdoc --no-ri;
 service pcsd start;
 
+cd /root/Downloads/clusterLab/corosync/corosync
+make install
 

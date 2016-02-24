@@ -75,7 +75,14 @@ RUN mkdir -p /addfiles; \
 	cp /addfiles/gnu/libnettle.so.4         /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libgnutls-deb0.so.28   /usr/lib/x86_64-linux-gnu/; \    
 	cp /addfiles/gnu/libhogweed.so.2        /usr/lib/x86_64-linux-gnu/; \   
-	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; 
+	cp /addfiles/gnu/libcap-ng.so.0		/usr/lib/x86_64-linux-gnu/; \
+	touch /etc/init.d/cgroup-lite; \
+	echo "#!/bin/bash" >> /etc/init.d/cgroup-lite; \
+	echo "exit 0" >> /etc/init.d/cgroup-lite; \
+	chmod +x /etc/init.d/cgroup-lite; \
+	echo "#!/bin/bash" >> /etc/init.d/vsftpd; \
+        echo "exit 0" >> /etc/init.d/vsftpd; \
+        chmod +x /etc/init.d/vsftpd; 
 
 
 RUN	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb; \
@@ -460,7 +467,7 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 	#git clone https://github.com/ClusterLabs/pacemaker.git; \
 	git clone https://github.com/ingted/pacemaker.git; \
 	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
-	tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
+	#tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
 	#apt-get -y install rpm; \
 	cd pacemaker; \ 
 	
