@@ -7,10 +7,9 @@ else
 fi
 
 c2param=(${cluster//,/ })
+if [ "${c2param[1]}" == "p" ]; then
 
-if [ ${c2param[2]} == "p" ]; then
-
-	cluster=(${c2param[0]})
+	cluster=${c2param[0]}
 	async=1
 else
 	async=0
@@ -31,10 +30,9 @@ echo -e "distributor:\n$dhosts"
 #echo  $cnms
 echo ===============================
 
-
 #for dhi in $dhosts; do
 function xxx(){
-	dhtmp=(${dhi//\,/ })
+	dhtmp=(${dhi//,/ })
         dh=${dhtmp[1]}
 	echo -e "\n=>to node: $dh"
         dnm=${dhtmp[0]}
@@ -165,10 +163,11 @@ SSH_L1
 }
 
 for dhi in $dhosts; do
+	echo $dhi
 	if [ $async == 0 ]; then
-		xxx &
+		xxx $@
 	else
-		xxx
+		xxx $@ &
 	fi
 
 done
