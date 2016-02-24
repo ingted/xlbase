@@ -458,12 +458,12 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 	cd /root/Downloads/clusterLab/hawk; \
 	wget "https://github.com/ClusterLabs/hawk/archive/1.0.0-alpha1.tar.gz"; \
 	tar zxvf 1.0.0-alpha1.tar.gz; \
-	cd hawk-1.0.0-alpha1; \
+	cd hawk-1.0.0-alpha1; 
 	#apt-get -y install pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu
 
 
 	#WORKDIR /root/Downloads/clusterLab/pacemaker
-	cd /root/Downloads/clusterLab/pacemaker; \
+RUN	cd /root/Downloads/clusterLab/pacemaker; \
 	#git clone https://github.com/ClusterLabs/pacemaker.git; \
 	git clone https://github.com/ingted/pacemaker.git; \
 	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
