@@ -163,7 +163,6 @@ SSH_L1
 }
 
 for dhi in $dhosts; do
-	echo $dhi
 	if [ $async == 0 ]; then
 		xxx $@
 	else
