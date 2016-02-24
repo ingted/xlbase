@@ -465,13 +465,7 @@ RUN	cd /root/Downloads/clusterLab/pacemaker; \
 	#git clone https://github.com/ClusterLabs/pacemaker.git; \
 	git clone https://github.com/ingted/pacemaker.git; \
 	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
-	#tar xzvf Pacemaker-1.1.13-rc3.tar.gz; \
-	#apt-get -y install rpm; \
 	cd pacemaker; \ 
-	
-
-
-	#cd pacemaker-Pacemaker-1.1.13-rc3; \
 	./autogen.sh; \
 	./configure; \
 	make -j8; \
