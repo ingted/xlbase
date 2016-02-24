@@ -86,9 +86,7 @@ RUN mkdir -p /addfiles; \
 
 
 RUN	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb; \
-	ls /etc/init/cgroup-lite.conf;
-
-RUN	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
+	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	ln -s /bin/true /etc/init.d/systemd-logind; \
  	ln -snf /root/Downloads/https /usr/lib/apt/methods/https; \
         apt-get purge openjdk-7-*; \
@@ -124,11 +122,11 @@ RUN	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 		#corosync-dev 
 		cvs; \
 
-	cd /root/Downloads; \
+	#cd /root/Downloads; \
 	#dpkg -i /addfiles/packages/cgroup-lite_1.9_all.deb; \
-	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb;
 
-RUN	apt-get -y install \
+
+	apt-get -y install \
         	dbtoepub dbus docbook docbook-dsssl docbook-dsssl-doc docbook-xml docbook-xsl \
 		#docker.io \
 		dsniff \
@@ -179,9 +177,9 @@ RUN	apt-get -y install \
         pip uninstall -y distribute || true; \
         pip uninstall -y setuptools || true; \
         pip install ipython; \
-        pip install --upgrade ipython; \
+        pip install --upgrade ipython; 
 
-	mkdir -p /var/run/vsftpd/empty; \
+RUN	mkdir -p /var/run/vsftpd/empty; \
 	# NEED TO ADD VSFTPD root permission and ENABLE WRITE
 	sed -i.bak -e s/root/#root/g /etc/ftpusers; \
 	sed -i.bak -e s/#write_enable/write_enable/g /etc/vsftpd.conf; \
