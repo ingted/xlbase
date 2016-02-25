@@ -36,8 +36,8 @@
 10.128.114.59    h2 	  h  -  -				alpha
 10.128.112.65    h3 	  h  -  -				alpha
 10.128.112.66    h4 	  h  -  -				alpha
-10.128.114.47	 gtm      c	h1	/docker_volume/gtm	alpha	
-10.128.114.48	 gtmsby	  c	h2	/docker_volume/gtmsby	alpha
+10.128.114.48	 gtm      c	h1	/docker_volume/gtm	alpha	
+10.128.114.49	 gtmsby	  c	h2	/docker_volume/gtmsby	alpha
 10.128.113.36	 gtmprx1m c	h3	/docker_volume/gtmprx1m	alpha	
 10.128.113.37	 gtmprx2m c	h4	/docker_volume/gtmprx2m	alpha	
 10.128.113.38	 gtmprx2s c	h3	/docker_volume/gtmprx1s	alpha	

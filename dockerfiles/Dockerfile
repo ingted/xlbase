@@ -265,8 +265,8 @@ RUN	cd /root/Downloads/fs; \
 	#WORKDIR /root/Downloads/fs/fsharp/
 	cd /root/Downloads/fs/fsharp/; \
 	./autogen.sh --prefix=/usr; \
-        make; \
-	cd ../; \
+        make; 
+
 	#wget "https://raw.github.com/fsharp/FAKE/master/src/app/FakeLib/ProcessHelper.fs"; \
 
 #	echo "none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0" >> /etc/fstab; \
@@ -293,7 +293,7 @@ RUN	cd /root/Downloads/fs; \
 
 #RUN apt-get -y install g++-5
 
-	cd /root/Downloads/clusterLab/; \
+RUN	cd /root/Downloads/clusterLab/; \
 	#git clone https://github.com/ingted/clusterLab.git; \
 	
 	
