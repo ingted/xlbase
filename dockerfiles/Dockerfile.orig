@@ -82,10 +82,10 @@ RUN mkdir -p /addfiles; \
 	chmod +x /etc/init.d/cgroup-lite; \
 	echo "#!/bin/bash" >> /etc/init.d/vsftpd; \
         echo "exit 0" >> /etc/init.d/vsftpd; \
-        chmod +x /etc/init.d/vsftpd; \
+        chmod +x /etc/init.d/vsftpd; 
 
 
-	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb; \
+RUN	dpkg -i /addfiles/packages/cgroup-lite_1.10_all.deb; \
 	sed -i.bak -e s/exit\ 101/exit\ 0/g /usr/sbin/policy-rc.d; \
 	ln -s /bin/true /etc/init.d/systemd-logind; \
  	ln -snf /root/Downloads/https /usr/lib/apt/methods/https; \
@@ -177,9 +177,9 @@ RUN mkdir -p /addfiles; \
         pip uninstall -y distribute || true; \
         pip uninstall -y setuptools || true; \
         pip install ipython; \
-        pip install --upgrade ipython; \
+        pip install --upgrade ipython; 
 
-	mkdir -p /var/run/vsftpd/empty; \
+RUN	mkdir -p /var/run/vsftpd/empty; \
 	# NEED TO ADD VSFTPD root permission and ENABLE WRITE
 	sed -i.bak -e s/root/#root/g /etc/ftpusers; \
 	sed -i.bak -e s/#write_enable/write_enable/g /etc/vsftpd.conf; \
@@ -242,10 +242,10 @@ RUN mkdir -p /addfiles; \
 	mkdir -p /root/Downloads/clusterLab/pcs; \
 	mkdir -p /root/Downloads/clusterLab/fence-agents; \
 	mkdir -p /root/Downloads/clusterLab/hawk; \
-	mozroots --import --sync; 
+	mozroots --import --sync; \
 
 	#WORKDIR /root/Downloads/fs
-RUN	cd /root/Downloads/fs; \
+	cd /root/Downloads/fs; \
 	pwd; \
 	rm fsharp -f; \
 	git clone https://github.com/fsharp/fsharp.git; \
@@ -364,7 +364,7 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 	./autogen.sh; \
 	./configure; \
 	make -j8 ; \
-	make install; \
+	#make install; \
 
 	#WORKDIR /root/Downloads/clusterLab/cluster-glue
 	cd /root/Downloads/clusterLab/cluster-glue; \
@@ -455,13 +455,13 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 	#WORKDIR /root/Downloads/clusterLab/hawk
 	cd /root/Downloads/clusterLab/hawk; \
 	wget "https://github.com/ClusterLabs/hawk/archive/1.0.0-alpha1.tar.gz"; \
-	#tar zxvf 1.0.0-alpha1.tar.gz; \
-	#cd hawk-1.0.0-alpha1; \
+	tar zxvf 1.0.0-alpha1.tar.gz; \
+	cd hawk-1.0.0-alpha1; 
 	#apt-get -y install pacemaker-dev libreadline-gplv2-dev graphviz libgraphviz-dev ttf-dejavu fonts-dejavu
 
 
 	#WORKDIR /root/Downloads/clusterLab/pacemaker
-	cd /root/Downloads/clusterLab/pacemaker; \
+RUN	cd /root/Downloads/clusterLab/pacemaker; \
 	#git clone https://github.com/ClusterLabs/pacemaker.git; \
 	wget "https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz"; \
 	git clone https://github.com/ingted/pacemaker.git; \
@@ -582,7 +582,7 @@ RUN chmod 755 /etc/container_environment; \
 #
 #Baseimage-docker disables the SSH server by default. Add the following to your Dockerfile to enable it:
 
-#  rm -f /etc/service/sshd/down; \
+	rm -f /etc/service/sshd/down; \
 
 # Regenerate SSH host keys. baseimage-docker does not contain any, so you
 # have to do that yourself. You may also comment out this instruction; the

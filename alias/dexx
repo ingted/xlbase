@@ -6,6 +6,15 @@ else
         cluster=$2
 fi
 
+c2param=(${cluster//,/ })
+if [ "${c2param[1]}" == "p" ]; then
+
+	cluster=${c2param[0]}
+	async=1
+else
+	async=0
+fi
+
 
 dcmd=${*:3}
 echo ==========dexx start===========
@@ -21,10 +30,9 @@ echo -e "distributor:\n$dhosts"
 #echo  $cnms
 echo ===============================
 
-
-for dhi in $dhosts; do
-
-	dhtmp=(${dhi//\,/ })
+#for dhi in $dhosts; do
+function xxx(){
+	dhtmp=(${dhi//,/ })
         dh=${dhtmp[1]}
 	echo -e "\n=>to node: $dh"
         dnm=${dhtmp[0]}
@@ -150,6 +158,17 @@ SSH_L1
 	
 SSH_L1
 	fi
+
+
+}
+
+for dhi in $dhosts; do
+	if [ $async == 0 ]; then
+		xxx $@
+	else
+		xxx $@ &
+	fi
+
 done
 
 
