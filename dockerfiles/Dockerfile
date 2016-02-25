@@ -242,10 +242,10 @@ RUN mkdir -p /addfiles; \
 	mkdir -p /root/Downloads/clusterLab/pcs; \
 	mkdir -p /root/Downloads/clusterLab/fence-agents; \
 	mkdir -p /root/Downloads/clusterLab/hawk; \
-	mozroots --import --sync; \
+	mozroots --import --sync; 
 
 	#WORKDIR /root/Downloads/fs
-	cd /root/Downloads/fs; \
+RUN	cd /root/Downloads/fs; \
 	pwd; \
 	rm fsharp -f; \
 	git clone https://github.com/fsharp/fsharp.git; \
