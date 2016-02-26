@@ -14,15 +14,15 @@ iface ens3:0 inet static
         address 10.128.112.49
         netmask 255.255.255.0
 
-auto ens3:1
-iface ens3:1 inet static
-        address 10.128.112.35
-        netmask 255.255.255.0
-
-auto ens3:2
-iface ens3:2 inet static
-        address 10.128.112.37
-        netmask 255.255.255.0
+#auto ens3:1
+#iface ens3:1 inet static
+#        address 10.128.112.35
+#        netmask 255.255.255.0
+#
+#auto ens3:2
+#iface ens3:2 inet static
+#        address 10.128.112.37
+#        netmask 255.255.255.0
 
 auto ens6
 iface ens6 inet static
