@@ -1,0 +1,25 @@
+# interfaces(5) file used by ifup(8) and ifdown(8)
+auto lo
+iface lo inet loopback
+
+auto ens3
+iface ens3 inet static
+	address 10.128.114.58
+	netmask 255.255.255.0
+
+auto ens3:0
+iface ens3:0 inet static
+        address 10.128.114.48
+        netmask 255.255.255.0
+
+auto ens5
+iface ens5 inet static
+        address 10.128.112.47
+        netmask 255.255.255.0
+	gateway 10.128.112.254
+	dns-nameservers 8.8.8.8
+
+auto ens8
+iface ens8 inet static
+        address 10.128.113.55
+        netmask 255.255.255.0

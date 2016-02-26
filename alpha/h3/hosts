@@ -1,0 +1,31 @@
+127.0.0.1	localhost
+127.0.1.1	apc
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+#10.128.114.58 h1
+#10.128.114.59 h2
+#10.128.112.65 h3
+#10.128.112.66 h4
+#10.128.114.48 gtm
+#10.128.114.49 gtmsby
+#10.128.113.65 coor1m
+#10.128.113.66 coor2m
+#10.128.113.68 coor1s
+#10.128.113.67 coor2s
+#10.128.113.49 dn1m
+#10.128.113.50 dn2m
+#10.128.113.52 dn1s
+#10.128.113.51 dn2s
+#10.128.113.36 gtmprx1m
+#10.128.113.37 gtmprx2m
+#10.128.113.39 gtmprx1s
+#10.128.113.38 gtmprx2s
+#10.128.114.36 gtmprx1m
+#10.128.114.37 gtmprx2m
+#10.128.114.39 gtmprx1s
+#10.128.114.38 gtmprx2s
