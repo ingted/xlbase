@@ -13,7 +13,10 @@ function replace (){
 		echo ===============================================
 		echo $t
 		echo ===============================================
-		sed -i.bak -re 's/\/usr\/lib\/pcsd\//\/usr\/share\/pcsd\//g' $t 
+		s=$(grep "\\.bak\$" <<< $t)
+		if [ $s == "" ]; then
+			sed -i.bak -re 's/\/usr\/lib\/pcsd\//\/usr\/share\/pcsd\//g' $t 
+		fi
 	
 		i=$(( i - 1 ))
 	done
@@ -25,4 +28,4 @@ replace
 dir=/usr/lib/python2.7/dist-packages/pcs
 replace
 
-dir=
+
