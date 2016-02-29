@@ -73,7 +73,8 @@ make_image()
         echo "  echo \"monqodb/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
         echo "  echo \"mgmt/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
         echo "  echo \"alias/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
-	echo "  git checkout --track -b backToOrigin origin/backToOrigin"		>> Dockerfile
+	echo "  git checkout --track -b backToOrigin origin/backToOrigin; \\"		>> Dockerfile
+	echo "  /root/pcmk/cluster/cluster-pcmk-fix-pcsd.sh; "				>> Dockerfile
         #echo "  git pull origin backToOrigin"						>> Dockerfile
 
 	echo "ADD ./pcsd /root/pcsds" 							>> Dockerfile
