@@ -81,6 +81,14 @@ function main () {
 	docker exec "$nm" service ssh restart
 	docker exec "$nm" echo $(eval 'PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"')
 	docker exec "$nm" sed -i.bak -e "s/mesg n/if \`tty -s\`\; then mesg n; fi/g" /root/.profile
+
+	cp /etc/hosts /etc/hosts.tmp
+        sed -i "/$ip/d"     /etc/hosts.tmp
+        sed -i "/\ $nm\ /d" /etc/hosts.tmp
+        sed -i "/\ $nm\$/d" /etc/hosts.tmp
+        echo "$ip $nm" >> /etc/hosts.tmp
+        cp /etc/hosts.tmp /etc/hosts -f
+
 	
 	echo \[\!ID_DONE\]
 	

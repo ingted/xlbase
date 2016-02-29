@@ -6,6 +6,11 @@ else
         nm="$1"
 fi
 
+if [ "$2" != "1" ]; then
+        no_rc_local=0
+else
+        no_rc_local=1
+fi
 
 if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
 if [ ! -e /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
@@ -21,3 +26,6 @@ docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; th
 docker exec "$nm" hostnamectl set-hostname "$nm"
 docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname"
 docker exec "$nm" bash -c 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"'
+if [  $no_rc_local == 1 ]; then
+	docker exec "$nm" /etc/rc.local /
+fi
