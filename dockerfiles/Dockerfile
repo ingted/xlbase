@@ -324,7 +324,7 @@ RUN	cd /root/Downloads/clusterLab/; \
 	useradd --system -m -g haclient -s /bin/bash hacluster; \
 	sed -i.bak -e s/haclient\:\!/haclient\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
-	useradd hacluster root;
+	useradd hacluster -g root;
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
 RUN cd /root/Downloads/clusterLab/libqb; \
@@ -426,9 +426,10 @@ RUN cd /root/Downloads/clusterLab/libqb; \
 	
 	#WORKDIR /root/Downloads/clusterLab/pcs
 	cd /root/Downloads/clusterLab/pcs; \
-	git clone https://github.com/ingted/pcs.git; \
+	#git clone https://github.com/ingted/pcs.git; \
+	git clone https://github.com/ClusterLabs/pcs.git; \
 	wget "https://github.com/ClusterLabs/pcs/archive/0.9.141.tar.gz"; \
-	cp /root/Downloads/clusterLab/pcs/pcs /; \
+	cp /root/Downloads/clusterLab/pcs/pcs / -r; \
 	chown hacluster:haclient /pcs -R; \
 	#cd /pcs;
 	#tar zxvf 0.9.141.tar.gz; \
@@ -744,13 +745,17 @@ RUN chmod 755 /etc/container_environment; \
 	cp /addfiles/bashrc_4_ps1 /root/Downloads/pgxl95/bashrc_4_ps1; \
 
 	cd /pcs; \
-	gem install bundler rdoc --no-rdoc --no-ri; \
-	gem install ruby_gem --no-rdoc --no-ri; \
-	gem install rubygems-update --no-rdoc --no-ri; \
-	update_rubygems; \
-	gem update --system; \
-	chown hacluster:haclient /pcs -R; \
+	useradd hacluster -g root; \
+	#gem install bundle bundler rdoc --no-rdoc --no-ri;
+	#gem install ruby_gem --no-rdoc --no-ri;
+	#gem install rubygems-update --no-rdoc --no-ri;
+	#update_rubygems;
+	#gem update --system;
+	gem install bundle bundler rdoc --no-rdoc --no-ri; \
 	cd /pcs/pcsd; \
+	mkdir -p vendor/bundle/ruby/1.9.1; \
+	chown hacluster:haclient /pcs -R; \
+	chmod +xw /pcs -R; \
 	#echo | gem install bundler rdoc --no-rdoc --no-ri; \
 	#setuser hacluster  bundle install --path vendor/bundle; \
 	#bundle install --path vendor/bundle; \
@@ -766,6 +771,31 @@ RUN chmod 755 /etc/container_environment; \
 	#/usr/bin/ruby -C/var/lib/pcsd -I/usr/share/pcsd -- /usr/share/pcsd/ssl.rb; \
 	(chown hacluster:haclient /usr/lib/ruby/gems/1.9.1 -R) || [ 1 == 1 ]; \
 	chown hacluster:haclient /usr/share/pcsd/vendor/bundle/ruby/1.9.1/ -R; \
+
+	####old version####
+	#gem install bundler rdoc --no-rdoc --no-ri; \
+	#gem install ruby_gem --no-rdoc --no-ri; \
+	#gem install rubygems-update --no-rdoc --no-ri; \
+	#update_rubygems; \
+	#gem update --system; \
+	#chown hacluster:haclient /pcs -R; \
+	#cd /pcs/pcsd; \
+	##echo | gem install bundler rdoc --no-rdoc --no-ri; \
+	##setuser hacluster  bundle install --path vendor/bundle; \
+	##bundle install --path vendor/bundle; \
+	#make get_gems; \
+	#cd /pcs; \
+	#make install_pcsd; \
+	#make install; \
+	#sship=$(grep -P ^ListenAddress /etc/ssh/sshd_config|awk '{print $2}'); \
+	##service ssh restart; \
+	##service ssh status; \
+	#sed -i.bak -r s/\:Host[[:space:]]+=\>[[:space:]]+\'\:\:\',/\:Host\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\>\ \'$sship\',/g /usr/share/pcsd/ssl.rb; \
+	#sed -i.bak -r s/\\/usr\\/lib\\/pcsd\\//\\/usr\\/share\\/pcsd\\//g /usr/share/pcsd/settings.rb; \
+	##/usr/bin/ruby -C/var/lib/pcsd -I/usr/share/pcsd -- /usr/share/pcsd/ssl.rb; \
+	#(chown hacluster:haclient /usr/lib/ruby/gems/1.9.1 -R) || [ 1 == 1 ]; \
+	#chown hacluster:haclient /usr/share/pcsd/vendor/bundle/ruby/1.9.1/ -R; \
+	#### end of old version #####
 
 	#WORKDIR /root/Downloads/clusterLab/pcs/pcs-0.9.141
 	#cd /root/Downloads/clusterLab/pcs/pcs-0.9.141; \

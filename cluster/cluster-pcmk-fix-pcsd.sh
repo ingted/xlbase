@@ -14,7 +14,7 @@ function replace (){
 		echo $t
 		echo ===============================================
 		s=$(grep "\\.bak\$" <<< $t)
-		if [ $s == "" ]; then
+		if [ "$s" == "" ]; then
 			sed -i.bak -re 's/\/usr\/lib\/pcsd\//\/usr\/share\/pcsd\//g' $t 
 		fi
 	
