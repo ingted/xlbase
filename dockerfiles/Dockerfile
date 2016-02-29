@@ -324,7 +324,7 @@ RUN	useradd --system -U -ms /bin/bash postgres; \
 	useradd --system -m -g haclient -s /bin/bash hacluster; \
 	sed -i.bak -e s/haclient\:\!/haclient\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
-	usermod -a G root hacluster; \
+	usermod -a -G root hacluster; \
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
 	cd /root/Downloads/clusterLab/libqb; \
@@ -745,7 +745,7 @@ RUN chmod 755 /etc/container_environment; \
 	cp /addfiles/bashrc_4_ps1 /root/Downloads/pgxl95/bashrc_4_ps1; \
 
 	cd /pcs; \
-	useradd hacluster -g root; \
+	#useradd hacluster -g root; \
 	#gem install bundle bundler rdoc --no-rdoc --no-ri;
 	#gem install ruby_gem --no-rdoc --no-ri;
 	#gem install rubygems-update --no-rdoc --no-ri;
