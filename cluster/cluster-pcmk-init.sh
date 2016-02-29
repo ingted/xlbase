@@ -22,6 +22,8 @@ sed -i.bak -r s/\:Host[[:space:]]+=\>[[:space:]]+\'\:\:\',/\:Host\ \ \ \ \ \ \ \
 sed -i.bak -r s/\\/usr\\/lib\\/pcsd\\//\\/usr\\/share\\/pcsd\\//g /usr/share/pcsd/settings.rb;
 #/usr/bin/ruby -C/var/lib/pcsd -I/usr/share/pcsd -- /usr/share/pcsd/ssl.rb;
 chown hacluster:haclient /usr/lib/ruby/gems/1.9.1 -R;
+chown hacluster:haclient /usr/share/pcsd/vendor/bundle/ruby/1.9.1/ -R;
+
 echo | gem install bundler rdoc rack sinatra sinatra-reloader open4 orderedhash rpam --no-rdoc --no-ri;
 service pcsd start;
 
