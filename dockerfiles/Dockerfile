@@ -313,8 +313,8 @@ RUN	cd /root/Downloads/clusterLab/; \
 	add-apt-repository -y ppa:webupd8team/java; \
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886; \
 	apt-get update; \
-	apt-get -y install oracle-java8-installer oracle-java7-installer vim; \
-	useradd --system -U -ms /bin/bash postgres; \
+	apt-get -y install oracle-java8-installer oracle-java7-installer vim; 
+RUN	useradd --system -U -ms /bin/bash postgres; \
 	useradd --system -U -ms /bin/bash osdba; \
 	useradd --system -U -ms /bin/bash voltdb; \
 	sed -i.bak -e s/postgres\:\!/postgres\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
@@ -324,10 +324,10 @@ RUN	cd /root/Downloads/clusterLab/; \
 	useradd --system -m -g haclient -s /bin/bash hacluster; \
 	sed -i.bak -e s/haclient\:\!/haclient\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
 	sed -i.bak -e s/hacluster\:\!/hacluster\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow; \
-	useradd hacluster -g root;
+	usermod -a G root hacluster; \
 
 	#WORKDIR /root/Downloads/clusterLab/libqb
-RUN cd /root/Downloads/clusterLab/libqb; \
+	cd /root/Downloads/clusterLab/libqb; \
 	#git clone https://github.com/ClusterLabs/libqb.git; \
 	git clone https://github.com/ingted/libqb.git; \
 	wget "https://github.com/ClusterLabs/libqb/archive/v0.17.2.tar.gz"; \
