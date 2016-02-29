@@ -146,7 +146,7 @@ RUN mkdir -p /addfiles; \
                 	libglib2.0-dev libncurses5-dev libpam0g-dev libpe-status4 libpod-2-docbook-perl\ 
 			#libqb-dev \
                 	libreadline-dev libselinux-dev libsgml-dtdparse-perl libsnmp-base libsnmp-dev libsqlite3-dev \
-                	libssl-dev libtool libxml2-dev libxml2-utils libxslt1-dev lm-sensors \
+                	libssl-dev libtool libuser libxml2-dev libxml2-utils libxslt1-dev lm-sensors \
 			lsof; \
 	apt-get -y install \
         	#monodevelop 
