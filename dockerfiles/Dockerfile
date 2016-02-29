@@ -132,6 +132,7 @@ RUN mkdir -p /addfiles; \
 		dsniff \
         	flex \
         	g++ gcc gdb gettext git git-arch git-completion git-core git-doc git-email git-svn \
+		htop \
         	intltool \
         	jade; \
 	apt-get -y install \
@@ -149,7 +150,7 @@ RUN mkdir -p /addfiles; \
 			lsof; \
 	apt-get -y install \
         	#monodevelop 
-		mono-devel mono-complete multiarch-support \
+		mono-devel mono-complete multiarch-support members \
         	ncurses-dev ntp \
 		openjade1.3 opensp \
 		#oracle-java7-installer oracle-java8-installer \
