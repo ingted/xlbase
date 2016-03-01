@@ -74,7 +74,8 @@ make_image()
         echo "  echo \"mgmt/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
         echo "  echo \"alias/*\" >> .git/info/sparse-checkout; \\"			>> Dockerfile
 	echo "  git checkout --track -b backToOrigin origin/backToOrigin; \\"		>> Dockerfile
-	echo "  /root/pcmk/cluster/cluster-pcmk-fix-pcsd.sh; "				>> Dockerfile
+	echo "  /root/pcmk/cluster/cluster-pcmk-fix-pcsd.sh; \\"			>> Dockerfile
+	echo "  cd /root/Downloads/clusterLab/pacemaker/pacemaker; make install"	>> Dockerfile
         #echo "  git pull origin backToOrigin"						>> Dockerfile
 
 	echo "ADD ./pcsd /root/pcsds" 							>> Dockerfile
