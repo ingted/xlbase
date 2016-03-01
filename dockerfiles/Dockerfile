@@ -763,10 +763,10 @@ RUN chmod 755 /etc/container_environment; \
 	cd /pcs; \
 	make install_pcsd; \
 	make install; \
-	sship=$(grep -P ^ListenAddress /etc/ssh/sshd_config|awk '{print $2}'); \
+	#sship=$(grep -P ^ListenAddress /etc/ssh/sshd_config|awk '{print $2}'); \
 	#service ssh restart; \
 	#service ssh status; \
-	sed -i.bak -r s/\:Host[[:space:]]+=\>[[:space:]]+\'\:\:\',/\:Host\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\>\ \'$sship\',/g /usr/share/pcsd/ssl.rb; \
+	#sed -i.bak -r s/\:Host[[:space:]]+=\>[[:space:]]+\'\:\:\',/\:Host\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\>\ \'$sship\',/g /usr/share/pcsd/ssl.rb; \
 	sed -i.bak -r s/\\/usr\\/lib\\/pcsd\\//\\/usr\\/share\\/pcsd\\//g /usr/share/pcsd/settings.rb; \
 	#/usr/bin/ruby -C/var/lib/pcsd -I/usr/share/pcsd -- /usr/share/pcsd/ssl.rb; \
 	(chown hacluster:haclient /usr/lib/ruby/gems/1.9.1 -R) || [ 1 == 1 ]; \
