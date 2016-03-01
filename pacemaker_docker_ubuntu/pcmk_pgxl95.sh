@@ -78,7 +78,8 @@ make_image()
 	echo "  cd /root/Downloads/clusterLab/pacemaker/pacemaker; make install"	>> Dockerfile
         #echo "  git pull origin backToOrigin"						>> Dockerfile
 
-	echo "ADD ./pcsd /root/pcsds" 							>> Dockerfile
+	echo "ADD ./pcsd /root/pcsdis" 							>> Dockerfile
+	echo "ADD ./chkconfig /sbin" 							>> Dockerfile
 
 	###@ not mod system now @###
 	#echo "RUN cp /root/pcsds/* /usr/share/pcsd -f" >> Dockerfile
