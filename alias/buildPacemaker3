@@ -82,6 +82,8 @@ function main () {
 	docker exec "$nm" echo $(eval 'PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"')
 	docker exec "$nm" sed -i.bak -e "s/mesg n/if \`tty -s\`\; then mesg n; fi/g" /root/.profile
 
+	docler exec "$nm" bash -c "sed -i.bak -r s/\\:Host[[:space:]]+=\\>[[:space:]]+\\'\\:\\:\\',/\\:Host\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ =\\>\\ \\'$ip\\',/g /usr/share/pcsd/ssl.rb; "
+
 	cp /etc/hosts /etc/hosts.tmp
         sed -i "/$ip/d"     /etc/hosts.tmp
         sed -i "/\ $nm\ /d" /etc/hosts.tmp
