@@ -26,6 +26,7 @@ docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; th
 docker exec "$nm" hostnamectl set-hostname "$nm"
 docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname"
 docker exec "$nm" bash -c 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"'
+docker exec "$nm" bash -c 'service ssh start'
 if [  $no_rc_local == 1 ]; then
 	docker exec "$nm" mv /etc/rc.local /
 fi
