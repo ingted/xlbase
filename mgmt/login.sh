@@ -62,7 +62,7 @@ for ah in $allhosts; do
 	sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
 	sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
 	sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
-	sudo echo "$ahip $ah" >> /etc/hosts.tmp
+	sudo bash -c "echo \"\$ahip \$ah\" >> /etc/hosts.tmp"
 	sudo cp /etc/hosts.tmp /etc/hosts -f
 
 done
