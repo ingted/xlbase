@@ -2,28 +2,47 @@
 
 
 
+if [ "$1" == "" ]; then
+	echo -n Enter the cluster name:
+	read cluster
+	
+	if [ "$cluster" == "" ]; then
+	        cluster=test
+	fi
+else
+	cluster=$1
 
-echo -n Enter the cluster name:
-read cluster
+fi
 
-if [ "$cluster" == "" ]; then
-        cluster=test
+if [ "$2" == "" ]; then
+	echo -n Set User:
+	read -s theone
+	if [ "$theone" == "" ]; then
+	        theone="Elsie"
+	fi
+else
+if [ "$3" == "" ]; then
+	echo -n Set Password:
+	read -s password
+	if [ "$password" == "" ]; then
+	        password="/'],lp123"
+	fi
+else
+	password=$3
 fi
 
 
-echo -n Set Password:
-read -s password
-
-
-if [ "$password" == "" ]; then
-        password="/'],lp123"
-fi
+if [ "$4" == "" ]; then
+	notAnsible=1
+else
+	notAnsible=0
+fi 
 
 echo -e "\npreparing login...$cluster"
 
 expp=$(which expect)
 if [ "$expp" == "" ]; then
-	apt-get -y --force-yes install expect
+	sudo apt-get -y --force-yes install expect
 fi
 
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
@@ -37,12 +56,12 @@ for ah in $allhosts; do
 	ahip=$(./mgmt-xl-get-ip $ah $cluster)
 	ahip_r=${ahip//./\\\.}
 
-	cp /etc/hosts /etc/hosts.tmp
-	sed -i "/$ahip_r/d" /etc/hosts.tmp
-	sed -i "/\ $ah\ /d" /etc/hosts.tmp
-	sed -i "/\ $ah\$/d" /etc/hosts.tmp
-	echo "$ahip $ah" >> /etc/hosts.tmp
-	cp /etc/hosts.tmp /etc/hosts -f
+	sudo cp /etc/hosts /etc/hosts.tmp
+	sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
+	sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
+	sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
+	sudo echo "$ahip $ah" >> /etc/hosts.tmp
+	sudo cp /etc/hosts.tmp /etc/hosts -f
 
 done
 
@@ -55,24 +74,33 @@ for dhost in $dhosts; do
 	echo "processing... $dip: $dhost"
    	echo 1=========================================
 	#fi   	
-     	ssh-keygen -R $dip
-     	ssh-keygen -R $dhost
-     	echo 2=========================================
-     	ssh-keyscan -H $dip >> ~/.ssh/known_hosts
-     	ssh-keyscan -H $dhost >> ~/.ssh/known_hosts
-     	echo 3=========================================
-	if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
-		echo 3.1=======================================
-		./genkey.expect	
+	if [ $notAnsible == 1 ]; then
+	     	ssh-keygen -R $dip
+     		ssh-keygen -R $dhost
 	fi
-     	./login.expect $dip "$password" #> /dev/null
+     	echo 2=========================================
+	if [ $notAnsible == 1 ]; then
+	     	ssh-keyscan -H $dip >> ~/.ssh/known_hosts
+     		ssh-keyscan -H $dhost >> ~/.ssh/known_hosts
+	fi
+     	echo 3=========================================
+	if [ $notAnsible == 1 ]; then
+		if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
+			echo 3.1=======================================
+			./genkey.expect	
+		fi
+     		./login.expect $dip "$password" #> /dev/null
+	fi
      	echo 4=========================================
+	if [ $notAnsible == 0 ]; then
+		su "$theone"	
+	fi
 	ssh $dip << EOF
 		cdip="$dip"
 		diprp=\${cdip//./\\\.}
-		sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$diprp/g /etc/ssh/sshd_config
-		sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
-		service ssh restart
+		sudo sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$diprp/g /etc/ssh/sshd_config
+		sudo sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
+		sudo service ssh restart
 
 EOF
      	echo 5=========================================
@@ -80,7 +108,7 @@ EOF
      		touch ~/.hushlogin
      		expp=$(which expect)
      		if [ "$expp" == "" ]; then
-     		        apt-get -y  --force-yes  install expect
+     		        sudo apt-get -y  --force-yes  install expect
      		fi
 
      		IFPS1=$(grep ps1ed ~/.bashrc)
@@ -89,10 +117,10 @@ EOF
      			echo "#ps1ed" >> ~/.bashrc
 
      		fi
-     		sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
-     		sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
-     		echo "nameserver 8.8.8.8" >> /etc/resolv.conf
-     		echo "nameserver 168.95.1.1" >> /etc/resolv.conf
+     		sudo sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
+     		sudo sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
+     		sudo bash -c "echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf"
+     		sudo bash -c "echo \"nameserver 168.95.1.1\" >> /etc/resolv.conf"
 EOF
 	
 	for ah in $allhosts; do
@@ -100,12 +128,12 @@ EOF
 		ahip_r=${ahip//./\\\.}
 
 		ssh $dip << EOF
-			cp /etc/hosts /etc/hosts.tmp
-			sed -i "/$ahip_r/d" /etc/hosts.tmp
-			sed -i "/\ $ah\ /d" /etc/hosts.tmp
-			sed -i "/\ $ah\$/d" /etc/hosts.tmp
-			echo "$ahip $ah" >> /etc/hosts.tmp
-			cp /etc/hosts.tmp /etc/hosts -f
+			sudo cp /etc/hosts /etc/hosts.tmp
+			sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
+			sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
+			sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
+			sudo bash -c "echo \"\$ahip \$ah\" >> /etc/hosts.tmp"
+			sudo cp /etc/hosts.tmp /etc/hosts -f
 			#ssh-keygen -R $ah
 			#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
 			#ssh-keygen -R $ahip
@@ -114,61 +142,63 @@ EOF
 
 	done
      	echo 6=========================================
-	for ddhost in $dhosts; do
-        	dhip=$(./mgmt-xl-get-ip $dhost $cluster)
-		sleep=2
-		ssh $dip << EOF
-			#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
-                        #cd \$tarpath
-			ssh-keygen -R "$ddhost"
-			ssh-keygen -R "$dhip"
-			ssh-keyscan -H "$ddhost" >> ~/.ssh/known_hosts
-			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
-   	     		bash -c 'echo "$dhost" > /etc/hostname'
-	   	     	hostnamectl set-hostname "$dhost"
-			expect -c "
-                                spawn ssh-copy-id $ddhost
-                                exec sleep $sleep
-				set conti \"1\"
-                                expect {
-                                        \"password:\" {
-						set conti \"1\"
-                                                send \"$password\\n\"
-                                        }
-                                        \"(yes/no)?\" {
-						set conti \"1\"
-                                                send \"yes\\n\"
-                                        }
-                                        \"already exist\" {
-						set conti \"0\"
-                                        }
-					\"All keys were skipped\" {
-						set conti \"0\"
-					}
-                                }
-				if [ string match \\\$conti \"1\" ] {
-                                	expect {
-						\"(yes/no)?\" {
-                                                	send \"yes\\n\"
-							expect {
-								\"password:\" {
-	                	                                        send \"$password\\n\"
-									expect eof
-        		                                        }
+	if [ $notAnsible == 1 ]; then
+		for ddhost in $dhosts; do
+        		dhip=$(./mgmt-xl-get-ip $dhost $cluster)
+			sleep=2
+			ssh $dip << EOF
+				#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
+        	                #cd \$tarpath
+				ssh-keygen -R "$ddhost"
+				ssh-keygen -R "$dhip"
+				ssh-keyscan -H "$ddhost" >> ~/.ssh/known_hosts
+				ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
+   		     		bash -c 'echo "$dhost" > /etc/hostname'
+		   	     	hostnamectl set-hostname "$dhost"
+				expect -c "
+        	                        spawn ssh-copy-id $ddhost
+        	                        exec sleep $sleep
+					set conti \"1\"
+        	                        expect {
+        	                                \"password:\" {
+							set conti \"1\"
+        	                                        send \"$password\\n\"
+        	                                }
+        	                                \"(yes/no)?\" {
+							set conti \"1\"
+        	                                        send \"yes\\n\"
+        	                                }
+        	                                \"already exist\" {
+							set conti \"0\"
+        	                                }
+						\"All keys were skipped\" {
+							set conti \"0\"
+						}
+        	                        }
+					if [ string match \\\$conti \"1\" ] {
+        	                        	expect {
+							\"(yes/no)?\" {
+        	                                        	send \"yes\\n\"
+								expect {
+									\"password:\" {
+		                	                                        send \"$password\\n\"
+										expect eof
+        			                                        }
 
-							}
-                                        	}
-                                	        \"password:\" {
-                                	                send \"$password\\n\"
-							expect eof
-                                	        }
-                                	}
-				}
-	                        exit
-                        "
+								}
+        	                                	}
+        	                        	        \"password:\" {
+        	                        	                send \"$password\\n\"
+								expect eof
+        	                        	        }
+        	                        	}
+					}
+		                        exit
+        	                "
 EOF
-     	echo 7=========================================
-	done
+     		echo 7=========================================
+		done
+	fi
 
 
 	for ad in $dnss; do
@@ -179,12 +209,12 @@ EOF
 		echo $ad_r $ad_ipo $ad_ipi
 		echo =======================================================
 		ssh $dip << EOF
-			cp /etc/hosts /etc/hosts.tmp
-			sed -i "/$ad_ip/d" /etc/hosts.tmp
-			sed -i "/\ $ad\ /d" /etc/hosts.tmp
-			sed -i "/\ $ad\$/d" /etc/hosts.tmp
-			echo "$ad_r" >> /etc/hosts.tmp
-			cp /etc/hosts.tmp /etc/hosts -f
+			sudo cp /etc/hosts /etc/hosts.tmp
+			sudo sed -i "/$ad_ip/d" /etc/hosts.tmp
+			sudo sed -i "/\ $ad\ /d" /etc/hosts.tmp
+			sudo sed -i "/\ $ad\$/d" /etc/hosts.tmp
+			sudo bash -c "echo \"$ad_r\" >> /etc/hosts.tmp"
+			sudo cp /etc/hosts.tmp /etc/hosts -f
 EOF
 
 	done

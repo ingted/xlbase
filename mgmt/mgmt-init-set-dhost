@@ -45,22 +45,22 @@ for host in $dhosts; do
 	echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
 	(ssh $cip << EOF
 		#rm ~/.hushlogin
-		mkdir -p "$rootpath"
+		sudo mkdir -p "$rootpath"
 		cd "$rootpath"
 		#ls $rootpath/xlbase
 		rp=\$(ls $rootpath/xlbase)
 		#echo "1: $updonly" "2: $?" "3: $rp"
 		if [ "$updonly" != 1 ] || [ "$?" != 0 ] || [ "\$rp" == "" ]; then
-			rm xlbase -rf
+			sudo rm xlbase -rf
 			GIT_TRACE=1; GIT_CURL_VERBOSE=1
-			git clone --verbose http://github.com/ingted/xlbase.git
+			sudo git clone --verbose http://github.com/ingted/xlbase.git
   			cd $rootpath/xlbase
-	  		git checkout --track -b xlbase remotes/origin/backToOrigin
+	  		sudo git checkout --track -b xlbase remotes/origin/backToOrigin
 		else 
 			cd $rootpath/xlbase
-			git pull
+			sudo git pull
 		fi
-		source $rootpath/xlbase/alias/util-disable-status 1 1 1
+		sudo source $rootpath/xlbase/alias/util-disable-status 1 1 1
 		echo "====\$(hostname)====="
 		./make.sh
 		source ~/.bashrc
