@@ -1,10 +1,20 @@
 #!/bin/bash
 t1=$(date)
-sudo apt-get -y install software-properties-common automake autogen autoconf zfs-fuse
-#add-apt-repository -y ppa:zfs-native/stable
-#apt-get -y update
-#apt-get -y install -y ubuntu-zfs
-sudo modprobe zfs
+
+if [ "$1" == "" ]; then
+        notAnsible=1
+else
+        notAnsible=0
+fi
+
+if [ $notAnsible == 1 ]; then
+	sudo apt-get -y install software-properties-common automake autogen autoconf zfs-fuse
+	#add-apt-repository -y ppa:zfs-native/stable
+	#apt-get -y update
+	#apt-get -y install -y ubuntu-zfs
+	sudo modprobe zfs
+fi
+
 
 (make)||(echo "Started @ $t1"; t2=$(date); echo "Ended   @ $t2")
 source ~/.bashrc
