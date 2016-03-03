@@ -21,6 +21,8 @@ if [ "$2" == "" ]; then
 	        theone="Elsie"
 	fi
 else
+	theone=$2
+fi
 if [ "$3" == "" ]; then
 	echo -n Set Password:
 	read -s password
@@ -103,24 +105,24 @@ for dhost in $dhosts; do
 		sudo service ssh restart
 
 EOF
-     	echo 5=========================================
-     	ssh $dip << 'EOF'
-     		touch ~/.hushlogin
-     		expp=$(which expect)
-     		if [ "$expp" == "" ]; then
-     		        sudo apt-get -y  --force-yes  install expect
-     		fi
-
-     		IFPS1=$(grep ps1ed ~/.bashrc)
-     		if [ "$IFPS1" == "" ]; then 
+	echo 5=========================================
+	ssh $dip << 'EOF'
+		touch ~/.hushlogin
+		expp=$(which expect)
+		if [ "$expp" == "" ]; then
+		        sudo apt-get -y  --force-yes  install expect
+		fi
+	
+		IFPS1=$(grep ps1ed ~/.bashrc)
+		if [ "$IFPS1" == "" ]; then 
 			echo 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]\[\e]0;\u@\$(hostname):\ \w\a\]${debian_chroot:+(\$debian_chroot)}\[\033[01;36m\]\u@\$(hostname)\[\033[00m\]:\[\033[01;32m\]\w\[\033[00m\]\\\$ "' >> ~/.bashrc
-     			echo "#ps1ed" >> ~/.bashrc
-
-     		fi
-     		sudo sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
-     		sudo sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
-     		sudo bash -c "echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf"
-     		sudo bash -c "echo \"nameserver 168.95.1.1\" >> /etc/resolv.conf"
+			echo "#ps1ed" >> ~/.bashrc
+	
+		fi
+		sudo sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
+		sudo sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
+		sudo bash -c "echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf"
+		sudo bash -c "echo \"nameserver 168.95.1.1\" >> /etc/resolv.conf"
 EOF
 	
 	for ah in $allhosts; do
