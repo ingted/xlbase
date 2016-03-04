@@ -1,0 +1,21 @@
+#!/usr/bin/expect
+
+#eval spawn ssh localhost
+spawn su anibal;
+expect {Password:};
+exp_send "/'],lp123\n";
+interact {
+    timeout 2 return
+    -o
+    -re "vdb01" {
+	send_user "vdb01";
+	exp_send "whoami\n";
+	exp_send "/home/osdba/ttc.sh\n"
+	exp_send "eof";
+	#continue_exp  echo eof"; 
+    }
+    -re "eof" {
+	send_user "eof\n"
+	return
+    }
+}

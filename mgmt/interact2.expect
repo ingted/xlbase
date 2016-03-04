@@ -1,0 +1,23 @@
+#!/usr/bin/expect
+
+eval spawn ssh localhost
+#expect {
+#    -re "(yes/no)" {send "yes\r"}
+#    -re "password\:" {      
+        interact {
+	    timeout 2 return
+	    -o
+            -re "vdb01" {
+		send "whoami\r\r; echo eof\r\r"; 
+		#expect {
+		#    -re "vdb01" {
+		#	return
+		#    }
+		#}
+	    }
+	    -re "eof" {
+		return
+	    }
+        }
+#    }
+#}

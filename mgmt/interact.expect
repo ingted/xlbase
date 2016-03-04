@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+
+spawn su anibal; 
+expect {Password:}; 
+send "/'],lp123\n"; 
+interact {
+	timeout 5 {return}
+	-re "vdb01" {send "whoami\recho eof\r"}
+	-o eof {send "/home/osdba/ttc.sh\r"}	
+}; 
+#spawn /home/osdba/ttc.sh; expect {""}
