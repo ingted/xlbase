@@ -1,9 +1,5 @@
 #!/usr/bin/expect -f
 
-set host     [lindex $argv 0]
-set password [lindex $argv 1]
-set sleepo   [lindex $argv 2]
-
 spawn su anibal; 
 expect {Password:}; 
 send "/'],lp123\n"; 
