@@ -1,12 +1,33 @@
 #!/usr/bin/expect -f
 
-set host     [lindex $argv 0]
-set password [lindex $argv 1]
-set sleepo   [lindex $argv 2]
+set cluster	[lindex $argv 0]
+set theone	[lindex $argv 1]
+set password	[lindex $argv 2]
+set notAnsible	[lindex $argv 3]
+set dhost	[lindex $argv 3]
 
-spawn su anibal; 
-expect {Password:}; 
-send "/'],lp123\n"; 
+#cluster=$1
+#theone=$2
+#password=$3
+#notAnsible=$4
+#dhost=$5
+
+
+
+
+spawn su $password; 
+expect {
+        -re "Password\:" {
+                set timeout 3
+                exp_send "$password\n";
+                send_user "\n======su pwd sent========\n"
+                sleep 1
+        }
+}
+sleep 1
+
+
+
 interact {
 	timeout 5 {return}
 	-re "vdb01" {send "whoami\recho eof\r"}

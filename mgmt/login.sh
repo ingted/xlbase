@@ -97,6 +97,7 @@ for dhost in $dhosts; do
 	if [ $notAnsible == 0 ]; then
 		su "$theone"	
 	fi
+	./interact.expect 
 #	ssh $dip << EOF
 #		cdip="$dip"
 #		diprp=\${cdip//./\\\.}
