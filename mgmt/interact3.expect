@@ -44,18 +44,18 @@ interact {
     timeout 2 return
     -o
     -re "vdb01" {
-	send_user ".vdb01\n";
-	exp_send "whoami\n";
-	sleep 1
-	exp_send "/home/osdba/ttc.sh\n"
-	exp_send "echo eof\n";
+	send_user "vdb01";
+	exp_send "whoami\n/home/osdba/ttc.sh\necho eof\n";
+	#expect "anibal"
+	#exp_send "/home/osdba/ttc.sh\n"
+	#exp_send "echo eof\n";
 	#continue_exp  echo eof"; 
     }
     eof { #useless
 	exp_send "echo end\n";
     }
     -re "eof" {
-	send_user "eof\n"
+	send_user "\nthisiseof\n"
 	return
     }
 }
