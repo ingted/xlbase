@@ -38,8 +38,11 @@ expect {
         }
 }
 send_user "\nstep002\n"
+exp_send "whoami\n/home/osdba/ttc.sh\necho eof\n";
+expect "eof"
 #exit 0
-send_user "step003\n"
+sleep 1
+send_user "\nstep003\n"
 interact {
     timeout 2 return
     -o
