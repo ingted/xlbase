@@ -4,7 +4,7 @@ set cluster	[lindex $argv 0]
 set theone	[lindex $argv 1]
 set password	[lindex $argv 2]
 set notAnsible	[lindex $argv 3]
-set dhost	[lindex $argv 3]
+set dhost	[lindex $argv 4]
 
 #cluster=$1
 #theone=$2
@@ -15,7 +15,7 @@ set dhost	[lindex $argv 3]
 
 
 
-spawn su $password; 
+spawn su "$theone"; 
 expect {
         -re "Password\:" {
                 set timeout 3
@@ -25,12 +25,12 @@ expect {
         }
 }
 sleep 1
-
-
-
-interact {
-	timeout 5 {return}
-	-re "vdb01" {send "whoami\recho eof\r"}
-	-o eof {send "/home/osdba/ttc.sh\r"}	
-}; 
+set timeout -1
+exp_send "./seplogin.sh $cluster $theone $password $notAnsible $dhost"
+expect "endseploginsh"
+#interact {
+#	timeout 5 {return}
+#	-re "vdb01" {send "whoami\recho eof\r"}
+#	-o eof {send "/home/osdba/ttc.sh\r"}	
+#}; 
 #spawn /home/osdba/ttc.sh; expect {""}

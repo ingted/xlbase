@@ -140,4 +140,4 @@ ssh $dip << EOF
 	if [ -e ~/.hushlogin ]; then rm ~/.hushlogin; fi
 EOF
 
-
+echo "endseploginsh"

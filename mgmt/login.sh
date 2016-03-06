@@ -18,7 +18,7 @@ if [ "$2" == "" ]; then
 	echo -n Set User:
 	read -s theone
 	if [ "$theone" == "" ]; then
-	        theone="Elsie"
+	        theone="root"
 	fi
 else
 	theone=$2
@@ -57,12 +57,12 @@ allhosts=$(./mgmt-xl-get-host-by-role -a $cluster);
 for ah in $allhosts; do
 	ahip=$(./mgmt-xl-get-ip $ah $cluster)
 	ahip_r=${ahip//./\\\.}
-
+	#echo "/etc/hosts: $ahip"
 	sudo cp /etc/hosts /etc/hosts.tmp
 	sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
 	sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
 	sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
-	sudo bash -c "echo \"\$ahip \$ah\" >> /etc/hosts.tmp"
+	sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
 	sudo cp /etc/hosts.tmp /etc/hosts -f
 
 done
@@ -93,11 +93,20 @@ for dhost in $dhosts; do
 		fi
      		./login.expect $dip "$password" #> /dev/null
 	fi
+done
+
+for dhost in $dhosts; do
+        echo ./mgmt-xl-get-ip $dhost $cluster
+        dip=$(./mgmt-xl-get-ip $dhost $cluster)
+        #if [ "$dip" != "" ]; then
+        echo "processing... $dip: $dhost"
+
      	echo 4=========================================
-	if [ $notAnsible == 0 ]; then
-		su "$theone"	
+	if [ $notAnsible == 1 ]; then
+		#su "$theone"	
+		theone=root
 	fi
-	./interact.expect 
+	./interact.expect $cluster $theone $password $notAnsible $dhost $dip
 #	ssh $dip << EOF
 #		cdip="$dip"
 #		diprp=\${cdip//./\\\.}
