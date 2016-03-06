@@ -38,14 +38,15 @@ expect {
         }
 }
 send_user "\nstep002\n"
-exit 0
+#exit 0
 send_user "step003\n"
 interact {
     timeout 2 return
     -o
     -re "vdb01" {
-	send_user "vdb01";
+	send_user ".vdb01\n";
 	exp_send "whoami\n";
+	sleep 1
 	exp_send "/home/osdba/ttc.sh\n"
 	exp_send "echo eof\n";
 	#continue_exp  echo eof"; 
