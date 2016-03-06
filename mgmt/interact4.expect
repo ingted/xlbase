@@ -1,0 +1,5 @@
+#!/usr/bin/expect
+
+foreach element {o c n p li} {
+	puts "$element"	
+}
