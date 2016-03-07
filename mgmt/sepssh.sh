@@ -9,7 +9,6 @@ notAnsible=$4
 
 dhost=$5
 
-dexx=$(which dexx)
 
 
 

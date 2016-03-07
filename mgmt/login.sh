@@ -149,8 +149,8 @@ if [ $notAnsible == 1 ]; then
 		procit
 	done
 else
-	dhost=dhost_i
-
+	dhost=$dhost_i
+	echo "Enter Ansible Mode:"
 	procit
 fi
 

@@ -33,12 +33,27 @@ else
 	password=$3
 fi
 
-
-if [ "$4" != 1 ]; then
-	notAnsible=1
+if [ "$4" == "" ]; then
+        echo -n Set ifAnsible:
+        read -s Ansible
+        if [ "$Ansible" == "" ]; then
+                notAnsible=0
+        else
+                notAnsible=1
+        fi
 else
-	notAnsible=0
-fi 
+        if [ "$4" != 1 ]; then
+                notAnsible=0
+        else
+                notAnsible=1
+        fi
+fi
+
+#if [ "$4" != 1 ]; then
+#	notAnsible=1
+#else
+#	notAnsible=0
+#fi 
 
 echo -e "\npreparing login...$cluster"
 

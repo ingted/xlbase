@@ -32,12 +32,14 @@ expect {
                 #sleep 1
         }
 	-re {(\$|#) $} {
+		puts "root omg"
 	}
 }
 #sleep 1
 
 set timeout 7200
 exp_send "echo xlbasestart\n"
+sleep 1
 interact {
         timeout 7200 return
         -o
