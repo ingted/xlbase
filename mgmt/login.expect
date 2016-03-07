@@ -15,10 +15,10 @@ set timeout 120
 spawn ssh-copy-id $host
 exec sleep $sleep
 expect {
-	"password:" {
+	-re "assword:" {
 		send "$password\n"
 	}
-	"(yes/no)?" {
+	-re "\(yes/no\)\?" {
                 send "yes\n"
 	}
 	"already exist" {

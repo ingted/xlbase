@@ -115,7 +115,12 @@ for dhost in $dhosts; do
 		#su "$theone"	
 		theone=root
 	fi
-	./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh"
+	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepgit.sh" "endsepgitsh"
+	./interact.expect $cluster $theone $password $notAnsible $dhost "./sepgit.sh" "endsepgitsh"
+	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+	./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
+	./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
 #	ssh $dip << EOF
 #		cdip="$dip"
 #		diprp=\${cdip//./\\\.}
