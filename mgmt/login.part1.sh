@@ -82,9 +82,9 @@ for ah in $allhosts; do
 
 done
 
-user_exists=$(id -u $theone > /dev/null 2>&1; echo $?)
+user_exists=$(id -u $theone > /dev/null 2>&1; echo $?) # 1 means not existed
 #if [ "$user_exists" == 0 ]; then
-if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 0 ]; then
+if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
 	#passwd -l $theone lock account
 	#rm /home/$theone -rf
 	#userdel -r $theone	
