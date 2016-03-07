@@ -30,7 +30,7 @@ dhost=$5
 
 cd ~/xlbase/mgmt
 
-./mgmt-init-set-xl-config $cluster
+#./mgmt-init-set-xl-config $cluster
 
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
 #dhosts=$6
