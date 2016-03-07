@@ -67,17 +67,20 @@ for ah in $allhosts; do
 
 done
 
-#user_exists=$(id -u $theone > /dev/null 2>&1; echo $?)
+user_exists=$(id -u $theone > /dev/null 2>&1; echo $?)
 #if [ "$user_exists" == 0 ]; then
-if [ "$theone" != root ] && [ "$theone" != "" ]; then
-	passwd -l $theone
+if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 0 ]; then
+	#passwd -l $theone lock account
 	#rm /home/$theone -rf
-	userdel -r $theone	
+	#userdel -r $theone	
 	useradd --system -U -ms /bin/bash $theone;
 #fi
-	sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
+
 	mkdir -p /home/$theone
 fi
+sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
+
+
 for dhost in $dhosts; do
 	echo ./mgmt-xl-get-ip $dhost $cluster
 	dip=$(./mgmt-xl-get-ip $dhost $cluster)
@@ -118,10 +121,13 @@ for dhost in $dhosts; do
 	fi
 	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepgit.sh" "endsepgitsh"
 	./interact.expect $cluster $theone $password $notAnsible $dhost "./sepgit.sh" "endsepgitsh"
-	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
-	./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
-	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
-	./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
+	#echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+	#./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+	#echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
+	#./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
+
+
+
 #	ssh $dip << EOF
 #		cdip="$dip"
 #		diprp=\${cdip//./\\\.}
