@@ -42,7 +42,10 @@ interact {
         timeout 7200 return
         -o
         -re "xlbasestart" {
+		#puts {%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%}
 		if {$notAnsible == "1"} {
+			#puts "^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\n"
+			exp_send "pwd\n"
 			exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" $notAnsible \"$dhost\"\necho $expend\n"
 		} else {
 			exp_send "$execpath \"$cluster\" \"$theone\" \"\" 0 \"$dhost\"\necho $expend\n"

@@ -34,11 +34,21 @@ else
 fi
 
 
-if [ "$4" != 1 ]; then
-	notAnsible=1
+if [ "$4" == "" ]; then
+	echo -n Set ifAnsible:
+	read -s Ansible
+	if [ "$Ansible" == "" ]; then
+	        notAnsible=0
+	else 
+		notAnsible=1
+	fi 
 else
-	notAnsible=0
-fi 
+	if [ "$4" != 1 ]; then
+		notAnsible=0
+	else
+		notAnsible=1
+	fi
+fi
 
 dhost_i=$5
 
@@ -112,7 +122,7 @@ echo -e "\npreparing login...$cluster"
 
 #echo ./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
 #./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
-function proc (){
+function procit (){
 		echo ./mgmt-xl-get-ip $dhost $cluster
 		dip=$(./mgmt-xl-get-ip $dhost $cluster)
 		#if [ "$dip" != "" ]; then
@@ -131,14 +141,17 @@ function proc (){
 		./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
 }
 
+echo notAnsible: $notAnsible == 1
 if [ $notAnsible == 1 ]; then
+	#echo procit
+	dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
         for dhost in $dhosts; do
-		proc
+		procit
 	done
 else
 	dhost=dhost_i
-	dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
-	proc
+
+	procit
 fi
 
 #	ssh $dip << EOF
