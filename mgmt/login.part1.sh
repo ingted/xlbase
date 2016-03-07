@@ -40,106 +40,96 @@ else
 	notAnsible=0
 fi 
 
-dhost_i=$5
-
 echo -e "\npreparing login...$cluster"
 
-#	expp=$(which expect)
-#	if [ "$expp" == "" ]; then
-#		sudo apt-get -y --force-yes install expect
-#	fi
-#	
-#	dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
-#	dnss=$(./mgmt-xl-get-dns $cluster)
-#	#Because the containers are not ready yet, so not do this 
-#	# (key scan should not be performed)
-#	# (add container hosts to /etc/hosts still needed) now...
-#	allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
-#	
-#	for ah in $allhosts; do
-#		ahip=$(./mgmt-xl-get-ip $ah $cluster)
-#		ahip_r=${ahip//./\\\.}
-#		echo "/etc/hosts: $ahip"
-#		sudo cp /etc/hosts /etc/hosts.tmp
-#		sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
-#		sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
-#		sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
-#		sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
-#		sudo cp /etc/hosts.tmp /etc/hosts -f
-#	
-#	done
-#	
-#	user_exists=$(id -u $theone > /dev/null 2>&1; echo $?)
-#	#if [ "$user_exists" == 0 ]; then
-#	if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 0 ]; then
-#		#passwd -l $theone lock account
-#		#rm /home/$theone -rf
-#		#userdel -r $theone	
-#		useradd --system -U -ms /bin/bash $theone;
-#	#fi
-#	
-#		mkdir -p /home/$theone
-#	fi
-#	sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
-#	
-#	
-#	for dhost in $dhosts; do
-###	echo ./mgmt-xl-get-ip $dhost $cluster
-###	dip=$(./mgmt-xl-get-ip $dhost $cluster)
-###	#if [ "$dip" != "" ]; then
-###	
-###	echo "processing... $dip: $dhost"
-###   	echo 1=========================================
-###	#fi   	
-###	if [ $notAnsible == 1 ]; then
-###	     	ssh-keygen -R $dip
-###     		ssh-keygen -R $dhost
-###	fi
-###     	echo 2=========================================
-###	if [ $notAnsible == 1 ]; then
-###	     	ssh-keyscan -H $dip >> ~/.ssh/known_hosts
-###     		ssh-keyscan -H $dhost >> ~/.ssh/known_hosts
-###	fi
-###     	echo 3=========================================
-###	if [ $notAnsible == 1 ]; then
-###		if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
-###			echo 3.1=======================================
-###			./genkey.expect	
-###		fi
-###     		./login.expect $dip "$password" #> /dev/null
-###	fi
-#	done
-
-#echo ./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
-#./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
-function proc (){
-		echo ./mgmt-xl-get-ip $dhost $cluster
-		dip=$(./mgmt-xl-get-ip $dhost $cluster)
-		#if [ "$dip" != "" ]; then
-		echo "processing... $dip: $dhost"
-		
-		echo 4=========================================
-		if [ $notAnsible == 1 ]; then
-			#su "$theone"	
-			theone=root
-		fi
-		echo "===============theone is $theone==============="
-		
-		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
-		./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
-		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
-		./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
-}
-
-if [ $notAnsible == 1 ]; then
-        for dhost in $dhosts; do
-		proc
-	done
-else
-	dhost=dhost_i
-	dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
-	proc
+expp=$(which expect)
+if [ "$expp" == "" ]; then
+	sudo apt-get -y --force-yes install expect
 fi
+
+dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
+dnss=$(./mgmt-xl-get-dns $cluster)
+#Because the containers are not ready yet, so not do this 
+# (key scan should not be performed)
+# (add container hosts to /etc/hosts still needed) now...
+allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
+
+for ah in $allhosts; do
+	ahip=$(./mgmt-xl-get-ip $ah $cluster)
+	ahip_r=${ahip//./\\\.}
+	echo "/etc/hosts: $ahip"
+	sudo cp /etc/hosts /etc/hosts.tmp
+	sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
+	sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
+	sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
+	sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
+	sudo cp /etc/hosts.tmp /etc/hosts -f
+
+done
+
+user_exists=$(id -u $theone > /dev/null 2>&1; echo $?)
+#if [ "$user_exists" == 0 ]; then
+if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 0 ]; then
+	#passwd -l $theone lock account
+	#rm /home/$theone -rf
+	#userdel -r $theone	
+	useradd --system -U -ms /bin/bash $theone;
+#fi
+
+	mkdir -p /home/$theone
+fi
+sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
+
+
+for dhost in $dhosts; do
+	echo ./mgmt-xl-get-ip $dhost $cluster
+	dip=$(./mgmt-xl-get-ip $dhost $cluster)
+	#if [ "$dip" != "" ]; then
+	
+	echo "processing... $dip: $dhost"
+   	echo 1=========================================
+	#fi   	
+	if [ $notAnsible == 1 ]; then
+	     	ssh-keygen -R $dip
+     		ssh-keygen -R $dhost
+	fi
+     	echo 2=========================================
+	if [ $notAnsible == 1 ]; then
+	     	ssh-keyscan -H $dip >> ~/.ssh/known_hosts
+     		ssh-keyscan -H $dhost >> ~/.ssh/known_hosts
+	fi
+     	echo 3=========================================
+	if [ $notAnsible == 1 ]; then
+		if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
+			echo 3.1=======================================
+			./genkey.expect	
+		fi
+     		./login.expect $dip "$password" #> /dev/null
+	fi
+done
+
+echo ./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
+./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
+
+###	for dhost in $dhosts; do
+###	        echo ./mgmt-xl-get-ip $dhost $cluster
+###	        dip=$(./mgmt-xl-get-ip $dhost $cluster)
+###	        #if [ "$dip" != "" ]; then
+###	        echo "processing... $dip: $dhost"
+###	
+###	     	echo 4=========================================
+###		if [ $notAnsible == 1 ]; then
+###			#su "$theone"	
+###			theone=root
+###		fi
+###		echo "===============theone is $theone==============="
+###	
+###		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+###		./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+	#echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
+	#./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
+
+
 
 #	ssh $dip << EOF
 #		cdip="$dip"
@@ -268,6 +258,6 @@ fi
 #		if [ -e ~/.hushlogin ]; then rm ~/.hushlogin; fi
 #EOF
 
-#done
+###	done
 
 echo eofloginsh
