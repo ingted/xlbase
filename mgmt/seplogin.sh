@@ -30,13 +30,15 @@ fi
 
 cd mgmt
 
+./mgmt-init-set-xl-config $cluster
+
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
 #dhosts=$6
 dnss=$(./mgmt-xl-get-dns $cluster)
 #dnss=$7
 allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
 #allhosts=$8 
-
+which dexx
 dip=$(./mgmt-xl-get-ip $dhost $cluster)
 #dip=$9
 echo $cluster $theone $password $notAnsible $dhost $dip
