@@ -1,5 +1,7 @@
 #!/usr/bin/expect -f
 
+set timeout 120
+
 set host [lindex $argv 0]
 set password [lindex $argv 1]
 set sleepo [lindex $argv 2]
@@ -20,8 +22,22 @@ expect {
 	}
 	-re "\(yes/no\)\?" {
                 send "yes\n"
+		expect {
+		        -re "assword\:.*" {
+		                send "$password\n"
+		        }
+		        -re "\(yes/no\)\?" {
+		                send "yes\n"
+		        }
+		        "already exist" {
+		        }
+			eof {
+			}
+		}
 	}
 	"already exist" {
 	}
 }
+
+
 expect eof

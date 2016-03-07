@@ -108,7 +108,11 @@ for dhost in $dhosts; do
 	fi
 done
 
-for dhost in $dhosts; do
+echo ./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
+./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
+
+dhost=h1
+#for dhost in $dhosts; do
         echo ./mgmt-xl-get-ip $dhost $cluster
         dip=$(./mgmt-xl-get-ip $dhost $cluster)
         #if [ "$dip" != "" ]; then
@@ -119,10 +123,10 @@ for dhost in $dhosts; do
 		#su "$theone"	
 		theone=root
 	fi
-	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepgit.sh" "endsepgitsh"
-	./interact.expect $cluster $theone $password $notAnsible $dhost "./sepgit.sh" "endsepgitsh"
-	#echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
-	#./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+	echo "===============theone is $theone==============="
+
+	echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
+	./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
 	#echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
 	#./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
 
@@ -255,6 +259,6 @@ for dhost in $dhosts; do
 #		if [ -e ~/.hushlogin ]; then rm ~/.hushlogin; fi
 #EOF
 
-done
+#done
 
 echo eofloginsh
