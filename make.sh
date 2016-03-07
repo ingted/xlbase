@@ -1,13 +1,19 @@
 #!/bin/bash
 t1=$(date)
 
-if [ "$1" == "" ]; then
+if [ "$1" != 1 ]; then
         notAnsible=1
 else
         notAnsible=0
 fi
 
-if [ $notAnsible == 1 ]; then
+if [ "$2" != 1 ]; then
+        notSkip=1
+else
+        notSkip=0
+fi
+
+if [ $notAnsible == 1 ] && [ $notSkip == 1 ]; then
 	sudo apt-get -y install software-properties-common automake autogen autoconf zfs-fuse
 	#add-apt-repository -y ppa:zfs-native/stable
 	#apt-get -y update

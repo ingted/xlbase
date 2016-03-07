@@ -34,7 +34,7 @@ else
 fi
 
 
-if [ "$4" == "" ]; then
+if [ "$4" != 1 ]; then
 	notAnsible=1
 else
 	notAnsible=0
@@ -69,9 +69,14 @@ done
 
 #user_exists=$(id -u $theone > /dev/null 2>&1; echo $?)
 #if [ "$user_exists" == 0 ]; then
-#	useradd --system -U -ms /bin/bash $theone;
-#	#sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
+if [ "$theone" != root ] && [ "$theone" != "" ]; then
+	passwd -l $theone
+	rm /home/$theone
+	userdel -r $theone	
+	useradd --system -U -ms /bin/bash $theone;
 #fi
+	sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
+fi
 for dhost in $dhosts; do
 	echo ./mgmt-xl-get-ip $dhost $cluster
 	dip=$(./mgmt-xl-get-ip $dhost $cluster)

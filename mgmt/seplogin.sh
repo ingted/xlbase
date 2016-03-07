@@ -19,6 +19,13 @@ if [ "$dexx" == "" ]; then
 	source alias/util-disable-status 1 1 1
 	./make.sh 1
 	source ~/.bashrc
+else
+	cd ~/xlbase
+	git reset --hard
+	git pull
+	source alias/util-disable-status 1 1 1
+        ./make.sh 1
+	source ~/.bashrc
 fi
 
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);

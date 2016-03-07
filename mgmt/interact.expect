@@ -27,10 +27,12 @@ expect {
                 set timeout 3
                 exp_send "$password\n";
                 send_user "\n======su pwd sent========\n"
-                sleep 1
+                #sleep 1
         }
+	-re {(\$|#) $} {
+	}
 }
-sleep 1
+#sleep 1
 set timeout -1
 if {$notAnsible == "1"} {
 	exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" $notAnsible \"$dhost\"\n"

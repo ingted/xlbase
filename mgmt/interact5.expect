@@ -1,6 +1,20 @@
 #!/usr/bin/expect
+	# -re ".*(\$ |# )" {
+set timeout 2
+spawn su osdba; 
+expect {
+	-re {(\$|#) $} {
+		puts "yes!!!\n"
+        }
+	-re {osdba@h3\:/root/xlbase/mgmt\$ } {
+	#	puts "trying!!!\n"
+	#}
+	eof {
+		puts "eof!!!\n"	
+	}
+}
 
-spawn bash; 
+spawn bash
 stty -echo; 
 set rr "123"
 send "/show.sh $rr\n"; 
