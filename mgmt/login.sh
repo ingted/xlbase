@@ -57,7 +57,7 @@ allhosts=$(./mgmt-xl-get-host-by-role -a $cluster);
 for ah in $allhosts; do
 	ahip=$(./mgmt-xl-get-ip $ah $cluster)
 	ahip_r=${ahip//./\\\.}
-	#echo "/etc/hosts: $ahip"
+	echo "/etc/hosts: $ahip"
 	sudo cp /etc/hosts /etc/hosts.tmp
 	sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
 	sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
@@ -67,12 +67,16 @@ for ah in $allhosts; do
 
 done
 
-
-
+#user_exists=$(id -u $theone > /dev/null 2>&1; echo $?)
+#if [ "$user_exists" == 0 ]; then
+#	useradd --system -U -ms /bin/bash $theone;
+#	#sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
+#fi
 for dhost in $dhosts; do
 	echo ./mgmt-xl-get-ip $dhost $cluster
 	dip=$(./mgmt-xl-get-ip $dhost $cluster)
 	#if [ "$dip" != "" ]; then
+	
 	echo "processing... $dip: $dhost"
    	echo 1=========================================
 	#fi   	
@@ -106,7 +110,7 @@ for dhost in $dhosts; do
 		#su "$theone"	
 		theone=root
 	fi
-	./interact.expect $cluster $theone $password $notAnsible $dhost $dip
+	./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh"
 #	ssh $dip << EOF
 #		cdip="$dip"
 #		diprp=\${cdip//./\\\.}

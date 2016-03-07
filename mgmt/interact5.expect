@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+
+spawn bash; 
+stty -echo; 
+set rr "123"
+send "/show.sh $rr\n"; 
+stty echo;
+expect "123";
+send "exit"
+exit 0

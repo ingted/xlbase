@@ -8,11 +8,29 @@ password=$3
 notAnsible=$4
 
 dhost=$5
+
+dexx=$(which dexx)
+
+if [ "$dexx" == "" ]; then
+	cd ~;
+	git clone https://github.com/ingted/xlbase.git
+	cd xlbase
+	git checkout --track -b xlbase remotes/origin/backToOrigin
+	source alias/util-disable-status 1 1 1
+	./make.sh 1
+	source ~/.bashrc
+fi
+
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
+#dhosts=$6
 dnss=$(./mgmt-xl-get-dns $cluster)
+#dnss=$7
 allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
+#allhosts=$8 
 
 dip=$(./mgmt-xl-get-ip $dhost $cluster)
+#dip=$9
+echo $cluster $theone $password $notAnsible $dhost $dip
 ssh $dip << EOF
 	cdip="$dip"
 	diprp=\${cdip//./\\\.}
@@ -50,7 +68,7 @@ for ah in $allhosts; do
 		sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
 		sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
 		sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
-		sudo bash -c "echo \"\$ahip \$ah\" >> /etc/hosts.tmp"
+		sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
 		sudo cp /etc/hosts.tmp /etc/hosts -f
 		#ssh-keygen -R $ah
 		#ssh-keyscan -H $ah >> ~/.ssh/known_hosts

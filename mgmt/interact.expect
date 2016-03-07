@@ -5,6 +5,12 @@ set theone	[lindex $argv 1]
 set password	[lindex $argv 2]
 set notAnsible	[lindex $argv 3]
 set dhost	[lindex $argv 4]
+set execpath	[lindex $argv 5]
+#set dhosts	[lindex $argv 5]
+#set dhosts	[lindex $argv 6]
+#set dnss	[lindex $argv 7]
+#set dnss	[lindex $argv 8]
+#set allhosts	[lindex $argv 9]
 
 #cluster=$1
 #theone=$2
@@ -26,7 +32,11 @@ expect {
 }
 sleep 1
 set timeout -1
-exp_send "./seplogin.sh $cluster $theone $password $notAnsible $dhost"
+if {$notAnsible == "1"} {
+	exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" $notAnsible \"$dhost\"\n"
+} else {
+	exp_send "$execpath \"$cluster\" \"$theone\" \"\" 0 \"$dhost\"\n"
+}
 expect "endseploginsh"
 #interact {
 #	timeout 5 {return}
