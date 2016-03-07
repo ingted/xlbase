@@ -2,12 +2,12 @@
 
 
 
-cluster=$1
-theone=$2
-password=$3
-notAnsible=$4
+#cluster=$1
+#theone=$2
+#password=$3
+#notAnsible=$4
 
-dhost=$5
+#dhost=$5
 
 dexx=$(which dexx)
 

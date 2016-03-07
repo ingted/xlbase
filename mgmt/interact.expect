@@ -22,10 +22,11 @@ set expend	[lindex $argv 6]
 
 
 
-spawn su "$theone"; 
+spawn bash 
+exp_send "su $theone\n"; 
 expect {
         -re "Password\:" {
-                set timeout 3
+                #set timeout 3
                 exp_send "$password\n";
                 send_user "\n======su pwd sent========\n"
                 #sleep 1
@@ -34,13 +35,34 @@ expect {
 	}
 }
 #sleep 1
-set timeout -1
-if {$notAnsible == "1"} {
-	exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" $notAnsible \"$dhost\"\n"
-} else {
-	exp_send "$execpath \"$cluster\" \"$theone\" \"\" 0 \"$dhost\"\n"
+
+set timeout 7200
+exp_send "echo xlbasestart\n"
+interact {
+        timeout 7200 return
+        -o
+        -re "xlbasestart" {
+		if {$notAnsible == "1"} {
+			exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" $notAnsible \"$dhost\"\necho $expend\n"
+		} else {
+			exp_send "$execpath \"$cluster\" \"$theone\" \"\" 0 \"$dhost\"\necho $expend\n"
+		}
+                #exp_send "whoami\necho $expend\n"
+        }
+        "$expend" {
+                send_user "$expend"
+		send_user "\nreturned!!\n"
+                return
+        }
+        eof {
+                send_user "\neof!!\n"
+                return
+        }
 }
-expect $expend
+
+
+
+#expect $expend
 #interact {
 #	timeout 5 {return}
 #	-re "vdb01" {send "whoami\recho eof\r"}
