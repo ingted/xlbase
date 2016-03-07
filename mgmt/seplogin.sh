@@ -28,6 +28,8 @@ else
 	source ~/.bashrc
 fi
 
+cd mgmt
+
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
 #dhosts=$6
 dnss=$(./mgmt-xl-get-dns $cluster)

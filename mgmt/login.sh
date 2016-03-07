@@ -71,7 +71,7 @@ done
 #if [ "$user_exists" == 0 ]; then
 if [ "$theone" != root ] && [ "$theone" != "" ]; then
 	passwd -l $theone
-	rm /home/$theone
+	rm /home/$theone -rf
 	userdel -r $theone	
 	useradd --system -U -ms /bin/bash $theone;
 #fi
