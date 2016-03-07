@@ -17,17 +17,17 @@ set timeout 120
 spawn ssh-copy-id $host
 exec sleep $sleep
 expect {
-	-re "assword\:.*" {
+	-re "assword\: " {
+		send_user "assword: "
+		send_user "\nsending pwd...\n"
 		send "$password\n"
 	}
-	-re "\(yes/no\)\?" {
-                send "yes\n"
+	"(yes/no)?" {
+		send_user "\n(yes/no)?\n"
+                exp_send "yes\n"
 		expect {
-		        -re "assword\:.*" {
+		        -re "assword\: " {
 		                send "$password\n"
-		        }
-		        -re "\(yes/no\)\?" {
-		                send "yes\n"
 		        }
 		        "already exist" {
 		        }
