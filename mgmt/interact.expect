@@ -35,7 +35,14 @@ expect <<- EOF
 	} else {
 		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"\\\" 0 \\\"$dhost\\\"\\necho $expend\\n\"
 	}
-    expect eof    
+    expect {
+	timeout return 0
+	eof {exit 0}
+	\"$expend\" {exit 0}
+    }
 EOF
 "
-expect eof
+expect {
+    eof {exit 0}
+    "$expend" {exit 0}
+}
