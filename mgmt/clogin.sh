@@ -101,11 +101,12 @@ for dhost in $dhosts; do
 		cnm=${chh[1]}
 		echo "processing... $chost of $dhost"
 		echo 1========================================c #$(whoami) $password
+		echo ssh $dhost "ssh-keygen -R $chost; ssh-keygen -R $cnm; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
 		ssh $dhost "ssh-keygen -R $chost; ssh-keygen -R $cnm; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
 		echo 2========================================c
 		sleep=2
 		ssh $dhost << EOF
-			echo 2.0======================================c $(whoami) $password
+			echo 2.0======================================c 
 			if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
 				echo 2.1======================================c
 				./genkey.expect
@@ -143,13 +144,13 @@ for dhost in $dhosts; do
 						}
 					}"
 			fi
-			echo 2.3======================================c $(whoami) $password
+			echo 2.3======================================c 
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
 	        	        exec sleep $sleep
 	        	        $expstr
 	        	"
-			echo 2.4======================================c $(whoami) $password
+			echo 2.4======================================c 
 			expect -c "
                                 spawn ssh-copy-id $cnm
                                 exec sleep $sleep
