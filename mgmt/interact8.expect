@@ -1,0 +1,41 @@
+#!/usr/bin/expect -f
+
+set theone	[lindex $argv 0]
+set password	[lindex $argv 1]
+set expend	[lindex $argv 2]
+set user osdba
+
+#log_user 0
+spawn su $user
+
+expect {
+        -re "Password\:" {
+                #set timeout 3
+                exp_send "$password\n";
+                send_user "\n======su pwd sent========\n"
+                #sleep 1
+        }
+        -re {(\$|#) $} {
+                puts "root omg"
+        }
+}
+exp_send "whoami\r";
+expect {
+	-re {.*(\$|#) $} {
+		puts "pppppp\n"
+	}
+}
+exp_send "whoami\r";
+expect {
+        -re {.*(\$|#) $} {
+                puts "pppppp\n"
+        }
+}
+
+spawn bash -c "whoami > /www.txt; echo 123"
+expect {
+        -re {.*$} {
+                puts "qqqqq\n"
+        }
+}
+

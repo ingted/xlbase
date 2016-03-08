@@ -135,10 +135,10 @@ function procit (){
 		fi
 		echo "===============theone is $theone==============="
 		
-		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
-		./interact.expect $cluster $theone $password $notAnsible $dhost "./sepssh.sh" "endsepsshsh"
-		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
-		./interact.expect $cluster $theone $password $notAnsible $dhost "./seplogin.sh" "endseploginsh"
+		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./sepssh.sh" "endsepsshsh"
+		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./sepssh.sh" "endsepsshsh"
+		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./seplogin.sh" "endseploginsh"
+		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./seplogin.sh" "endseploginsh"
 }
 
 echo notAnsible: $notAnsible == 1
@@ -146,12 +146,12 @@ if [ $notAnsible == 1 ]; then
 	#echo procit
 	dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
         for dhost in $dhosts; do
-		procit
+		procit ""
 	done
 else
 	dhost=$dhost_i
 	echo "Enter Ansible Mode:"
-	procit
+	procit "cd ~/xlbase/mgmt"
 fi
 
 #	ssh $dip << EOF

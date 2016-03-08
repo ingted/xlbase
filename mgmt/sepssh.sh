@@ -10,7 +10,11 @@ notAnsible=$4
 dhost=$5
 
 
-
+if [ "$notAnsible" == 0 ]; then
+	if [ "$password" == "" ]; then
+		password="/'],lp123"
+	fi
+fi
 
 cd ~/xlbase/mgmt
 
