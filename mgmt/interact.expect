@@ -37,8 +37,8 @@ expect <<- EOF
 	}
     expect {
 	timeout return 0
-	eof {exit 0}
-	\"$expend\" {exit 0}
+	eof { exp_send \"exit\"; exit }
+	\"$expend\" { exp_send \"exit\"; exit }
     }
 EOF
 "
