@@ -2,10 +2,10 @@
 
 update=0
 specified_nid="-"
-specified_sm="master"
+specified_sm="m"
 specified_cnm="-"
 role="-"
-cursm="master"
+cursm="m"
 
 function main () {
 	return
