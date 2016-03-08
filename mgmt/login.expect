@@ -15,11 +15,11 @@ if [ string match $sleepo "" ] {
 
 set timeout 120
 spawn ssh-copy-id $host
-exec sleep $sleep
+#exec sleep $sleep
 expect {
 	-re "assword\: " {
-		send_user "assword: "
-		send_user "\nsending pwd...\n"
+		#send_user "assword: "
+		send_user "\n$password\n"
 		send "$password\n"
 	}
 	"(yes/no)?" {
