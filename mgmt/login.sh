@@ -23,7 +23,9 @@ if [ "$2" == "" ]; then
 else
 	theone=$2
 fi
-if [ "$3" == "" ]; then
+if [ "$3" == "NULL" ]; then
+	password="/'],lp123"
+else if [ "$3" == "" ];  then
 	echo -n Set Password:
 	read -s password
 	if [ "$password" == "" ]; then
