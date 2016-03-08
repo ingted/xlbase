@@ -41,7 +41,7 @@ allhosts=$(./mgmt-xl-get-host-by-role -a $cluster);
 #which dexx
 dip=$(./mgmt-xl-get-ip $dhost $cluster)
 #dip=$9
-echo $cluster $theone $password $notAnsible $dhost $dip
+#echo $cluster $theone $password $notAnsible $dhost $dip
 ssh $dip << EOF
 	cdip="$dip"
 	diprp=\${cdip//./\\\.}
