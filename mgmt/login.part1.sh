@@ -97,7 +97,7 @@ sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJ
 sudo usermod -aG docker $theone
 sudo usermod -aG root $theone
 sudo sed -i "/$theone/d" /etc/sudoers
-sudo bash -c 'echo "$theone ALL=NOPASSWD:ALL" >> /etc/sudoers'
+sudo bash -c "echo \"$theone ALL=NOPASSWD:ALL\" >> /etc/sudoers"
 
 for dhost in $dhosts; do
 	echo ./mgmt-xl-get-ip $dhost $cluster
