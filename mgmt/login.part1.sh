@@ -54,12 +54,12 @@ fi
 #else
 #	notAnsible=0
 #fi 
-
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 echo -e "\npreparing login...$cluster"
 
 expp=$(which expect)
 if [ "$expp" == "" ]; then
-	sudo apt-get -y --force-yes install expect
+	$sudo apt-get -y --force-yes install expect
 fi
 
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
@@ -73,12 +73,12 @@ for ah in $allhosts; do
 	ahip=$(./mgmt-xl-get-ip $ah $cluster)
 	ahip_r=${ahip//./\\\.}
 	echo "/etc/hosts: $ahip"
-	sudo cp /etc/hosts /etc/hosts.tmp
-	sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
-	sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
-	sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
-	sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
-	sudo cp /etc/hosts.tmp /etc/hosts -f
+	$sudo cp /etc/hosts /etc/hosts.tmp
+	$sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
+	$sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
+	$sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
+	$sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
+	$sudo cp /etc/hosts.tmp /etc/hosts -f
 
 done
 
@@ -88,16 +88,16 @@ if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
 	#passwd -l $theone lock account
 	#rm /home/$theone -rf
 	#userdel -r $theone	
-	useradd --system -U -ms /bin/bash $theone;
+	$sudo useradd --system -U -ms /bin/bash $theone;
 #fi
 
 	mkdir -p /home/$theone
 fi
 sed -i.bak -e s/$theone\:\!/$theone\:\$6\$H1W8BGOe\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow;
-sudo usermod -aG docker $theone
-sudo usermod -aG root $theone
-sudo sed -i "/$theone/d" /etc/sudoers
-sudo bash -c "echo \"$theone ALL=NOPASSWD:ALL\" >> /etc/sudoers"
+$sudo usermod -aG docker $theone
+$sudo usermod -aG root $theone
+$sudo sed -i "/$theone/d" /etc/sudoers
+$sudo bash -c "echo \"$theone ALL=NOPASSWD:ALL\" >> /etc/sudoers"
 
 for dhost in $dhosts; do
 	echo ./mgmt-xl-get-ip $dhost $cluster
