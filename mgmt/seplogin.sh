@@ -48,9 +48,10 @@ dip=$(./mgmt-xl-get-ip $dhost $cluster)
 ssh $dip << EOF
 	cdip="$dip"
 	diprp=\${cdip//./\\\.}
-	eval $sudo sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$diprp/g /etc/ssh/sshd_config
-	eval $sudo sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
-	eval $sudo service ssh restart
+	sudo="$sudo"
+	eval \$sudo sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$diprp/g /etc/ssh/sshd_config
+	eval \$sudo sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
+	eval \$sudo service ssh restart
 
 EOF
 echo 5=========================================
@@ -58,7 +59,7 @@ ssh $dip << 'EOF'
 	touch ~/.hushlogin
 	expp=$(which expect)
 	if [ "$expp" == "" ]; then
-	        eval $sudo apt-get -y  --force-yes  install expect
+	        sudu apt-get -y  --force-yes  install expect
 	fi
 
 	IFPS1=$(grep ps1ed ~/.bashrc)
@@ -67,10 +68,11 @@ ssh $dip << 'EOF'
 		echo "#ps1ed" >> ~/.bashrc
 
 	fi
-	eval $sudo sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
-	eval $sudo sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
-	eval $sudo bash -c "echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf"
-	eval $sudo bash -c "echo \"nameserver 168.95.1.1\" >> /etc/resolv.conf"
+	sudo="$sudo"
+	sudo sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
+	sudo sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
+	sudo bash -c "echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf"
+	sudo bash -c "echo \"nameserver 168.95.1.1\" >> /etc/resolv.conf"
 EOF
 	
 for ah in $allhosts; do
@@ -78,12 +80,13 @@ for ah in $allhosts; do
 	ahip_r=${ahip//./\\\.}
 
 	ssh $dip << EOF
-		eval $sudo cp /etc/hosts /etc/hosts.tmp
-		eval $sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
-		eval $sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
-		eval $sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
-		eval $sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
-		eval $sudo cp /etc/hosts.tmp /etc/hosts -f
+		sudo="$sudo"
+		eval \$sudo cp /etc/hosts /etc/hosts.tmp
+		eval \$sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
+		eval \$sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
+		eval \$sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
+		eval \$sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
+		eval \$sudo cp /etc/hosts.tmp /etc/hosts -f
 		#ssh-keygen -R $ah
 		#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
 		#ssh-keygen -R $ahip
@@ -99,12 +102,13 @@ if [ $notAnsible == 1 ]; then
 		ssh $dip << EOF
 			#tarpath=\$(dirname \$(which dexxhosts))/../mgmt
 	                #cd \$tarpath
+			sudo="$sudo"
 			ssh-keygen -R "$ddhost"
 			ssh-keygen -R "$dhip"
 			ssh-keyscan -H "$ddhost" >> ~/.ssh/known_hosts
 			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
-	     		eval $sudo bash -c 'echo "$dhost" > /etc/hostname'
-	   	     	eval $sudo hostnamectl set-hostname "$dhost"
+	     		eval \$sudo bash -c 'echo "$dhost" > /etc/hostname'
+	   	     	eval \$sudo hostnamectl set-hostname "$dhost"
 			expect -c "
 	                        spawn ssh-copy-id $ddhost
 	                        exec sleep $sleep
@@ -159,12 +163,12 @@ for ad in $dnss; do
 	echo $ad_r $ad_ipo $ad_ipi
 	echo =======================================================
 	ssh $dip << EOF
-		eval $sudo cp /etc/hosts /etc/hosts.tmp
-		eval $sudo sed -i "/$ad_ip/d" /etc/hosts.tmp
-		eval $sudo sed -i "/\ $ad\ /d" /etc/hosts.tmp
-		eval $sudo sed -i "/\ $ad\$/d" /etc/hosts.tmp
-		eval $sudo bash -c "echo \"$ad_r\" >> /etc/hosts.tmp"
-		eval $sudo cp /etc/hosts.tmp /etc/hosts -f
+		eval \$sudo cp /etc/hosts /etc/hosts.tmp
+		eval \$sudo sed -i "/$ad_ip/d" /etc/hosts.tmp
+		eval \$sudo sed -i "/\ $ad\ /d" /etc/hosts.tmp
+		eval \$sudo sed -i "/\ $ad\$/d" /etc/hosts.tmp
+		eval \$sudo bash -c "echo \"$ad_r\" >> /etc/hosts.tmp"
+		eval \$sudo cp /etc/hosts.tmp /etc/hosts -f
 EOF
 
 done
