@@ -1,26 +1,59 @@
 #!/bin/bash
 
-echo -n Enter the cluster name:
-read cluster
+#echo -n Enter the cluster name:
+#read cluster
+#
+#if [ "$cluster" == "" ]; then
+#        cluster=test
+#fi
+if [ "$1" == "" ]; then
+        echo -n Enter the cluster name:
+        read cluster
 
-if [ "$cluster" == "" ]; then
-        cluster=test
+        if [ "$cluster" == "" ]; then
+                cluster=test
+        fi
+else
+        cluster=$1
+
 fi
 
+if [ "$2" == "" ]; then
+        echo -n Set User:
+        read -s theone
+        if [ "$theone" == "" ]; then
+                theone="root"
+        fi
+else
+        theone=$2
+fi
 
-echo -n Set Password:
-read -s password
-
-
-if [ "$password" == "" ]; then
+if [ "$3" == "NULL" ]; then
         password="/'],lp123"
+elif [ "$3" == "" ];  then
+        echo -n Set Password:
+        read -s password
+        if [ "$password" == "" ]; then
+                password="/'],lp123"
+        fi
+else
+        password=$3
 fi
+
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+#echo -n Set Password:
+#read -s password
+#
+#
+#if [ "$password" == "" ]; then
+#        password="/'],lp123"
+#fi
 
 echo -e "\npreparing login..."
 
 expp=$(which expect)
 if [ "$expp" == "" ]; then
-	apt-get -y install expect
+	$sudo apt-get -y install expect
 fi
 
 hosts=$(./mgmt-xl-get-host-by-cluster $cluster);
