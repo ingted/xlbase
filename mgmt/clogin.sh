@@ -105,7 +105,7 @@ for dhost in $dhosts; do
 		echo 2========================================c
 		sleep=2
 		ssh $dhost << EOF
-			echo 2.0======================================c
+			echo 2.0======================================c $(whoami)
 			if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
 				echo 2.1======================================c
 				./genkey.expect
@@ -143,13 +143,13 @@ for dhost in $dhosts; do
 						}
 					}"
 			fi
-			echo 2.3======================================c
+			echo 2.3======================================c $(whoami)
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
 	        	        exec sleep $sleep
 	        	        $expstr
 	        	"
-			echo 2.4======================================c
+			echo 2.4======================================c $(whoami)
 			expect -c "
                                 spawn ssh-copy-id $cnm
                                 exec sleep $sleep
