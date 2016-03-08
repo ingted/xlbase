@@ -1,0 +1,41 @@
+#!/usr/bin/expect -f
+
+
+set password    "/'],lp123"
+set user osdba
+spawn  bash -c "
+expect <<- EOF
+    spawn bash
+    expect {
+        -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+            exp_send \"su osdba\\r\"
+        }
+    }
+    expect {
+        -re {Password\\:} {
+            exp_send \"/'],lp123\\n\";
+            #send_user \"\\n======su pwd sent========\\n\"
+        }
+        -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+            puts \"root omg\"
+        }
+    }
+
+    send \"whoami\\r\"
+    sleep 1
+    expect {root} {
+        puts \"###\"
+    #expect {/o} {puts \"###\"}
+    #expect {((.|\[\[:space:\]\])*(\\$|#))? $}
+    	interact {
+        	-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+            	puts \"root omg\"
+        	}
+
+    	}
+    }
+EOF
+"
+
+
+expect eof

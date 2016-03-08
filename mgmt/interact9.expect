@@ -6,53 +6,29 @@ set expend	[lindex $argv 2]
 set user osdba
 
 #log_user 0
-spawn /usr/bin/expect << EOF
-
-bash -c "echo 123333; expect << EOD
-	spawn su $user; 
+spawn bash -c "/usr/bin/expect << EOF
+	spawn bash
+	exp_send \"su $user\\n\" 
 	expect {
 	        -re \"Password\\:\" {
-	                #set timeout 3
 	                exp_send \"$password\\n\";
 	                send_user \"\\n======su pwd sent========\\n\"
-	                #sleep 1
 	        }
 	        -re {(\\$|#) $} {
 	                puts \"root omg\"
 	        }
 	}
-	interact
-EOD
+	exp_send \"whoami\"
+	expect {
+		-re {(\\$|#) $} { exp_send \"ooooorrrrrzzz\" }
+	}
+	interact {
+		{ooooorrrrrzzzz} { exp_send \"*************\" }
+	}
+EOF	
 "
-
-#expect {
-#        -re "Password\:" {
-#                #set timeout 3
-#                exp_send "$password\n";
-#                send_user "\n======su pwd sent========\n"
-#                #sleep 1
-#        }
-#        -re {(\$|#) $} {
-#                puts "root omg"
-#        }
-#}
-exp_send "whoami\r";
 expect {
-	-re {.*(\$|#) $} {
-		puts "pppppp\n"
+	"*************" {
+		puts "%%%%%%%%%%%%%%%%"
 	}
 }
-exp_send "whoami\r";
-expect {
-        -re {.*(\$|#) $} {
-                puts "pppppp\n"
-        }
-}
-
-spawn bash -c "whoami > /www.txt; echo 123"
-expect {
-        -re {.*$} {
-                puts "qqqqq\n"
-        }
-}
-

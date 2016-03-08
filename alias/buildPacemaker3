@@ -84,12 +84,12 @@ function main () {
 
 	docker exec "$nm" sed -i.bak -r s/\:Host[[:space:]]+=\>[[:space:]]+\'\:\:\',/\:Host\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\>\ \'$ip\',/g /usr/share/pcsd/ssl.rb; 
 
-	cp /etc/hosts /etc/hosts.tmp
-        sed -i "/$ip/d"     /etc/hosts.tmp
-        sed -i "/\ $nm\ /d" /etc/hosts.tmp
-        sed -i "/\ $nm\$/d" /etc/hosts.tmp
-        echo "$ip $nm" >> /etc/hosts.tmp
-        cp /etc/hosts.tmp /etc/hosts -f
+	sudo cp /etc/hosts /etc/hosts.tmp
+        sudo sed -i "/$ip/d"     /etc/hosts.tmp
+        sudo sed -i "/\ $nm\ /d" /etc/hosts.tmp
+        sudo sed -i "/\ $nm\$/d" /etc/hosts.tmp
+        sudo bash -c "echo \"$ip $nm\" >> /etc/hosts.tmp"
+        sudo cp /etc/hosts.tmp /etc/hosts -f
 
 	
 	echo \[\!ID_DONE\]

@@ -1,0 +1,76 @@
+#!/usr/bin/expect -f
+
+set cluster	[lindex $argv 0]
+set theone	[lindex $argv 1]
+set password	[lindex $argv 2]
+set notAnsible	[lindex $argv 3]
+set dhost	[lindex $argv 4]
+set execpath	[lindex $argv 5]
+set expend	[lindex $argv 6]
+#set dhosts	[lindex $argv 5]
+#set dhosts	[lindex $argv 6]
+#set dnss	[lindex $argv 7]
+#set dnss	[lindex $argv 8]
+#set allhosts	[lindex $argv 9]
+
+#cluster=$1
+#theone=$2
+#password=$3
+#notAnsible=$4
+#dhost=$5
+
+
+
+
+spawn bash 
+exp_send "su $theone\n"; 
+expect {
+        -re "Password\:" {
+                #set timeout 3
+                exp_send "$password\n";
+                send_user "\n======su pwd sent========\n"
+                #sleep 1
+        }
+	-re {(\$|#) $} {
+		puts "root omg"
+	}
+}
+#sleep 1
+
+set timeout 7200
+exp_send "echo xlbasestart\n"
+sleep 1
+interact {
+        timeout 7200 return
+        -o
+        -re "xlbasestart" {
+		#puts {%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%}
+		if {$notAnsible == "1"} {
+			#puts "^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\n"
+			exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" $notAnsible \"$dhost\"\necho $expend\n"
+		} else {
+			exp_send "$execpath \"$cluster\" \"$theone\" \"\" 0 \"$dhost\"\necho $expend\n"
+			#exp_send "pwd\n"
+		}
+                #exp_send "whoami\necho $expend\n"
+        }
+        "$expend" {
+                send_user "$expend"
+		send_user "\nreturned!!\n"
+                return
+        }
+        eof {
+                send_user "\neof!!\n"
+                return
+        }
+}
+
+
+
+#expect $expend
+#interact {
+#	timeout 5 {return}
+#	-re "vdb01" {send "whoami\recho eof\r"}
+#	-o eof {send "/home/osdba/ttc.sh\r"}	
+#}; 
+#spawn /home/osdba/ttc.sh; expect {""}

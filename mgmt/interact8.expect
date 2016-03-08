@@ -1,11 +1,12 @@
 #!/usr/bin/expect -f
 
 set theone	[lindex $argv 0]
-set password	[lindex $argv 1]
+set password	"/'],lp123" 
+#[lindex $argv 1]
 set expend	[lindex $argv 2]
 set user osdba
 
-log_user 0
+#log_user 0
 spawn su $user
 
 expect {
