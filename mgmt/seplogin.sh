@@ -32,6 +32,9 @@ cd ~/xlbase/mgmt
 
 #./mgmt-init-set-xl-config $cluster
 
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+
+
 dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
 #dhosts=$6
 dnss=$(./mgmt-xl-get-dns $cluster)
@@ -45,9 +48,9 @@ dip=$(./mgmt-xl-get-ip $dhost $cluster)
 ssh $dip << EOF
 	cdip="$dip"
 	diprp=\${cdip//./\\\.}
-	sudo sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$diprp/g /etc/ssh/sshd_config
-	sudo sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
-	sudo service ssh restart
+	$sudo sed -i.bak -r s/#ListenAddress[[:space:]]\+[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+/ListenAddress\ \$diprp/g /etc/ssh/sshd_config
+	$sudo sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
+	$sudo service ssh restart
 
 EOF
 echo 5=========================================
@@ -55,7 +58,7 @@ ssh $dip << 'EOF'
 	touch ~/.hushlogin
 	expp=$(which expect)
 	if [ "$expp" == "" ]; then
-	        sudo apt-get -y  --force-yes  install expect
+	        $sudo apt-get -y  --force-yes  install expect
 	fi
 
 	IFPS1=$(grep ps1ed ~/.bashrc)
@@ -64,10 +67,10 @@ ssh $dip << 'EOF'
 		echo "#ps1ed" >> ~/.bashrc
 
 	fi
-	sudo sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
-	sudo sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
-	sudo bash -c "echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf"
-	sudo bash -c "echo \"nameserver 168.95.1.1\" >> /etc/resolv.conf"
+	$sudo sed -i '/8\.8\.8\.8/d' /etc/resolv.conf
+	$sudo sed -i '/168\.95\.1\.1/d' /etc/resolv.conf
+	$sudo bash -c "echo \"nameserver 8.8.8.8\" >> /etc/resolv.conf"
+	$sudo bash -c "echo \"nameserver 168.95.1.1\" >> /etc/resolv.conf"
 EOF
 	
 for ah in $allhosts; do
@@ -75,12 +78,12 @@ for ah in $allhosts; do
 	ahip_r=${ahip//./\\\.}
 
 	ssh $dip << EOF
-		sudo cp /etc/hosts /etc/hosts.tmp
-		sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
-		sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
-		sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
-		sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
-		sudo cp /etc/hosts.tmp /etc/hosts -f
+		$sudo cp /etc/hosts /etc/hosts.tmp
+		$sudo sed -i "/$ahip_r/d" /etc/hosts.tmp
+		$sudo sed -i "/\ $ah\ /d" /etc/hosts.tmp
+		$sudo sed -i "/\ $ah\$/d" /etc/hosts.tmp
+		$sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
+		$sudo cp /etc/hosts.tmp /etc/hosts -f
 		#ssh-keygen -R $ah
 		#ssh-keyscan -H $ah >> ~/.ssh/known_hosts
 		#ssh-keygen -R $ahip
@@ -100,8 +103,8 @@ if [ $notAnsible == 1 ]; then
 			ssh-keygen -R "$dhip"
 			ssh-keyscan -H "$ddhost" >> ~/.ssh/known_hosts
 			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
-	     		bash -c 'echo "$dhost" > /etc/hostname'
-	   	     	hostnamectl set-hostname "$dhost"
+	     		$sudo bash -c 'echo "$dhost" > /etc/hostname'
+	   	     	$sudo hostnamectl set-hostname "$dhost"
 			expect -c "
 	                        spawn ssh-copy-id $ddhost
 	                        exec sleep $sleep
@@ -156,12 +159,12 @@ for ad in $dnss; do
 	echo $ad_r $ad_ipo $ad_ipi
 	echo =======================================================
 	ssh $dip << EOF
-		sudo cp /etc/hosts /etc/hosts.tmp
-		sudo sed -i "/$ad_ip/d" /etc/hosts.tmp
-		sudo sed -i "/\ $ad\ /d" /etc/hosts.tmp
-		sudo sed -i "/\ $ad\$/d" /etc/hosts.tmp
-		sudo bash -c "echo \"$ad_r\" >> /etc/hosts.tmp"
-		sudo cp /etc/hosts.tmp /etc/hosts -f
+		$sudo cp /etc/hosts /etc/hosts.tmp
+		$sudo sed -i "/$ad_ip/d" /etc/hosts.tmp
+		$sudo sed -i "/\ $ad\ /d" /etc/hosts.tmp
+		$sudo sed -i "/\ $ad\$/d" /etc/hosts.tmp
+		$sudo bash -c "echo \"$ad_r\" >> /etc/hosts.tmp"
+		$sudo cp /etc/hosts.tmp /etc/hosts -f
 EOF
 
 done
