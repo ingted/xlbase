@@ -100,7 +100,7 @@ for dhost in $dhosts; do
 		chost=${chh[0]}
 		cnm=${chh[1]}
 		echo "processing... $chost of $dhost"
-		echo 1========================================c
+		echo 1========================================c $(whoami) $password
 		ssh $dhost "ssh-keygen -R $chost; ssh-keygen -R $cnm; ssh-keyscan -H $chost >> ~/.ssh/known_hosts; ssh-keyscan -H $cnm >> ~/.ssh/known_hosts"
 		echo 2========================================c
 		sleep=2
