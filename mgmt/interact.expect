@@ -7,10 +7,10 @@ set notAnsible	[lindex $argv 3]
 set dhost	[lindex $argv 4]
 set execpath	[lindex $argv 5]
 set expend	[lindex $argv 6]
-set lu		0
+set lu		[lindex $argv 7]
 
 if { $password == {NULL} } {set password "/'],lp123"}
-
+if { "$lu" == "" } {set lu 0}
 
 log_user $lu
 spawn  bash -c "
