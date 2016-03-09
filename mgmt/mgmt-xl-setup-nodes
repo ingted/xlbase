@@ -57,8 +57,9 @@ function main () {
 						echo $(date +"%T") \[\| Setup $role \|\] Persistent Vol: $vol
 						if [ "$(whoami)" == "root" ]; then sudo=""; else sudo="sudo"; fi
 						bp3=$(which buildPacemaker3)
-						export PATH=$PATH:$(dirname $bp3)
+						#export PATH=$PATH:$(dirname $bp3)
 						(
+							export PATH=$PATH:$(dirname $bp3)
 							if [ "$force" == "1" ]; then 
 								echo buildPacemaker3 -a $cip -n $cnm -v $vol -f -p -
 								eval "$sudo buildPacemaker3 -a \"$cip\" -n \"$cnm\" -v \"$vol\" -f -p -"
