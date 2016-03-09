@@ -7,11 +7,12 @@ set notAnsible	[lindex $argv 3]
 set dhost	[lindex $argv 4]
 set execpath	[lindex $argv 5]
 set expend	[lindex $argv 6]
+set lu		0
 
 if { $password == {NULL} } {set password "/'],lp123"}
 
 
-log_user 0
+log_user $lu
 spawn  bash -c "
 expect <<- EOF
     spawn bash
