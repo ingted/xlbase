@@ -53,7 +53,7 @@ echo -e "\npreparing login..."
 
 expp=$(which expect)
 if [ "$expp" == "" ]; then
-	eval $sudo apt-get -y install expect
+	eval "$sudo apt-get -y install expect"
 fi
 
 hosts=$(./mgmt-xl-get-host-by-cluster $cluster);
