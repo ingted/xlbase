@@ -3,7 +3,7 @@
 chpwd=0
 
 
-if [ "$(whoami)" == "root" ]; then sudo=""; else sudo=sudo; end
+if [ "$(whoami)" == "root" ]; then sudo=""; else sudo=sudo; fi
 
 function main () {
 	if [ "$nm" == "" ]; then
