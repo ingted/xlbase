@@ -2,6 +2,9 @@
 
 chpwd=0
 
+
+if [ "$(whoami)" == "root" ]; then sudo=sudo; else sudo=""; end
+
 function main () {
 	if [ "$nm" == "" ]; then
 		nm=ttc
@@ -24,16 +27,16 @@ function main () {
 	fi
 
 	if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then 
-		mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; 
+		eval "$sudo mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc"; 
 	fi
 	if [ ! -e /proc/sys/fs/binfmt_misc/CLR ] && [ -e /usr/bin/mono ]; then 
-		echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; 
+		eval "$sudo bash -c 'echo \":CLR:M::MZ::/usr/bin/mono:\" > /proc/sys/fs/binfmt_misc/register'"; 
 	fi
 	
 	if [ "$ifv" == "1" ]; then 
 		if [ ! -e "$extvolume" ]; then 
 			echo "specified directory not existed!"
-			mkdir -p "$extvolume"
+			eval "$sudo mkdir -p \"$extvolume\""
 			if [ ! -e "$extvolume" ]; then
 				echo "external volumn is required!"
 				echo "Leaving..."
@@ -44,7 +47,7 @@ function main () {
 		fi
 	fi
 
-	existed=$(echo "$(for id in $(dls -q); do docker inspect $id|grep -P "^\ \ \ \ \"Name\""|awk '{split($0, a, "\""); gsub("/", "", a[4]); print a[4]}'; done)"|grep $nm)
+	existed=$(echo "$(for id in $(dls -q); do eval "$sudo docker inspect $id"|grep -P "^\ \ \ \ \"Name\""|awk '{split($0, a, "\""); gsub("/", "", a[4]); print a[4]}'; done)"|grep $nm)
 
 	if [ "$force" == 1 ] && [ "$existed" != "" ]; then
 		drm -f "$nm"
@@ -84,12 +87,12 @@ function main () {
 
 	docker exec "$nm" sed -i.bak -r s/\:Host[[:space:]]+=\>[[:space:]]+\'\:\:\',/\:Host\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\>\ \'$ip\',/g /usr/share/pcsd/ssl.rb; 
 
-	sudo cp /etc/hosts /etc/hosts.tmp
-        sudo sed -i "/$ip/d"     /etc/hosts.tmp
-        sudo sed -i "/\ $nm\ /d" /etc/hosts.tmp
-        sudo sed -i "/\ $nm\$/d" /etc/hosts.tmp
-        sudo bash -c "echo \"$ip $nm\" >> /etc/hosts.tmp"
-        sudo cp /etc/hosts.tmp /etc/hosts -f
+	eval "$sudo cp /etc/hosts /etc/hosts.tmp"
+        eval "$sudo sed -i \"/$ip/d\"     /etc/hosts.tmp"
+        eval "$sudo sed -i \"/\\ $nm\\ /d\" /etc/hosts.tmp"
+        eval "$sudo sed -i \"/\ $nm\\$/d\" /etc/hosts.tmp"
+        eval "$sudo bash -c \"echo \\\"$ip $nm\\\" >> /etc/hosts.tmp\""
+        eval "$sudo cp /etc/hosts.tmp /etc/hosts -f"
 
 	
 	echo \[\!ID_DONE\]
