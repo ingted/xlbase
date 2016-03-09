@@ -16,6 +16,7 @@ RUN ln -snf /bin/bash /bin/sh; \
 	/bd_build/system_services.sh && \
 	/bd_build/utilities.sh && \
 	/bd_build/cleanup.sh; \
+	sed -i "/mirror/d" /etc/apt/sources.list \
 	apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D; \
         echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list; \
         apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A6A19B38D3D831EF; \
