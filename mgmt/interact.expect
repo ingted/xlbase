@@ -10,6 +10,8 @@ set expend	[lindex $argv 6]
 
 if { $password == {NULL} } {set password "/'],lp123"}
 
+
+log_user 0
 spawn  bash -c "
 expect <<- EOF
     spawn bash
