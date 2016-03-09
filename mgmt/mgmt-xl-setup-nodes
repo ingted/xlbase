@@ -41,7 +41,6 @@ function main () {
 	        		sm=$(./mgmt-xl-get-m-or-s "$cnm" $cluster)
 	        	        if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
 	        	        	if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$cnm" ]; then
-						echo 555555
 						echo $(date +"%T") \[\| Setup $role \|\] Container name: $cnm
 						
 						cip=$(./mgmt-xl-get-ip $cnm $cluster)
@@ -56,7 +55,7 @@ function main () {
 						
 						vol=$(./mgmt-xl-get-vol $cnm $cluster)
 						echo $(date +"%T") \[\| Setup $role \|\] Persistent Vol: $vol
-						if [ "$(whoami)" == "root" ]; then sudo=sudo; else sudo=""; fi
+						if [ "$(whoami)" == "root" ]; then sudo=""; else sudo="sudo"; fi
 						(
 							if [ "$force" == "1" ]; then 
 								echo buildPacemaker3 -a $cip -n $cnm -v $vol -f -p -
