@@ -59,6 +59,7 @@ make_image()
 	echo "RUN bash /addfiles/packages_pcmk/do.sh; \\" 				>> Dockerfile
  	echo "	cp /addfiles/resource_pcmk/xlstatus /etc/init.d; \\"			>> Dockerfile
  	echo "	cp /addfiles/resource_pcmk/launcher /etc/init.d; \\"			>> Dockerfile
+	echo "  sed -i \"/mirror/d\" /etc/apt/sources.list; \\"				>> Dockerfile
 	echo "	apt-get -y update; apt-get -y upgrade; \\" 				>> Dockerfile
 	echo "	apt-get -y install expect; \\"		 				>> Dockerfile
 	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \\" 			>> Dockerfile
