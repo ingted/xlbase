@@ -28,7 +28,23 @@ else
         theone=$2
 fi
 
-if [ "$3" == "NULL" ]; then
+if [ "$4" == "" ]; then
+        echo -n Set ifAnsible:
+        read -s Ansible
+        if [ "$Ansible" == "" ]; then
+                notAnsible=0
+        else
+                notAnsible=1
+        fi
+else
+        if [ "$4" != 1 ]; then
+                notAnsible=0
+        else
+                notAnsible=1
+        fi
+fi
+
+if [ "$3" == "NULL" ] || [ $notAnsible == 0 ]; then
         password="/'],lp123"
 elif [ "$3" == "" ];  then
         echo -n Set Password:
