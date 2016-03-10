@@ -17,7 +17,7 @@ hostfile=$(which dexxhosts)
 # (wrong debug way) 2015.12.6 Anibal: get ip needs status of docker host! (remove not equal condition)
 #dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") {print \$4}"|sort|uniq|sed '/^$/d')
 # So i removed both (\$4 != \"-\") below...
-
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 
 dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") {print \$4}"|sort|uniq|sed '/^$/d')
 echo -e "start init hosts\n$dhosts"
@@ -31,16 +31,16 @@ else
 		cd "$curdir/$cluster"
 		#echo "3: $(pwd)"
 		#echo $fnm
-		mkdir -p $fnm
+		eval "$sudo mkdir -p \"$fnm\""
 		cd "./$fnm"
 		#echo $(pwd)
 		#chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$4 != \"-\") {print \$2}"|sort|uniq|sed '/^$/d')
 		chosts=$(cat $hostfile|awk "(\$4 == \"$fnm\") && (\$6 == \"$cluster\") && (\$3 != \"i\") {print \$2}"|sort|uniq|sed '/^$/d')
 		for cnm in $chosts; do
 			echo init $cnm...
-			mkdir -p $cnm
+			eval "$sudo mkdir -p \"$cnm\""
 			if [ ! -e "$curdir/$cluster/status/$cnm.status" ]; then
-				echo "Initialized" > "$curdir/$cluster/status/$cnm.status"
+				eval "$sudo bash -c \"echo \\\"Initialized\\\" > \\\"$curdir/$cluster/status/$cnm.status\\\"\""
 			fi
 			#if [ ! -e "$curdir/$cluster/$fnm/$cnm/
 		done
