@@ -34,9 +34,9 @@ expect <<- EOF
 
     set timeout -1
 	if {\"$notAnsible\" == \"1\"} {
-		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"$password\\\" $notAnsible \\\"$dhost\\\"\\necho \"$expend\" \\n\"
+		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"$password\\\" $notAnsible \\\"$dhost\\\"\\necho \\\"$expend\\\" \\n\"
 	} else {
-		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"\\\" 0 \\\"$dhost\\\"\\necho \"$expend\" \\n\"
+		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"\\\" 0 \\\"$dhost\\\"\\necho \\\"$expend\\\" \\n\"
 	}
     expect {
 	timeout {
