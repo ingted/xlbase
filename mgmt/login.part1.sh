@@ -55,7 +55,7 @@ fi
 #	notAnsible=0
 #fi 
 sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
-echo -e "\npreparing login...$cluster"
+echo -e "\npreparing login...$cluster $sudo"
 
 expp=$(which expect)
 if [ "$expp" == "" ]; then
@@ -92,7 +92,7 @@ if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
 	eval "$sudo useradd --system -U -ms /bin/bash $theone";
 #fi
 
-	mkdir -p /home/$theone
+	eval "$sudo mkdir -p /home/$theone"
 fi
 eval "$sudo sed -i.bak -e s/$theone\\:\\!/$theone\\:\\\$6\\\$H1W8BGOe\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow";
 eval "$sudo usermod -aG docker $theone"
@@ -127,8 +127,8 @@ for dhost in $dhosts; do
 	fi
 done
 
-echo ./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
-./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
+echo "./interact.expect \"\" $theone $password \"\" \"\" \"./sepgit.sh\" \"endsepgitsh\""
+./interact.expect "" "$theone" "$password" "" "" "./sepgit.sh" "endsepgitsh"
 
 ###	for dhost in $dhosts; do
 ###	        echo ./mgmt-xl-get-ip $dhost $cluster
