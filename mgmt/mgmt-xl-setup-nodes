@@ -27,7 +27,7 @@ function main () {
 	        echo "pgxl version is required! exit..."
 		exit 999
 	fi
-
+	echo ./mgmt-xl-get-host-by-role $role $cluster
 	cnms=$(./mgmt-xl-get-host-by-role $role $cluster)
 	for cnm in $cnms; do
 		#echo "%%%%%%%%%%%%%%"
