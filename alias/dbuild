@@ -3,5 +3,8 @@
 if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi
 if [ ! -e /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi
 
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+
 echo ${@:2}
-/usr/bin/docker build ${@:2} -t $1 .
+
+eval "$sudo /usr/bin/docker build \${@:2} -t $1 ."
