@@ -8,7 +8,7 @@ base:
 	@echo -e ">>> base <<<"
 	@./bashrc
 	@exped=$$(grep "#exped" ~/.bashrc); if [ "$$exped" == "" ] || [ ! -e ./exped ]; then sed -i -e "/#exped/d"  ~/.bashrc; echo "export PATH=$$(pwd)/alias:\$$PATH #exped" >> ~/.bashrc; fi
-	@touch exped
+	@if [ "$$(whoami)" != root ]; then sudo touch exped; else touch exped; fi
 	@echo -e "\t@ $$(pwd)"
 	@$(MAKE) -C dockerfiles 
 
