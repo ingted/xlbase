@@ -36,7 +36,7 @@ expect <<- EOF
 	if {\"$notAnsible\" == \"1\"} {
 		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"$password\\\" $notAnsible \\\"$dhost\\\"\\necho $expend\\n\"
 	} else {
-		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"\\\" 0 \\\"$dhost\\\"\\necho $expend\\n\"
+		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"\\\" 0 \\\"$dhost\\\"\\necho $expend \\n\"
 	}
     expect {
 	timeout {
@@ -46,29 +46,41 @@ expect <<- EOF
 		send_user \"\\neeeooofff\\n\"
 	}
 	\"$expend\" {
-		#exp_send \"echo neexxppeenndd\\n\"
-		#exp_send \"exit\"; 
-		exit 
+		exp_send \"echo neexxppeenndd\\n\"
+		expect \"neexxppeenndd\"
+		#exp_send \"exit 999\\n\"; 
+		#exit 
 	}
     }
+
 EOF
 "
 #send_user ">>>>>>>>>>>>>>>>>00000000000000000000<<<<<<<<<<<<<<<<<"
+#expect {
+#    -re {"buildPacemaker3"} {
+#    #-re {Link(.|[[:space:]])*h3} {
+#	send_user ">>>>>>>>>>>>>>>>>00000000000000000000<<<<<<<<<<<<<<<<<"
+#    }
+#    eof {
+#	send_user "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+#    }#{exit 0}
+#    "$expend" {
+#	send_user ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+#	exit 0
+#    }
+#    "neexxppeenndd" {
+#	exp_send "echo \"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\""
+#	exit 0
+#    }
+#}
 expect {
-    -re {h1} {
-	send_user ">>>>>>>>>>>>>>>>>00000000000000000000<<<<<<<<<<<<<<<<<"
-    }
-    eof {
-	send_user "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    }#{exit 0}
-    "$expend" {
-	send_user ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-	exit 0
-    }
-    "neexxppeenndd" {
-	exp_send "echo \"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\""
-	exit 0
-    }
+	"neexxppeenndd" {
+		send_user "neexxppeenndd\n"
+		exit
+	}
+	"999" {
+		send_user "999\n"
+		#return
+	}
 }
-
-send_user "<<<<<<<------------------------>>>>>>>"
+send_user "\n<<<<<<<------------------------>>>>>>>\n"

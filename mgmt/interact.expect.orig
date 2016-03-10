@@ -1,5 +1,5 @@
 #!/usr/bin/expect -f
-
+set timeout 	-1
 set cluster	[lindex $argv 0]
 set theone	[lindex $argv 1]
 set password	[lindex $argv 2]
@@ -7,70 +7,69 @@ set notAnsible	[lindex $argv 3]
 set dhost	[lindex $argv 4]
 set execpath	[lindex $argv 5]
 set expend	[lindex $argv 6]
-#set dhosts	[lindex $argv 5]
-#set dhosts	[lindex $argv 6]
-#set dnss	[lindex $argv 7]
-#set dnss	[lindex $argv 8]
-#set allhosts	[lindex $argv 9]
+set lu		[lindex $argv 7]
 
-#cluster=$1
-#theone=$2
-#password=$3
-#notAnsible=$4
-#dhost=$5
+if { $password == {NULL} || $password == "" } {set password "/'],lp123"}
+if { "$lu" == "" } {set lu 0}
 
-
-
-
-spawn bash 
-exp_send "su $theone\n"; 
-expect {
-        -re "Password\:" {
-                #set timeout 3
-                exp_send "$password\n";
-                send_user "\n======su pwd sent========\n"
-                #sleep 1
+log_user $lu
+spawn  bash -c "
+expect <<- EOF
+    spawn bash
+    expect {
+        -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+            exp_send \"su $theone\\r\"
         }
-	-re {(\$|#) $} {
-		puts "root omg"
+    }
+    expect {
+        -re {Password\\:} {
+            exp_send \"$password\\n\";
+            #send_user \"\\n======su pwd sent========\\n\"
+        }
+        -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+            puts \"root omg\"
+        }
+    }
+
+
+    set timeout -1
+	if {\"$notAnsible\" == \"1\"} {
+		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"$password\\\" $notAnsible \\\"$dhost\\\"\\necho $expend\\n\"
+	} else {
+		exp_send \"$execpath \\\"$cluster\\\" \\\"$theone\\\" \\\"\\\" 0 \\\"$dhost\\\"\\necho $expend\\n\"
 	}
+    expect {
+	timeout {
+		send_user \"\\ntimeout\\n\"
+	}
+	eof {
+		send_user \"\\neeeooofff\\n\"
+	}
+	\"$expend\" {
+		#exp_send \"echo neexxppeenndd\\n\"
+		#exp_send \"exit\"; 
+		exit 
+	}
+    }
+EOF
+"
+#send_user ">>>>>>>>>>>>>>>>>00000000000000000000<<<<<<<<<<<<<<<<<"
+expect {
+    -re {"buildPacemaker3"} {
+    #-re {Link(.|[[:space:]])*h3} {
+	send_user ">>>>>>>>>>>>>>>>>00000000000000000000<<<<<<<<<<<<<<<<<"
+    }
+    eof {
+	send_user "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    }#{exit 0}
+    "$expend" {
+	send_user ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+	exit 0
+    }
+    "neexxppeenndd" {
+	exp_send "echo \"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\""
+	exit 0
+    }
 }
-#sleep 1
 
-set timeout 7200
-exp_send "echo xlbasestart\n"
-sleep 1
-interact {
-        timeout 7200 return
-        -o
-        -re "xlbasestart" {
-		#puts {%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%}
-		if {$notAnsible == "1"} {
-			#puts "^v^v^v^v^v^v^v^v^v^v^v^v^v^v^\n"
-			exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" $notAnsible \"$dhost\"\necho $expend\n"
-		} else {
-			exp_send "$execpath \"$cluster\" \"$theone\" \"$password\" 0 \"$dhost\"\necho $expend\n"
-			#exp_send "pwd\n"
-		}
-                #exp_send "whoami\necho $expend\n"
-        }
-        "$expend" {
-                send_user "$expend"
-		send_user "\nreturned!!\n"
-                return
-        }
-        eof {
-                send_user "\neof!!\n"
-                return
-        }
-}
-
-
-
-#expect $expend
-#interact {
-#	timeout 5 {return}
-#	-re "vdb01" {send "whoami\recho eof\r"}
-#	-o eof {send "/home/osdba/ttc.sh\r"}	
-#}; 
-#spawn /home/osdba/ttc.sh; expect {""}
+send_user "<<<<<<<------------------------>>>>>>>"
