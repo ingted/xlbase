@@ -201,7 +201,7 @@ for ch in $chosts; do
                 VAR=$(ssh $chost << EOF
 			expp=\$(which expect)
 			if [ "\$expp" == "" ]; then
-			        apt-get -y install expect
+			        eval "$sudo apt-get -y install expect"
 			fi
 
                         expect -c "

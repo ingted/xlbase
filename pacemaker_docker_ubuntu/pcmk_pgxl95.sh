@@ -60,6 +60,7 @@ make_image()
  	echo "	cp /addfiles/resource_pcmk/xlstatus /etc/init.d; \\"			>> Dockerfile
  	echo "	cp /addfiles/resource_pcmk/launcher /etc/init.d; \\"			>> Dockerfile
 	echo "	apt-get -y update; apt-get -y upgrade; \\" 				>> Dockerfile
+	echo "	apt-get -y install expect; \\"		 				>> Dockerfile
 	echo "	mkdir -p /root/pcsds; mkdir -p /etc/rc.d/init.d/; \\" 			>> Dockerfile
 	echo "	ln -s /lib/lsb/init-functions /etc/rc.d/init.d/functions; \\" 		>> Dockerfile
 
