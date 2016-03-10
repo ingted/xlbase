@@ -11,21 +11,24 @@
 
 dexx=$(which dexx)
 
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+
 if [ "$dexx" == "" ]; then
-	cd ~;
-	git clone https://github.com/ingted/xlbase.git
-	cd xlbase
-	git checkout --track -b xlbase remotes/origin/backToOrigin
-	source alias/util-disable-status 1 1 1
-	./make.sh 1
-	source ~/.bashrc
-else
-	cd ~/xlbase
-	git reset --hard
-	git pull
-	source alias/util-disable-status 1 1 1
+        cd ~;
+        eval "$sudo git clone https://github.com/ingted/xlbase.git"
+        cd xlbase
+        git checkout --track -b xlbase remotes/origin/backToOrigin
+        source alias/util-disable-status 1 1 1
         ./make.sh 1
-	source ~/.bashrc
+        source ~/.bashrc
+else
+        cd ~/xlbase
+        git reset --hard
+        git pull
+        source alias/util-disable-status 1 1 1
+        ./make.sh 1
+        source ~/.bashrc
 fi
 
 echo "endsepgitsh"
+
