@@ -6,10 +6,11 @@ else
         cluster=$1
 fi
 
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 
 curdir=$(pwd)
-rm "$curdir/$cluster/status/*" -rf 
-mkdir -p "$curdir/$cluster/status"
+eval "$sudo rm \"$curdir/$cluster/status/*\" -rf "
+eval "$sudo mkdir -p \"$curdir/$cluster/status\""
 ls "$curdir/$cluster"
 hostfile=$(which dexxhosts)
 
@@ -17,7 +18,7 @@ hostfile=$(which dexxhosts)
 # (wrong debug way) 2015.12.6 Anibal: get ip needs status of docker host! (remove not equal condition)
 #dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") {print \$4}"|sort|uniq|sed '/^$/d')
 # So i removed both (\$4 != \"-\") below...
-sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+
 
 dhosts=$(cat $hostfile|awk "(\$6 == \"$cluster\") {print \$4}"|sort|uniq|sed '/^$/d')
 echo -e "start init hosts\n$dhosts"
