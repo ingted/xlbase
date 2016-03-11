@@ -128,7 +128,7 @@ echo -e "\npreparing login...$cluster"
 #echo ./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
 #./interact.expect "" $theone $password "" "" "./sepgit.sh" "endsepgitsh"
 function procit (){
-		if [ "$(echo $dhost|grep -P "(\d+\.){3}\d+")" != "" ]; then
+		if [ "$(echo $dhost|grep -P "(\d+\.){3}\d+")" == "" ]; then
 			echo ./mgmt-xl-get-ip $dhost $cluster
 			dip=$(./mgmt-xl-get-ip $dhost $cluster)	
 		else
