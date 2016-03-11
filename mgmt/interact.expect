@@ -19,6 +19,7 @@ expect <<- EOF
     expect {
         -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
             exp_send \"su $theone\\r\"
+	    sleep 1
         }
     }
     expect {
@@ -28,7 +29,6 @@ expect <<- EOF
         }
         -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
             puts \"\\nroot omg\\n$password\\n\"
-            expect
 	    expect {
 	        -re {Password\\:} {
         	    exp_send \"$password\\n\";
