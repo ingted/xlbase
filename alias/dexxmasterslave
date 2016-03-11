@@ -38,4 +38,13 @@ coor2m		coor2s		coor	alpha
 dn1m		dn1s		dn	alpha	
 dn2m		dn2s		dn	alpha	
 gtmprx1m	gtmprx1s	gtmprx	alpha	
-gtmprx2m	gtmprx2s	gtmprx	alpha	
+igtmprx2m	gtmprx2s	gtmprx	alpha	
+
+gtm     gtmsby  gtm     ansible
+gtmprx1m        gtmprx1s        gtmprx  ansible
+coor1m  coor1s  coor    ansible
+dn1m    dn1s    dn      ansible
+gtmprx2m        gtmprx2s        gtmprx  ansible
+coor2m  coor2s  coor    ansible
+dn2m    dn2s    dn      ansible
+

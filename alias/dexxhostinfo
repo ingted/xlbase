@@ -31,3 +31,8 @@ gtm	#	1	alpha
 gtmsby	#	1	alpha
 coor	#	2	alpha
 dn	#	2	alpha
+gtm     #       1       ansible
+gtmsby  #       1       ansible
+gtmprx  #       2       ansible
+coor    #       2       ansible
+dn      #       2       ansible
