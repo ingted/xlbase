@@ -95,12 +95,13 @@ if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
 #fi
 
 	#eval "$sudo mkdir -p /home/$theone"
-else
-	eval "$sudo userdel -r $theone"
-	eval "$sudo useradd --system -U -ms /bin/bash $theone";
+#else
+	#eval "$sudo userdel -r $theone"
+	#eval "$sudo useradd --system -U -ms /bin/bash $theone";
 fi
 eval "$sudo mkdir -p /home/$theone"
-eval "$sudo sed -i.bak -e s/$theone\\:\\!/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow";
+
+eval "$sudo sed -i.bak -e s/$theone\\:[^\\:]+/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow";
 eval "$sudo usermod -aG docker $theone"
 #eval "$sudo usermod -aG root $theone"
 eval "$sudo sed -i \"/$theone/d\" /etc/sudoers"
