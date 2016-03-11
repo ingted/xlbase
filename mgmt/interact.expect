@@ -27,7 +27,16 @@ expect <<- EOF
             #send_user \"\\n======su pwd sent========\\n\"
         }
         -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
-            puts \"root omg\"
+            puts \"\\nroot omg\\n\"
+	    expect {
+	        -re {Password\\:} {
+        	    exp_send \"$password\\n\";
+		}
+		-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+		    puts \"\\nroot cool\\n\"
+        	}
+    	    }
+
         }
     }
 
