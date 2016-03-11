@@ -137,9 +137,9 @@ function procit (){
 		fi
 		echo "===============theone is $theone==============="
 		
-		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./sepssh.sh" "endsepsshsh"
+		echo ./interact.expect $cluster theone password $notAnsible $dhost "$1; ./sepssh.sh" "endsepsshsh"
 		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./sepssh.sh" "endsepsshsh"
-		echo ./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./seplogin.sh" "endseploginsh"
+		echo ./interact.expect $cluster theone password $notAnsible $dhost "$1; ./seplogin.sh" "endseploginsh"
 		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./seplogin.sh" "endseploginsh"
 }
 
