@@ -161,7 +161,6 @@ for dhost in $dhosts; do
 					}"
 			fi
 			echo 2.3======================================c
-			#echo "$expstr"
 	        	expect -c "
 	        	        spawn ssh-copy-id $chost
 	        	        exec sleep $sleep
