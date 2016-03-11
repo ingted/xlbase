@@ -133,6 +133,7 @@ function procit (){
 			dip=$(./mgmt-xl-get-ip $dhost $cluster)	
 		else
 			dip=$dhost
+			dhost=$(./mgmt-xl-get-host-by-ip $dip $cluster)
 		fi
 		#if [ "$dip" != "" ]; then
 		echo "processing... $dip: $dhost"
