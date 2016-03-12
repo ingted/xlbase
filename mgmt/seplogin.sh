@@ -46,6 +46,7 @@ dip=$(./mgmt-xl-get-ip $dhost $cluster)
 #dip=$9
 #echo $cluster $theone $password $notAnsible $dhost $dip
 ssh $dip << EOF
+	eval "\$sudo hostnamectl set-hostname \"$dhost\""
 	cdip="$dip"
 	diprp=\${cdip//./\\\.}
 	sudo="$sudo"
@@ -101,7 +102,7 @@ EOF
 
 done
 echo 6=========================================
-if [ $notAnsible == 1 ]; then
+if [ $notAnsible == 1 ] || [ "$(whoami)" != "root" ]; then
 	for ddhost in $dhosts; do
 		dhip=$(./mgmt-xl-get-ip $dhost $cluster)
 		sleep=2
@@ -114,7 +115,7 @@ if [ $notAnsible == 1 ]; then
 			ssh-keyscan -H "$ddhost" >> ~/.ssh/known_hosts
 			ssh-keyscan -H "$dhip" >> ~/.ssh/known_hosts
 	     		eval "\$sudo bash -c 'echo \"$dhost\" > /etc/hostname'"
-	   	     	eval "\$sudo hostnamectl set-hostname \"$dhost\""
+	   	     	#eval "\$sudo hostnamectl set-hostname \"$dhost\""
 			expect -c "
 	                        spawn ssh-copy-id $ddhost
 	                        exec sleep $sleep
