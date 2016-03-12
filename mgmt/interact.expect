@@ -88,9 +88,9 @@ expect {
 		send_user "neexxppeenndd\n"
 		exit
 	}
-	"999" {
-		send_user "999\n"
-		#return
-	}
+	#"999" {
+	#	send_user "999\n"
+	#	#return
+	#}
 }
 send_user "\n<<<<<<<------------------------>>>>>>>\n"
