@@ -161,7 +161,7 @@ if [ $notAnsible == 1 ]; then
 else
 	dhost=$dhost_i
 	echo "Enter Ansible Mode:"
-	procit "cd ~/xlbase/mgmt"
+	procit "cd ~/xlbase/mgmt; sudo git pull "
 fi
 
 #	ssh $dip << EOF
