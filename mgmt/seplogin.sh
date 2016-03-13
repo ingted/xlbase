@@ -46,10 +46,10 @@ dip=$(./mgmt-xl-get-ip $dhost $cluster)
 #dip=$9
 #echo $cluster $theone $password $notAnsible $dhost $dip
 ssh $dip << EOF
+	sudo="$sudo"
 	eval "\$sudo hostnamectl set-hostname \"$dhost\""
 	cdip="$dip"
 	diprp=\${cdip//./\\\.}
-	sudo="$sudo"
 	eval "\$sudo sed -i.bak -r s/#ListenAddress[[:space:]]\\+[[:digit:]]\\+\\.[[:digit:]]\\+\\.[[:digit:]]\\+\\.[[:digit:]]\\+/ListenAddress\\ \\\$diprp/g /etc/ssh/sshd_config"
 	eval "\$sudo sed -i.bak -e s/#PermitRootLogin\\ yes/PermitRootLogin\\ yes/g /etc/ssh/sshd_config"
 	eval "\$sudo service ssh restart"
