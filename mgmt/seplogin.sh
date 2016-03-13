@@ -122,6 +122,7 @@ if [ $notAnsible == 1 ] || [ "$(whoami)" != "root" ]; then
 				set conti \"1\"
 	                        expect {
 	                                \"password:\" {
+						send_user \"password:\"
 						set conti \"1\"
 	                                        send \"$password\\n\"
 	                                }
@@ -142,6 +143,7 @@ if [ $notAnsible == 1 ] || [ "$(whoami)" != "root" ]; then
 	                                        	send \"yes\\n\"
 							expect {
 								\"password:\" {
+									send_user \"password:\"
 	                	                                        send \"$password\\n\"
 									expect eof
 			                                        }
