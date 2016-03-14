@@ -162,7 +162,7 @@ else
 	#if [ "$(whoami)" != root ]; then sudo=sudo; else sudo=""; fi
 	dhost=$dhost_i
 	echo "Enter Ansible Mode:"
-	procit "if [ \"\$(whoami)\" != root ]; then sudo=sudo; else sudo=\"\"; fi
+	procit "if [ \\\"\$(whoami)\\\" != root ]; then sudo=sudo; else sudo=\\\"\\\"; fi
 		cd ~/xlbase/mgmt; $sudo git pull --no-edit"
 fi
 
