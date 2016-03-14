@@ -159,9 +159,10 @@ if [ $notAnsible == 1 ]; then
 		procit ""
 	done
 else
+	if [ "$(whoami)" != root ]; then sudo=sudo; else sudo=""; fi
 	dhost=$dhost_i
 	echo "Enter Ansible Mode:"
-	procit "cd ~/xlbase/mgmt; sudo git pull "
+	procit "cd ~/xlbase/mgmt; $sudo git pull "
 fi
 
 #	ssh $dip << EOF
