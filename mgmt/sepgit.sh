@@ -33,7 +33,7 @@ if [ "$dexx" == "" ]; then
 else
         cd ~/xlbase
         eval "$sudo git reset --hard"
-	eval "$sudo git pull"
+	eval "$sudo git pull --no-edit"
         source alias/util-disable-status 1 1 1
         ./make.sh 1
         source ~/.bashrc
