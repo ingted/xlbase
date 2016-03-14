@@ -38,7 +38,10 @@ expect <<- EOF
 		-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
 		    puts \"\\nroot cool\\n\"
         	}
-		eof
+		eof {
+                }
+                -re {$} {
+                }
     	    }
 
         }
