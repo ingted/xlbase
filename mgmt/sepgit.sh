@@ -13,6 +13,15 @@ dexx=$(which dexx)
 
 sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+vimed=$(grep "#vimed" ~/.bashrc); 
+if [ "$exped" == "" ]; then sed -i -e "/#vimed/d"  ~/.bashrc; 
+	eval "$sudo bash -c \"echo \\\"export VISUAL=vim; export EDITOR=\\\\\\\"\\\\\\\$VISUAL\\\\\\\"; #vimed\\\" >> ~/.bashrc;\""
+fi
+
+
 if [ "$dexx" == "" ]; then
         cd ~;
         eval "$sudo git clone https://github.com/ingted/xlbase.git"
