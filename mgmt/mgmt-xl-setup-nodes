@@ -46,7 +46,7 @@ function main () {
 						cip=$(./mgmt-xl-get-ip $cnm $cluster)
 						echo $(date +"%T") \[\| Setup $role \|\] Container IP  : $cip
 						
-						ifexist=$(ifconfig | grep $cip)
+						ifexist=$(ifconfig | grep "$cip\ ")
 						if [ "$ifexist" == "" ]; then
 							echo "wrong docker host! (IP address specified not existed!)"
 							enter=0
