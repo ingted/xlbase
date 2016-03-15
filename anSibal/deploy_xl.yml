@@ -24,6 +24,8 @@
 #    - name: unarchive xlbase.tar
 #      unarchive: src={{xlbase_local_path}}.tar.gz dest={{ target_path }}/ copy=yes
 
+
+
 #    - name: source alias
 #      shell: "source alias/util-disable-status 1 1 1; ./make.sh 1" 
 #      environment: 
@@ -64,6 +66,13 @@
 #        chdir: "{{xlbase_path}}/"
 #        executable: /bin/bash 
 
+    - name: chown to {{xlbase_opname}}
+      shell: "chown deployagent:root /droi -R"
+      args:
+        executable: /bin/bash
+      become: yes
+      become_method: sudo
+
     - name: copy conf 
       copy: src={{item.value.src}} dest={{item.value.dest}} owner={{deploy_user}} group={{deploy_user}} mode=0755
       with_dict: "{{ xl_conf_files }}"
@@ -93,16 +102,25 @@
         executable: /bin/bash
       become: yes
       become_method: sudo
+
+    - name: chown to {{xlbase_opname}}
+      shell: "chown deployagent:root /droi -R"
+      args:
+        executable: /bin/bash
+      become: yes
+      become_method: sudo
+
     - name: nvidia gpu2
-      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); gpu 'ansible 200000 cores'"
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; git pull; gpu 'ansible 200000 cores'"
       environment:
         PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
       args:
         chdir: "{{xlbase_path}}/"
         executable: /bin/bash
+
     - name: login.sh
 #      shell: "./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}}"
-      shell: "source ~/.bashrc;	eval $(cat ~/.bashrc|grep '#exped'); git reset --hard; git pull; ./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}} 0 1"
+      shell: "source ~/.bashrc;	eval $(cat ~/.bashrc|grep '#exped'); ./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}} 0 1"
       environment: 
         PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
       args:
