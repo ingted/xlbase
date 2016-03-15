@@ -8,13 +8,13 @@
     ansible_ssh_pass: "{{ deploy_pass }}"
     ansible_sudo_pass: "{{ deploy_pass }}"
   tasks:
-#    - name: install package
-#      apt: name={{ item }} state=present
-#      with_items:
-#        - expect
-#        - git
-#        - make
-#
+    - name: install package
+      apt: name={{ item }} state=present
+      with_items:
+        - expect
+        - git
+        - make
+
 #    - name: install docker
 #      shell: "wget -qO- https://get.docker.com/ | sh"
 #
@@ -26,45 +26,50 @@
 
 
 
-#    - name: source alias
-#      shell: "source alias/util-disable-status 1 1 1; ./make.sh 1" 
+    - name: source alias
+      shell: "source alias/util-disable-status 1 1 1; ./make.sh 1" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/"
+        executable: /bin/bash 
+      become: yes
+      become_method: sudo
+#    - name: make
+#      shell: "./make.sh 1" 
 #      environment: 
 #        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
 #      args:
 #        chdir: "{{xlbase_path}}/"
 #        executable: /bin/bash 
-#
-##    - name: make
-##      shell: "./make.sh 1" 
-##      environment: 
-##        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
-##      args:
-##        chdir: "{{xlbase_path}}/"
-##        executable: /bin/bash 
-#
-#    - name: source bashrc
-#      shell: "source ~/.bashrc" 
-#      environment: 
-#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
-#      args:
-#        chdir: "{{xlbase_path}}/"
-#        executable: /bin/bash 
-#
-#    - name: mgmt-init-set-xl-config
-#      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git pull --no-edit; ./mgmt-init-set-xl-config {{xlbase_clust_name}}" 
-#      environment: 
-#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
-#      args:
-#        chdir: "{{xlbase_path}}/mgmt/"
-#        executable: /bin/bash 
-#
-#    - name: gpl and login.part1.sh
-#      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; gpl; cd mgmt; ./login.part1.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 1" 
-#      environment: 
-#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
-#      args:
-#        chdir: "{{xlbase_path}}/"
-#        executable: /bin/bash 
+
+    - name: source bashrc
+      shell: "source ~/.bashrc" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/"
+        executable: /bin/bash 
+
+    - name: mgmt-init-set-xl-config
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; egpl; ./mgmt-init-set-xl-config {{xlbase_clust_name}}" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/mgmt/"
+        executable: /bin/bash 
+      become: yes
+      become_method: sudo
+
+    - name: gpl and login.part1.sh
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; egpl; cd mgmt; ./login.part1.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 1" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/"
+        executable: /bin/bash 
+      become: yes
+      become_method: sudo
 
     - name: chown to {{xlbase_opname}}
       shell: "chown deployagent:root /droi -R"
@@ -111,7 +116,7 @@
       become_method: sudo
 
     - name: nvidia gpu2
-      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; git pull; gpu 'ansible 200000 cores'"
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; egpl; egpu 'ansible 200000 cores'"
       environment:
         PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
       args:
