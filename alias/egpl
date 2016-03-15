@@ -1,19 +1,26 @@
 #!/usr/bin/expect -f
 set timeout     -1
+set key  [lindex $argv 0]
 
 spawn bash
-send "git pull --no-edit\n"
+#send "git pull --no-edit\n"
+send "eval `ssh-agent` ; ssh-add $key; git pull --no-edit"
 sleep 1
-send "yes\n"
+#send "yes\n"
 expect {
+    "Enter passphrase for $key" {
+	exp_send "\n"
+	exp_continue
+    }
     -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
         exp_send "exit\n"
     }
     {(yes/no)}{
         exp_send "yes\n"
-        expect {
-                eof {exp_send "exit\n"}
-        }
+	exp_continue
+        #expect {
+        #        eof {exp_send "exit\n"}
+        #}
     }
     eof {
         exp_send "exit\n"

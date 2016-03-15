@@ -33,8 +33,8 @@
       args:
         chdir: "{{xlbase_path}}/"
         executable: /bin/bash 
-      #become: yes
-      #become_method: sudo
+      become: yes
+      become_method: sudo
 #    - name: make
 #      shell: "./make.sh 1" 
 #      environment: 
