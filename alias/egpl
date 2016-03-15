@@ -3,7 +3,7 @@ set timeout     -1
 set key  [lindex $argv 0]
 
 spawn bash
-if { $key == "" }{
+if { $key == "" } {
 	send "git pull --no-edit\n"
 	sleep 1
 	send "yes\n"
