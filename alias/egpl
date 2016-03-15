@@ -20,9 +20,11 @@ expect {
 	sleep 1
 	expect {
 		-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+			puts "\n1=======================\n"
     			exp_send "exit\n"
     		}
 		{(yes/no)? }{
+			puts "\n2=======================\n"
 		        exp_send "yes\n"
 			expect {
 				eof {
@@ -32,6 +34,7 @@ expect {
 		        exp_continue
     		}
 		eof {
+			puts "\n3=======================\n"
 			exp_send "\n"
 		}
 	}
