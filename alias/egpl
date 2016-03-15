@@ -4,7 +4,7 @@ set key  [lindex $argv 0]
 
 spawn bash
 #send "git pull --no-edit\n"
-send "eval `ssh-agent` ; ssh-add $key; git pull --no-edit"
+send "eval `ssh-agent` ; ssh-add $key; git pull --no-edit\n"
 sleep 1
 #send "yes\n"
 expect {
