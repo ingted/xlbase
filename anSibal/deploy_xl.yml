@@ -49,7 +49,7 @@
         executable: /bin/bash 
 
     - name: mgmt-init-set-xl-config
-      shell: "source ~/.bashrc; eval \$(cat ~/.bashrc|grep \"#exped\"); git pull --no-edit; ./mgmt-init-set-xl-config {{xlbase_clust_name}}" 
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git pull --no-edit; ./mgmt-init-set-xl-config {{xlbase_clust_name}}" 
       environment: 
         PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
       args:
@@ -57,7 +57,7 @@
         executable: /bin/bash 
 
     - name: gpl and login.part1.sh
-      shell: "source ~/.bashrc; eval \$(cat ~/.bashrc|grep \"#exped\"); git reset --hard; gpl; cd mgmt; ./login.part1.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 1" 
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; gpl; cd mgmt; ./login.part1.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 1" 
       environment: 
         PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
       args:
