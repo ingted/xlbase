@@ -1,0 +1,107 @@
+---
+- hosts: xl
+  vars_files:
+   - config.yml
+  remote_user: "{{ deploy_user }}"
+  become: true
+  vars:
+    ansible_ssh_pass: "{{ deploy_pass }}"
+    ansible_sudo_pass: "{{ deploy_pass }}"
+  tasks:
+#    - name: install package
+#      apt: name={{ item }} state=present
+#      with_items:
+#        - expect
+#        - git
+#        - make
+#
+#    - name: install docker
+#      shell: "wget -qO- https://get.docker.com/ | sh"
+#
+#    - name: touch target_path and create
+#      file: path={{ target_path }} state=directory mode=0755
+#
+#    - name: unarchive xlbase.tar
+#      unarchive: src={{xlbase_local_path}}.tar.gz dest={{ target_path }}/ copy=yes
+
+    - name: source alias
+      shell: "source alias/util-disable-status 1 1 1; ./make.sh 1" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/"
+        executable: /bin/bash 
+
+#    - name: make
+#      shell: "./make.sh 1" 
+#      environment: 
+#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+#      args:
+#        chdir: "{{xlbase_path}}/"
+#        executable: /bin/bash 
+
+    - name: source bashrc
+      shell: "source ~/.bashrc" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/"
+        executable: /bin/bash 
+
+    - name: mgmt-init-set-xl-config
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git pull --no-edit; ./mgmt-init-set-xl-config {{xlbase_clust_name}}" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/mgmt/"
+        executable: /bin/bash 
+
+    - name: gpl and login.part1.sh
+      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; gpl; cd mgmt; ./login.part1.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 1" 
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/"
+        executable: /bin/bash 
+
+    - name: copy conf 
+      copy: src={{item.value.src}} dest={{item.value.dest}} owner={{deploy_user}} group={{deploy_user}} mode=0755
+      with_dict: "{{ xl_conf_files }}"
+
+    - name: copy ssh
+      copy: src="/tmp/xlbase/id_rsa" dest="/home/deployagent/.ssh/" owner={{deploy_user}} group={{deploy_user}} mode=0755
+
+    - name: copy ssh2
+      copy: src="/tmp/xlbase/id_rsa.pub" dest="/home/deployagent/.ssh/" owner={{deploy_user}} group={{deploy_user}} mode=0755
+
+    - name: nvidia gpu
+      shell: "git remote set-url origin git@github.com:ingted/xlbase.git; source ~/.bashrc; eval $(cat ~/.bashrc|grep '#exped'); gpu 'ansible 200000 cores'"
+      environment:
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/"
+        executable: /bin/bash
+    - name: login.sh
+#      shell: "./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}}"
+      shell: "source ~/.bashrc;	eval $(cat ~/.bashrc|grep '#exped'); git reset --hard; git pull; ./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}} 0 1"
+      environment: 
+        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+      args:
+        chdir: "{{xlbase_path}}/mgmt/" 
+        executable: /bin/bash 
+
+#    - name: interact.expect
+##      shell: "./interact.expect {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 $(hostname) 'cd ~/xlbase/mgmt; ./mgmt-xl-setup-all' 'endmgmtxlsetupallsh'" 
+#      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep '#exped'); ./interact.expect {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' '' 0  'cd ~/xlbase/mgmt; ./mgmt-xl-setup-all ' 'endmgmtxlsetupallsh' 1"
+#
+# 
+#      environment: 
+#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+#      args:
+#        chdir: "{{xlbase_path}}/mgmt/" 
+#        executable: /bin/bash 
+##
+##    - name: interact.expect2
+##      shell: "./interact.expect " 
+##      args:
+##        chdir: "{{xlbase_path}}/mgmt/" 
