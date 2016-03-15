@@ -13,8 +13,9 @@ if { $key == "" } {
 sleep 1
 #send "yes\n"
 expect {
-    "Enter passphrase for $key" {
+    "Enter passphrase for .*$" {
 	exp_send "\n"
+	puts "\n=======================\n"
 	sleep 2
 	expect {
 		-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
