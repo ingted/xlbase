@@ -30,7 +30,7 @@ expect {
 		        exp_continue
     		}
 		eof {
-			exp_send "exit\n"
+			exp_send "\n"
 		}
 	}
     }
