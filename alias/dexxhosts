@@ -168,10 +168,10 @@
 18.9.60.141      pgp.mit.edu                    i - -           htest2
 54.230.213.123   download.mono-project.com      i - -           htest2
 
-10.128.81.130     gt      	h       -       -       		ansible
-10.128.81.143    gs      	h       -       -       		ansible
+10.128.81.130   gt      	h       -       -       		ansible
+10.128.81.143   gs      	h       -       -       		ansible
 10.128.81.106   h0      	h       -       -       		ansible
-10.128.81.6    h1      	h       -       -       		ansible
+10.128.81.6   h1      	h       -       -       		ansible
 10.128.114.250  gtm     	c       gt      /docker_volume/gtm      ansible
 10.128.114.251  gtmsby  	c       gs      /docker_volume/gtmsby   ansible
 10.128.114.1    gtmprx1m        c       h0      /docker_volume/gtmprx1m ansible
