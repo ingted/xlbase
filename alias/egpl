@@ -13,7 +13,7 @@ if { $key == "" } {
 sleep 1
 #send "yes\n"
 expect {
-    "Enter passphrase for .*$" {
+    "Enter passphrase for .+$" {
 	exp_send "\n"
 	puts "\n=======================\n"
 	sleep 2
