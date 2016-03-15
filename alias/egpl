@@ -15,12 +15,18 @@ sleep 1
 expect {
     "Enter passphrase for $key" {
 	exp_send "\n"
+	sleep 2
 	expect {
 		-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
     			exp_send "exit\n"
     		}
-		{(yes/no)}{
+		{(yes/no)? }{
 		        exp_send "yes\n"
+			expect {
+				eof {
+     					exp_send "exit\n"
+    				}
+			}
 		        exp_continue
     		}
 		eof {
@@ -42,4 +48,4 @@ expect {
         exp_send "exit\n"
     }
 }
-
+expect eof
