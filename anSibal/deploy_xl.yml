@@ -33,8 +33,8 @@
       args:
         chdir: "{{xlbase_path}}/"
         executable: /bin/bash 
-      become: yes
-      become_method: sudo
+      #become: yes
+      #become_method: sudo
 #    - name: make
 #      shell: "./make.sh 1" 
 #      environment: 
@@ -131,7 +131,6 @@
       args:
         chdir: "{{xlbase_path}}/mgmt/" 
         executable: /bin/bash 
-
 #    - name: interact.expect
 ##      shell: "./interact.expect {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 $(hostname) 'cd ~/xlbase/mgmt; ./mgmt-xl-setup-all' 'endmgmtxlsetupallsh'" 
 #      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep '#exped'); ./interact.expect {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' '' 0  'cd ~/xlbase/mgmt; ./mgmt-xl-setup-all ' 'endmgmtxlsetupallsh' 1"
