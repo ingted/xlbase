@@ -32,9 +32,11 @@ if [ "$dexx" == "" ]; then
         source ~/.bashrc
 else
         cd ~/xlbase
-	rm mgmt/ansible -rf
+	eval "$sudo git rm mgmt/ansible/ -r"
+	eval "$sudo rm mgmt/ansible -rf"
         eval "$sudo git reset --hard"
-	eval "$sudo git pull --no-edit"
+	#eval "$sudo git pull --no-edit"
+	eval "$sudo egpl \"/home/osdba/.ssh/id_rsa.pub\""
         source alias/util-disable-status 1 1 1
         ./make.sh 1
         source ~/.bashrc
