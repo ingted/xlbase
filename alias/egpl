@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+set timeout     -1
+
+spawn bash
+send "git pull --no-edit\n"
+sleep 1
+send "yes\n"
+expect {
+    -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+        exp_send "exit\n"
+    }
+    {(yes/no)}{
+        exp_send "yes\n"
+        expect {
+                eof {exp_send "exit\n"}
+        }
+    }
+    eof {
+        exp_send "exit\n"
+    }
+}
+

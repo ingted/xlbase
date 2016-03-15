@@ -1,0 +1,20 @@
+#!/usr/bin/expect -f
+set timeout 	-1
+set msg		[lindex $argv 0]
+
+spawn bash
+send "gpu $msg\n"
+expect {
+    -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+	exp_send "exit\n"
+    }
+    {(yes/no)? }{
+        exp_send "yes\n"
+	expect {
+		eof {exp_send "exit\n"}
+	}
+    }
+    eof {
+	exp_send "exit\n"
+    }
+}
