@@ -163,7 +163,7 @@ else
 	dhost=$dhost_i
 	echo "Enter Ansible Mode:"
 	procit "\nwai=$\(whoami); if \[ $\wai != root \]; then sudo=sudo; else sudo=\\\"\\\"; fi
-		cd ~/xlbase/; $\sudo git pull --no-edit; cd ~/xlbase/mgmt "
+		cd ~/xlbase/; $\sudo git reset --hard; $\sudo git pull --no-edit; cd ~/xlbase/mgmt "
 fi
 
 #	ssh $dip << EOF
