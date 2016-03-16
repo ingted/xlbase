@@ -154,14 +154,17 @@ function procit (){
 			#su "$theone"	
 			echo no more theone=root
 		fi
-		echo "==============theone is $theone==============="
-		
-		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
+		echo "O==============theone is $theone==============="
 		echo O=========================================
-		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./sepssh.sh" "endsepsshsh" $ifDebugExpect
-		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
+		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./login.part1.sh  \"" "endsepsshsh" $ifDebugExpect
 		echo O=========================================
-		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
+		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./login.part1.sh  " "endsepsshsh" $ifDebugExpect
+		#echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
+		#echo O=========================================
+		#./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./sepssh.sh" "endsepsshsh" $ifDebugExpect
+		#echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
+		#echo O=========================================
+		#./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
 }
 
 echo notAnsible: $notAnsible == 1
