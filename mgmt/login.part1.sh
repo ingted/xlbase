@@ -24,7 +24,7 @@ else
 	theone=$2
 fi
 
-notchpwd=0
+chpwd=0
 
 if [ "$3" == "" ]; then
 	echo -n Set Password:
@@ -32,10 +32,10 @@ if [ "$3" == "" ]; then
 	if [ "$password" == "" ]; then
 	        password="/'],lp123"
 	else
-		notchpwd=1
+		chpwd=0
 	fi
 else
-	notchpwd=1
+	chpwd=0
 	password=$3
 fi
 
@@ -108,7 +108,7 @@ fi
 eval "$sudo mkdir -p /home/$theone"
 
 #eval "$sudo sed -i.bak -e s/$theone\\:[^\\:]+/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow";
-if [ "$notchpwd" == 1 ]; then
+if [ "$chpwd" == 1 ]; then
 	echo "pwd changed!!!"
 	eval "$sudo sed -i.bak -e \"s/$theone\\:[^\\:]*/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g\" /etc/shadow"
 fi
