@@ -56,10 +56,10 @@ fi
 if [ "$6" == "NULL" ] || [ "$notAnsible" == 0 ]; then
         ifDebugExpect=$6
 elif [ "$6" == "" ];  then
-        echo -n Set Password:
-        read -s password
-        if [ "$password" == "" ]; then
-                password="/'],lp123"
+        echo -n Set ifDebug:
+        read -s ifDebugExpect
+        if [ "$ifDebugExpect" == "" ]; then
+		ifDebugExpect=0
         fi
 else
         ifDebugExpect=$6
