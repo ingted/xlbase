@@ -16,7 +16,7 @@ fi
 
 if [ "$2" == "" ]; then
 	echo -n Set User:
-	read -s theone
+	read theone
 	if [ "$theone" == "" ]; then
 	        theone="root"
 	fi
@@ -26,7 +26,7 @@ fi
 
 if [ "$4" == "" ]; then
         echo -n Set ifAnsible:
-        read -s Ansible
+        read Ansible
         if [ "$Ansible" == "" ]; then
                 notAnsible=0
         else
@@ -53,10 +53,21 @@ else
 	password=$3
 fi
 
+if [ "$6" == "NULL" ] || [ "$notAnsible" == 0 ]; then
+        ifDebugExpect=$6
+elif [ "$6" == "" ];  then
+        echo -n Set Password:
+        read -s password
+        if [ "$password" == "" ]; then
+                password="/'],lp123"
+        fi
+else
+        ifDebugExpect=$6
+fi
 
 
 dhost_i=$5
-ifDebugExpect=$6
+
 echo -e "\npreparing login...$cluster"
 
 #	expp=$(which expect)
@@ -141,13 +152,15 @@ function procit (){
 		echo 4=========================================
 		if [ $notAnsible == 1 ]; then
 			#su "$theone"	
-			#theone=root
+			echo no more theone=root
 		fi
-		echo "===============theone is $theone==============="
+		echo "==============theone is $theone==============="
 		
 		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1; ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
+		echo O=========================================
 		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./sepssh.sh" "endsepsshsh" $ifDebugExpect
 		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1; ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
+		echo O=========================================
 		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./seplogin.sh" "endseploginsh" $ifDebugExpect
 }
 
