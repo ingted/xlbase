@@ -141,7 +141,7 @@ function procit (){
 		echo 4=========================================
 		if [ $notAnsible == 1 ]; then
 			#su "$theone"	
-			theone=root
+			#theone=root
 		fi
 		echo "===============theone is $theone==============="
 		
