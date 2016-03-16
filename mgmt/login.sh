@@ -156,12 +156,12 @@ function procit (){
 		fi
 		echo "==============theone is $theone==============="
 		
-		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1; ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
+		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
 		echo O=========================================
-		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./sepssh.sh" "endsepsshsh" $ifDebugExpect
-		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1; ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
+		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./sepssh.sh" "endsepsshsh" $ifDebugExpect
+		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
 		echo O=========================================
-		./interact.expect $cluster $theone $password $notAnsible $dhost "$1; ./seplogin.sh" "endseploginsh" $ifDebugExpect
+		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
 }
 
 echo notAnsible: $notAnsible == 1
@@ -176,7 +176,7 @@ else
 	dhost=$dhost_i
 	echo "Enter Ansible Mode:"
 	procit "\nwai=$\(whoami); if \[ $\wai != root \]; then sudo=sudo; else sudo=\\\"\\\"; fi
-		cd ~/xlbase/; $\sudo git reset --hard; $\sudo git pull --no-edit; cd ~/xlbase/mgmt "
+		cd ~/xlbase/; $\sudo git reset --hard; $\sudo git pull --no-edit; cd ~/xlbase/mgmt; "
 fi
 
 #	ssh $dip << EOF
