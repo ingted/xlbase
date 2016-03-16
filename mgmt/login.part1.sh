@@ -16,7 +16,7 @@ fi
 
 if [ "$2" == "" ]; then
 	echo -n Set User:
-	read -s theone
+	read theone
 	if [ "$theone" == "" ]; then
 	        theone="root"
 	fi
@@ -35,7 +35,7 @@ fi
 
 if [ "$4" == "" ]; then
         echo -n Set ifAnsible:
-        read -s Ansible
+        read Ansible
         if [ "$Ansible" == "" ]; then
                 notAnsible=0
         else
