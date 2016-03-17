@@ -199,18 +199,14 @@ if [ $notAnsible == 1 ]; then
 		                        }
 		                        exp_continue
 		                }
-		                -re {.*}{
-		                        puts "\n\nBUFFER: \$expect_out(buffer) ]]]\n"
-		                }
-		                -re {((.|[[:space:]])*($|#))? $}{
+		                -re {((.|[[:space:]])*($|#))? $} {
 		                        puts "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n------------------------"
 		                }
 		        }
 		
 		        send "sudo bash -c \"echo $theone ALL=NOPASSWD:ALL >> /etc/sudoers; \"; exit\n";
-		        #send "sudo bash -c \"echo \\\"$theone ALL=NOPASSWD:ALL\\\" > /etc/sudoers; exit\"\n";
 		        expect {
-		                -re {\[sudo\] password(.|[[:space:]])*\: }{
+		                -re {\[sudo\] password(.|[[:space:]])*\: } {
 		                        send "$password\n"
 		                        sleep 1
 		                }
