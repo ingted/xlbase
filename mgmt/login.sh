@@ -178,7 +178,8 @@ if [ $notAnsible == 1 ]; then
         for dhost in $dhosts; do
 		#sudo sed -i "/$theone/d" /etc/sudoers
 		#sudo bash -c "echo \"$theone ALL=NOPASSWD:ALL\" >> /etc/sudoers"
-
+		cat ../alpha/h1/id_rsa | ssh $theone@$dhost 'cat >> .ssh/id_rsa'
+		cat ../alpha/h1/id_rsa.pub | ssh $theone@$dhost 'cat >> .ssh/id_rsa.pub'
 
 		expect << EOF
 		        spawn ssh $dhost;
