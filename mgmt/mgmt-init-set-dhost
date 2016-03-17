@@ -46,26 +46,28 @@ for host in $dhosts; do
 	cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
 	echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
 	(ssh $cip << EOF
+		sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 		#rm ~/.hushlogin
 		whoiam=$(whoami)
-		eval "$sudo mkdir -p \"$rootpath\""
-
+		eval "\$sudo mkdir -p \"$rootpath\""
+		eval "\$sudo apt-get -y install expect  git make"
+		eval "\$sudo wget -qO- https://get.docker.com/ | sh"
 		cd "$rootpath"
 		#ls $rootpath/xlbase
 		rp=\$(ls $rootpath/xlbase)
 		#echo "1: $updonly" "2: $?" "3: $rp"
 		if [ "$updonly" != 1 ] || [ "$?" != 0 ] || [ "\$rp" == "" ]; then
-			eval "$sudo rm xlbase -rf"
+			eval "\$sudo rm xlbase -rf"
 			GIT_TRACE=1; GIT_CURL_VERBOSE=1
-			eval "$sudo git clone --verbose http://github.com/ingted/xlbase.git"
+			eval "\$sudo git clone --verbose http://github.com/ingted/xlbase.git"
   			cd $rootpath/xlbase
-	  		eval "$sudo git checkout --track -b xlbase remotes/origin/backToOrigin"
+	  		eval "\$sudo git checkout --track -b xlbase remotes/origin/backToOrigin"
 		else 
 			cd $rootpath/xlbase
-			eval "$sudo git pull"
+			eval "\$sudo git pull"
 		fi
-		if [ "$(whoami)" != root ]; then
-			sudo chown $whoiam:$whoiam "$rootpath" -R
+		if [ "\$(whoami)" != root ]; then
+			sudo chown \$whoiam:\$whoiam "$rootpath" -R
 		fi
 		source $rootpath/xlbase/alias/util-disable-status 1 1 1
 		echo "====\$(hostname)====="
@@ -74,9 +76,9 @@ for host in $dhosts; do
 		#echo "=>\$(which dexxhosts)"
 		#echo "=>\$PATH"
 
-		eexp=$(which expect)
+		eexp=\$(which expect)
 		if [ "$eexp" == "" ]; then
-			eval "$sudo apt-get -y install expect"
+			eval "\$sudo apt-get -y install expect"
 		fi
 		if [ "$ifmake" != "0" ]; then
 			./make.expect
