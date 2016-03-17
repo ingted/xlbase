@@ -226,6 +226,9 @@ EOF
 
 
 		procit "" 0
+	done
+
+        for dhost in $dhosts; do
 		procit "" 1
 	done
 else
