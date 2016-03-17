@@ -15,7 +15,7 @@ fi
 
 sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 if [ $notAnsible == 1 ] && [ $notSkip == 1 ]; then
-	eval "$sudo apt-get -y install software-properties-common automake autogen autoconf zfs-fuse"
+	eval "$sudo apt-get -y install make software-properties-common automake autogen autoconf zfs-fuse"
 	#add-apt-repository -y ppa:zfs-native/stable
 	#apt-get -y update
 	#apt-get -y install -y ubuntu-zfs

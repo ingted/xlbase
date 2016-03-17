@@ -27,11 +27,13 @@ if [ "$dexx" == "" ]; then
         eval "$sudo git clone https://github.com/ingted/xlbase.git"
         cd xlbase
         eval "$sudo git checkout --track -b xlbase remotes/origin/backToOrigin"
+	eval "$sudo git remote set-url origin git@github.com:ingted/xlbase.git"
         source alias/util-disable-status 1 1 1
         ./make.sh 1
         source ~/.bashrc
 else
         cd ~/xlbase
+	eval "$sudo git remote set-url origin git@github.com:ingted/xlbase.git"
 	eval "$sudo git rm mgmt/ansible/ -r"
 	eval "$sudo rm mgmt/ansible -rf"
         eval "$sudo git reset --hard"
