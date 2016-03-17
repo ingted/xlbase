@@ -66,10 +66,10 @@ echo -e "\npreparing login...$cluster $sudo"
 
 if [ "$(whoami)" != root ]; then 
 	cp ../alpha/h1/id_rsa* /home/$theone/.ssh -f
-	chmod 500 /home/$theone/.ssh/id_rsa*
+	chmod 500 /home/$theone/.ssh/id_rsa* -f
 else
 	cp ../alpha/h1/id_rsa* /root/.ssh -f
-	chmod 500 /root/.ssh/id_rsa*
+	chmod 500 /root/.ssh/id_rsa* -f
 fi
 
 
