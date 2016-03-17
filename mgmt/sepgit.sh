@@ -45,8 +45,8 @@ else
 fi
 
 
-cp alpha/h1/id_rsa* ~/.ssh -f
-chmod 500 ~/.ssh/id_rsa* -f
+#cp alpha/h1/id_rsa* ~/.ssh -f
+#chmod 500 ~/.ssh/id_rsa* -f
 
 
 

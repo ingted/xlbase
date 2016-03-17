@@ -159,12 +159,15 @@ function procit (){
 		#echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./login.part1.sh  \"" "endsepsshsh" $ifDebugExpect
 		#echo O=========================================
 		#./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./login.part1.sh  " "endsepsshsh" $ifDebugExpect
-		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
-		echo O=========================================
-		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./sepssh.sh" "endsepsshsh" $ifDebugExpect
-		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
-		echo O=========================================
-		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
+		if [ "$2" == 0 ]; then
+			echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
+			echo O=========================================
+			./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./sepssh.sh" "endsepsshsh" $ifDebugExpect
+		else
+			echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
+			echo O=========================================
+			./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
+		fi
 }
 
 echo notAnsible: $notAnsible == 1
@@ -222,7 +225,8 @@ EOF
 
 
 
-		procit ""
+		procit "" 0
+		procit "" 1
 	done
 else
 	#if [ "$(whoami)" != root ]; then sudo=sudo; else sudo=""; fi
