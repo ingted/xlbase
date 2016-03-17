@@ -23,7 +23,7 @@ expect {
 			puts "\n1=======================\n"
     			exp_send "exit\n"
     		}
-		{(yes/no)? }{
+		{(yes/no)? } {
 			puts "\n2=======================\n"
 		        exp_send "yes\n"
 			expect {
@@ -42,7 +42,7 @@ expect {
     -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
         exp_send "exit\n"
     }
-    {(yes/no)}{
+    {(yes/no)} {
         exp_send "yes\n"
 	exp_continue
         #expect {

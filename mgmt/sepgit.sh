@@ -36,7 +36,7 @@ else
 	eval "$sudo rm mgmt/ansible -rf"
         eval "$sudo git reset --hard"
 	#eval "$sudo git pull --no-edit"
-	eval "$sudo egpl \"/home/osdba/.ssh/id_rsa.pub\""
+	eval "egpl \"/home/$2/.ssh/id_rsa.pub\""
         source alias/util-disable-status 1 1 1
         ./make.sh 1
         source ~/.bashrc
