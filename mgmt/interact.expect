@@ -21,7 +21,7 @@ expect <<- EOF
             exp_send \"su $theone\\r\"
 	    sleep 1
         }
-	-re {(yes/no)? }{
+	-re {(yes/no)? } {
             exp_send \"yes\\r\"
         }
     }

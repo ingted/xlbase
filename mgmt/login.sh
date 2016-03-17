@@ -57,7 +57,7 @@ if [ "$6" == "NULL" ] || [ "$notAnsible" == 0 ]; then
         ifDebugExpect=$6
 elif [ "$6" == "" ];  then
         echo -n Set ifDebug:
-        read -s ifDebugExpect
+        read ifDebugExpect
         if [ "$ifDebugExpect" == "" ]; then
 		ifDebugExpect=0
         fi
@@ -155,16 +155,16 @@ function procit (){
 			echo no more theone=root
 		fi
 		echo "O==============theone is $theone==============="
-		echo O=========================================
-		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./login.part1.sh  \"" "endsepsshsh" $ifDebugExpect
-		echo O=========================================
-		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./login.part1.sh  " "endsepsshsh" $ifDebugExpect
-		#echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
 		#echo O=========================================
-		#./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./sepssh.sh" "endsepsshsh" $ifDebugExpect
-		#echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
+		#echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./login.part1.sh  \"" "endsepsshsh" $ifDebugExpect
 		#echo O=========================================
-		#./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
+		#./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./login.part1.sh  " "endsepsshsh" $ifDebugExpect
+		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./sepssh.sh\"" "endsepsshsh" $ifDebugExpect
+		echo O=========================================
+		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./sepssh.sh" "endsepsshsh" $ifDebugExpect
+		echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
+		echo O=========================================
+		./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
 }
 
 echo notAnsible: $notAnsible == 1
@@ -172,6 +172,8 @@ if [ $notAnsible == 1 ]; then
 	#echo procit
 	dhosts=$(./mgmt-xl-get-host-by-role docker $cluster);
         for dhost in $dhosts; do
+		sudo sed -i "/$theone/d" /etc/sudoers
+		sudo bash -c "echo \"$theone ALL=NOPASSWD:ALL\" >> /etc/sudoers"
 		procit ""
 	done
 else
