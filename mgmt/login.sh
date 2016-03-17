@@ -181,7 +181,7 @@ if [ $notAnsible == 1 ]; then
 		ssh $theone@$dhost 'chmod +w .ssh/id_rsa .ssh/id_rsa.pub';
 		cat ../alpha/h1/id_rsa | ssh $theone@$dhost 'cat >> .ssh/id_rsa'
 		cat ../alpha/h1/id_rsa.pub | ssh $theone@$dhost 'cat >> .ssh/id_rsa.pub'
-		ssh $theone@$dhost 'chmod -w .ssh/id_rsa .ssh/id_rsa.pub';
+		ssh $theone@$dhost 'chmod 500 .ssh/id_rsa .ssh/id_rsa.pub';
 		expect << EOF
 		        spawn ssh $dhost;
 		        set timeout 5
