@@ -123,8 +123,8 @@ if [ "$chpwd" == 1 ]; then
 fi
 eval "$sudo usermod -aG docker $theone"
 #eval "$sudo usermod -aG root $theone"
-eval "$sudo sed -i \"/$theone/d\" /etc/sudoers"
-eval "$sudo bash -c \"echo \\\"$theone ALL=NOPASSWD:ALL\\\" >> /etc/sudoers\""
+#eval "$sudo sed -i \"/$theone/d\" /etc/sudoers"
+eval "$sudo bash -c \"sed -i \\\"/$theone/d\\\" /etc/sudoers; echo \\\"$theone ALL=NOPASSWD:ALL\\\" >> /etc/sudoers\""
 
 for dhost in $dhosts; do
 	echo ./mgmt-xl-get-ip $dhost $cluster
