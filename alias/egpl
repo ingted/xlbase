@@ -39,9 +39,6 @@ expect {
 		}
 	}
     }
-    -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
-        exp_send "exit\n"
-    }
     {(yes/no)} {
         exp_send "yes\n"
 	exp_continue
@@ -49,6 +46,10 @@ expect {
         #        eof {exp_send "exit\n"}
         #}
     }
+    -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+        exp_send "exit\n"
+    }
+
     eof {
         exp_send "exit\n"
     }
