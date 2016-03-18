@@ -121,12 +121,12 @@ gtmprx1s        1 gtmprx  	g s ansible 14
 coor1s  	1 coor    	c s ansible 15
 dn1s    	1 dn      	d s ansible 16
 
-gt	0	docker	x	x	ansible2	1
-gs	0	docker	x	x	ansible2	2
-h0	0	docker	x	x	ansible2	3
-h1	0	docker	x	x	ansible2	4
-h2	0	docker	x	x	ansible2	5
-h3	0	docker	x	x	ansible2	6
+as1	0	docker	x	x	ansible2	1
+as2	0	docker	x	x	ansible2	2
+as3	0	docker	x	x	ansible2	3
+as4	0	docker	x	x	ansible2	4
+as5	0	docker	x	x	ansible2	5
+as6	0	docker	x	x	ansible2	6
 gtm	0	gtm	g	m	ansible2	5
 gtmsby	0	gtmsby	g	s	ansible2	6
 gtmprx1m	1	gtmprx	g	m	ansible2	7
