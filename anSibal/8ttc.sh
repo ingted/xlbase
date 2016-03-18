@@ -1,26 +1,36 @@
-#ssh-keygen -R gs
+ssh-keygen -R gs
 theone=test; password=1111;
 expect << EOF
-	spawn bash;
-	send "ssh gs\n"
-	set timeout 2
+	spawn ssh gs;
+	#send "ssh gs\n"
+	set timeout 5
 	set ay "0"
+	set ap "0"
 	sleep 1
 	expect {
 		-re {.*password\: $} {
-			send "$password\n"
+			if { \$ap == "0" } {
+				send "$password\n"
+				puts "\n\nBUFFER: \$expect_out(buffer) ]]]\n"
+				set ap "1"
+			}
 			exp_continue
 		}
 		-re {.*\(yes/no\)\? $} {
 			if { \$ay == "0" } {
-				puts "\n\nBUFFER: \$expect_out(buffer) ]]]\n"
-				sleep 5
+				#puts "\n\nBUFFER: \$expect_out(buffer) ]]]\n"
+				sleep 1
 	            		exp_send "yes\n"
 				set ay "1"
 			}
 			exp_continue
 		}
-		-re {((.|[[:space:]])*($|#))? $}{}
+		-re {($|#) $}{
+			puts "\n\n\n\n\n\n\n\nBUFFER: \$expect_out(buffer) ]]]\n\n\n\n\n\n\"
+		}
+		-re {((.|[[:space:]])*($|#))? $}{
+			puts "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n------------------------"
+		}
 	}
 
 	send "sudo bash -c \"echo $theone ALL=NOPASSWD:ALL >> /etc/sudoers; \"; exit\n"; 
@@ -28,10 +38,9 @@ expect << EOF
 	expect {
 		-re {\[sudo\] password(.|[[:space:]])*\: }{
 			send "$password\n"
+			sleep 1
 		}
-		eof
 	}
-	
 EOF
 
 exit 0
