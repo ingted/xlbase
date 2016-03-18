@@ -102,22 +102,22 @@ an33 		2 coor		c m htest2
 an41 		2 coor		c s htest2
 an42 		3 coor		c m htest2
 an43 		3 coor		c s htest2
-gt      0       docker  x       x       ansible 1
-gs      0       docker  x       x       ansible 2
-h0      0       docker  x       x       ansible 3
-h1      0       docker  x       x       ansible 4
-gtm     0       gtm     g       m       ansible 3
-gtmsby  0       gtmsby  g       s       ansible 4
-gtmprx1m        1       gtmprx  g       m       ansible 5
-coor1m  1       coor    c       m       ansible 6
-dn1m    1       dn      d       m       ansible 7
-gtmprx2s        2       gtmprx  g       s       ansible 8
-coor2s  2       coor    c       s       ansible 9
-dn2s    2       dn      d       s       ansible 10
-gtmprx2m        2       gtmprx  g       m       ansible 11
-coor2m  2       coor    c       m       ansible 12
-dn2m    2       dn      d       m       ansible 13
-gtmprx1s        1       gtmprx  g       s       ansible 14
-coor1s  1       coor    c       s       ansible 15
-dn1s    1       dn      d       s       ansible 16
+gt      	0 docker  	x x ansible 1
+gs      	0 docker  	x x ansible 2
+h0      	0 docker  	x x ansible 3
+h1      	0 docker  	x x ansible 4
+gtm     	0 gtm     	g m ansible 3
+gtmsby  	0 gtmsby  	g s ansible 4
+gtmprx1m        1 gtmprx  	g m ansible 5
+coor1m  	1 coor    	c m ansible 6
+dn1m    	1 dn      	d m ansible 7
+gtmprx2s        2 gtmprx  	g s ansible 8
+coor2s  	2 coor    	c s ansible 9
+dn2s    	2 dn      	d s ansible 10
+gtmprx2m        2 gtmprx  	g m ansible 11
+coor2m  	2 coor    	c m ansible 12
+dn2m    	2 dn      	d m ansible 13
+gtmprx1s        1 gtmprx  	g s ansible 14
+coor1s  	1 coor    	c s ansible 15
+dn1s    	1 dn      	d s ansible 16
 
