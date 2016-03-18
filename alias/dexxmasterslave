@@ -48,3 +48,16 @@ gtmprx2m        gtmprx2s        gtmprx  ansible
 coor2m  	coor2s  	coor    ansible
 dn2m    	dn2s    	dn      ansible
 
+gtm	gtmsby	gtm	ansible2
+gtmprx1m	gtmprx1s	gtmprx	ansible2
+coor1m	coor1s	coor	ansible2
+dn1m	dn1s	dn	ansible2
+gtmprx2m	gtmprx2s	gtmprx	ansible2
+coor2m	coor2s	coor	ansible2
+dn2m	dn2s	dn	ansible2
+gtmprx3m	gtmprx3s	gtmprx	ansible2
+coor3m	coor3s	coor	ansible2
+dn3m	dn3s	dn	ansible2
+gtmprx4m	gtmprx4s	gtmprx	ansible2
+coor4m	coor4s	coor	ansible2
+dn4m	dn4s	dn	ansible2

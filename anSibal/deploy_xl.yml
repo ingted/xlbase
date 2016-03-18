@@ -43,6 +43,16 @@
 #        chdir: "{{xlbase_path}}/"
 #        executable: /bin/bash 
 
+    - name: copy ssh
+      copy: src="/tmp/xlbase/id_rsa" dest="/home/{{deploy_user}}/.ssh/" owner={{deploy_user}} group={{deploy_user}} mode=0600
+      become: yes
+      become_method: sudo
+    - name: copy ssh2
+      copy: src="/tmp/xlbase/id_rsa.pub" dest="/home/{{deploy_user}}/.ssh/" owner={{deploy_user}} group={{deploy_user}} mode=0600
+      become: yes
+      become_method: sudo
+
+
     - name: source bashrc
       shell: "source ~/.bashrc" 
       environment: 
@@ -52,12 +62,22 @@
         executable: /bin/bash 
 
     - name: mgmt-init-set-xl-config
-      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; egpl; ./mgmt-init-set-xl-config {{xlbase_clust_name}}" 
+      #shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; egpl; ./mgmt-init-set-xl-config {{xlbase_clust_name}}" 
+      shell: "rm {{xlbase_path}}/mgmt/ansible -rf; source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); egpl \"/home/{{deploy_user}}/.ssh/id_rsa.pub\"; cd mgmt; ./mgmt-init-set-xl-config {{xlbase_clust_name}}; ./login.part1.sh {{xlbase_clust_name}} {{xlbase_opname}} \"NULL\" 0 1 "
       environment: 
         PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
       args:
-        chdir: "{{xlbase_path}}/mgmt/"
+        chdir: "{{xlbase_path}}"
         executable: /bin/bash 
+      become: yes
+      become_method: sudo
+
+    - name: copy ssh3
+      copy: src="/tmp/xlbase/id_rsa" dest="/home/{{xlbase_opname}}/.ssh/" owner={{xlbase_opname}} group={{xlbase_opname}} mode=0600
+      become: yes
+      become_method: sudo
+    - name: copy ssh4
+      copy: src="/tmp/xlbase/id_rsa.pub" dest="/home/{{xlbase_opname}}/.ssh/" owner={{xlbase_opname}} group={{xlbase_opname}} mode=0600
       become: yes
       become_method: sudo
 
@@ -71,66 +91,50 @@
       become: yes
       become_method: sudo
 
-    - name: chown to {{xlbase_opname}}
-      shell: "chown deployagent:root /droi -R"
-      args:
-        executable: /bin/bash
-      become: yes
-      become_method: sudo
-
-    - name: copy conf 
-      copy: src={{item.value.src}} dest={{item.value.dest}} owner={{deploy_user}} group={{deploy_user}} mode=0755
-      with_dict: "{{ xl_conf_files }}"
-
-    - name: copy ssh
-      copy: src="/tmp/xlbase/id_rsa" dest="/home/{{deploy_user}}/.ssh/" owner={{deploy_user}} group={{deploy_user}} mode=0600
-      become: yes
-      become_method: sudo
-    - name: copy ssh2
-      copy: src="/tmp/xlbase/id_rsa.pub" dest="/home/{{deploy_user}}/.ssh/" owner={{deploy_user}} group={{deploy_user}} mode=0600
-      become: yes
-      become_method: sudo
-    - name: copy ssh3
-      copy: src="/tmp/xlbase/id_rsa" dest="/home/{{xlbase_opname}}/.ssh/" owner={{xlbase_opname}} group={{xlbase_opname}} mode=0600
-      become: yes
-      become_method: sudo
-    - name: copy ssh4
-      copy: src="/tmp/xlbase/id_rsa.pub" dest="/home/{{xlbase_opname}}/.ssh/" owner={{xlbase_opname}} group={{xlbase_opname}} mode=0600
-      become: yes
-      become_method: sudo
-    - name: nvidia gpu1
-      shell: "git remote set-url origin git@github.com:ingted/xlbase.git;"
-      environment:
-        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
-      args:
-        chdir: "{{xlbase_path}}/"
-        executable: /bin/bash
-      become: yes
-      become_method: sudo
-
-    - name: chown to {{xlbase_opname}}
-      shell: "chown deployagent:root /droi -R"
-      args:
-        executable: /bin/bash
-      become: yes
-      become_method: sudo
-
-    - name: nvidia gpu2
-      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; egpl; egpu 'ansible 200000 cores'"
-      environment:
-        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
-      args:
-        chdir: "{{xlbase_path}}/"
-        executable: /bin/bash
-
-    - name: login.sh
-#      shell: "./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}}"
-      shell: "source ~/.bashrc;	eval $(cat ~/.bashrc|grep '#exped'); ./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}} 0 1"
-      environment: 
-        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
-      args:
-        chdir: "{{xlbase_path}}/mgmt/" 
-        executable: /bin/bash 
+#    - name: chown to {{xlbase_opname}}
+#      shell: "chown deployagent:root /droi -R"
+#      args:
+#        executable: /bin/bash
+#      become: yes
+#      become_method: sudo
+#
+#    - name: copy conf 
+#      copy: src={{item.value.src}} dest={{item.value.dest}} owner={{deploy_user}} group={{deploy_user}} mode=0755
+#      with_dict: "{{ xl_conf_files }}"
+#
+#    - name: nvidia gpu1
+#      shell: "git remote set-url origin git@github.com:ingted/xlbase.git;"
+#      environment:
+#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+#      args:
+#        chdir: "{{xlbase_path}}/"
+#        executable: /bin/bash
+#      become: yes
+#      become_method: sudo
+#
+#    - name: chown to {{xlbase_opname}}
+#      shell: "chown deployagent:root /droi -R"
+#      args:
+#        executable: /bin/bash
+#      become: yes
+#      become_method: sudo
+#
+#    - name: nvidia gpu2
+#      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep \"#exped\"); git reset --hard; egpl; egpu 'ansible 200000 cores'"
+#      environment:
+#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+#      args:
+#        chdir: "{{xlbase_path}}/"
+#        executable: /bin/bash
+#
+#    - name: login.sh
+##      shell: "./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}}"
+#      shell: "source ~/.bashrc;	eval $(cat ~/.bashrc|grep '#exped'); ./login.sh {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 {{ansible_default_ipv4.address}} 0 1"
+#      environment: 
+#        PATH: "{{ansible_env.PATH}}:{{xlbase_path}}/alias"
+#      args:
+#        chdir: "{{xlbase_path}}/mgmt/" 
+#        executable: /bin/bash 
 #    - name: interact.expect
 ##      shell: "./interact.expect {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' 0 $(hostname) 'cd ~/xlbase/mgmt; ./mgmt-xl-setup-all' 'endmgmtxlsetupallsh'" 
 #      shell: "source ~/.bashrc; eval $(cat ~/.bashrc|grep '#exped'); ./interact.expect {{xlbase_clust_name}} {{xlbase_opname}} 'NULL' '' 0  'cd ~/xlbase/mgmt; ./mgmt-xl-setup-all ' 'endmgmtxlsetupallsh' 1"
