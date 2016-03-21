@@ -85,20 +85,6 @@ expect << EOF
 EOF
 
 
-if [ "$(whoami)" != root ]; then 
-	#if [ "$(whoami)" == $theone ]; then
-		eval "$sudo chmod +w /home/$theone/.ssh/id_rsa* -f"
-		eval "$sudo cp ../alpha/h1/id_rsa* /home/$theone/.ssh -f"
-		eval "$sudo chmod 500 /home/$theone/.ssh/id_rsa* -f"
-	#else 
-	#	cp ../alpha/h1/id_rsa* /home/$(whoami)/.ssh -f
-	#	chmod 500 /home/$(whoami)/.ssh/id_rsa* -f
-	#fi
-else
-	eval "$sudo chmod +w /root/.ssh/id_rsa* -f"
-	eval "$sudo cp ../alpha/h1/id_rsa* /root/.ssh -f"
-	eval "$sudo chmod 500 /root/.ssh/id_rsa* -f"
-fi
 
 
 expp=$(which expect)
@@ -142,7 +128,21 @@ if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
 	#eval "$sudo userdel -r $theone"
 	#eval "$sudo useradd --system -U -ms /bin/bash $theone";
 fi
-eval "$sudo mkdir -p /home/$theone"
+eval "$sudo mkdir -p /home/$theone/.ssh"
+if [ "$(whoami)" != root ]; then
+        #if [ "$(whoami)" == $theone ]; then
+                eval "$sudo chmod +w /home/$theone/.ssh/id_rsa* -f"
+                eval "$sudo cp ../alpha/h1/id_rsa* /home/$theone/.ssh -f"
+                eval "$sudo chmod 500 /home/$theone/.ssh/id_rsa* -f"
+        #else
+        #       cp ../alpha/h1/id_rsa* /home/$(whoami)/.ssh -f
+        #       chmod 500 /home/$(whoami)/.ssh/id_rsa* -f
+        #fi
+else
+        eval "$sudo chmod +w /root/.ssh/id_rsa* -f"
+        eval "$sudo cp ../alpha/h1/id_rsa* /root/.ssh -f"
+        eval "$sudo chmod 500 /root/.ssh/id_rsa* -f"
+fi
 
 #eval "$sudo sed -i.bak -e s/$theone\\:[^\\:]+/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow";
 if [ "$chpwd" == 1 ]; then
