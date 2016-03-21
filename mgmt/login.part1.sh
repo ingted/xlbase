@@ -32,10 +32,10 @@ if [ "$3" == "" ]; then
 	if [ "$password" == "" ]; then
 	        password="/'],lp123"
 	else
-		chpwd=0
+		chpwd=1
 	fi
 else
-	chpwd=0
+	chpwd=1
 	password=$3
 fi
 
@@ -147,6 +147,18 @@ fi
 #eval "$sudo sed -i.bak -e s/$theone\\:[^\\:]+/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g /etc/shadow";
 if [ "$chpwd" == 1 ]; then
 	echo "pwd changed!!!"
+	expect << EOF
+	        spawn $sudo passwd $theone
+		expect {
+			-re {password\: $} {
+				send "$password\n"
+				-re {password\: $} {
+	                                send "$password\n"
+				}
+			}
+		}
+EOF
+else
 	eval "$sudo sed -i.bak -e \"s/$theone\\:[^\\:]*/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g\" /etc/shadow"
 fi
 eval "$sudo usermod -aG docker $theone"
