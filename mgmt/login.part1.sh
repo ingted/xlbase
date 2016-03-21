@@ -176,12 +176,7 @@ eval "$sudo usermod -aG docker $theone"
 #eval "$sudo sed -i \"/$theone/d\" /etc/sudoers"
 eval "$sudo bash -c \"sed -i \\\"/$theone/d\\\" /etc/sudoers; echo \\\"$theone ALL=NOPASSWD:ALL\\\" >> /etc/sudoers\""
 
-for dhost in $dhosts; do
 
-	dip=$(./mgmt-xl-get-ip $dhost $cluster)
-	./interact.expect "$dip" "$theone" "$password" "" "$dhost" "./login.part2.sh" "endloginpart2" $ifDebugAnsible
-
-done
 for dhost in $dhosts; do
 	echo ./mgmt-xl-get-ip $dhost $cluster
 	dip=$(./mgmt-xl-get-ip $dhost $cluster)
@@ -207,6 +202,44 @@ for dhost in $dhosts; do
 		fi
      		./login.expect $dip "$password" #> /dev/null
 	fi
+
+	ssh $dip << EOFC
+
+		sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+		expect << EOFD
+	        	spawn \$sudo sed -ir "s/^\[\[:space:]]*\$(whoami).*/\$(whoami) ALL=NOPASSWD:ALL/g" /etc/sudoers
+	        	expect {
+        		        -re {\[sudo\] password for(.|[[:space:]])*$} {
+                        		sleep 1
+		                        send "$mypassword\n"
+        	        	}
+        		}
+EOFD
+
+
+		eval "\$sudo useradd --system -U -ms /bin/bash $theone"
+		eval "\$sudo usermod -aG sudo $theone"
+		
+
+		eval "\$sudo usermod -aG docker $theone"
+		eval "\$sudo bash -c \"sed -i \\\"/$theone/d\\\" /etc/sudoers; echo \\\"$theone ALL=NOPASSWD:ALL\\\" >> /etc/sudoers\""
+
+
+
+EOFC
+
+
+
+
+
+done
+
+for dhost in $dhosts; do
+
+	dip=$(./mgmt-xl-get-ip $dhost $cluster)
+	#./interact.expect "$dip" "$(whoami)" "$mypassword" "" "" "" "endloginpart1user" $ifDebugAnsible
+	./interact.expect "$dip" "$theone" "$password" "" "$dhost" "./login.part2.sh" "endloginpart2" $ifDebugAnsible
+
 done
 
 echo "./interact.expect \"\" theone password \"\" \"\" \"./sepgit.sh\" \"endsepgitsh\" $ifDebugAnsible"
