@@ -129,6 +129,7 @@ if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
 	#eval "$sudo useradd --system -U -ms /bin/bash $theone";
 fi
 eval "$sudo mkdir -p /home/$theone/.ssh"
+eval "$sudo chown $theone:$theone /home/$theone/.ssh -r"
 if [ "$(whoami)" != root ]; then
         #if [ "$(whoami)" == $theone ]; then
                 eval "$sudo chmod +w /home/$theone/.ssh/id_rsa* -f"
