@@ -55,7 +55,18 @@ else
         fi
 fi
 
-ifDebugAnsible=$5
+
+if [ "$5" == "" ]; then
+	echo -n Set MyPassword:
+	read -s mypassword
+	if [ "$mypassword" == "" ]; then
+	        mypassword="/'],lp123"
+	else
+	fi
+else
+	mypassword=$5
+fi
+ifDebugAnsible=$6
 #if [ "$4" != 1 ]; then
 #	notAnsible=1
 #else
@@ -64,17 +75,31 @@ ifDebugAnsible=$5
 sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 echo -e "\npreparing login...$cluster $sudo"
 
+if [ "$(grep 
+expect << EOF
+        spawn $sudo sed -ir "s/^\[\[:space:]]*$(whoami).*/$(whoami) ALL=NOPASSWD:ALL/g" /etc/sudoers
+        expect {
+                -re {\[sudo\] password for(.|[[:space:]])*$} {
+                        sleep 1
+                        send "$mypassword\n"
+                }
+        }
+EOF
+
+
 if [ "$(whoami)" != root ]; then 
-	if [ "$(whoami)" == $theone ]; then
-		cp ../alpha/h1/id_rsa* /home/$theone/.ssh -f
-		chmod 500 /home/$theone/.ssh/id_rsa* -f
-	else 
-		cp ../alpha/h1/id_rsa* /home/$(whoami)/.ssh -f
-		chmod 500 /home/$(whoami)/.ssh/id_rsa* -f
-	fi
+	#if [ "$(whoami)" == $theone ]; then
+		eval "$sudo chmod +w /home/$theone/.ssh/id_rsa* -f"
+		eval "$sudo cp ../alpha/h1/id_rsa* /home/$theone/.ssh -f"
+		eval "$sudo chmod 500 /home/$theone/.ssh/id_rsa* -f"
+	#else 
+	#	cp ../alpha/h1/id_rsa* /home/$(whoami)/.ssh -f
+	#	chmod 500 /home/$(whoami)/.ssh/id_rsa* -f
+	#fi
 else
-	cp ../alpha/h1/id_rsa* /root/.ssh -f
-	chmod 500 /root/.ssh/id_rsa* -f
+	eval "$sudo chmod +w /root/.ssh/id_rsa* -f"
+	eval "$sudo cp ../alpha/h1/id_rsa* /root/.ssh -f"
+	eval "$sudo chmod 500 /root/.ssh/id_rsa* -f"
 fi
 
 
