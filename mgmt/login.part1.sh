@@ -61,7 +61,6 @@ if [ "$5" == "" ]; then
 	read -s mypassword
 	if [ "$mypassword" == "" ]; then
 	        mypassword="/'],lp123"
-	else
 	fi
 else
 	mypassword=$5
