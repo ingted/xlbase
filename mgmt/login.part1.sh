@@ -152,8 +152,10 @@ if [ "$chpwd" == 1 ]; then
 		expect {
 			-re {password\: $} {
 				send "$password\n"
-				-re {password\: $} {
-	                                send "$password\n"
+				expect {
+					-re {password\: $} {
+		                                send "$password\n"
+					}
 				}
 			}
 		}
