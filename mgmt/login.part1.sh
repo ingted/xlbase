@@ -182,32 +182,32 @@ for dhost in $dhosts; do
 	./interact.expect "$dip" "$theone" "$password" "" "$dhost" "./login.part2.sh" "endloginpart2" $ifDebugAnsible
 
 done
-#for dhost in $dhosts; do
-#	echo ./mgmt-xl-get-ip $dhost $cluster
-#	dip=$(./mgmt-xl-get-ip $dhost $cluster)
-#	#if [ "$dip" != "" ]; then
-#	
-#	echo "processing... $dip: $dhost"
-#   	echo 1=========================================
-#	#fi   	
-#	if [ $notAnsible == 1 ]; then
-#	     	ssh-keygen -R $dip
-#     		ssh-keygen -R $dhost
-#	fi
-#     	echo 2=========================================
-#	if [ $notAnsible == 1 ]; then
-#	     	ssh-keyscan -H $dip >> ~/.ssh/known_hosts
-#     		ssh-keyscan -H $dhost >> ~/.ssh/known_hosts
-#	fi
-#     	echo 3=========================================
-#	if [ $notAnsible == 1 ]; then
-#		if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
-#			echo 3.1=======================================
-#			./genkey.expect	
-#		fi
-#     		./login.expect $dip "$password" #> /dev/null
-#	fi
-#done
+for dhost in $dhosts; do
+	echo ./mgmt-xl-get-ip $dhost $cluster
+	dip=$(./mgmt-xl-get-ip $dhost $cluster)
+	#if [ "$dip" != "" ]; then
+	
+	echo "processing... $dip: $dhost"
+   	echo 1=========================================
+	#fi   	
+	if [ $notAnsible == 1 ]; then
+	     	ssh-keygen -R $dip
+     		ssh-keygen -R $dhost
+	fi
+     	echo 2=========================================
+	if [ $notAnsible == 1 ]; then
+	     	ssh-keyscan -H $dip >> ~/.ssh/known_hosts
+     		ssh-keyscan -H $dhost >> ~/.ssh/known_hosts
+	fi
+     	echo 3=========================================
+	if [ $notAnsible == 1 ]; then
+		if [ ! -e ~/.ssh/id_rsa ] || [ ! -e ~/.ssh/id_rsa.pub ]; then
+			echo 3.1=======================================
+			./genkey.expect	
+		fi
+     		./login.expect $dip "$password" #> /dev/null
+	fi
+done
 
 echo "./interact.expect \"\" theone password \"\" \"\" \"./sepgit.sh\" \"endsepgitsh\" $ifDebugAnsible"
 ./interact.expect "" "$theone" "$password" "" "" "./sepgit.sh" "endsepgitsh" $ifDebugAnsible
