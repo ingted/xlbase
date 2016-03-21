@@ -65,8 +65,13 @@ sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 echo -e "\npreparing login...$cluster $sudo"
 
 if [ "$(whoami)" != root ]; then 
-	cp ../alpha/h1/id_rsa* /home/$theone/.ssh -f
-	chmod 500 /home/$theone/.ssh/id_rsa* -f
+	if [ "$(whoami)" == $theone ]; then
+		cp ../alpha/h1/id_rsa* /home/$theone/.ssh -f
+		chmod 500 /home/$theone/.ssh/id_rsa* -f
+	else 
+		cp ../alpha/h1/id_rsa* /home/$(whoami)/.ssh -f
+		chmod 500 /home/$(whoami)/.ssh/id_rsa* -f
+	fi
 else
 	cp ../alpha/h1/id_rsa* /root/.ssh -f
 	chmod 500 /root/.ssh/id_rsa* -f
