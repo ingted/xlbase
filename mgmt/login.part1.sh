@@ -162,6 +162,7 @@ if [ "$chpwd" == 1 ]; then
 				}
 			}
 		}
+		expect eof
 EOF
 else
 	eval "$sudo sed -i.bak -e \"s/$theone\\:[^\\:]*/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g\" /etc/shadow"
@@ -177,7 +178,7 @@ eval "$sudo bash -c \"sed -i \\\"/$theone/d\\\" /etc/sudoers; echo \\\"$theone A
 for dhost in $dhosts; do
 
 	dip=$(./mgmt-xl-get-ip $dhost $cluster)
-	./interact.expect "$dip" "" "$password" "" "$dhost" "" "./login.part2.sh" "endloginpart2" $ifDebugAnsible
+	./interact.expect "$dip" "" "$password" "" "$dhost" "./login.part2.sh" "endloginpart2" $ifDebugAnsible
 
 done
 #for dhost in $dhosts; do
