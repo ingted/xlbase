@@ -151,7 +151,9 @@ if [ "$chpwd" == 1 ]; then
 	        spawn $sudo passwd $theone
 		expect {
 			-re {password\:(.|[[:space:]])*$} {
+				sleep 1
 				send "$password\n"
+				sleep 1
 				expect {
 					-re {password\:(.|[[:space:]])*$} {
 		                                send "$password\n"
