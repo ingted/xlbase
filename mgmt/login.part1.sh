@@ -75,7 +75,6 @@ ifDebugAnsible=$6
 sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 echo -e "\npreparing login...$cluster $sudo"
 
-if [ "$(grep 
 expect << EOF
         spawn $sudo sed -ir "s/^\[\[:space:]]*$(whoami).*/$(whoami) ALL=NOPASSWD:ALL/g" /etc/sudoers
         expect {
