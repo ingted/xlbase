@@ -203,33 +203,63 @@ for dhost in $dhosts; do
      		./login.expect $dip "$password" #> /dev/null
 	fi
 
+	expect << AOE
+	        set timeout -1
+	        spawn ssh $dip
+	        sleep 1
+	        send {sudo=\$(if \[ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi)}
+	        send "\n"
+	        expect {
+	                -re {((.|[[:space:]])*($|#))? $} {
+	                        send {eval "\$sudo apt-get -y install expect"}
+	                        send "\n"
+	                }
+	        }
+	        sleep 1
+	        expect {
+	                -re {\[sudo\] password for(.|[[:space:]])*$} {
+	                        sleep 1
+	                        send "$mypassword\n"
+	                }
+	                -re {((.|[[:space:]])*($|#))? $} {
+	                        send "\n"
+	                }
+	        }
+	        sleep 5
+	        expect {
+	                -re {((.|[[:space:]])*($|#))? $} {
+	                        send {if \[ "\$(eval \$sudo grep \$(whoami) /etc/sudoers)" != "" ]; then eval "\$sudo sed -ir \"s/^[[:space:]]*\$(whoami).*/\$(whoami) ALL=NOPASSWD:ALL/g\" /etc/sudoers"; else eval "\$sudo bash -c \"echo \\\\\"\$(whoami) ALL=NOPASSWD:ALL\\\\\"|\$sudo tee -a /etc/sudoers\""; fi; eval \$sudo grep \$(whoami) /etc/sudoers}
+	
+	                        send "\n\n\n\necho \"droidr\"\"oidroi\"\n"
+	                }
+	        }
+	        puts "--------------------------------------------------------------"
+	        expect {
+	                -re {droidroidroi} {
+	                        send "exit\n"
+	                }
+	                eof {
+	                        send "exit\n"
+	                }
+	        }
+	
+AOE
+
 	ssh $dip << EOFC
 
-		sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
-		expect << EOFD
-	        	spawn \$sudo sed -ir "s/^\[\[:space:]]*\$(whoami).*/\$(whoami) ALL=NOPASSWD:ALL/g" /etc/sudoers
-	        	expect {
-        		        -re {\[sudo\] password for(.|[[:space:]])*$} {
-                        		sleep 1
-		                        send "$mypassword\n"
-        	        	}
-        		}
-EOFD
+                sudo=\$(if \[ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi)
 
+                eval "\$sudo useradd --system -U -ms /bin/bash $theone"
+                eval "\$sudo usermod -aG sudo $theone"
 
-		eval "\$sudo useradd --system -U -ms /bin/bash $theone"
-		eval "\$sudo usermod -aG sudo $theone"
-		
-
-		eval "\$sudo usermod -aG docker $theone"
-		eval "\$sudo bash -c \"sed -i \\\"/$theone/d\\\" /etc/sudoers; echo \\\"$theone ALL=NOPASSWD:ALL\\\" >> /etc/sudoers\""
+                eval "\$sudo addgroup docker --system"
+                eval "\$sudo usermod -aG docker $theone"
+                echo "\$sudo bash -c \"sed -i \\\\\"/$theone/d\\\\\" /etc/sudoers; echo \\\\\"$theone ALL=NOPASSWD:ALL\\\\\" >> /etc/sudoers\""
+                eval "\$sudo bash -c \"sed -i \\\\\"/$theone/d\\\\\" /etc/sudoers; echo \\\\\"$theone ALL=NOPASSWD:ALL\\\\\" >> /etc/sudoers\""
 
 
 
 EOFC
-
-
-
 
 
 done
