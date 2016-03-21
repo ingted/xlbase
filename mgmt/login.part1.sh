@@ -156,6 +156,7 @@ if [ "$chpwd" == 1 ]; then
 				sleep 1
 				expect {
 					-re {password\:(.|[[:space:]])*$} {
+						sleep 1
 		                                send "$password\n"
 					}
 				}
@@ -165,6 +166,9 @@ EOF
 else
 	eval "$sudo sed -i.bak -e \"s/$theone\\:[^\\:]*/$theone\\:\\\$6\\\$H1W8BGOe\\\$zue0LuGmqohKdjJiF1GCKD7r3XuJWniuqXfavfoLSUmH9FdkGZi9maI597swe0AkiMJuoxLO9PbuwH8Le6aEq1/g\" /etc/shadow"
 fi
+
+echo --------------------------------------------------------------------------------------
+
 eval "$sudo usermod -aG docker $theone"
 #eval "$sudo usermod -aG root $theone"
 #eval "$sudo sed -i \"/$theone/d\" /etc/sudoers"
