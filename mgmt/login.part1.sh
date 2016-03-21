@@ -178,7 +178,7 @@ eval "$sudo bash -c \"sed -i \\\"/$theone/d\\\" /etc/sudoers; echo \\\"$theone A
 for dhost in $dhosts; do
 
 	dip=$(./mgmt-xl-get-ip $dhost $cluster)
-	./interact.expect "$dip" "" "$password" "" "$dhost" "./login.part2.sh" "endloginpart2" $ifDebugAnsible
+	./interact.expect "$dip" "$theone" "$password" "" "$dhost" "./login.part2.sh" "endloginpart2" $ifDebugAnsible
 
 done
 #for dhost in $dhosts; do
