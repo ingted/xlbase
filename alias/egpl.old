@@ -1,0 +1,57 @@
+#!/usr/bin/expect -f
+set timeout     -1
+set key  [lindex $argv 0]
+
+spawn bash
+if { $key == "" } {
+	send "git pull --no-edit\n"
+	sleep 1
+	send "yes\n"
+} else {
+	send "eval `ssh-agent` ; ssh-add $key; git pull --no-edit\n"
+}
+sleep 1
+#send "yes\n"
+expect {
+    "Enter passphrase for" {
+	sleep 1
+	exp_send "\n"
+	puts "\n=======================\n"
+	sleep 1
+	expect {
+		-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+			puts "\n1=======================\n"
+    			exp_send "exit\n"
+    		}
+		{(yes/no)? } {
+			puts "\n2=======================\n"
+		        exp_send "yes\n"
+			expect {
+				eof {
+     					exp_send "exit\n"
+    				}
+			}
+		        exp_continue
+    		}
+		eof {
+			puts "\n3=======================\n"
+			exp_send "\n"
+		}
+	}
+    }
+    {(yes/no)} {
+        exp_send "yes\n"
+	exp_continue
+        #expect {
+        #        eof {exp_send "exit\n"}
+        #}
+    }
+    -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
+        exp_send "exit\n"
+    }
+
+    eof {
+        exp_send "exit\n"
+    }
+}
+expect eof

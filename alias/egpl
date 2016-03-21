@@ -12,46 +12,43 @@ if { $key == "" } {
 }
 sleep 1
 #send "yes\n"
+set prompt 1
 expect {
-    "Enter passphrase for" {
+    -re {\(yes/no\)\? $} {
+	puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
 	sleep 1
-	exp_send "\n"
-	puts "\n=======================\n"
+	puts "\n1=======================\n"
+	exp_send "yes\n"
 	sleep 1
-	expect {
-		-re {((.|\[\[:space:\]\])*(\\$|#))? $} {
-			puts "\n1=======================\n"
-    			exp_send "exit\n"
-    		}
-		{(yes/no)? } {
-			puts "\n2=======================\n"
-		        exp_send "yes\n"
-			expect {
-				eof {
-     					exp_send "exit\n"
-    				}
-			}
-		        exp_continue
-    		}
-		eof {
-			puts "\n3=======================\n"
-			exp_send "\n"
-		}
-	}
-    }
-    {(yes/no)} {
-        exp_send "yes\n"
 	exp_continue
-        #expect {
-        #        eof {exp_send "exit\n"}
-        #}
+    }
+    "Enter passphrase for" {
+	puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
+	sleep 1
+	puts "\n=======================\n"
+	exp_send "\n"
+	#exp_continue
+
+	exp_continue	
     }
     -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
-        exp_send "exit\n"
+	puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
+	if { [expr {$prompt > 5}] eq 1 } {
+		exp_send "aa=\"agentttc\"\"ttcagent\"; echo \$aa\n"
+	} else {
+		exp_send "\n"
+		set prompt [ expr { $prompt + 1 } ]
+		exp_continue
+	}
     }
-
+}
+expect {
+    {agentttcttcagent} {
+    	exp_send "echo 0; exit\n"
+    }
+    
     eof {
-        exp_send "exit\n"
-    }
+    	exp_send "echo 1; exit\n"
+    }	
 }
 expect eof
