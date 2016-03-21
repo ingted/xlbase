@@ -15,7 +15,7 @@ sleep 1
 set prompt 1
 expect {
     -re {\(yes/no\)\? $} {
-	puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
+	#puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
 	sleep 1
 	puts "\n1=======================\n"
 	exp_send "yes\n"
@@ -23,7 +23,7 @@ expect {
 	exp_continue
     }
     "Enter passphrase for" {
-	puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
+	#puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
 	sleep 1
 	puts "\n=======================\n"
 	exp_send "\n"
@@ -32,7 +32,7 @@ expect {
 	exp_continue	
     }
     -re {((.|\[\[:space:\]\])*(\\$|#))? $} {
-	puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
+	#puts "\nBUFFER:\n\[\[\[\n$expect_out(buffer)\n]]]\n"
 	if { [expr {$prompt > 5}] eq 1 } {
 		exp_send "aa=\"agentttc\"\"ttcagent\"; echo \$aa\n"
 	} else {
