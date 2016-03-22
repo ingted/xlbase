@@ -253,6 +253,7 @@ AOE
                 eval "\$sudo usermod -aG sudo $theone"
 		if [ "$theone" != "root" ]; then
 	                eval "\$sudo mkdir -p /home/$theone/.ssh"
+	                eval "\$sudo chown $theone:$theone /home/$theone/ -Rf"
 		fi
                 eval "\$sudo addgroup docker --system"
                 eval "\$sudo usermod -aG docker $theone"
