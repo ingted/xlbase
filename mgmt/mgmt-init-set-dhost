@@ -36,6 +36,12 @@ else
         ifmake="$4"
 fi
 
+if [ "$5" == "" ]; then
+        theone=""
+else
+        theone="$5@"
+fi
+
 sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 
 curroot=$(pwd)
@@ -45,13 +51,15 @@ echo ===============================================================
 for host in $dhosts; do
 	cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
 	echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
-	(ssh $cip << EOF
+	(ssh $theone$cip << EOF
 		sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 		#rm ~/.hushlogin
 		whoiam=$(whoami)
 		eval "\$sudo mkdir -p \"$rootpath\""
 		eval "\$sudo apt-get -y install expect  git make"
-		eval "\$sudo wget -qO- https://get.docker.com/ | sh"
+		if [ "$(which docker)" == "" ]; then
+			eval "\$sudo wget -qO- https://get.docker.com/ | sh"
+		fi
 		cd "$rootpath"
 		#ls $rootpath/xlbase
 		rp=\$(ls $rootpath/xlbase)
