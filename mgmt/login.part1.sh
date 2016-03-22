@@ -251,7 +251,9 @@ AOE
 
                 eval "\$sudo useradd --system -U -ms /bin/bash $theone"
                 eval "\$sudo usermod -aG sudo $theone"
-
+		if [ "$theone" != "root" ]; then
+	                eval "\$sudo mkdir -p /home/$theone/.ssh"
+		fi
                 eval "\$sudo addgroup docker --system"
                 eval "\$sudo usermod -aG docker $theone"
                 echo "\$sudo bash -c \"sed -i \\\\\"/$theone/d\\\\\" /etc/sudoers; echo \\\\\"$theone ALL=NOPASSWD:ALL\\\\\" >> /etc/sudoers\""
