@@ -186,6 +186,7 @@ if [ $notAnsible == 1 ]; then
 			cp ~/.ssh/id_rsa.pub.tmp ~/.ssh/id_rsa.pub -f
 			chmod 500 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub
 EOF
+		echo ===================ssh to $dhost===================
 		#ssh $theone@$dhost ls -l ~/.ssh/
 		expect << EOF
 		        spawn ssh $dhost;
