@@ -254,6 +254,7 @@ AOE
 		if [ "$theone" != "root" ]; then
 	                eval "\$sudo mkdir -p /home/$theone/.ssh"
 	                eval "\$sudo chown $theone:$theone /home/$theone/ -Rf"
+	                eval "\$sudo chown $theone:$theone /home/$theone/.ssh -Rf"
 		fi
                 eval "\$sudo addgroup docker --system"
                 eval "\$sudo usermod -aG docker $theone"
