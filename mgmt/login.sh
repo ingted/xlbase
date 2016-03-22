@@ -178,8 +178,9 @@ if [ $notAnsible == 1 ]; then
         for dhost in $dhosts; do
 		#sudo sed -i "/$theone/d" /etc/sudoers
 		#sudo bash -c "echo \"$theone ALL=NOPASSWD:ALL\" >> /etc/sudoers"
-		cat ../alpha/h1/id_rsa | ssh $theone@$dhost 'cat >> ~/.ssh/id_rsa.tmp'
-		cat ../alpha/h1/id_rsa.pub | ssh $theone@$dhost 'cat >> ~/.ssh/id_rsa.pub.tmp' 
+		echo "processing ssh no $dhost now... I am $(whoami), theone is $theone"
+		cat ../alpha/h1/id_rsa | ssh $theone@$dhost 'cat > ~/.ssh/id_rsa.tmp'
+		cat ../alpha/h1/id_rsa.pub | ssh $theone@$dhost 'cat > ~/.ssh/id_rsa.pub.tmp' 
 		ssh $theone@$dhost << EOF
 			chmod +w ~/.ssh/id_rsa ~/.ssh/id_rsa.pub;
 			cp ~/.ssh/id_rsa.tmp ~/.ssh/id_rsa -f
