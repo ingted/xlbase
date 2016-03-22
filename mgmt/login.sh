@@ -166,7 +166,7 @@ function procit (){
 		else
 			echo ./interact.expect $cluster theone password $notAnsible $dhost "\"$1 ./seplogin.sh\"" "endseploginsh" $ifDebugExpect
 			echo O=========================================
-			scp ~/.ssh/id_rsa* $theone@$dhost:~/.ssh/
+			#scp ~/.ssh/id_rsa* $theone@$dhost:~/.ssh/
 			./interact.expect $cluster $theone $password $notAnsible $dhost "$1 ./seplogin.sh" "endseploginsh" $ifDebugExpect
 		fi
 }
