@@ -47,7 +47,7 @@ function main () {
 		fi
 	fi
 
-	existed=$(echo "$(for id in $(dls -q); do eval "$sudo docker inspect $id"|grep -P "^\ \ \ \ \"Name\""|awk '{split($0, a, "\""); gsub("/", "", a[4]); print a[4]}'; done)"|grep $nm)
+	existed=$(echo "$(for id in $(dls -q); do eval "$sudo docker inspect $id"|grep -P "\"Name\".*/"|awk '{split($0, a, "\""); gsub("/", "", a[4]); print a[4]}'; done)"|grep $nm)
 
 	if [ "$force" == 1 ] && [ "$existed" != "" ]; then
 		drm -f "$nm"
