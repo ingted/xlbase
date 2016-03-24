@@ -1,0 +1,54 @@
+#!/bin/bash
+source $(which dexxgnuparam) $@
+
+echo $cluster
+dhs=$(awk "(\$6 == \"$cluster\" && \$3 == \"h\"){print \$1\",\"\$2}" "$(which dexxhosts)")
+
+
+for dh in $dhs; do
+	
+
+	dhtmp=(${dh//,/ })
+	dhip=${dhtmp[0]}
+	dhnm=${dhtmp[1]}
+	echo $dhnm
+	mkdir -p $cluster/$dhip
+	chs=$(awk "(\$6 == \"$cluster\" && \$3 == \"c\" && \$4 == \"$dhnm\"){print \$1\",\"\$2}" "$(which dexxhosts)")
+	echo $cluster/$dh/interfaces
+	rm $cluster/$dhnm/interfaces -f
+	(cat << EOF
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+        address $dhip
+        netmask 255.255.255.0
+        gateway 10.128.112.254
+        dns-nameservers 10.128.112.4
+
+EOF
+) > $cluster/$dhnm/interfaces
+	echo ===================================
+	cnt=1
+	for ch in $chs; do
+
+
+		chtmp=(${ch//,/ })
+		echo process ${chtmp[0]} now...
+		chip=${chtmp[0]}
+		chnm=${chtmp[1]}
+		
+		(cat << EOF
+auto eth$cnt
+iface eth$cnt inet static
+        address $chip
+        netmask 255.255.255.0
+EOF
+) | tee -a $cluster/$dhnm/interfaces
+		cnt=$(echo "$cnt + 1"|bc)	
+	done
+	
+	echo ===================================	
+
+done 
