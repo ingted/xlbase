@@ -96,7 +96,7 @@ for host in $dhosts; do
 			./make.expect
 		fi
 		cd mgmt
-		eval $(cat ~/.bashrc|grep "#exped");
+		eval \$(cat ~/.bashrc|grep "#exped");
 		./genInterFaces -c $cluster
 		eval "\$sudo cp ./$cluster/$host/interfaces /etc/network/ -f"
 		ls $rootpath/xlbase/mgmt/set.expect

@@ -12,9 +12,9 @@ for dh in $dhs; do
 	dhip=${dhtmp[0]}
 	dhnm=${dhtmp[1]}
 	echo $dhnm
-	mkdir -p $cluster/$dhip
+	mkdir -p $cluster/$dhnm
 	chs=$(awk "(\$6 == \"$cluster\" && \$3 == \"c\" && \$4 == \"$dhnm\"){print \$1\",\"\$2}" "$(which dexxhosts)")
-	echo $cluster/$dh/interfaces
+	echo $cluster/$dhnm/interfaces
 	rm $cluster/$dhnm/interfaces -f
 	(cat << EOF
 auto lo
