@@ -84,6 +84,7 @@ for host in $dhosts; do
 		echo "====\$(hostname)====="
 		./make.sh
 		source ~/.bashrc
+		eval $(cat ~/.bashrc|grep "#exped");
 		#echo "=>\$(which dexxhosts)"
 		#echo "=>\$PATH"
 
