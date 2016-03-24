@@ -37,7 +37,7 @@ hostsitem=$(./mgmt-xl-get-host-by-cluster $cluster)
 dirdata=$(for hii in $hostsitem; do hhii=(${hii//,/ }); ./mgmt-xl-get-confname ${hhii[1]} $pgver $cluster|awk 'NR>2 {print $1}'|sort|uniq; done)
 
 echo "$dirdata"
-
+exit 0
 db64=$(echo "$dirdata"|base64)
 #echo $db64
 
