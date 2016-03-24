@@ -98,6 +98,7 @@ for host in $dhosts; do
 		cd mgmt
 		eval \$(cat ~/.bashrc|grep "#exped");
 		./genInterFaces -c $cluster
+		echo "\$sudo cp ./$cluster/$host/interfaces /etc/network/ -f"
 		eval "\$sudo cp ./$cluster/$host/interfaces /etc/network/ -f"
 		ls $rootpath/xlbase/mgmt/set.expect
 #		./set.expect $cluster
