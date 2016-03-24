@@ -39,7 +39,8 @@ fi
 if [ "$5" == "" ]; then
         theone=""
 else
-        theone="$5@"
+        theone="$5"
+        theonea="$5@"
 fi
 
 sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
@@ -51,11 +52,12 @@ echo ===============================================================
 for host in $dhosts; do
 	cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
 	echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
-	(ssh $theone$cip << EOF
+	(ssh $theonea$cip << EOF
 		sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
 		#rm ~/.hushlogin
 		whoiam=$(whoami)
 		eval "\$sudo mkdir -p \"$rootpath\""
+		eval "\$sudo chown $theone:$theone \"$rootpath\" -Rf"
 		eval "\$sudo apt-get -y install expect  git make"
 		if [ "$(which docker)" == "" ]; then
 			eval "\$sudo wget -qO- https://get.docker.com/ | sh"
@@ -74,9 +76,10 @@ for host in $dhosts; do
 			cd $rootpath/xlbase
 			eval "\$sudo git pull"
 		fi
-		if [ "\$(whoami)" != root ]; then
-			sudo chown \$whoiam:\$whoiam "$rootpath" -R
-		fi
+		#if [ "\$(whoami)" != root ]; then
+		#	sudo chown \$whoiam:\$whoiam "$rootpath" -R
+		#fi
+		eval "\$sudo chown $theone:$theone \"$rootpath\" -Rf"
 		source $rootpath/xlbase/alias/util-disable-status 1 1 1
 		echo "====\$(hostname)====="
 		./make.sh
