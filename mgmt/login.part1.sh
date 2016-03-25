@@ -257,7 +257,7 @@ AOE
 	                eval "\$sudo chown $theone:$theone /home/$theone/ -Rf"
 	                eval "\$sudo chown $theone:$theone /home/$theone/.ssh -Rf"
 		fi
-		eval "\$sudo bash -c \"echo \\\"$theone:$password\\\"|chpasswd\""
+		eval "\$sudo bash -c \"echo \\\\\"$theone:$password\\\\\"|chpasswd\""
                 eval "\$sudo addgroup docker --system"
                 eval "\$sudo usermod -aG docker $theone"
                 echo "\$sudo bash -c \"sed -i \\\\\"/$theone/d\\\\\" /etc/sudoers; echo \\\\\"$theone ALL=NOPASSWD:ALL\\\\\" >> /etc/sudoers\""
