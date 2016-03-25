@@ -200,7 +200,7 @@ for dhost in $dhosts; do
 			echo 3.1=======================================
 			./genkey.expect	
 		fi
-     		./login.expect $dip "$password" #> /dev/null
+     		./login.expect $dip "$mypassword" #> /dev/null
 	fi
 
 	expect << AOE
