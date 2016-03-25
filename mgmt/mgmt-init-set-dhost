@@ -58,6 +58,7 @@ for host in $dhosts; do
 		whoiam=$(whoami)
 		eval "\$sudo mkdir -p \"$rootpath\""
 		eval "\$sudo chown $theone:$theone \"$rootpath\" -Rf"
+		eval "\$sudo apt-get -y update"
 		eval "\$sudo apt-get -y --force-yes install expect  git make"
 		if [ "$(which docker)" == "" ]; then
 			eval "\$sudo wget -qO- https://get.docker.com/ | sh"
