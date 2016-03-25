@@ -249,7 +249,7 @@ AOE
 	ssh $dip << EOFC
 
                 sudo=\$(if \[ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi)
-
+		eval "\$sudo hostnamectl set-hostname $dhost"
                 eval "\$sudo useradd --system -U -ms /bin/bash $theone"
                 eval "\$sudo usermod -aG sudo $theone"
 		if [ "$theone" != "root" ]; then
