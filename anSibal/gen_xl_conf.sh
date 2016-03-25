@@ -1,10 +1,10 @@
 #!/bin/bash
-$domain=$1
-$hostsfile=$2
-$outfils=$4
-$cluster=$3
+domain=$1
+hostsfile=$2
+outfils=$4
+cluster=$3
 
-if [ -n "$hostsfile" ] && [ -n "$2" ] && [ -n "$3" ] && [ -n "$outfils" ];then
+if [ -n "$hostsfile" ] && [ -n "$hostsfile" ] && [ -n "$outfils" ] && [ -n "$outfils" ];then
 	domain1=`echo $domain|awk -F "." '{print $1"."$2"."$3"."}'`
 	cluster=$3
 	count=-3
