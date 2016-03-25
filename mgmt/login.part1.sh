@@ -128,6 +128,7 @@ if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
 	#eval "$sudo userdel -r $theone"
 	#eval "$sudo useradd --system -U -ms /bin/bash $theone";
 fi
+
 eval "$sudo mkdir -p /home/$theone/.ssh"
 eval "$sudo chown $theone:$theone /home/$theone/ -Rf"
 if [ "$(whoami)" != root ]; then
@@ -256,10 +257,10 @@ AOE
 	                eval "\$sudo chown $theone:$theone /home/$theone/ -Rf"
 	                eval "\$sudo chown $theone:$theone /home/$theone/.ssh -Rf"
 		fi
+		eval "\$sudo bash -c \"echo \\\"$theone:$password\\\"|chpasswd\""
                 eval "\$sudo addgroup docker --system"
                 eval "\$sudo usermod -aG docker $theone"
                 echo "\$sudo bash -c \"sed -i \\\\\"/$theone/d\\\\\" /etc/sudoers; echo \\\\\"$theone ALL=NOPASSWD:ALL\\\\\" >> /etc/sudoers\""
-                eval "\$sudo bash -c \"sed -i \\\\\"/$theone/d\\\\\" /etc/sudoers; echo \\\\\"$theone ALL=NOPASSWD:ALL\\\\\" >> /etc/sudoers\""
 
 
 
