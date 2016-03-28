@@ -102,18 +102,18 @@ allhosts=$(./mgmt-xl-get-host-by-role -a $cluster);
 for ah in $allhosts; do
 	ahip=$(./mgmt-xl-get-ip $ah $cluster)
 	ahip_r=${ahip//./\\\.}
-	echo "/etc/hosts: $ahip"
+	echo "/etc/hosts: $ahip $ah"
 	eval "$sudo cp /etc/hosts /etc/hosts.tmp -f"
-	eval "$sudo sed -i \"/$ahip_r/d\" /etc/hosts.tmp"
-	eval "$sudo sed -i \"/\ $ah\ /d\" /etc/hosts.tmp"
-	eval "$sudo sed -i \"/\ $ah\$/d\" /etc/hosts.tmp"
+	eval "$sudo sed -i \"/$ahip_r[[:space:]]*\$/d\" /etc/hosts.tmp"
+	eval "$sudo sed -ir \"/[[:space:]]+$ah[[:space:]]*\$/d\" /etc/hosts.tmp"
+	#eval "$sudo sed -ir \"/\ $ah\$/d\" /etc/hosts.tmp"
 	#eval $sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
 	eval "$sudo bash -c \"echo \\\"$ahip $ah\\\" >> /etc/hosts.tmp\""
 	#echo "$sudo bash -c \"echo \\\"$ahip $ah\\\" >> /etc/hosts.tmp\""
 	eval "$sudo cp /etc/hosts.tmp /etc/hosts -f"
-
+#if [ "$ah" == gtm ]; then break; fi
+#grep -P "\s+gtm\s*\$"  /etc/hosts
 done
-
 user_exists=$(id -u $theone > /dev/null 2>&1; echo $?) # 1 means not existed
 #if [ "$user_exists" == 0 ]; then
 if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then
