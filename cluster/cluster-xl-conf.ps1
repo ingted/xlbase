@@ -3,7 +3,7 @@ param(
 	$setuser, $confpath
 )
 
-$db64 = "$args".replace(" ", "").replace("`r ", "").replace("`n", "").replace("`t", "")
+$db64 = "$args".replace(" ", "").replace("`r", "").replace("`n", "").replace("`t", "")
 $dd = . decode-mgmt-msg.ps1 $db64
 write-host "decoded: `n$dd"
 #if($hd.gettype().name -eq "string"){
@@ -23,4 +23,4 @@ $dd | %{
 $cp = [io.fileinfo] $confpath
 if(!$cp.Directory.exists){$cp.Directory.create()}
 $configstr | out-file $confpath -Encoding ascii -Force
-chown "$setuser:$setuser" "$initpath" -Rf
+chown "$setuser:$setuser" "$confpath" -Rf
