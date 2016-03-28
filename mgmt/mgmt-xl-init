@@ -132,7 +132,7 @@ if [ "$ifNoCheck" == 1 ]; then
 			source dexxparammap
 			@@@hostvip@@@ -c $cluster -r $role -i $hrid -u $currsm
 		)
-		listenport=$(
+		listenport=(
 			dexxgnuparam=$(which dexxgnuparam)
         	        dirpath=$(dirname $dexxgnuparam)
         	        source dexxparammap
@@ -192,11 +192,11 @@ else
 
 							confexp=$(cat $exp)
 							#echo "$confexp"
-							echo "|||||||||||||||||||| the \$sm: $sm"								
+							echo "\[\| the \$sm: $sm \|\]"								
 							confstr=$(echo "$(eval "cluster=$cluster; host=$host; hrid=$hrid; nid=$nid; sm=$sm; role=$role; currsm=$sm; source $(which dexxparammap); echo \"$confexp\"")")
 							echo -e "conf string: \n$confstr"
 							conf64=$(echo "$confstr"|base64)
-							echo ">0>0>0>0>0>0>0>0>0> h: $host r: $role"	
+							echo "\[\| h: $host r: $role \|\]"	
 							util-bpx2 "$host" cluster-xl-conf.ps1 $pgu $confpath $conf64
 
 
@@ -208,7 +208,7 @@ else
                         		        source dexxparammap
                         		        @@@hostvip@@@ -c $cluster -r $role -i $hrid -u $sm
                         		)
-                        		listenport=$(
+                        		listenport=(
                         		        dexxgnuparam=$(which dexxgnuparam)
                         		        dirpath=$(dirname $dexxgnuparam)
                         		        source dexxparammap
