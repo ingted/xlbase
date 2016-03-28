@@ -83,8 +83,8 @@ for host in $dhosts; do
 	  			eval "\$sudo git checkout --track -b xlbase remotes/origin/backToOrigin"
 			else 
 				cd $rootpath/xlbase
-				echo ".................update now.................$(whoami)"
-				eval "\$sudo git pull"
+				echo ".................update now.................\$(whoami)"
+				(eval "\$sudo git pull") || (git pull) 
 			fi
 		#fi
 		#if [ "\$(whoami)" != root ]; then
