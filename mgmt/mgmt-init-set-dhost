@@ -63,16 +63,18 @@ for host in $dhosts; do
 		whoiam=$(whoami)
 		eval "\$sudo mkdir -p \"$rootpath\""
 		eval "\$sudo chown $theone:$theone \"$rootpath\" -Rf"
-		eval "\$sudo apt-get -y update"
-		eval "\$sudo apt-get -y --force-yes install expect  git make"
-		if [ "\$(which docker)" == "" ]; then
-			eval "\$sudo wget -qO- https://get.docker.com/ | sh"
+		if [ "$ifupdclone" == 1 ]; then
+			eval "\$sudo apt-get -y update"
+			eval "\$sudo apt-get -y --force-yes install expect  git make"
+			if [ "\$(which docker)" == "" ]; then
+				eval "\$sudo wget -qO- https://get.docker.com/ | sh"
+			fi
 		fi
 		cd "$rootpath"
 		#ls $rootpath/xlbase
 		rp=\$(ls $rootpath/xlbase)
 		#echo "1: $updonly" "2: $?" "3: $rp"
-		if [ "$ifupdclone" == 1 ]; then
+		#if [ "$ifupdclone" == 1 ]; then
 			if [ "$updonly" != 1 ] || [ "$?" != 0 ] || [ "\$rp" == "" ]; then
 				eval "\$sudo rm xlbase -rf"
 				GIT_TRACE=1; GIT_CURL_VERBOSE=1
@@ -84,7 +86,7 @@ for host in $dhosts; do
 				echo ".................update now.................$(whoami)"
 				eval "\$sudo git pull"
 			fi
-		fi
+		#fi
 		#if [ "\$(whoami)" != root ]; then
 		#	sudo chown \$whoiam:\$whoiam "$rootpath" -R
 		#fi
