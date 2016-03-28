@@ -39,14 +39,14 @@ if ($r_in){
 	& $purge $initpath $ifPurgeExistingData
 	& $debug_cnt
 	write-host $("initgtm -Z " + $groles[$role] + " -D $initpath")
-	chown $setuser:$setuser $initpath -Rf
+	chown "$setuser:$setuser" "$initpath" -Rf
 	cd $initpath
 	setuser $setuser initgtm -Z $groles[$role] -D $initpath
 } elseif ($r_in2){
 	& $purge $initpath $ifPurgeExistingData
 	& $debug_cnt
 	write-host "initdb --nodename $nodename -D $initpath"
-	chown $setuser:$setuser $initpath -Rf
+	chown "$setuser:$setuser" "$initpath" -Rf
 	cd $initpath
 	setuser $setuser initdb --nodename $nodename -D $initpath
 } else {
