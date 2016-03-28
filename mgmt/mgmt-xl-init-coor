@@ -42,4 +42,5 @@ else
 fi
 
 #echo \<=================\>
-./mgmt-xl-init coor $pgu $cnm $nid $sm $cluster $pgver
+./mgmt-xl-init coor $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0
+

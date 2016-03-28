@@ -41,4 +41,4 @@ else
 fi
 
 
-./mgmt-xl-init gtmprx $pgu $cnm $nid $sm $cluster $pgver
+./mgmt-xl-init gtmprx $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0

@@ -42,4 +42,4 @@ fi
 
 
 
-./mgmt-xl-init dn $pgu $cnm $nid $sm $cluster $pgver
+./mgmt-xl-init dn $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0
