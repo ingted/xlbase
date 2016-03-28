@@ -87,34 +87,34 @@ if [ -n "$hostsfile" ] && [ -n "$hostsfile" ] && [ -n "$outfils" ] && [ -n "$out
 		fi
         #dexxhostroles
         if [ $count -eq -2 ];then
-			echo -e "gtm\t0\tgtm\tg\tm\t${cluster}\t$((${host_count}+${count}+3))" >> ${conf_hostroles}			
+			echo -e "gtm\t0\tgtm\tg\tm\t${cluster}\t$((${host_count}+${count}+5))" >> ${conf_hostroles}			
         elif [ $count -eq -1 ];then
-			echo -e "gtmsby\t0\tgtmsby\tg\ts\t${cluster}\t$((${host_count}+${count}+3))" >> ${conf_hostroles}
+			echo -e "gtmsby\t0\tgtmsby\tg\ts\t${cluster}\t$((${host_count}+${count}+5))" >> ${conf_hostroles}
         else
-            echo -e "${role1}\t$((${count}+1))\tgtmprx\tg\tm\t${cluster}\t$((${host_count}+${count}*6+3))" >> ${conf_hostroles}
-            echo -e "${role2}\t$((${count}+1))\tcoor\tc\tm\t${cluster}\t$((${host_count}+${count}*6+4))" >> ${conf_hostroles}
-            echo -e "${role3}\t$((${count}+1))\tdn\td\tm\t${cluster}\t$((${host_count}+${count}*6+5))" >> ${conf_hostroles}
-            echo -e "${role4}\t$((${host_count}-${count}))\tgtmprx\tg\ts\t${cluster}\t$((${host_count}+${count}*6+6))" >> ${conf_hostroles}
-            echo -e "${role5}\t$((${host_count}-${count}))\tcoor\tc\ts\t${cluster}\t$((${host_count}+${count}*6+7))" >> ${conf_hostroles}
-            echo -e "${role6}\t$((${host_count}-${count}))\tdn\td\ts\t${cluster}\t$((${host_count}+${count}*6+8))" >> ${conf_hostroles}
+            echo -e "${role1}\t$((${count}+1))\tgtmprx\tg\tm\t${cluster}\t$((${host_count}+${count}*6+5))" >> ${conf_hostroles}
+            echo -e "${role2}\t$((${count}+1))\tcoor\tc\tm\t${cluster}\t$((${host_count}+${count}*6+6))" >> ${conf_hostroles}
+            echo -e "${role3}\t$((${count}+1))\tdn\td\tm\t${cluster}\t$((${host_count}+${count}*6+7))" >> ${conf_hostroles}
+            echo -e "${role4}\t$((${host_count}-${count}))\tgtmprx\tg\ts\t${cluster}\t$((${host_count}+${count}*6+8))" >> ${conf_hostroles}
+            echo -e "${role5}\t$((${host_count}-${count}))\tcoor\tc\ts\t${cluster}\t$((${host_count}+${count}*6+9))" >> ${conf_hostroles}
+            echo -e "${role6}\t$((${host_count}-${count}))\tdn\td\ts\t${cluster}\t$((${host_count}+${count}*6+10))" >> ${conf_hostroles}
         fi
         #dexxhostips
         if [ $count -eq -2 ];then
-			echo -e "${domain1}${ip_num_start}\t$((${host_count}+${count}+3))\tc\t${host_name}\t${cluster}\t${domain1}${ip_num_start}\t-\t-\t-\t${domain1}${gtm_vip}\t-\t-\t-" >> ${conf_hostips}
+			echo -e "${domain1}${ip_num_start}\t$((${host_count}+${count}+5))\tc\t${host_name}\t${cluster}\t${domain1}${ip_num_start}\t-\t-\t-\t${domain1}${gtm_vip}\t-\t-\t-" >> ${conf_hostips}
         elif [ $count -eq -1 ];then
-			echo -e "${domain1}${ip_num_start}\t$((${host_count}+${count}+3))\tc\t${host_name}\t${cluster}\t${domain1}${ip_num_start}\t-\t-\t-\t${domain1}${gtm_vip}\t-\t-\t-" >> ${conf_hostips}
+			echo -e "${domain1}${ip_num_start}\t$((${host_count}+${count}+5))\tc\t${host_name}\t${cluster}\t${domain1}${ip_num_start}\t-\t-\t-\t${domain1}${gtm_vip}\t-\t-\t-" >> ${conf_hostips}
         else
-			echo -e "${domain1}$((${ip_num_start}+1))\t$((${host_count}+${count}*6+3))\tc\t${host_name}\t${cluster}\t-\t-\t-\t${domain1}$((${ip_num_start}+1))\t-\t-\t-\t${domain1}$((${ip_num_start}+7))" >> ${conf_hostips}
-			echo -e "${domain1}$((${ip_num_start}+2))\t$((${host_count}+${count}*6+4))\tc\t${host_name}\t${cluster}\t-\t${domain1}$((${ip_num_start}+2))\t${domain1}$((${ip_num_start}+2))\t-\t-\t${domain1}$((${ip_num_start}+8))\t${domain1}$((${ip_num_start}+8))\t-" >> ${conf_hostips}
-            echo -e "${domain1}$((${ip_num_start}+3))\t$((${host_count}+${count}*6+5))\tc\t${host_name}\t${cluster}\t-\t-\t${domain1}$((${ip_num_start}+3))\t-\t-\t-\t${domain1}$((${ip_num_start}+9))\t-" >> ${conf_hostips}
+			echo -e "${domain1}$((${ip_num_start}+1))\t$((${host_count}+${count}*6+5))\tc\t${host_name}\t${cluster}\t-\t-\t-\t${domain1}$((${ip_num_start}+1))\t-\t-\t-\t${domain1}$((${ip_num_start}+7))" >> ${conf_hostips}
+			echo -e "${domain1}$((${ip_num_start}+2))\t$((${host_count}+${count}*6+6))\tc\t${host_name}\t${cluster}\t-\t${domain1}$((${ip_num_start}+2))\t${domain1}$((${ip_num_start}+2))\t-\t-\t${domain1}$((${ip_num_start}+8))\t${domain1}$((${ip_num_start}+8))\t-" >> ${conf_hostips}
+            echo -e "${domain1}$((${ip_num_start}+3))\t$((${host_count}+${count}*6+7))\tc\t${host_name}\t${cluster}\t-\t-\t${domain1}$((${ip_num_start}+3))\t-\t-\t-\t${domain1}$((${ip_num_start}+9))\t-" >> ${conf_hostips}
 			if [ $count -eq 0 ];then
-                echo -e "${domain1}$((${ip_num_start}+4))\t$((${host_count}+${count}*6+6))\tc\t${host_name}\t${cluster}\t-\t-\t-\t${domain1}$((${ip_num_start}+4))\t-\t-\t-\t${domain1}$((${ip_num_start}+${host_count}*10-3))" >> ${conf_hostips}
-                echo -e "${domain1}$((${ip_num_start}+5))\t$((${host_count}+${count}*6+7))\tc\t${host_name}\t${cluster}\t-\t${domain1}$((${ip_num_start}+5))\t${domain1}$((${ip_num_start}+5))\t-\t-\t${domain1}$((${ip_num_start}+${host_count}*10-2))\t${domain1}$((${ip_num_start}+${host_count}*10-2))\t-" >> ${conf_hostips}
-                echo -e "${domain1}$((${ip_num_start}+6))\t$((${host_count}+${count}*6+8))\tc\t${host_name}\t${cluster}\t-\t-\t${domain1}$((${ip_num_start}+6))\t-\t-\t-\t${domain1}$((${ip_num_start}+${host_count}*10-1))\t-" >> ${conf_hostips}
+                echo -e "${domain1}$((${ip_num_start}+4))\t$((${host_count}+${count}*6+8))\tc\t${host_name}\t${cluster}\t-\t-\t-\t${domain1}$((${ip_num_start}+4))\t-\t-\t-\t${domain1}$((${ip_num_start}+${host_count}*10-3))" >> ${conf_hostips}
+                echo -e "${domain1}$((${ip_num_start}+5))\t$((${host_count}+${count}*6+9))\tc\t${host_name}\t${cluster}\t-\t${domain1}$((${ip_num_start}+5))\t${domain1}$((${ip_num_start}+5))\t-\t-\t${domain1}$((${ip_num_start}+${host_count}*10-2))\t${domain1}$((${ip_num_start}+${host_count}*10-2))\t-" >> ${conf_hostips}
+                echo -e "${domain1}$((${ip_num_start}+6))\t$((${host_count}+${count}*6+10))\tc\t${host_name}\t${cluster}\t-\t-\t${domain1}$((${ip_num_start}+6))\t-\t-\t-\t${domain1}$((${ip_num_start}+${host_count}*10-1))\t-" >> ${conf_hostips}
 			else
-                echo -e "${domain1}$((${ip_num_start}+4))\t$((${host_count}+${count}*6+6))\tc\t${host_name}\t${cluster}\t-\t-\t-\t${domain1}$((${ip_num_start}+4))\t-\t-\t-\t${domain1}$((${ip_num_start}-3))" >> ${conf_hostips}
-                echo -e "${domain1}$((${ip_num_start}+5))\t$((${host_count}+${count}*6+7))\tc\t${host_name}\t${cluster}\t-\t${domain1}$((${ip_num_start}+5))\t${domain1}$((${ip_num_start}+5))\t-\t-\t${domain1}$((${ip_num_start}-2))\t${domain1}$((${ip_num_start}-2))\t-" >> ${conf_hostips}
-                echo -e "${domain1}$((${ip_num_start}+6))\t$((${host_count}+${count}*6+8))\tc\t${host_name}\t${cluster}\t-\t-\t${domain1}$((${ip_num_start}+6))\t-\t-\t-\t${domain1}$((${ip_num_start}-1))\t-" >> ${conf_hostips}
+                echo -e "${domain1}$((${ip_num_start}+4))\t$((${host_count}+${count}*6+8))\tc\t${host_name}\t${cluster}\t-\t-\t-\t${domain1}$((${ip_num_start}+4))\t-\t-\t-\t${domain1}$((${ip_num_start}-3))" >> ${conf_hostips}
+                echo -e "${domain1}$((${ip_num_start}+5))\t$((${host_count}+${count}*6+9))\tc\t${host_name}\t${cluster}\t-\t${domain1}$((${ip_num_start}+5))\t${domain1}$((${ip_num_start}+5))\t-\t-\t${domain1}$((${ip_num_start}-2))\t${domain1}$((${ip_num_start}-2))\t-" >> ${conf_hostips}
+                echo -e "${domain1}$((${ip_num_start}+6))\t$((${host_count}+${count}*6+10))\tc\t${host_name}\t${cluster}\t-\t-\t${domain1}$((${ip_num_start}+6))\t-\t-\t-\t${domain1}$((${ip_num_start}-1))\t-" >> ${conf_hostips}
 			fi
         fi
 		#dexxmasterslave
