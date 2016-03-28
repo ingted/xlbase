@@ -84,6 +84,7 @@ if [ "$ifNoCheck" == 1 ]; then
 
         echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $role $dir
 	if [ $ifNoInit != 1 ]; then
+		util-bpx2 "$host" chown $pgu:$pgu $dir -Rf
 	        util-bpx2 "$specified_cnm" cluster-xl-init.ps1 $pgu $specified_cnm $role $dir 1 1
 	fi
         #echo "conf: $conf"
@@ -167,6 +168,7 @@ else
 					echo $(date +"%T") \[\| xl-init \|\] @$host $role $dir
 					#echo util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
 					#echo $dir
+					util-bpx2 "$host" chown $pgu:$pgu $dir -Rf 
 					util-bpx2 "$host" cluster-xl-init.ps1 $pgu $host $role $dir 1
 					#echo "conf: $conf"
 					hrid=$(./mgmt-xl-get-hrid $host $cluster)
