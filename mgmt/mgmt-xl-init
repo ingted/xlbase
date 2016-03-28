@@ -117,7 +117,7 @@ if [ "$ifNoCheck" == 1 ]; then
 	                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; hrid=$hrid; nid=$nid; sm=$sm; role=$role; currsm=$currsm;  source $(which dexxparammap); echo \"$confexp\"")")
                         #echo "$confstr"
         	                conf64=$(echo "$confstr"|base64)
-	                        util-bpx "$specified_cnm" $pgu cluster-xl-conf.ps1 $confpath $conf64
+	                        util-bpx2 "$specified_cnm" cluster-xl-conf.ps1 $pgu $confpath $conf64
 			fi
 
                 fi
@@ -197,7 +197,7 @@ else
 							echo -e "conf string: \n$confstr"
 							conf64=$(echo "$confstr"|base64)
 							echo ">0>0>0>0>0>0>0>0>0> h: $host r: $role"	
-							util-bpx "$host" $pgu cluster-xl-conf.ps1 $confpath $conf64
+							util-bpx2 "$host" cluster-xl-conf.ps1 $pgu $confpath $conf64
 
 
 						fi

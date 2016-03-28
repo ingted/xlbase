@@ -117,7 +117,7 @@ for host in $dhosts; do
 		#./mgmt-xl-setup-all $cluster => change to set.expect
 EOF
 ) 
-
+exit 0
 done
 
 echo eofisdsh
