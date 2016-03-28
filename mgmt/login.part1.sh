@@ -100,12 +100,14 @@ dnss=$(./mgmt-xl-get-dns $cluster)
 allhosts=$(./mgmt-xl-get-host-by-role -a $cluster); 
 
 for ah in $allhosts; do
+	echo $ah
 	ahip=$(./mgmt-xl-get-ip $ah $cluster)
 	ahip_r=${ahip//./\\\.}
-	echo "/etc/hosts: $ahip $ah"
+	#echo "/etc/hosts: [$ahip] [$ah] [${ahip_r[0]}] [${ahip_r[1]}]"
 	eval "$sudo cp /etc/hosts /etc/hosts.tmp -f"
-	eval "$sudo sed -i \"/$ahip_r[[:space:]]*\$/d\" /etc/hosts.tmp"
-	eval "$sudo sed -ir \"/[[:space:]]+$ah[[:space:]]*\$/d\" /etc/hosts.tmp"
+	#echo "$sudo sed -ir \"/$ahip_r[[:space:]]\+.*\$/d\" /etc/hosts.tmp"
+	eval "$sudo sed -ir \"/$ahip_r[[:space:]]\+.*\$/d\" /etc/hosts.tmp"
+	eval "$sudo sed -ir \"/[[:space:]]\+$ah[[:space:]]*\$/d\" /etc/hosts.tmp"
 	#eval "$sudo sed -ir \"/\ $ah\$/d\" /etc/hosts.tmp"
 	#eval $sudo bash -c "echo \"$ahip $ah\" >> /etc/hosts.tmp"
 	eval "$sudo bash -c \"echo \\\"$ahip $ah\\\" >> /etc/hosts.tmp\""
@@ -114,6 +116,7 @@ for ah in $allhosts; do
 #if [ "$ah" == gtm ]; then break; fi
 #grep -P "\s+gtm\s*\$"  /etc/hosts
 done
+#exit 0
 user_exists=$(id -u $theone > /dev/null 2>&1; echo $?) # 1 means not existed
 #if [ "$user_exists" == 0 ]; then
 if [ "$theone" != root ] && [ "$theone" != "" ] && [ "$user_exists" == 1 ]; then

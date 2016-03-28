@@ -93,8 +93,8 @@ for ah in $allhosts; do
 	ssh $dip << EOF
 		sudo="$sudo"
 		eval "\$sudo cp /etc/hosts /etc/hosts.tmp -f"
-	        eval "$sudo sed -i \"/$ahip_r[[:space:]]*\$/d\" /etc/hosts.tmp"
-        	eval "$sudo sed -ir \"/[[:space:]]+$ah[[:space:]]*\$/d\" /etc/hosts.tmp"
+	        eval "$sudo sed -i \"/$ahip_r[[:space:]]\+.*\$/d\" /etc/hosts.tmp"
+        	eval "$sudo sed -ir \"/[[:space:]]\+$ah[[:space:]]*\$/d\" /etc/hosts.tmp"
 		#eval "\$sudo sed -i \"/$ahip_r/d\" /etc/hosts.tmp"
 		#eval "\$sudo sed -i \"/\\ $ah\\ /d\" /etc/hosts.tmp"
 		#eval "\$sudo sed -i \"/\\ $ah\\$/d\" /etc/hosts.tmp"
@@ -176,7 +176,7 @@ for ad in $dnss; do
 	ssh $dip << EOF
 		eval "\$sudo cp /etc/hosts /etc/hosts.tmp -f"
 	        eval "$sudo sed -i \"/$ahip_r[[:space:]]*\$/d\" /etc/hosts.tmp"
-        	eval "$sudo sed -ir \"/[[:space:]]+$ah[[:space:]]*\$/d\" /etc/hosts.tmp"
+        	eval "$sudo sed -ir \"/[[:space:]]\+$ah[[:space:]]*\$/d\" /etc/hosts.tmp"
 		#eval "\$sudo sed -i \"/$ad_ip/d\" /etc/hosts.tmp"
 		#eval "\$sudo sed -i \"/\\ $ad\\ /d\" /etc/hosts.tmp"
 		#eval "\$sudo sed -i \"/\\ $ad\\$/d\" /etc/hosts.tmp"
