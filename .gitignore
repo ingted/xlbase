@@ -7,4 +7,7 @@ mgmt/test2
 mgmt/sit
 mgmt/test3
 mgmt/alpha2
+mgmt/ansible2
+mgmt/ansible3
+mgmt/ansible
 *.swp
