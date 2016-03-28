@@ -39,12 +39,14 @@ if ($r_in){
 	& $purge $initpath $ifPurgeExistingData
 	& $debug_cnt
 	write-host $("initgtm -Z " + $groles[$role] + " -D $initpath")
-	setuser $setuser initgtm -Z $groles[$role] -D $initpath
+	cd $initpath
+	setuser $setuser initgtm -Z $groles[$role] -D .
 } elseif ($r_in2){
 	& $purge $initpath $ifPurgeExistingData
 	& $debug_cnt
 	write-host "initdb --nodename $nodename -D $initpath"
-	setuser $setuser initdb --nodename $nodename -D $initpath
+	cd $initpath
+	setuser $setuser initdb --nodename $nodename -D .
 } else {
 	"wrong data specified to init!"
 }
