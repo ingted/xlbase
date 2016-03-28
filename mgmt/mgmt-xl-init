@@ -197,7 +197,7 @@ else
 							echo -e "conf string: \n$confstr"
 							conf64=$(echo "$confstr"|base64)
 							echo "\[\| h: $host r: $role \|\]"	
-							echo $conf64
+							#echo $conf64
 							util-bpx2 "$host" cluster-xl-conf.ps1 $pgu $confpath $conf64
 
 
