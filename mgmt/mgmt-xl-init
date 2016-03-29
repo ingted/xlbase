@@ -126,21 +126,21 @@ if [ "$ifNoCheck" == 1 ]; then
 
         done	
 	if [ $ifNoRsrc != 1 ]; then
-		listenvip=$(
-			dexxgnuparam=$(which dexxgnuparam)
-        		dirpath=$(dirname $dexxgnuparam)
+		listenvip=$( eval "
+			dexxgnuparam=\$(which dexxgnuparam)
+        		dirpath=\$(dirname \$dexxgnuparam)
 			source dexxparammap
-			@@@hostvip@@@ -c $cluster -r $role -i $hrid -u $currsm
+			@@@hostvip@@@ -c $cluster -r $role -i $hrid -u $currsm"
 		)
-		listenport=(
-			dexxgnuparam=$(which dexxgnuparam)
-        	        dirpath=$(dirname $dexxgnuparam)
+		listenport=$( eval "
+			dexxgnuparam=\$(which dexxgnuparam)
+        	        dirpath=\$(dirname \$dexxgnuparam)
         	        source dexxparammap
-			`case $role in
+			case $role in
 				coor) echo 40001;;
 				dn) echo 10002;;
 				gtm|gtmsby|gtmprx) echo 36666;;
-			esac`
+			esac"
 			
 		)
 		#echo $role ,$listenvip ,$listenport ,$confpath
@@ -203,21 +203,21 @@ else
 
 						fi
 					done
-                        		listenvip=$(
-                        		        dexxgnuparam=$(which dexxgnuparam)
-                        		        dirpath=$(dirname $dexxgnuparam)
+                        		listenvip=$( eval "
+                        		        dexxgnuparam=\$(which dexxgnuparam)
+                        		        dirpath=\$(dirname \$dexxgnuparam)
                         		        source dexxparammap
-                        		        @@@hostvip@@@ -c $cluster -r $role -i $hrid -u $sm
+                        		        @@@hostvip@@@ -c $cluster -r $role -i $hrid -u $sm"
                         		)
-                        		listenport=(
-                        		        dexxgnuparam=$(which dexxgnuparam)
-                        		        dirpath=$(dirname $dexxgnuparam)
+                        		listenport=$( eval "
+                        		        dexxgnuparam=\$(which dexxgnuparam)
+                        		        dirpath=\$(dirname \$dexxgnuparam)
                         		        source dexxparammap
-                        		        `case $role in
+                        		        case $role in
                         		                coor) echo 40001;;
                         		                dn) echo 10002;;
                         		                gtm|gtmsby|gtmprx) echo 36666;;
-                        		        esac`
+                        		        esac"
 
                         		)
                         		#echo $role ,$listenvip ,$listenport ,$confpath
