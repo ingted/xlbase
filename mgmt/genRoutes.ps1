@@ -57,6 +57,7 @@ $cd = $htHosts|?{($_.role -eq "coor") -or ($_.role -eq "dn")}|%{$_.hostname}
 $coor = $htHosts|?{($_.role -eq "coor")}|%{$_.hostname}
 $hostname = hostname
 
+if($(in $hostname $ghost)){ 0..($looplength - 1) | %{bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn)")}}
 if($(in $hostname $ghost)){
     $curnodeid = ($htHosts | ?{($_.hostname -eq $hostname) -and ($_.masterslave -EQ "m")}).nodeid
     $curnode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnodeid)}
