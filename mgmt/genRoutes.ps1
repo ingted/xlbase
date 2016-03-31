@@ -57,6 +57,10 @@ $cd = $htHosts|?{($_.role -eq "coor") -or ($_.role -eq "dn")}|%{$_.hostname}
 $coor = $htHosts|?{($_.role -eq "coor")}|%{$_.hostname}
 $hostname = hostname
 
+1..$looplength | %{
+    bash -c $("ip route delete $domainip" + "0/24 dev eth$_")
+}
+
 if($(in $hostname $ghost)){ 
     0..($looplength - 1) | %{bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn)")}
     0..1 | %{bash -c $("ip route add $domainip" + [string] (250 + $_) + " dev $($interfaces.togtm)")}
