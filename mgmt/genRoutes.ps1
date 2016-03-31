@@ -57,22 +57,25 @@ $cd = $htHosts|?{($_.role -eq "coor") -or ($_.role -eq "dn")}|%{$_.hostname}
 $coor = $htHosts|?{($_.role -eq "coor")}|%{$_.hostname}
 $hostname = hostname
 
-if($(in $hostname $ghost)){ 
+if($(in $hostname $ghost)){
     $curnodeid = ($htHosts | ?{($_.hostname -eq $hostname) -and ($_.masterslave -EQ "m")}).nodeid
     $curnode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnodeid)}
     $curnode_slave_c = $htHosts | ?{($_.masterslave -EQ "s") -AND ($_.reside -EQ $curnode_master_c[0].reside)}
     $nxtnode_slave_c = $htHosts | ?{($_.masterslave -EQ "s") -AND ($_.nodeid -EQ $curnodeid)}
 
     $prenode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnode_slave_c[0].nodeid)}
+    "pre--------------------------------------------------"
     $prenode_master_c | %{
+        #"ip route add $($_.ip)/32 dev $($interfaces.topregcd)"
         bash -c $("ip route add $($_.ip)/32 dev $($interfaces.topregcd)")
     }
+    "nxt--------------------------------------------------"
     $nxtnode_slave_c | %{
+        #"ip route add $($_.ip)/32 dev $($interfaces.tonextgcd)"
         bash -c $("ip route add $($_.ip)/32 dev $($interfaces.tonextgcd)")
     }
-    bash -c $("ip route add $domainip$($curnode_master_c[0].nodeid - 1)7/32 dev $($interfaces.dc2gtmprx)")
-    
+    "ixl--------------------------------------------------"
+    #"ip route add $domainip" + "$($curnode_master_c[0].nodeid - 1)7/32 dev $($interfaces.dc2gtmprx)"
+    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx)")
+
 }
-
-
-

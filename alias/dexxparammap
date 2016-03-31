@@ -1,3 +1,7 @@
+function @@@toolver@@@ (){
+echo 1.0
+}
+
 function @@@b_coor_chkseq@@@      (){
 	source $(which dexxgnuparam) $@
 	echo 32

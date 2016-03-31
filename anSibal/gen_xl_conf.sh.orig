@@ -1,7 +1,11 @@
 #!/bin/bash
+domain=$1
+hostsfile=$2
+outfils=$4
+cluster=$3
 
-if [ -n "$1" ] && [ -n "$2" ] && [ -n "$3" ] && [ -n "$4" ];then
-	domain1=`echo $1|awk -F "." '{print $1"."$2"."$3"."}'`
+if [ -n "$hostsfile" ] && [ -n "$hostsfile" ] && [ -n "$outfils" ] && [ -n "$outfils" ];then
+	domain1=`echo $domain|awk -F "." '{print $1"."$2"."$3"."}'`
 	cluster=$3
 	count=-3
 
@@ -15,7 +19,7 @@ if [ -n "$1" ] && [ -n "$2" ] && [ -n "$3" ] && [ -n "$4" ];then
 
 	echo -e "mgmt\thrID\ttype\treside\tcluster\ttoGTM\ttoClient\ttoVolt\tinXL\thaGTM\thaClient\thavolt\thaXL" >> ${conf_hostips}
 
-	cat $2 | while read -r line
+	cat $hostsfile | while read -r line
 	do
 		count=$((${count}+1))
 		if [ $count -eq -2 ];then
@@ -63,15 +67,9 @@ if [ -n "$1" ] && [ -n "$2" ] && [ -n "$3" ] && [ -n "$4" ];then
 			role1_s="gtmprx$((${count}+1))s"
 			role2_s="coor$((${count}+1))s"
 			role3_s="dn$((${count}+1))s"
-			if [ $count -eq 0 ];then
-                role4="gtmprx${host_count}s"
-                role5="coor${host_count}s"
-                role6="dn${host_count}s"
-			else
-				role4="gtmprx${count}s"
-				role5="coor${count}s"
-				role6="dn${count}s"
-			fi
+			role4="gtmprx$((${host_count}-${count}))s"
+			role5="coor$((${host_count}-${count}))s"
+			role6="dn$((${host_count}-${count}))s"
         fi
         #dexxhosts
 		dd="/docker_volume/"
@@ -96,15 +94,9 @@ if [ -n "$1" ] && [ -n "$2" ] && [ -n "$3" ] && [ -n "$4" ];then
             echo -e "${role1}\t$((${count}+1))\tgtmprx\tg\tm\t${cluster}\t$((${host_count}+${count}*6+5))" >> ${conf_hostroles}
             echo -e "${role2}\t$((${count}+1))\tcoor\tc\tm\t${cluster}\t$((${host_count}+${count}*6+6))" >> ${conf_hostroles}
             echo -e "${role3}\t$((${count}+1))\tdn\td\tm\t${cluster}\t$((${host_count}+${count}*6+7))" >> ${conf_hostroles}
-			if [ $count -eq 0 ];then
-                echo -e "${role4}\t${host_count}\tgtmprx\tg\ts\t${cluster}\t$((${host_count}+${count}*6+8))" >> ${conf_hostroles}
-                echo -e "${role5}\t${host_count}\tcoor\tc\ts\t${cluster}\t$((${host_count}+${count}*6+9))" >> ${conf_hostroles}
-                echo -e "${role6}\t${host_count}\tdn\td\ts\t${cluster}\t$((${host_count}+${count}*6+10))" >> ${conf_hostroles}
-			else
-	            echo -e "${role4}\t${count}\tgtmprx\tg\ts\t${cluster}\t$((${host_count}+${count}*6+8))" >> ${conf_hostroles}
-    	        echo -e "${role5}\t${count}\tcoor\tc\ts\t${cluster}\t$((${host_count}+${count}*6+9))" >> ${conf_hostroles}
-        	    echo -e "${role6}\t${count}\tdn\td\ts\t${cluster}\t$((${host_count}+${count}*6+10))" >> ${conf_hostroles}
-			fi
+            echo -e "${role4}\t$((${host_count}-${count}))\tgtmprx\tg\ts\t${cluster}\t$((${host_count}+${count}*6+8))" >> ${conf_hostroles}
+            echo -e "${role5}\t$((${host_count}-${count}))\tcoor\tc\ts\t${cluster}\t$((${host_count}+${count}*6+9))" >> ${conf_hostroles}
+            echo -e "${role6}\t$((${host_count}-${count}))\tdn\td\ts\t${cluster}\t$((${host_count}+${count}*6+10))" >> ${conf_hostroles}
         fi
         #dexxhostips
         if [ $count -eq -2 ];then
