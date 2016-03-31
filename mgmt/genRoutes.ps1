@@ -57,7 +57,7 @@ $cd = $htHosts|?{($_.role -eq "coor") -or ($_.role -eq "dn")}|%{$_.hostname}
 $coor = $htHosts|?{($_.role -eq "coor")}|%{$_.hostname}
 $hostname = hostname
 
-1..$looplength | %{
+1..6 | %{
     bash -c $("ip route delete $domainip" + "0/24 dev eth$_")
 }
 
