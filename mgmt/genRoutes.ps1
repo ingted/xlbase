@@ -1,6 +1,6 @@
 $cluster = "ansible3"
 $dexxpath = "/root/pcmk/alias"
-
+$netmask = 24
 $allroles = gc "$dexxpath/dexxhostroles"
 #$allroles = gc "c:\dexxhostroles"
 $roles = $allroles | %{[regex]::Replace($_, "\s", "%%%")} | %{$s = $_.split([string[]]"%%%", [System.StringSplitOptions]::RemoveEmptyEntries);  if ($s[-2] -eq $cluster){,@($s)}}
