@@ -89,7 +89,7 @@ $iproute | ?{
 }
 
 if($(in $hostname $ghost)){ 
-    bash -c $("ip route add $domainip" + "0/$netmask dev $($interfaces.toother) metric 200")
+    bash -c $("ip route add $($domainip)0/$($netmask) dev $($interfaces.toother) metric 200")
     0..($looplength - 1) | %{
         "ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20"
         bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20")
