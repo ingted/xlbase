@@ -88,9 +88,9 @@ $iproute | ?{
 }
 
 if($(in $hostname $ghost)){ 
-    bash -c $("ip route add $domainip" + "0/24 dev $($interfaces.toother) metric 200")
+    bash -c $("ip route add $domainip" + "0/$netmask dev $($interfaces.toother) metric 200")
     0..($looplength - 1) | %{bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20")}
-    0..1 | %{bash -c $("ip route add $domainip" + [string] (250 + $_) + "/$netmask dev $($interfaces.togtm) metric 20")}
+    0..1 | %{bash -c $("ip route add $domainip" + [string] (250 + $_) + " dev $($interfaces.togtm) metric 20")}
 }
 if($(in $hostname $ghost)){
     $curnodeid = ($htHosts | ?{($_.hostname -eq $hostname) -and ($_.masterslave -EQ "m")}).nodeid
