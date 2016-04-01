@@ -73,12 +73,12 @@ $coor = $htHosts|?{($_.role -eq "coor")}|%{$_.hostname}
 $hostname = hostname
 
 
-
+<#
 1..6 | %{
     "ip route delete $domainip" + "0/24 dev eth$_"
     bash -c $("ip route delete $domainip" + "0/24 dev eth$_")
 }
-
+#>
 
 $iproute = ip route
 $iproute | ?{
