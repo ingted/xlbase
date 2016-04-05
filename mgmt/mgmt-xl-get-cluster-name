@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$2" == "" ]; then
+	cluster=test
+else
+	cluster=$2
+fi
+
+
+./mgmt-xl-get-role $1 $cluster \$3\$2

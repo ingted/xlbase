@@ -1,6 +1,6 @@
 #!/usr/bin/pash
 param(
-	$setuser, $nodename, $role, $initpath, $ifPurgeExistingData, $ifDebug
+	$setuser, $nodename, $role, $initpath, $ifPurgeExistingData, $ifDebug, $clusternodename
 )
 
 function in{
@@ -45,10 +45,10 @@ if ($r_in){
 } elseif ($r_in2){
 	& $purge $initpath $ifPurgeExistingData
 	& $debug_cnt
-	write-host "initdb --nodename $nodename -D $initpath"
+	write-host "initdb --nodename $clusternodename -D $initpath"
 	chown "$setuser:$setuser" "$initpath" -Rf
 	cd $initpath
-	setuser $setuser initdb --nodename $nodename -D $initpath
+	setuser $setuser initdb --nodename $clusternodename -D $initpath
 } else {
 	"wrong data specified to init!"
 }
