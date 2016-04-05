@@ -85,6 +85,7 @@ if [ "$ifNoCheck" == 1 ]; then
         echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $role $dir
 	if [ $ifNoInit != 1 ]; then
 		util-bpx2 "$host" chown $pgu:$pgu $dir -Rf
+		#need to add cnm_to_cluster_name 
 	        util-bpx2 "$specified_cnm" cluster-xl-init.ps1 $pgu $specified_cnm $role $dir 1 1
 	fi
         #echo "conf: $conf"
