@@ -223,7 +223,7 @@ else
 
                         		)
                         		#echo $role ,$listenvip ,$listenport ,$confpath
-                        		util-bpx "$host" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]}
+                        		util-bpx "$host" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]} $sm
 					echo $(date +"%T") \[\| xl-conf end  \|\] @$host 
 	
 	

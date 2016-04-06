@@ -171,9 +171,9 @@ dn4s    	4       dn      d       s       ansible3        14
 gtmprx2m        2       gtmprx  g       m       ansible3        15
 coor2m  	2       coor    c       m       ansible3        16
 dn2m    	2       dn      d       m       ansible3        17
-gtmprx3s        3       gtmprx  g       s       ansible3        18
-coor3s  	3       coor    c       s       ansible3        19
-dn3s    	3       dn      d       s       ansible3        20
+gtmprx1s        1       gtmprx  g       s       ansible3        18
+coor1s  	1       coor    c       s       ansible3        19
+dn1s    	1       dn      d       s       ansible3        20
 gtmprx3m        3       gtmprx  g       m       ansible3        21
 coor3m  	3       coor    c       m       ansible3        22
 dn3m    	3       dn      d       m       ansible3        23
@@ -183,6 +183,6 @@ dn2s    	2       dn      d       s       ansible3        26
 gtmprx4m        4       gtmprx  g       m       ansible3        27
 coor4m  	4       coor    c       m       ansible3        28
 dn4m    	4       dn      d       m       ansible3        29
-gtmprx1s        1       gtmprx  g       s       ansible3        30
-coor1s  	1       coor    c       s       ansible3       	31
-dn1s    	1       dn      d       s       ansible3        32
+gtmprx3s        3       gtmprx  g       s       ansible3        30
+coor3s  	3       coor    c       s       ansible3       	31
+dn3s    	3       dn      d       s       ansible3        32
