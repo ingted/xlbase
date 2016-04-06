@@ -20,7 +20,7 @@ BEGIN {
 		switch (role){
 			case "gtm":
 				if($6 != $10){
-					if(ms == "m"){
+					if(currsm == "m"){
 						ipstr=$10
 					} else {
 						ipstr=$6
@@ -32,7 +32,7 @@ BEGIN {
 				break
 			case "gtmsby":
 				if($6 != $10){
-					if(ms == "m"){
+					if(currsm == "m"){
 						ipstr=$10
 					} else {
 						ipstr=$6
@@ -44,7 +44,7 @@ BEGIN {
 				break
 			case "gtmprx":
 				if($9 != $13){
-					if(ms == "m"){
+					if(currsm == "m"){
 						ipstr=$13
 					} else {
 						ipstr=$9
@@ -55,19 +55,19 @@ BEGIN {
 				print ipstr
 				break
 			case "coor":
-				if(sm == "s"){
+				if(currsm == "s"){
 					if($7 != "-"){tmpip[1]=$7}
-					if(length(tmpip) == 0 && !($8 in tmpip) && ($8 != "-")){tmpip[1]=$8}
-					if(length(tmpip) == 0 && !($9 in tmpip) && ($9 != "-")){tmpip[1]=$9}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($8 != "-")){tmpip[1]=$8}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($9 != "-")){tmpip[1]=$9}
 				}
-				if(sm == "m"){
+				if(currsm == "m"){
 					if($11 != "-"){tmpip[1]=$11}
-					if(length(tmpip) == 0 && !($12 in tmpip) && ($12 != "-")){tmpip[1]=$12}
-					if(length(tmpip) == 0 && !($13 in tmpip) && ($13 != "-")){tmpip[1]=$13}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($12 != "-")){tmpip[1]=$12}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($13 != "-")){tmpip[1]=$13}
 				}
-				for (i = 1; i <= length(tmpip); i++) {
-					ipstr=tmpip[i]","ipstr
-				}
+				#for (i = 1; i <= length(tmpip); i++) {
+					ipstr=tmpip[1]","ipstr
+				#}
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)
@@ -75,19 +75,19 @@ BEGIN {
 				break
 			case "dn":
 				#print $13
-				if(sm == "s"){
+				if(currsm == "s"){
 					if($7 != "-"){tmpip[1]=$7}
-					else if(!($8 in tmpip) && ($8 != "-")){tmpip[1]=$8}
-					else if(!($9 in tmpip) && ($9 != "-")){tmpip[1]=$9}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($8 != "-")){tmpip[1]=$8}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($9 != "-")){tmpip[1]=$9}
 				}
-				if(sm == "m"){
+				if(currsm == "m"){
 					if($11 != "-"){tmpip[1]=$11}
-					else if(!($12 in tmpip) && ($12 != "-")){tmpip[1]=$12}
-					else if(!($13 in tmpip) && ($13 != "-")){tmpip[1]=$13}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($12 != "-")){tmpip[1]=$12}
+					if(length(tmpip) == 0 && !(1 in tmpip) && ($13 != "-")){tmpip[1]=$13}
 				}
-				for (i = 1; i <= length(tmpip); i++) {
-					ipstr=tmpip[i]","ipstr
-				}
+				#for (i = 1; i <= length(tmpip); i++) {
+					ipstr=tmpip[1]","ipstr
+				#}
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)
 				gsub(/,$/,"",ipstr)

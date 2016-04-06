@@ -146,7 +146,7 @@ if [ "$ifNoCheck" == 1 ]; then
 			
 		)
 		#echo $role ,$listenvip ,$listenport ,$confpath
-		util-bpx "$specified_cnm" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]} $currsm
+		util-bpx "$specified_cnm" root cluster-xl-resource.ps1 "$role" "$listenvip" "$listenport" "${confarr[0]}" "$currsm"
 	fi
         echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm
 
@@ -223,7 +223,7 @@ else
 
                         		)
                         		#echo $role ,$listenvip ,$listenport ,$confpath
-                        		util-bpx "$host" root cluster-xl-resource.ps1 $role $listenvip $listenport ${confarr[0]} $sm
+                        		util-bpx "$host" root cluster-xl-resource.ps1 "$role" "$listenvip" "$listenport" "${confarr[0]}" "$sm"
 					echo $(date +"%T") \[\| xl-conf end  \|\] @$host 
 	
 	
