@@ -171,7 +171,9 @@ else
 					#echo util-bpx "$host" $pgu cluster-xl-init.ps1 $host $1 $dir
 					#echo $dir
 					util-bpx2 "$host" chown $pgu:$pgu $dir -Rf 
-					util-bpx2 "$host" cluster-xl-init.ps1 $pgu $host $role $dir 1
+					clusternodename=$(./mgmt-xl-get-cluster-name $specified_cnm $cluster)
+
+					util-bpx2 "$host" cluster-xl-init.ps1 $pgu $host $role $dir 1 1 $clusternodename
 					#echo "conf: $conf"
 					hrid=$(./mgmt-xl-get-hrid $host $cluster)
 					nid=$(./mgmt-xl-get-node-id $host $cluster)
