@@ -1,6 +1,6 @@
 #!/usr/bin/pash
 param(
-	$cluster, $dexxpath, $doact
+	$cluster, $dexxpath, $doact, $hostname
 )
 
 #$cluster = "ansible3"
@@ -53,8 +53,9 @@ if($host.Version -ne ""){
     function psql {param($c, $p) $c}
 }
 
-
-$hostname = hostname
+if ("$hostname" -eq ""){
+	$hostname = hostname
+}
 if(($htHosts|?{$_.hostname -eq $hostname}).role -eq "coor"){$port = 40001} else {$port = 10002}
 $htHosts|?{$_.masterslave -eq "m" -and $_.role -notmatch "gtm"}|%{
     if($_.hostname -eq $hostname){
