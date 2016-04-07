@@ -1,5 +1,12 @@
-﻿$cluster = "ansible3"
-$dexxpath = "/root/pcmk/alias"
+﻿param(
+	$cluster, $dexxpath, $hostname
+)
+if("$cluster" -eq ""){
+	$cluster = "ansible3"
+}
+if($dexxpath -eq ""){
+	$dexxpath = "/root/pcmk/alias"
+}
 $netmask = 24
 $allroles = gc "$dexxpath/dexxhostroles"
 #$allroles = gc "c:\dexxhostroles"
@@ -70,7 +77,9 @@ $bs1ton = $htHosts|?{($_.role -eq "docker")}|%{$_.hostname}
 $ghost = $htHosts|?{(in $_.role @("gtmprx")) -and (($_.masterslave -eq "m") -or ($_.role -eq "gtmsby"))}|%{$_.hostname}
 $cd = $htHosts|?{($_.role -eq "coor") -or ($_.role -eq "dn")}|%{$_.hostname}
 $coor = $htHosts|?{($_.role -eq "coor")}|%{$_.hostname}
-$hostname = hostname
+if("$hostname" -eq ""){
+	$hostname = hostname
+}
 
 
 <#
