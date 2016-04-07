@@ -1,13 +1,14 @@
 #!/usr/bin/expect -f
 
 set cluster  [lindex $argv 0]
+set doact    [lindex $argv 1]
 #set mgmtpath  [lindex $argv 1]
 set timeout 3600
 spawn bash
 exec sleep 2
 expect {
 	"" {
-		send "./mgmt-xlcluster-setup-all $cluster\n"
+		send "./mgmt-xlcluster-setup-all $cluster $doact\n"
 		send "exit\n"
 	}
 }

@@ -28,15 +28,19 @@ else
 fi
 
 
-
+if [ "$8" == "" ]; then
+	doact=alter
+else
+	doact=create
+fi
 
 case $2 in
 	coor)
 		#echo coor
-		./mgmt-xlcluster-init-coor $1 $3 $4 $pguser $cluster $pgver
+		./mgmt-xlcluster-init-coor $1 $3 $4 $pguser $cluster $pgver $doact
 		;;
 	dn)
-		./mgmt-xlcluster-init-dn $1 $3 $4 $pguser $cluster $pgver
+		./mgmt-xlcluster-init-dn $1 $3 $4 $pguser $cluster $pgver $doact
 		;;
 	*)              
 esac 

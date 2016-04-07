@@ -75,7 +75,7 @@ function main () {
 		} && {
 			echo \$enter: $enter
 			if [ $enter == 1 ]; then 
-				./mgmt-xlcluster-setup "$cnm" $role $specified_nid $specified_sm $update $cluster $pgver
+				./mgmt-xlcluster-setup "$cnm" $role $specified_nid $specified_sm $update $cluster $pgver $doact
 			fi;
 		}
 	done
@@ -114,6 +114,7 @@ while true ; do
 	-r|--role) role=$2; shift; shift;;
 	--sm|--slave-or-master) specified_sm=$2; shift; shift;;
 	-v|--pgver|--version) pgver=$2; shift; shift;;
+	-a|--doact) doact=$2; shift; shift;;
 	--host|--hostname) specified_cnm=$2; shift; shift;;
         "") break;;
         *)

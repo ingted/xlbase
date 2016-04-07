@@ -65,10 +65,25 @@ for host in $dhosts; do
 
 		cd "$rootpath/xlbase/mgmt"
 		eval \$(cat ~/.bashrc|grep "#exped");
-		./set2.expect $cluster
+		./set2.expect $cluster alter
 EOF
 ) 
 #exit 0
 done
+
+for host in $dhosts; do
+        cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
+        echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
+        (ssh $theonea$cip << EOF
+                sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+
+                cd "$rootpath/xlbase/mgmt"
+                eval \$(cat ~/.bashrc|grep "#exped");
+                ./set2.expect $cluster create
+EOF
+)
+#exit 0
+done
+
 
 echo eofisdsh

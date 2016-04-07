@@ -9,7 +9,7 @@ cluster=
 function main () {
 
 	echo ./mgmt-xlcluster-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r dn  --host "$cnm"  -c "$cluster" -v "$pgver"
-	./mgmt-xlcluster-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r dn  --host "$cnm"  -c "$cluster" -v "$pgver"
+	./mgmt-xlcluster-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r dn  --host "$cnm"  -c "$cluster" -v "$pgver" -a "$doact"
 
 
 }
@@ -45,6 +45,7 @@ while true ; do
 	--sm|--slave-master) slave_or_master=$2; shift; shift;;
  	-u|--update) update="-u"; shift;; 
         -v|--pgver|--version) pgver=$2; shift; shift;;
+        -a|--act) doact=$2; shift; shift;;
 	"") break;;
         *)
                 echo "[ERROR!!] Unknown option \"$1\""

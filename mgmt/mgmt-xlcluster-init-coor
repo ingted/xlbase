@@ -41,6 +41,13 @@ else
         pgver=$6
 fi
 
+
+if [ "$7" == "" ]; then
+        doact=alter
+else
+        doact=create
+fi
+
 #echo \<=================\>
-./mgmt-xlcluster-init coor $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0
+./mgmt-xlcluster-init coor $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0 $doact
 

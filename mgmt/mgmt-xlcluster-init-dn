@@ -41,5 +41,11 @@ else
 fi
 
 
+if [ "$7" == "" ]; then
+        doact=alter
+else
+        doact=create
+fi
 
-./mgmt-xlcluster-init dn $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0
+
+./mgmt-xlcluster-init dn $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0 $doact
