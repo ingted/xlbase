@@ -1,0 +1,66 @@
+#!/bin/bash
+
+update=
+nid=-
+slave_or_master=-
+cnm="-"
+cluster=""
+
+function main () {
+
+	echo ./mgmt-xlcluster-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r coor --host "$cnm" -c "$cluster" -v "$pgver"
+	./mgmt-xlcluster-setup-nodes $force $update -n "$nid" --sm "$slave_or_master" -r coor --host "$cnm" -c "$cluster" -v "$pgver"
+
+
+}
+
+
+function helptext () {
+        echo ""
+        echo "mgmt-xl-setup-coor - A tool for setup a xlbase coordinator node ."
+        echo ""
+        echo "Usage: ./mgmt-xl-setup-coor [options]"
+        echo ""
+        echo "Options:"
+        echo "-f, --force		If container with same name of specified one, recreate it and go ahead!!"
+	echo "-c, 			cluster"
+	echo "-u, --update		Update utility tools."
+	echo "--host, --hostname	Container node name."
+	echo "-n, --nid, --nodeid	Container node group ID."
+	echo "--sm, --slave-master	Container node group role."
+	echo "-v                        pgxl version."
+        echo ""
+	#break
+	#return	
+        #exit $1
+
+}
+
+cnt=$#
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+	-c|--cluster) cluster=$2; shift; shift;;
+        -f|--force) force="-f"; shift;;
+	--host|--hostname) cnm=$2; shift; shift;;
+	-n|--nid|--nodeid) nid=$2; shift; shift;;
+	--sm|--slave-master) slave_or_master=$2; shift; shift;;
+ 	-u|--update) update="-u"; shift;; 
+	-v|--pgver|--version) pgver=$2; shift; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1
+		return;;
+        esac
+done
+
+
+
+if [ $cnt == 0 ]; then
+        helptext 1
+else
+        main
+fi
+

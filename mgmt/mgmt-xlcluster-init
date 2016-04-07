@@ -1,0 +1,99 @@
+#!/bin/bash
+
+
+if [ "$1" == "" ]; then
+	echo "XL role is required!"
+	exit 999
+else
+	role=$1
+fi
+
+
+
+if [ "$6" == "" ]; then
+        
+ 	echo "cluster is required! sets to \"test\""
+	cluster=test
+else
+        cluster=$6
+fi
+
+
+if [ "$7" == "" ]; then
+ 	echo "pgver is required! exit"
+	exit 999
+else
+        pgver=$7
+fi
+
+
+if [ "$2" == "" ]; then
+ 	echo "pguser is required! exit"
+	exit 999
+else
+        pgu=$2
+fi
+
+echo $(date +"%T") \[\| xl-init \|\] BEGINNING...
+
+
+
+specified_cnm=$3
+specified_nid=$4
+specified_sm=$5
+ifNoCheck=$8
+
+if [ "$9" != "" ]; then
+        pathms=$9
+else
+        pathms=$specified_sm
+fi
+
+if [ "$10" != "" ]; then
+	ifNoInit=$10
+else
+	ifNoInit=1
+fi
+
+if [ "$11" != "" ]; then
+        ifNoConf=$11
+else
+        ifNoConf=1
+fi
+
+if [ "$12" != "" ]; then
+        ifNoRsrc=$12
+else
+        ifNoRsrc=1
+fi
+
+if [ "$13" != "" ]; then
+        currsm=$13
+else
+        currsm=$specified_sm
+fi
+
+
+if [ "$ifNoCheck" == 1 ]; then
+	echo "not implement"
+else
+	hosts=$(./mgmt-xl-get-host-by-role "$role" $cluster)
+	for host in $hosts; do
+		nid=$(./mgmt-xl-get-node-id "$host" $cluster)
+		if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
+			sm=$(./mgmt-xl-get-m-or-s "$host"  $cluster)
+			if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
+				if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$host" ]; then
+	
+					echo $(date +"%T") \[\| xlcluster-init \|\] @$host $role $dir
+					#util-bpx2 "$host" cluster-xl-conf.ps1 $pgu $confpath $conf64
+                        		util-bpx "$host" root cluster-xl-resource.ps1 "$role" "$listenvip" "$listenport" "${confarr[0]}" "$sm"
+					echo $(date +"%T") \[\| xlcluster-init end  \|\] @$host 
+	
+	
+					
+				fi
+			fi
+		fi
+	done
+fi

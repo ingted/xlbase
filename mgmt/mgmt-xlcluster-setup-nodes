@@ -1,0 +1,129 @@
+#!/bin/bash
+
+update=0
+specified_nid=-
+specified_sm=m
+specified_cnm=-
+role=gtm
+
+
+function main () {
+
+	echo "node specified $specified_nid"	
+	echo "host specified $specified_cnm"
+
+	case "$role" in
+		gtm) specified_nid=0; specified_sm=m;;
+		gtmsby) specified_nid=0; specified_sm=s;;
+	*) ;;
+	esac
+
+	if [ "$cluster" == "" ]; then
+	        echo "cluster is required! exit..."
+		exit 999
+	fi
+
+	if [ "$pgver" == "" ]; then
+	        echo "pgxl version is required! exit..."
+		exit 999
+	fi
+	echo ./mgmt-xl-get-host-by-role $role $cluster
+	cnms=$(./mgmt-xl-get-host-by-role $role $cluster)
+	for cnm in $cnms; do
+		#echo "%%%%%%%%%%%%%%"
+		#echo "  %%%%%%%%%%"
+		#echo "  %%%%%%%%%%"
+		#echo "%%%%%%%%%%%%%%"
+		enter=1
+		{
+			nid=$(./mgmt-xl-get-node-id "$cnm" $cluster)
+	        	if [ "$specified_nid" == "-" ] || [ "$specified_nid" == "$nid" ]; then
+	        		sm=$(./mgmt-xl-get-m-or-s "$cnm" $cluster)
+	        	        if [ "$specified_sm" == "-" ] || [ "$specified_sm" == "$sm" ]; then
+	        	        	if [ "$specified_cnm" == "-" ] || [ "$specified_cnm" == "$cnm" ]; then
+						echo $(date +"%T") \[\| Setup $role \|\] Container name: $cnm
+						
+						cip=$(./mgmt-xl-get-ip $cnm $cluster)
+						echo $(date +"%T") \[\| Setup $role \|\] Container IP  : $cip
+						
+						ifexist=$(ifconfig | grep "$cip\ ")
+						if [ "$ifexist" == "" ]; then
+							echo "wrong docker host! (IP address specified not existed!)"
+							enter=0
+							continue
+						fi
+						
+						if [ "$(whoami)" == "root" ]; then sudo=""; else sudo="sudo"; fi
+					else
+                                        	enter=0
+                                        	echo "invalid host"
+                                        	continue
+
+
+					fi
+				else
+                        	        enter=0
+                        	        echo "invalid slave/master"
+                        	        continue
+                        	
+				fi
+			else
+				enter=0
+				echo "invalid node id"
+				continue
+			fi; 
+		} && {
+			echo \$enter: $enter
+			if [ $enter == 1 ]; then 
+				./mgmt-xlcluster-setup "$cnm" $role $specified_nid $specified_sm $update $cluster $pgver
+			fi;
+		}
+	done
+
+}
+
+
+function helptext () {
+        echo ""
+        echo "mgmt-xl-setup-nodes - A tool for setup xlbase nodes."
+        echo ""
+        echo "Usage: ./mgmt-xl-setup-nodes [options]"
+        echo ""
+        echo "Options:"
+	echo "-c, --cluster		cluster name."
+        echo "-f, --force               If container with same name of specified one, recreate it and go ahead!!"
+	echo "-n, --nodeid"
+	echo "-u, --update		Update utility tools."
+	echo "-r, --role		Default is gtm."
+	echo "-v			pgver."
+	echo "-sm, --slave-or-master	Slave or master, default is master."
+        echo ""
+        exit $1
+
+}
+
+cnt=$#
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+	-c|--cluster) cluster=$2; shift; shift;;
+        -f|--force) force=1; shift;;
+        -n|--node|--nodeid) specified_nid=$2; shift; shift;;
+ 	-u|--update) update=1; shift;; 
+	-r|--role) role=$2; shift; shift;;
+	--sm|--slave-or-master) specified_sm=$2; shift; shift;;
+	-v|--pgver|--version) pgver=$2; shift; shift;;
+	--host|--hostname) specified_cnm=$2; shift; shift;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+if [ "$cnt" == "0" ]; then
+	helptext 1;
+else
+	main
+fi

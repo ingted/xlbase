@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+./mgmt-xlcluster-setup-coor    -f -u -v 9.2 -c $1 
+./mgmt-xlcluster-setup-dn      -f -u -v 9.2 -c $1 

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+hostfile=
+#dirfile=
+pguser=postgres
+
+if [ "$5" == "1" ]; then
+	update=1
+else
+	update=0
+fi 
+
+if [ "$update" == "1" ]; then
+        echo $(date +"%T") \[\| update-cluster-tool \|\]
+        ./mgmt-update-cluster-tool "$1"
+fi
+
+if [ "$6" == "" ]; then
+        cluster=test
+else
+        cluster=$6
+fi
+
+if [ "$7" == "" ]; then
+        pgver=9.2
+else
+        pgver=$7
+fi
+
+
+
+
+case $2 in
+	coor)
+		#echo coor
+		./mgmt-xl-init-coor $1 $3 $4 $pguser $cluster $pgver
+		;;
+	dn)
+		./mgmt-xl-init-dn $1 $3 $4 $pguser $cluster $pgver
+		;;
+	*)              
+esac 

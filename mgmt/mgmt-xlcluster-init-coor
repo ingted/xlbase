@@ -1,0 +1,46 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	cnm=-
+else
+	cnm=$1
+fi
+
+
+if [ "$2" == "" ]; then
+	nid=-
+else
+	nid=$2
+fi
+
+
+if [ "$3" == "" ]; then
+	sm=-
+else
+	sm=$3
+fi
+
+
+if [ "$4" == "" ]; then
+	pgu=postgres
+else
+	pgu=$4
+fi
+
+if [ "$5" == "" ]; then
+        cluster=test
+else
+        cluster=$5
+fi
+
+
+if [ "$6" == "" ]; then
+        echo "pgver is required! exit"
+        exit 999
+else
+        pgver=$6
+fi
+
+#echo \<=================\>
+./mgmt-xlcluster-init coor $pgu "$cnm" "$nid" "$sm" $cluster $pgver 0
+

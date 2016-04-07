@@ -1,0 +1,74 @@
+#!/bin/bash
+
+echo if gpu now?
+read ifgpu
+
+if [ "$ifgpu" == "1" ] || [ "$ifgpu" == "y" ] || [ "$ifgpu" == "yes" ]; then
+	cd ..
+	gpu "installation commit"
+	cd mgmt
+fi
+
+
+if [ "$1" == "" ]; then
+        rootpath="/root"
+else
+        rootpath=$1
+fi
+
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+if [ "$3" == "" ]; then
+        updonly=0
+else
+        updonly="$3"
+fi
+
+
+if [ "$4" == "" ]; then
+        ifmake=0
+else
+        ifmake="$4"
+fi
+
+if [ "$5" == "" ]; then
+        theone=""
+else
+        theone="$5"
+        theonea="$5@"
+fi
+
+if [ "$6" == "" ]; then
+        ifupdclone=1
+else
+        ifupdclone="$6"
+fi
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+
+curroot=$(pwd)
+dhosts=$($curroot/mgmt-xl-get-host-by-role docker $cluster)
+echo "$dhosts"
+echo ===============================================================
+for host in $dhosts; do
+	cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
+	echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
+	(ssh $theonea$cip << EOF
+		sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+		cd $rootpath/xlbase
+                echo ".................update now.................\$(whoami)"
+                (eval "\$sudo git pull") || (git pull)
+
+		cd "$rootpath/xlbase/mgmt"
+		eval \$(cat ~/.bashrc|grep "#exped");
+		./set2.expect $cluster
+EOF
+) 
+#exit 0
+done
+
+echo eofisdsh

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+	cluster=test
+else
+	cluster=$1
+fi
+
+if [ "$2" == "" ]; then
+        val="\$3"
+else
+        val="$2"
+fi
+
+#echo "(\$1 == \"$1\") && (\$6 == \"$cluster\") {print $val}"
+hostrole=$(which dexxhostroles)
+awk "(\$6 == \"$cluster\") {print $val}" $hostrole
