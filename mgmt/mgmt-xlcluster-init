@@ -87,8 +87,9 @@ else
 	
 					echo $(date +"%T") \[\| xlcluster-init \|\] @$host $role $dir
 					#util-bpx2 "$host" cluster-xl-conf.ps1 $pgu $confpath $conf64
-					dexxdir=$(dirname $(which dexxhosts))
-                        		util-bpx "$host" postgres cluster-gen-cluster.ps1 $cluster $dexxdir
+					#dexxdir=$(dirname $(which dexxhosts))
+					util-bpx2 "$host" cluster-gen-cluster.ps1 $cluster "\(\([io.directoryinfo]\(pwd\).path\).parent.fullname + \\\"/alias\\\"\)" alter
+                        		#util-bpx "$host" postgres cluster-gen-cluster.ps1 $cluster $dexxdir
 					echo $(date +"%T") \[\| xlcluster-init end  \|\] @$host 
 	
 	

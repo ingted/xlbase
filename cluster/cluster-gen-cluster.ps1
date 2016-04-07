@@ -1,6 +1,6 @@
 #!/usr/bin/pash
 param(
-	$cluster, $dexxpath
+	$cluster, $dexxpath, $doact
 )
 
 #$cluster = "ansible3"
@@ -62,12 +62,15 @@ $htHosts|?{$_.masterslave -eq "m" -and $_.role -notmatch "gtm"}|%{
     } else {
         $act = "create"
     }
-    if($_.role -eq "coor"){
-        psql -p $port -c $($act + " node coor" + $_.nodeid + " with(TYPE='coordinator',HOST='" + $_.ip + "',PORT=40001);")
+    if($doact -eq $act){
+        if($_.role -eq "coor"){
+            psql -p $port -c $($act + " node coor" + $_.nodeid + " with(TYPE='coordinator',HOST='" + $_.ip + "',PORT=40001);")
 
 
-    } else {
-        psql -p $port -c $($act + " node dn" + $_.nodeid + " with(TYPE='datanode',HOST='" + $_.ip + "',PORT=10002);")
+        } else {
+            psql -p $port -c $($act + " node dn" + $_.nodeid + " with(TYPE='datanode',HOST='" + $_.ip + "',PORT=10002);")
+        }
+        psql -p $port -c $("select pgxc_pool_reload();")
     }
 }
 
