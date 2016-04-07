@@ -57,13 +57,13 @@ BEGIN {
 			case "coor":
 				if(currsm == "s"){
 					if($7 != "-"){tmpip[1]=$7}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($8 != "-")){tmpip[1]=$8}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($9 != "-")){tmpip[1]=$9}
+					if((tmpip[1] != "-") && ($8 != "-")){tmpip[1]=$8}
+					if((tmpip[1] != "-") && ($9 != "-")){tmpip[1]=$9}
 				}
 				if(currsm == "m"){
 					if($11 != "-"){tmpip[1]=$11}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($12 != "-")){tmpip[1]=$12}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($13 != "-")){tmpip[1]=$13}
+					if((tmpip[1] != "-") && ($12 != "-")){tmpip[1]=$12}
+					if((tmpip[1] != "-") && ($13 != "-")){tmpip[1]=$13}
 				}
 				#for (i = 1; i <= length(tmpip); i++) {
 					ipstr=tmpip[1]","ipstr
@@ -77,13 +77,13 @@ BEGIN {
 				#print $13
 				if(currsm == "s"){
 					if($7 != "-"){tmpip[1]=$7}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($8 != "-")){tmpip[1]=$8}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($9 != "-")){tmpip[1]=$9}
+					if((tmpip[1] != "-") && ($8 != "-")){tmpip[1]=$8}
+					if((tmpip[1] != "-") && ($9 != "-")){tmpip[1]=$9}
 				}
 				if(currsm == "m"){
 					if($11 != "-"){tmpip[1]=$11}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($12 != "-")){tmpip[1]=$12}
-					if(length(tmpip) == 0 && !(1 in tmpip) && ($13 != "-")){tmpip[1]=$13}
+					if((tmpip[1] != "-") && ($12 != "-")){tmpip[1]=$12}
+					if((tmpip[1] != "-") && ($13 != "-")){tmpip[1]=$13}
 				}
 				#for (i = 1; i <= length(tmpip); i++) {
 					ipstr=tmpip[1]","ipstr
