@@ -60,6 +60,7 @@ SSH_L1
 		ssh root@$dh bash << SSH_L1
 			export PATH=\$(cat ~/PATH.TMP) 
 			export PATH=\$PATH:/root/xlbase/alias
+			eval \$(cat ~/.bashrc|grep "#exped");
 			dhosts_o="$dhosts"
 			dhosts=(\${dhosts_o//\\\n/ })
 			#echo =====\\\$dhosts in remote ========
