@@ -118,13 +118,13 @@ if($(in $hostname $ghost)){
     $prenode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnode_slave_c[0].nodeid)}
     "pre--------------------------------------------------"
     $prenode_master_c | %{
-        "ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 20"
-        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 20")
+        "ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 50"
+        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 50")
     }
     "nxt--------------------------------------------------"
     $nxtnode_slave_c | %{
-        "ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 20"
-        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 20")
+        "ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 50"
+        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 50")
     }
     "ixl--------------------------------------------------"
     "ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx) metric 20"
