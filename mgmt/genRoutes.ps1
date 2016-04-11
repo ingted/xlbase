@@ -102,6 +102,7 @@ if($(in $hostname $ghost)){
     0..($looplength - 1) | %{
         "ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20"
         bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20")
+        bash -c $("ip route add $domainip" + [string] ($_ * 10 + 3) + " dev $($interfaces.ctodn) metric 20")
     }
     0..1 | %{
         "ip route add $domainip" + [string] (250 + $_) + " dev $($interfaces.togtm) metric 20"
