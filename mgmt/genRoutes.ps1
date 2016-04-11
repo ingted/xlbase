@@ -129,7 +129,6 @@ if($(in $hostname $ghost)){
     "ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx) metric 20"
     bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx) metric 20")
     bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 1)/32 dev $($interfaces.dc2gtmprx) metric 20")
-
-
+    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 4)/32 dev $($interfaces.dc2gtmprx) metric 20")
 
 }
