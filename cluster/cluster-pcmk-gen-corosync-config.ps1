@@ -8,8 +8,8 @@ param(
 
 $authnode = $htHosts |?{$_.role -ne "docker"}| %{$_.hostname}
 
+$nid = 1
 $nodelist = $authnode | %{
-    $nid = 1
 "
     node {
         ring0_addr: $_
