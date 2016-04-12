@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+
+while true ; do
+        case "$1" in
+        "") break;;
+        *) don2 "$1"; shift;;
+        esac
+done
+
