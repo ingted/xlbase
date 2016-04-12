@@ -59,9 +59,9 @@ function main () {
 	fi
 	
 	if [ "$ifv" == "1" ]; then	
-		docker run -dit --name "$nm" -h "$nm" --privileged=true --cap-add=NET_ADMIN --net=host -v $extvolume:/postgres $image /sbin/my_init -- bash -l
+		docker run -dit --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host -v $extvolume:/postgres $image /sbin/my_init -- bash -l
 	else
-		docker run -dit --name "$nm" -h "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- bash -l
+		docker run -dit --name "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- bash -l
 	fi
 	docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
 	docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
