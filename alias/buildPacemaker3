@@ -1,1 +1,185 @@
+#!/bin/bash
+
+chpwd=0
+
+
+if [ "$(whoami)" == "root" ]; then sudo=""; else sudo=sudo; fi
+
+function main () {
+	if [ "$nm" == "" ]; then
+		nm=ttc
+	fi 
+	
+	if [ "$image" == "" ]; then
+		image=robotica/pcmk_ubuntu:latest
+	fi
+
+	if [ "$ip" == "" ]; then
+		ip=192.168.123.99
+	fi
+
+	if [ "$svcstart" != "1" ]; then
+		svcstart=0
+	fi
+
+	if [ "$ifbind" != "1" ]; then
+		ifbind=0
+	fi
+
+	if [ ! -e /proc/sys/fs/binfmt_misc/register ]; then 
+		eval "$sudo mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc"; 
+	fi
+	if [ ! -e /proc/sys/fs/binfmt_misc/CLR ] && [ -e /usr/bin/mono ]; then 
+		eval "$sudo bash -c 'echo \":CLR:M::MZ::/usr/bin/mono:\" > /proc/sys/fs/binfmt_misc/register'"; 
+	fi
+	
+	if [ "$ifv" == "1" ]; then 
+		if [ ! -e "$extvolume" ]; then 
+			echo "specified directory not existed!"
+			eval "$sudo mkdir -p \"$extvolume\""
+			if [ ! -e "$extvolume" ]; then
+				echo "external volumn is required!"
+				echo "Leaving..."
+				exit 999
+			else
+				echo "external volumn created!"
+			fi
+		fi
+	fi
+
+	existed=$(echo "$(for id in $(dls -q); do eval "$sudo docker inspect $id"|grep -P "\"Name\".*/"|awk '{split($0, a, "\""); gsub("/", "", a[4]); print a[4]}'; done)"|grep $nm)
+
+	if [ "$force" == 1 ] && [ "$existed" != "" ]; then
+		drm -f "$nm"
+	else	
+		if [ "$existed" != "" ]; then
+			echo -e "Container \"$nm\" existed!"
+			exit 999
+		fi
+	fi
+	
+	if [ "$ifv" == "1" ]; then	
+		docker run -dit --name "$nm" -h "$nm" --privileged=true --cap-add=NET_ADMIN --net=host -v $extvolume:/postgres $image /sbin/my_init -- bash -l
+	else
 		docker run -dit --name "$nm" -h "$nm" --privileged=true --cap-add=NET_ADMIN --net=host $image /sbin/my_init -- bash -l
+	fi
+	docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
+	docker exec -d "$nm" ssh-keygen -q -t rsa -N '' -b 4096 -C "ingted@ingted.com" -f ~/.ssh/id_rsa
+	docker exec "$nm" sed -i.bak -e s/#Port\ 22/Port\ 22/g /etc/ssh/sshd_config
+	docker exec "$nm" cat /etc/ssh/sshd_config|grep \#Port
+	if [ "$chpwd" == 1 ]; then
+		docker exec "$nm" bash -c "echo -e \"$password\\n$password\\n\" | passwd root"
+	fi
+	docker exec "$nm" sed -i.bak -e s/#ListenAddress\ 0\.0\.0\.0/ListenAddress\ $ip/g /etc/ssh/sshd_config
+	docker exec "$nm" sed -i.bak -e s/#PermitRootLogin\ yes/PermitRootLogin\ yes/g /etc/ssh/sshd_config
+	docker exec "$nm" cat /etc/ssh/sshd_config|grep ListenAddress
+
+	docker exec "$nm" bash -c "if [ -e /var/run/dbus/system_bus_socket ]; then rm /var/run/dbus/system_bus_socket; fi"
+	docker exec "$nm" service dbus restart
+	docker exec "$nm" bash -c "echo \"$nm\" > /whoami"
+	docker exec "$nm" cat /whoami
+	docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname" 
+	docker exec "$nm" hostnamectl set-hostname "$nm"
+	localhostnm=$(hostname)
+	docker exec "$nm" service ssh restart
+	docker exec "$nm" echo $(eval 'PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"')
+	docker exec "$nm" sed -i.bak -e "s/mesg n/if \`tty -s\`\; then mesg n; fi/g" /root/.profile
+
+	docker exec "$nm" sed -i.bak -r s/\:Host[[:space:]]+=\>[[:space:]]+\'\:\:\',/\:Host\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\>\ \'$ip\',/g /usr/share/pcsd/ssl.rb; 
+
+	eval "$sudo cp /etc/hosts /etc/hosts.tmp"
+        eval "$sudo sed -i \"/$ip/d\"     /etc/hosts.tmp"
+        eval "$sudo sed -i \"/\\ $nm\\ /d\" /etc/hosts.tmp"
+        eval "$sudo sed -i \"/\ $nm\\$/d\" /etc/hosts.tmp"
+        eval "$sudo bash -c \"echo \\\"$ip $nm\\\" >> /etc/hosts.tmp\""
+        eval "$sudo cp /etc/hosts.tmp /etc/hosts -f"
+
+	
+	echo \[\!ID_DONE\]
+	
+	if [ "$svcstart" == "1" ]; then 
+	
+	  docker exec -d "$nm" service corosync start
+	  sleep 6
+	  docker exec -d "$nm" service pacemaker start
+	  sleep 6
+	  docker exec -d "$nm" pcs property set stonith-enabled=false
+	  echo \[\!EX_DONE\]
+	
+	fi
+	
+	if [ "$ifbind" == "0" ]; then
+		echo No attach
+	else
+		echo "Attach $nm"
+		dbind "$nm"
+	fi
+}
+
+
+function helptext() {
+	echo ""
+        echo "buildPacemaker3 - A tool for start a pacemaker xlbase image."
+        echo ""
+        echo "Usage: buildPacemaker3 [options]"
+        echo ""
+        echo "Options:"
+        echo "-n, --nm, --name         \"Container name\""
+        echo "-i, --img, --image       Docker image name or ID"
+        echo "-a, --ssh-addr           ssh ip"
+        echo "-b, --bind               If bind this container immediately"
+        echo "-f, --force              If container with same name of specified one, remove it and go ahead!!"
+        echo "-p, --pwd, --password    Password of root"
+	echo "-v, --vol, --volume"
+	echo "--pcmk, --pcmk-start     Start pacemaker"
+
+        echo ""
+        exit $1
+}
+
+cnt=$#
+ifv=0
+
+while true ; do
+        case "$1" in
+        --help|-h|-\?) helptext 0;;
+        -n|--nm|--name) nm="$2"; shift; shift;;
+        -i|--img|--image) image=$2; shift; shift;;
+        -a|--ssh-addr) ip=$2; shift; shift;;
+        --pcmk|--pcmk-start) svcstart=1; shift;;
+        -b|--bind) ifbind=1; shift;;
+        -v|--vol|--volume) ifv=1; extvolume=$2; shift; shift;;
+	-f|--force) force=1; shift;;
+	-p|--pwd|--password) 
+		chpwd=1
+		if [ "$2" == "-" ]; then 
+			password="/'],lp123"
+			shift; shift
+		else
+			nx=$(echo "$2"|grep -P "^-")
+			if [ "$nx" != "" ]; then
+				echo -n Set Password: 
+				read -s password
+				
+				if [ "$password" == "" ]; then
+					password="/'],lp123"
+				fi
+				shift
+				echo -e "\n"
+			else
+				password=$2
+				shift; shift
+			fi
+		fi;;
+        "") break;;
+        *)
+                echo "[ERROR!!] Unknown option \"$1\""
+                helptext 1;;
+        esac
+done
+
+if [ "$cnt" != "0" ]; then 
+	main
+else
+	helptext 1
+fi
