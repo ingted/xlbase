@@ -79,5 +79,6 @@ logging {
     logfile: /var/log/cluster/corosync.log
     to_syslog: yes
 }
-" > /etc/corosync/corosync.conf
+" | out-file  -Encoding ascii /etc/corosync/corosync.conf
+
 
