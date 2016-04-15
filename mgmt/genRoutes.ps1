@@ -1,5 +1,5 @@
 ﻿param(
-	$cluster, $dexxpath, $hostname, $add
+	$cluster, $dexxpath, $hostname, $add, $24
 )
 if("$cluster" -eq ""){
 	$cluster = "ansible3"
@@ -9,6 +9,9 @@ if($dexxpath -eq ""){
 }
 if($add -eq ""){
 	$add = $false
+}
+if($24 -eq ""){
+	$24 = $false
 }
 $netmask = 24
 $allroles = gc "$dexxpath/dexxhostroles"
@@ -100,10 +103,14 @@ $iproute | ?{
     bash -c $("ip route delete $_")
 }
 
-if ($add){
+if ($24){
 
 if($(in $hostname $ghost)){ 
     bash -c $("ip route add $($domainip)0/$($netmask) dev $($interfaces.toother) metric 200")
+}}
+if ($add){
+
+if($(in $hostname $ghost)){ 
     0..($looplength - 1) | %{
         "ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20"
         bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20")
