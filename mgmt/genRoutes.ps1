@@ -1,11 +1,14 @@
 ﻿param(
-	$cluster, $dexxpath, $hostname
+	$cluster, $dexxpath, $hostname, $add
 )
 if("$cluster" -eq ""){
 	$cluster = "ansible3"
 }
 if($dexxpath -eq ""){
 	$dexxpath = "/root/pcmk/alias"
+}
+if($add -eq ""){
+	$add = $false
 }
 $netmask = 24
 $allroles = gc "$dexxpath/dexxhostroles"
@@ -97,6 +100,8 @@ $iproute | ?{
     bash -c $("ip route delete $_")
 }
 
+if ($add){
+
 if($(in $hostname $ghost)){ 
     bash -c $("ip route add $($domainip)0/$($netmask) dev $($interfaces.toother) metric 200")
     0..($looplength - 1) | %{
@@ -132,4 +137,4 @@ if($(in $hostname $ghost)){
     bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 1)/32 dev $($interfaces.dc2gtmprx) metric 20")
     bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 4)/32 dev $($interfaces.dc2gtmprx) metric 20")
 
-}
+}}
