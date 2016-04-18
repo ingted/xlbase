@@ -110,9 +110,10 @@ if ($24 -eq 1){
 	}
 } else {
 	if($(in $hostname $ghost)){ 
+		$nid = ($ghostht|?{$_.hostname -eq $hostname}).nodeid
 		1..6 | %{
-			"ip route add $($domainip)0/$($netmask) dev eth$_ metric 200 src $(($ghostht.nodeid - 1) * 10 + $_)"
-			bash -c $("ip route add $($domainip)0/$($netmask) dev eth$_ metric 200 src $(($ghostht.nodeid - 1) * 10 + $_)")
+			"ip route add $($domainip)0/$($netmask) dev eth$_ metric 200 src $(($nid - 1) * 10 + $_)"
+			bash -c $("ip route add $($domainip)0/$($netmask) dev eth$_ metric 200 src $(($nid - 1) * 10 + $_)")
 		}
 	}
 
