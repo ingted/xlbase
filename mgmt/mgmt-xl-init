@@ -49,45 +49,59 @@ else
         pathms=$specified_sm
 fi
 
-if [ "$10" != "" ]; then
-	ifNoInit=$10
+if [ "${10}" != "" ]; then
+	ifNoInit=${10}
 else
 	ifNoInit=1
 fi
 
-if [ "$11" != "" ]; then
-        ifNoConf=$11
+if [ "${11}" != "" ]; then
+        ifNoConf=${11}
 else
         ifNoConf=1
 fi
 
-if [ "$12" != "" ]; then
-        ifNoRsrc=$12
+if [ "${12}" != "" ]; then
+        ifNoRsrc=${12}
 else
         ifNoRsrc=1
 fi
 
-if [ "$13" != "" ]; then
-        currsm=$13
+if [ "${13}" != "" ]; then
+        currsm=${13}
 else
         currsm=$specified_sm
 fi
 
+if [ "${14}" != "" ]; then
+        b2=${14}
+else
+        b2=util-bpx2
+fi
+
+if [ "${15}" != "" ]; then
+        bx=${15}
+else
+        bx=util-bpx
+fi
 
 if [ "$ifNoCheck" == 1 ]; then
+	
 	conf=$(./mgmt-xl-get-confname-no-check $role $pgver $cluster $specified_nid $specified_sm $pathms|awk 'NR>2 && ($3 != "-") {print $1","$2","$3}'|sort|uniq|sed '/^$/d')
 	if [ "$conf" == "invalid specified host!" ]; then
 		echo "invalid specified host! mgmt-xl-init failed!"
 		continue
 	fi
+	echo $conf
         dir=$(echo "$conf"|awk '{split($0, a, ","); print a[1]}'|sort|uniq)
 
         echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $role $dir
 	if [ $ifNoInit != 1 ]; then
-		util-bpx2 "$host" chown $pgu:$pgu $dir -Rf
+		util-bpx2 "$specified_cnm" chown $pgu:$pgu $dir -Rf
 		#need to add cnm_to_cluster_name 
 		clusternodename=$(./mgmt-xl-get-cluster-name $specified_cnm $cluster)
 	        util-bpx2 "$specified_cnm" cluster-xl-init.ps1 $pgu $specified_cnm $role $dir 1 1 $clusternodename
+
 	fi
         #echo "conf: $conf"
 	hrid=$(./mgmt-xl-get-hrid $specified_cnm $cluster)
@@ -112,13 +126,13 @@ if [ "$ifNoCheck" == 1 ]; then
                         #echo $exp
                         confexp=$(cat $exp)
 
-
                         #echo "$confexp"
 			#echo $hrid
 			if [ $ifNoConf != 1 ]; then
 	                        confstr=$(echo "$(eval "cluster=$cluster; host=$specified_cnm; hrid=$hrid; nid=$nid; sm=$sm; role=$role; currsm=$currsm;  source $(which dexxparammap); echo \"$confexp\"")")
                         #echo "$confstr"
         	                conf64=$(echo "$confstr"|base64)
+
 	                        util-bpx2 "$specified_cnm" cluster-xl-conf.ps1 $pgu $confpath $conf64
 			fi
 
