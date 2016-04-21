@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pcmd="${*:2}"
+pash=$(docker exec $1 which pash)
+bcmd="cd /root/pcmk/cluster/; mono $pash -c ${*:2}"
+rtn=$(docker exec $1 /bin/bash -lc "$bcmd")
+echo "$rtn"|sed '1d'

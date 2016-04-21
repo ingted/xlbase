@@ -97,10 +97,10 @@ if [ "$ifNoCheck" == 1 ]; then
 
         echo $(date +"%T") \[\| xl-init \|\] @$specified_cnm $role $dir
 	if [ $ifNoInit != 1 ]; then
-		util-bpx2 "$specified_cnm" chown $pgu:$pgu $dir -Rf
+		$b2 "$specified_cnm" chown $pgu:$pgu $dir -Rf
 		#need to add cnm_to_cluster_name 
 		clusternodename=$(./mgmt-xl-get-cluster-name $specified_cnm $cluster)
-	        util-bpx2 "$specified_cnm" cluster-xl-init.ps1 $pgu $specified_cnm $role $dir 1 1 $clusternodename
+	        $b2 "$specified_cnm" cluster-xl-init.ps1 $pgu $specified_cnm $role $dir 1 1 $clusternodename
 
 	fi
         #echo "conf: $conf"
@@ -133,7 +133,7 @@ if [ "$ifNoCheck" == 1 ]; then
                         #echo "$confstr"
         	                conf64=$(echo "$confstr"|base64)
 
-	                        util-bpx2 "$specified_cnm" cluster-xl-conf.ps1 $pgu $confpath $conf64
+	                        $b2 "$specified_cnm" cluster-xl-conf.ps1 $pgu $confpath $conf64
 			fi
 
                 fi
@@ -160,7 +160,7 @@ if [ "$ifNoCheck" == 1 ]; then
 			
 		)
 		#echo $role ,$listenvip ,$listenport ,$confpath
-		util-bpx "$specified_cnm" root cluster-xl-resource.ps1 "$role" "$listenvip" "$listenport" "${confarr[0]}" "$currsm"
+		$bx "$specified_cnm" root cluster-xl-resource.ps1 "$role" "$listenvip" "$listenport" "${confarr[0]}" "$currsm"
 	fi
         echo $(date +"%T") \[\| xl-conf end  \|\] @$specified_cnm
 
