@@ -1,11 +1,17 @@
 ﻿param(
-	$cluster, $dexxpath, $hostname
+	$cluster, $dexxpath, $hostname, $add, $24
 )
 if("$cluster" -eq ""){
 	$cluster = "ansible3"
 }
 if($dexxpath -eq ""){
 	$dexxpath = "/root/pcmk/alias"
+}
+if($add -eq ""){
+	$add = $false
+}
+if($24 -eq ""){
+	$24 = $false
 }
 $netmask = 24
 $allroles = gc "$dexxpath/dexxhostroles"
@@ -74,7 +80,8 @@ if($host.Version -ne ""){
 }
 
 $bs1ton = $htHosts|?{($_.role -eq "docker")}|%{$_.hostname}
-$ghost = $htHosts|?{(in $_.role @("gtmprx")) -and (($_.masterslave -eq "m") -or ($_.role -eq "gtmsby"))}|%{$_.hostname}
+$ghostht = $htHosts|?{(in $_.role @("gtmprx")) -and (($_.masterslave -eq "m") -or ($_.role -eq "gtmsby"))}
+$ghost = $ghostht|%{$_.hostname}
 $cd = $htHosts|?{($_.role -eq "coor") -or ($_.role -eq "dn")}|%{$_.hostname}
 $coor = $htHosts|?{($_.role -eq "coor")}|%{$_.hostname}
 if("$hostname" -eq ""){
@@ -97,39 +104,55 @@ $iproute | ?{
     bash -c $("ip route delete $_")
 }
 
-if($(in $hostname $ghost)){ 
-    bash -c $("ip route add $($domainip)0/$($netmask) dev $($interfaces.toother) metric 200")
-    0..($looplength - 1) | %{
-        "ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20"
-        bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20")
-        bash -c $("ip route add $domainip" + [string] ($_ * 10 + 3) + " dev $($interfaces.ctodn) metric 20")
-    }
-    0..1 | %{
-        "ip route add $domainip" + [string] (250 + $_) + " dev $($interfaces.togtm) metric 20"
-        bash -c $("ip route add $domainip" + [string] (250 + $_) + " dev $($interfaces.togtm) metric 20")
-    }
+if ($24 -eq 1){
+	if($(in $hostname $ghost)){ 
+	    bash -c $("ip route add $($domainip)0/$($netmask) dev $($interfaces.toother) metric 200")
+	}
+} else {
+	if($(in $hostname $ghost)){ 
+		$nid = ($ghostht|?{$_.hostname -eq $hostname}).nodeid
+		1..6 | %{
+			"ip route add $($domainip)0/$($netmask) dev eth$_ src $($domainip)$(("$nid" - 1) * 10 + $_)"
+			bash -c $("ip route add $($domainip)0/$($netmask) dev eth$_ src $($domainip)$(("$nid" - 1) * 10 + $_)")
+		}
+	}
+
 }
-if($(in $hostname $ghost)){
-    $curnodeid = ($htHosts | ?{($_.hostname -eq $hostname) -and ($_.masterslave -EQ "m")}).nodeid
-    $curnode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnodeid)}
-    $curnode_slave_c = $htHosts | ?{($_.masterslave -EQ "s") -AND ($_.reside -EQ $curnode_master_c[0].reside)}
-    $nxtnode_slave_c = $htHosts | ?{($_.masterslave -EQ "s") -AND ($_.nodeid -EQ $curnodeid)}
+if ($add){
 
-    $prenode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnode_slave_c[0].nodeid)}
-    "pre--------------------------------------------------"
-    $prenode_master_c | %{
-        "ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 50"
-        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 50")
-    }
-    "nxt--------------------------------------------------"
-    $nxtnode_slave_c | %{
-        "ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 50"
-        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 50")
-    }
-    "ixl--------------------------------------------------"
-    "ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx) metric 20"
-    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx) metric 20")
-    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 1)/32 dev $($interfaces.dc2gtmprx) metric 20")
-    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 4)/32 dev $($interfaces.dc2gtmprx) metric 20")
-
+	if($(in $hostname $ghost)){ 
+	    0..($looplength - 1) | %{
+	        "ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20"
+	        bash -c $("ip route add $domainip" + [string] ($_ * 10 + 9) + " dev $($interfaces.ctodn) metric 20")
+	        bash -c $("ip route add $domainip" + [string] ($_ * 10 + 3) + " dev $($interfaces.ctodn) metric 20")
+	    }
+	    0..1 | %{
+	        "ip route add $domainip" + [string] (250 + $_) + " dev $($interfaces.togtm) metric 20"
+	        bash -c $("ip route add $domainip" + [string] (250 + $_) + " dev $($interfaces.togtm) metric 20")
+	    }
+	}
+	if($(in $hostname $ghost)){
+	    $curnodeid = ($htHosts | ?{($_.hostname -eq $hostname) -and ($_.masterslave -EQ "m")}).nodeid
+	    $curnode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnodeid)}
+	    $curnode_slave_c = $htHosts | ?{($_.masterslave -EQ "s") -AND ($_.reside -EQ $curnode_master_c[0].reside)}
+	    $nxtnode_slave_c = $htHosts | ?{($_.masterslave -EQ "s") -AND ($_.nodeid -EQ $curnodeid)}
+	
+	    $prenode_master_c = $htHosts | ?{($_.masterslave -EQ "m") -AND ($_.nodeid -EQ $curnode_slave_c[0].nodeid)}
+	    "pre--------------------------------------------------"
+	    $prenode_master_c | %{
+	        "ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 50"
+	        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.topregcd) metric 50")
+	    }
+	    "nxt--------------------------------------------------"
+	    $nxtnode_slave_c | %{
+	        "ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 50"
+	        bash -c $("ip route add $($_.ip)/32 dev $($interfaces.tonextgcd) metric 50")
+	    }
+	    "ixl--------------------------------------------------"
+	    "ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx) metric 20"
+	    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 7)/32 dev $($interfaces.dc2gtmprx) metric 20")
+	    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 1)/32 dev $($interfaces.dc2gtmprx) metric 20")
+	    bash -c $("ip route add $domainip" + "$(($curnode_master_c[0].nodeid - 1) * 10 + 4)/32 dev $($interfaces.dc2gtmprx) metric 20")
+	
+	}
 }

@@ -51,9 +51,18 @@ function in{
 
 if($host.Version -ne ""){
     function psql {param($c, $p) $c}
+    function pcs  {"pcs $args"}
+    function bash {param($c) $c}
 }
 
 if ("$hostname" -eq ""){
 	$hostname = hostname
 }
+
+
+$authnode = $htHosts |?{$_.role -ne "docker"}| %{$_.hostname}
+
+$ofs = " "
+pcs cluster auth "$authnode"
+
 
