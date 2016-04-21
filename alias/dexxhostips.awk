@@ -22,7 +22,7 @@ BEGIN {
 			case "gtm":
 				if($6 != $10){
 					if(currsm == "m"){
-						ipstr=$6","$10
+						ipstr=$10
 					} else {
 						ipstr=$6
 					}
@@ -34,7 +34,7 @@ BEGIN {
 			case "gtmsby":
 				if($6 != $10){
 					if(currsm == "m"){
-						ipstr=$6","$10
+						ipstr=$10
 					} else {
 						ipstr=$6
 					}
