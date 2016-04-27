@@ -1,6 +1,8 @@
 #!/bin/bash
 source $(which dexxgnuparam) $@
 
+echo genIf$(pwd)-----------------
+
 echo $cluster
 dhs=$(awk "(\$6 == \"$cluster\" && \$3 == \"h\"){print \$1\",\"\$2}" "$(which dexxhosts)")
 
@@ -44,7 +46,7 @@ iface eth$cnt inet static
         address $chip
         netmask 255.255.255.0
 EOF
-) | tee -a $cluster/$dhnm/interfaces
+) | sudo tee -a $cluster/$dhnm/interfaces
 		cnt=$(echo "$cnt + 1"|bc)	
 	done
 	

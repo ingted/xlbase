@@ -10,4 +10,5 @@ mgmt/alpha2
 mgmt/ansible2
 mgmt/ansible3
 mgmt/ansible
+mgmt/production
 *.swp
