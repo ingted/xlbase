@@ -55,6 +55,9 @@ dhosts=$($curroot/mgmt-xl-get-host-by-role docker $cluster)
 echo "$dhosts"
 echo ===============================================================
 for host in $dhosts; do
+	if [ "$host" != "datanode-5" ]; then
+		continue
+	fi
 	cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
 	echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
 	(ssh $theonea$cip << EOF

@@ -16,7 +16,7 @@ else
 fi
 
 
-dcmd=${*:3}
+dcmd=${*:4}
 echo ==========dexx start===========
 echo -e "distributed command: $dcmd"
 hostfil=$(which dexxhosts)
@@ -56,8 +56,8 @@ function xxx(){
 	
 	
 SSH_L1
-	
-		ssh root@$dh bash << SSH_L1
+	if [ "$3" == "" ] || [ "$3" == \"\" ]; then usr=root; else usr=$3; fi
+		ssh $usr@$dh bash << SSH_L1
 			export PATH=\$(cat ~/PATH.TMP) 
 			export PATH=\$PATH:/root/xlbase/alias
 			eval \$(cat ~/.bashrc|grep "#exped");
@@ -100,9 +100,17 @@ SSH_L1
 						#docker exec \$id "${*:2}"
 						echo /bin/bash -c "$dcmd"
 						if [ "$1" == "--ad" ]; then
-							docker exec -d \$id /bin/bash -c "$dcmd"
+							if [ "$usr" != root ]; then
+								docker exec -d \$id setuser $usr /bin/bash -c "setuser $usr $dcmd"
+							else
+								docker exec -d \$id /bin/bash -c "$dcmd"
+							fi
 						else
-							docker exec \$id /bin/bash -c "$dcmd"
+							if [ "$usr" != root ]; then
+								docker exec \$id setuser $usr /bin/bash -c "$dcmd"
+							else
+								docker exec \$id /bin/bash -c "$dcmd"
+							fi
 						fi
 					done 
 					IFS=ifsold
@@ -144,9 +152,17 @@ SSH_L1
 				if [[ \$(array_contains2 dlsss "$1" && echo 1 || echo 0) == 1 ]] || [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
 				#if [[ \$(array_contains2 cnms_r "$1" && echo 1 || echo 0) == 1 ]]; then 
 					if [ "$3" == "-d" ]; then
-						docker exec -d $1 bash -c "${*:4}"
+						if [ "$usr" != root ]; then
+							docker exec -d $1 setuser $usr bash -c "${*:4}"
+						else
+							docker exec -d $1 bash -c "${*:4}"
+						fi
 					else
-						docker exec $1 bash -c "${*:3}"
+						if [ "$usr" != root ]; then
+							docker exec $1 setuser $usr bash -c "${*:3}"
+						else
+							docker exec $1 bash -c "${*:3}"
+						fi
 					fi
 					#echo 234
 				else
