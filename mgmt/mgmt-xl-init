@@ -210,12 +210,12 @@ else
 
 							confexp=$(cat $exp)
 							#echo "$confexp"
-							echo "\[\| the \$sm: $sm \|\]"								
+							echo "[| the \$sm: $sm |]"								
 							confstr=$(echo "$(eval "cluster=$cluster; host=$host; hrid=$hrid; nid=$nid; sm=$sm; role=$role; currsm=$sm; source $(which dexxparammap); echo \"$confexp\"")")
 							echo -e "conf string: \n$confstr"
 							conf64=$(echo "$confstr"|base64)
-							echo "\[\| h: $host r: $role \|\]"	
-							#echo $conf64
+							echo "[| h: $host r: $role |]"	
+							echo $conf64
 							util-bpx2 "$host" cluster-xl-conf.ps1 $pgu $confpath $conf64
 
 
