@@ -1,0 +1,134 @@
+#!/bin/bash
+
+echo if gpu now?
+read ifgpu
+
+if [ "$ifgpu" == "1" ] || [ "$ifgpu" == "y" ] || [ "$ifgpu" == "yes" ]; then
+	cd ..
+	gpu "installation commit"
+	cd mgmt
+fi
+
+
+if [ "$1" == "" ]; then
+        rootpath="/root"
+else
+        rootpath=$1
+fi
+
+
+if [ "$2" == "" ]; then
+        cluster=test
+else
+        cluster=$2
+fi
+
+if [ "$3" == "" ]; then
+        updonly=0
+else
+        updonly="$3"
+fi
+
+
+if [ "$4" == "" ]; then
+        ifmake=0
+else
+        ifmake="$4"
+fi
+
+if [ "$5" == "" ]; then
+        theone=""
+else
+        theone="$5"
+        theonea="$5@"
+fi
+
+if [ "$6" == "" ]; then
+        ifupdclone=1
+else
+        ifupdclone="$6"
+fi
+sudo=$(if [ "$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+
+curroot=$(pwd)
+dhosts=$($curroot/mgmt-xl-get-host-by-role docker $cluster)
+echo "$dhosts"
+echo ===============================================================
+for host in $dhosts; do
+	cip=$($curroot/mgmt-xl-get-ip "$host" "$cluster")
+	echo "<<<<<<<<<<<" $cip \($host\) ">>>>>>>>>>>>"
+	(ssh $theonea$cip << EOF
+		sudo=\$(if [ "\$(whoami)" != root ]; then echo sudo; else echo ""; fi )
+		#rm ~/.hushlogin
+		whoiam=\$(whoami)
+		echo \$whoiam
+		eval "\$sudo mkdir -p \"$rootpath\""
+		eval "\$sudo chown $theone:$theone \"$rootpath\" -Rf"
+		if [ "$ifupdclone" == 1 ]; then
+			eval "\$sudo apt-get -y update"
+			eval "\$sudo apt-get -y --force-yes install expect  git make"
+			if [ "\$(which docker)" == "" ]; then
+				eval "\$sudo wget -qO- https://get.docker.com/ | sh"
+			fi
+		fi
+		cd "$rootpath"
+		#ls $rootpath/xlbase
+		rp=\$(ls $rootpath/xlbase)
+		#echo "1: $updonly" "2: $?" "3: $rp"
+		#if [ "$ifupdclone" == 1 ]; then
+			#if [ "$updonly" != 1 ] || [ "$?" != 0 ] || [ "\$rp" == "" ]; then
+			#	eval "\$sudo rm xlbase -rf"
+			#	GIT_TRACE=1; GIT_CURL_VERBOSE=1
+			#	eval "\$sudo git clone --verbose http://github.com/ingted/xlbase.git"
+  			#	cd $rootpath/xlbase
+	  		#	eval "\$sudo git checkout --track -b xlbase remotes/origin/backToOrigin"
+			#else 
+			#	cd $rootpath/xlbase
+			#	echo ".................update now.................\$(whoami)"
+			#	(eval "\$sudo git pull") || (git pull) 
+			#fi
+			mkdir -p $rootpath/xlbase
+			rm $rootpath/xlbase/* -rf
+			#scp -r sys_admin@10.10.50.73:/home/sys_admin/xlbase .
+			rsync  -avP sys_admin@10.10.50.73:/home/sys_admin/xlbase .
+			cd xlbase
+			git pull 
+		#fi
+		#if [ "\$(whoami)" != root ]; then
+		#	sudo chown \$whoiam:\$whoiam "$rootpath" -R
+		#fi
+		echo "starthere >>>>>>>>>>>>>>>------------"
+		eval "\$sudo chown $theone:$theone \"$rootpath\" -Rf"
+		source $rootpath/xlbase/alias/util-disable-status 1 1 1
+		echo "====\$(hostname)====="
+		./make.sh
+		source ~/.bashrc
+		eval \$(cat ~/.bashrc|grep "#exped"); 
+		echo dexxhosts: \$(which dexxhosts)">>>>>>>>>>>>>>>------------"
+		#echo "=>\$(which dexxhosts)"
+		#echo "=>\$PATH"
+
+		eexp=\$(which expect)
+		if [ "$eexp" == "" ]; then
+			eval "\$sudo apt-get -y install expect"
+		fi
+		if [ "$ifmake" != "0" ]; then
+			./make.expect
+		fi
+		cd mgmt
+		eval \$(cat ~/.bashrc|grep "#exped");
+		./mgmt-init-set-xl-config $cluster
+		eval "\$sudo chown \$whoiam:\$whoiam $rootpath -R"
+		./genInterFaces -c $cluster
+		echo "\$sudo cp ./$cluster/$host/interfaces /etc/network/ -f"
+		eval "\$sudo cp ./$cluster/$host/interfaces /etc/network/ -f"
+		ls $rootpath/xlbase/mgmt/set.expect
+		./set.expect $cluster
+		#./mgmt-init-set-xl-config $cluster => change to set.expect
+		#./mgmt-xl-setup-all $cluster => change to set.expect
+EOF
+) 
+#exit 0
+done
+
+echo eofisdsh
