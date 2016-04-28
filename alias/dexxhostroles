@@ -193,8 +193,8 @@ datanode-2	0	docker	x	x	production	4
 datanode-3	0	docker	x	x	production	5
 datanode-4	0	docker	x	x	production	6
 datanode-5	0	docker	x	x	production	7
-gtm-1	0	gtm	g	m	production	8
-gtm-2	0	gtmsby	g	s	production	9
+gtm	0	gtm	g	m	production	8
+gtmsby	0	gtmsby	g	s	production	9
 gtmprx1m	1	gtmprx	g	m	production	10
 coor1m	1	coor	c	m	production	11
 dn1m	1	dn	d	m	production	12
