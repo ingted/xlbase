@@ -26,7 +26,7 @@ auto eth0
 iface eth0 inet static
         address $dhip
         netmask 255.255.255.0
-        gateway 10.10.30.254
+        #gateway 10.10.50.254
         dns-nameservers 10.10.50.1
 EOF
 ) > $cluster/$dhnm/interfaces
@@ -34,7 +34,9 @@ EOF
 	cnt=1
 	for ch in $chs; do
 
-
+		if [ "$cnt" == 2 ]; then
+			defgw="gateway 10.10.30.254"
+		fi
 		chtmp=(${ch//,/ })
 		echo process ${chtmp[0]} now...
 		chip=${chtmp[0]}
@@ -45,6 +47,7 @@ auto eth$cnt
 iface eth$cnt inet static
         address $chip
         netmask 255.255.255.0
+	$defgw
 EOF
 ) | sudo tee -a $cluster/$dhnm/interfaces
 		cnt=$(echo "$cnt + 1"|bc)	
