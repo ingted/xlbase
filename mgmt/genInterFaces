@@ -34,13 +34,15 @@ EOF
 	cnt=1
 	for ch in $chs; do
 
-		if [ "$cnt" == 2 ]; then
-			defgw="gateway 10.10.30.254"
-		fi
+
 		chtmp=(${ch//,/ })
 		echo process ${chtmp[0]} now...
 		chip=${chtmp[0]}
 		chnm=${chtmp[1]}
+		ifgtm=$(echo "$chnm"|grep gtm)
+		if [ "$cnt" == 2 ] || [ "ifgtm" != ""]; then
+			defgw="gateway 10.10.30.254"
+		fi
 		
 		(cat << EOF
 auto eth$cnt
