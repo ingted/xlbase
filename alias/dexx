@@ -30,6 +30,7 @@ echo -e "distributor:\n$dhosts"
 #echo  $cnms
 echo ===============================
 
+if [ "$3" == "" ] || [ "$3" == \"\" ]; then usr=root; else usr=$3; fi
 #for dhi in $dhosts; do
 function xxx(){
 	dhtmp=(${dhi//,/ })
@@ -50,13 +51,13 @@ function xxx(){
 		tout=`expr $tout \* 3`
 	done
 	if [ "$pout" == 0 ]; then
-		ssh root@$dh bash <<'SSH_L1'
+		ssh $usr@$dh bash <<'SSH_L1'
 			echo "$PATH" > ~/PATH.TMP
 			#echo "$PATH"		
 	
 	
 SSH_L1
-	if [ "$3" == "" ] || [ "$3" == \"\" ]; then usr=root; else usr=$3; fi
+
 		ssh $usr@$dh bash << SSH_L1
 			export PATH=\$(cat ~/PATH.TMP) 
 			export PATH=\$PATH:/root/xlbase/alias
