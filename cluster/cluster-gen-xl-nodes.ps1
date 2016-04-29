@@ -1,18 +1,18 @@
 #!/usr/bin/pash
 param(
-	$cluster, $dexxpath, $doact, $hostname
+	$cluster, $dexxpath, $processNode, $curhostname
 )
 
 . cluster-gen-cluster.ps1 $cluster $dexxpath
 
 if(($htHosts|?{$_.hostname -eq $hostname}).role -eq "coor"){$port = 40001} else {$port = 10002}
 $htHosts|?{$_.masterslave -eq "m" -and $_.role -notmatch "gtm"}|%{
-    if($_.hostname -eq $hostname){
+    if($_.hostname -eq $curhostname){
         $act = "alter"
     } else {
         $act = "create"
     }
-    if($doact -eq $true){
+    if($processNode -eq $true){
         if($_.role -eq "coor"){
             psql -p $port -c $($act + " node coor" + $_.nodeid + " with(TYPE='coordinator',HOST='" + $_.ip + "',PORT=40001);")
 
