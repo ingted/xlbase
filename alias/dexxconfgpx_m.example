@@ -1,0 +1,16 @@
+nodename = '$(@@@nodename@@@ -c $cluster -m $host)'				# Specifies the node name.
+listen_addresses = '$(@@@hostip@@@ -r gtmprx -i $hrid -c $cluster -u $currsm)'	# Listen addresses of this GTM.
+port = $(@@@b_coor_gtmprx_port@@@)	# Port number of this GTM.
+worker_threads = 100
+
+gtm_host = $(@@@gtmprx_gtmhost@@@ -c $cluster)
+gtm_port = $(@@@b_coor_gtmprx_port@@@)
+
+keepalives_idle = 0			# Keepalives_idle parameter.
+keepalives_interval = 0			# Keepalives_interval parameter.
+keepalives_count = 0			# Keepalives_count internal parameter.
+log_file = 'gtm_proxy.log'			# Log file name
+log_min_messages = WARNING		# log_min_messages.  Default WARNING.
+				  	# Valid value: DEBUG, DEBUG5, DEBUG4, DEBUG3,
+					# DEBUG2, DEBUG1, INFO, NOTICE, WARNING,
+					# ERROR, LOG, FATAL, PANIC
