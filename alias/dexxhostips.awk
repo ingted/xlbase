@@ -46,7 +46,7 @@ BEGIN {
 			case "gtmprx":
 				if($9 != $13){
 					if(currsm == "m"){
-						ipstr=$9","$13
+						ipstr=$13
 					} else {
 						ipstr=$9
 					}
