@@ -273,7 +273,7 @@ function @@@gtm_sby@@@	(){
 		#echo awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$1 == \"$slaveNode\") {if(\$1 in key){}else{key[\$1]=\"\"; val[1]=\$7}}END{print val[1]}" $(which dexxhostroles)
 		slavehrid=$(awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$1 == \"$slaveNode\") {if(\$1 in key){}else{key[\$1]=\"\"; val[1]=\$7}}END{print val[1]}" $(which dexxhostroles))
 		#echo =============$slaverole $slavehrid 
-		ah=$(@@@hostip@@@ -r "$slaverole" -i "$slavehrid" -u s -c $cluster)
+		ah=$(@@@hostip@@@ -r "$slaverole" -i "$slavehrid" -u m -c $cluster)
 		ap=$(@@@b_coor_gtmprx_port@@@)
 		echo -e "
 startup = STANDBY

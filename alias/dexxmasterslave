@@ -75,7 +75,7 @@ dn3m    dn3s    dn      ansible3
 gtmprx4m        gtmprx4s        gtmprx  ansible3
 coor4m  coor4s  coor    ansible3
 dn4m    dn4s    dn      ansible3
-gtm-1	gtm-2	gtm	production
+gtm	gtmsby	gtm	production
 gtmprx1m	gtmprx1s	gtmprx	production
 coor1m	coor1s	coor	production
 dn1m	dn1s	dn	production
