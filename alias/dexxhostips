@@ -114,9 +114,7 @@ mgmt            hrID  type reside  cluster toGTM           	toClient        toVo
 10.128.114.34   30      c       bs6     ansible3        -       	-       	-       	10.128.114.34   -       	-      		-       	10.128.114.27
 10.128.114.35   31      c       bs6     ansible3        -       	10.128.114.35   10.128.114.35   -       	-       	10.128.114.28   10.128.114.28   -
 10.128.114.36   32      c       bs6     ansible3        -       	-       	10.128.114.36   -       	-       	-       	10.128.114.29   -
-~
 
-mgmt	hrID	type	reside	cluster	toGTM	toClient	toVolt	inXL	haGTM	haClient	havolt	haXL
 10.10.50.97	1	h	-	production	-	-	-	-	-	-	-	-
 10.10.50.98	2	h	-	production	-	-	-	-	-	-	-	-
 10.10.50.71	3	h	-	production	-	-	-	-	-	-	-	-

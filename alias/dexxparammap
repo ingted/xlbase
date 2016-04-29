@@ -250,6 +250,15 @@ function @@@wal_archive@@@ (){
 
 }
 
+#function @@@gtmprx_gtmhost@@@  (){
+#        source $(which dexxgnuparam) $@
+#        colNum=$(if [ $specified_sm == m ]; then echo "\$1"; else echo "\$2"; fi)
+#        sColNum=$(if [ $specified_sm == m ]; then echo "\$2"; else echo "\$1"; fi)
+#        slaveNode=$(awk "{key[\"****\"]=\"****\";}(\$4 == \"$cluster\") && ($colNum == \"$specified_cnm\") {if($colNum in key){}else{key[$colNum]=\"\"; val[1]=$sColNum}}END{print val[1]}" $(which dexxmasterslave))
+#        slavehrid=$(awk "{key[\"****\"]=\"****\";}(\$6 == \"$cluster\") && (\$1 == \"$slaveNode\") {if(\$1 in key){}else{key[\$1]=\"\"; val[1]=\$7}}END{print val[1]}" $(which dexxhostroles))
+#        ah=$(@@@hostip@@@ -r "$slaverole" -i "$slavehrid" -u s -c $cluster)
+#	echo $ah
+#}
 function @@@gtm_sby@@@	(){
 	source $(which dexxgnuparam) $@
 	if [ "$currsm" == m ]; then
