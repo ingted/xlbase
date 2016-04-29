@@ -8,7 +8,12 @@
 function main () {
 	nodetyp=$(if [ "$noderole" == "gtm" ] || [ "$noderole" == "gtmprx" ] || [ "$noderole" == "gtmsby" ]; then echo g; else echo p; fi)
 	binary=$(if [ "$nodetyp" == "g" ]; then echo gtm_ctl; else echo pg_ctl; fi)
-	result=$((setuser postgres /usr/local/pgsql/bin/$binary -Z $noderole -D $pgdir status) 2>&1)
+	if [ "$noderole" == "gtmsby" ]; then _noderole=gtm; 
+		elif [ "$noderole" == "gtmprx" ]; then _noderole=gtm_proxy; 
+			else _noderole=$noderole; fi
+	#echo $noderole
+	#echo setuser postgres /usr/local/pgsql/bin/$binary -Z $_noderole -D $pgdir status
+	result=$((setuser postgres /usr/local/pgsql/bin/$binary -Z $_noderole -D $pgdir status) 2>&1)
 	echo $result
 	gtmnopidfile=$(echo $result|grep "$binary: could not open PID file")
 	if [ "$result" == "$binary: no server running" ] || [ "$gtmnopidfile" != "" ]; then
