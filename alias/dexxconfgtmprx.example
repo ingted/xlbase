@@ -3,7 +3,7 @@ listen_addresses = '$(@@@hostip@@@ -r gtmprx -i $hrid -c $cluster -u $currsm)'	#
 port = $(@@@b_coor_gtmprx_port@@@)	# Port number of this GTM.
 worker_threads = 100
 
-#gtm_host = $(@@@hostip@@@ -r gtm -i $hrid -c $cluster -u m)
+gtm_host = $(@@@gtmprx_gtmhost@@@ -c $cluster)
 gtm_port = $(@@@b_coor_gtmprx_port@@@)
 
 keepalives_idle = 0			# Keepalives_idle parameter.
