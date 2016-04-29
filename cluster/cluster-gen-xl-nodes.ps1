@@ -12,7 +12,7 @@ $htHosts|?{$_.masterslave -eq "m" -and $_.role -notmatch "gtm"}|%{
     } else {
         $act = "create"
     }
-    if($doact -eq $act){
+    if($doact -eq $true){
         if($_.role -eq "coor"){
             psql -p $port -c $($act + " node coor" + $_.nodeid + " with(TYPE='coordinator',HOST='" + $_.ip + "',PORT=40001);")
 
