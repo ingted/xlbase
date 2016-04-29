@@ -1,20 +1,19 @@
 #!/bin/bash
-
 role="gtmprx" ###cfgrole###
 cnm=$(hostname)
-ip="192.168.137.132" ###cfgip###
-port=36666 ###cfgport###
+ip="10.10.30.7" ###cfgip###
+port="36666" ###cfgport###
 mypath="/etc/init.d"
 pglib="/usr/local/pgsql/bin"
-pgdir="/postgres/gtmprx/data" ###cfgpgd###
+pgdir="/postgres/gtmprx1_m" ###cfgpgd###
 dexx="/root/pcmk/alias" ###cfgdexx###
-
 export PATH=$PATH:$mypath
-
 case "$1" in
     start)
 	launcher --start -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
-        #launcher --start  -d $pglib -r $role -n $cnm -p $dexx
+        mono $( which pash ) -c "
+            if(([io.fileinfo] '$pgdir/gtm_proxy.pid').exists){
+                if((gc $pgdir/gtm_proxy.pid).count -eq 2 -and '$role' -eq 'gtmprx'){0 >> $pgdir/gtm_proxy.pid}}"
         ;;
     stop)
 	launcher --stop -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
@@ -22,14 +21,18 @@ case "$1" in
         ;;
     restart)
 	launcher --restart -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
-	;;
+    mono $( which pash ) -c "
+            if(([io.fileinfo] '$pgdir/gtm_proxy.pid').exists){
+                if((gc $pgdir/gtm_proxy.pid).count -eq 2 -and '$role' -eq 'gtmprx'){0 >> $pgdir/gtm_proxy.pid}}"
+    ;;
     status)
 	xlstatus -i $ip -p $port -r $role -d $pgdir && exit 0 || exit $?
         ;;
     *)
         echo "Usage : ${name} {start|stop|status}"
         exit 1
-
 esac
-
 exit 0
+
+
+

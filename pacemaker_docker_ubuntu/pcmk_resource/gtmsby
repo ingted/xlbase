@@ -1,16 +1,13 @@
 #!/bin/bash
-
-role="gtm" ###cfgrole###
+role="gtmsby" ###cfgrole###
 cnm=$(hostname)
-ip="192.168.137.132" ###cfgip###
-port=36666 ###cfgport###
+ip="10.10.30.251" ###cfgip###
+port="36666" ###cfgport###
 mypath="/etc/init.d"
 pglib="/usr/local/pgsql/bin"
-pgdir="/postgres/gtm/data" ###cfgpgd###
+pgdir="/postgres/gtmsby/data" ###cfgpgd###
 dexx="/root/pcmk/alias" ###cfgdexx###
-
 export PATH=$PATH:$mypath
-
 case "$1" in
     start)
 	launcher --start -l $pglib -r $role -n $cnm -p $dexx -d $pgdir
@@ -29,7 +26,5 @@ case "$1" in
     *)
         echo "Usage : ${name} {start|stop|status}"
         exit 1
-
 esac
-
 exit 0
