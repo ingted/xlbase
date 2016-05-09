@@ -51,3 +51,7 @@ gtmsby	#	1	production
 gtmprx	#	5	production
 coor	#	5	production
 dn	#	5	production
+gtm	#	1	opxl
+gtmprx	#	2	opxl
+coor	#	2	opxl
+dn	#	2	opxl
