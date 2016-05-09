@@ -11,4 +11,5 @@ mgmt/ansible2
 mgmt/ansible3
 mgmt/ansible
 mgmt/production
+mgmt/opxl
 *.swp

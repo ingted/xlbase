@@ -91,3 +91,10 @@ dn4m	dn4s	dn	production
 gtmprx5m	gtmprx5s	gtmprx	production
 coor5m	coor5s	coor	production
 dn5m	dn5s	dn	production
+gtm	gtmsby	gtm	opxl
+gtmprx1m	gtmprx1s	gtmprx	opxl
+coor1m	coor1s	coor	opxl
+dn1m	dn1s	dn	opxl
+gtmprx2m	gtmprx2s	gtmprx	opxl
+coor2m	coor2s	coor	opxl
+dn2m	dn2s	dn	opxl
