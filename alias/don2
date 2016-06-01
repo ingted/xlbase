@@ -25,7 +25,7 @@ docker exec "$nm" service dbus restart
 docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/register ]; then mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc; fi"
 #docker exec -d "$nm" bash -c " if [ ! -z /proc/sys/fs/binfmt_misc/CLR ]; then echo ':CLR:M::MZ::/usr/bin/mono:' > /proc/sys/fs/binfmt_misc/register; fi"
 
-docker exec "$nm" hostnamectl set-hostname "$nm"
+#docker exec "$nm" hostnamectl set-hostname "$nm"
 docker exec "$nm" bash -c "echo \"$nm\" > /etc/hostname"
 docker exec "$nm" bash -c 'export PS1="\[\e[0;33m\][\$(date  +\"%T\")]$PS1"'
 docker exec "$nm" bash -c 'service ssh start'
